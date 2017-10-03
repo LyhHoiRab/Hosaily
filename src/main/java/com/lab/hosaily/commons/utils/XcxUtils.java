@@ -1,6 +1,7 @@
 package com.lab.hosaily.commons.utils;
 
 import com.google.gson.reflect.TypeToken;
+import com.lab.hosaily.commons.response.wechat.SessionKeyResponse;
 import com.lab.hosaily.core.account.entity.XcxAccount;
 import com.rab.babylon.commons.security.exception.HttpClientException;
 import com.rab.babylon.commons.utils.HttpClientUtils;
@@ -28,14 +29,7 @@ import java.util.Map;
 public class XcxUtils{
 
     private final static Charset CHARSET = Charset.forName("UTF-8");
-    private final static String API = "https://api.weixin.qq.com/sns/jscode2session";
-
-    public final static String NODE_OPENID = "openid";
-    public final static String NODE_APP_ID = "appid";
-    public final static String NODE_UNION_ID = "unionid";
-    public final static String NODE_SESSION_KEY = "session_key";
-    public final static String NODE_ERR_CODE = "errcode";
-    public final static String NODE_ERR_MSG = "errmsg";
+    private final static String GET_SESSION_KEY = "https://api.weixin.qq.com/sns/jscode2session";
 
     private XcxUtils(){
 
@@ -94,7 +88,7 @@ public class XcxUtils{
     /**
      * 根据AppId,AppSecret,code查询用户openId和sessionKey
      */
-    public static Map<String, Object> getOpenIdAndSessionKey(String appId, String secret, String code) throws Exception{
+    public static SessionKeyResponse getOpenIdAndSessionKey(String appId, String secret, String code) throws Exception{
         if(StringUtils.isBlank(appId)){
             throw new IllegalArgumentException("小程序AppId不能为空");
         }
@@ -112,23 +106,27 @@ public class XcxUtils{
         params.put("js_code", code);
         params.put("grant_type", "authorization_code");
 
-        CloseableHttpClient client = HttpClientUtils.createHttpClient();
-        HttpGet get = HttpClientUtils.getGet(API, params);
-        HttpResponse response = client.execute(get);
+        CloseableHttpClient client = null;
+        HttpGet get = null;
 
-        if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-            String json = EntityUtils.toString(response.getEntity());
+        try{
+            client = HttpClientUtils.createHttpClient();
+            get = HttpClientUtils.getGet(GET_SESSION_KEY, params);
 
-            Type type = new TypeToken<Map<String, Object>>(){}.getType();
-            Map<String, Object> result = ObjectUtils.deserialize(json, type);
+            HttpResponse response = client.execute(get);
+            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                String json = EntityUtils.toString(response.getEntity());
 
-            if(result.get(NODE_ERR_CODE) != null){
-                //TODO 查询信息失败时
+                if(!StringUtils.isBlank(json)){
+                    return ObjectUtils.deserialize(json, SessionKeyResponse.class);
+                }
+
+                return null;
             }
 
-            return result;
+            throw new HttpClientException(response.getEntity().toString());
+        }finally{
+            client.close();
         }
-
-        throw new HttpClientException(response.getEntity().toString());
     }
 }

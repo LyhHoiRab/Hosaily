@@ -1,7 +1,5 @@
 package com.lab.hosaily.core.account.service;
 
-import com.rab.babylon.core.account.entity.Account;
-
 public interface AccountService{
 
     /**
@@ -12,10 +10,10 @@ public interface AccountService{
     /**
      * 网站应用注册
      */
-    void registerByWeb(String code);
+    void registerByWeb(String token, String code);
 
     /**
      * 公众账号注册
      */
-    Account registerByWeChat(Account account);
+    void registerByWeChat(String weChat);
 }

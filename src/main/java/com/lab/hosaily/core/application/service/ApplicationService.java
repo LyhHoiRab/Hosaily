@@ -7,5 +7,5 @@ public interface ApplicationService{
     /**
      * 查询生成二维码参数
      */
-    Map<String, Object> getQRParams(String token, String redirectUrl);
+    Map<String, Object> getQRParams(String sessionId, String token, String redirectUrl);
 }

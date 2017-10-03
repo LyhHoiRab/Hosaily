@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class ApplicationServiceImpl implements ApplicationService{
      * 查询生成二维码参数
      */
     @Override
-    public Map<String, Object> getQRParams(String token, String redirectUrl){
+    public Map<String, Object> getQRParams(String sessionId, String token, String redirectUrl){
         try{
             Assert.hasText(token, "应用Token不能为空");
 
@@ -44,7 +45,7 @@ public class ApplicationServiceImpl implements ApplicationService{
                 throw new ServiceException(String.format("无效的应用Token[%s]", token));
             }
 
-            String state = AESUtils.encryptBy128(AuthorizationConsts.ENCRYP_PREFIX + redirectUrl, AuthorizationConsts.DECRYPT_KEY);
+            String state = URLEncoder.encode(redirectUrl + "_" + MD5Utils.encrypt(sessionId), "UTF-8");
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(AuthorizationConsts.NODE_APPID, application.getAppId());

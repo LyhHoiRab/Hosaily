@@ -5,11 +5,13 @@ import com.google.gson.annotations.SerializedName;
 import com.lab.hosaily.core.account.consts.WeChatSex;
 import com.rab.babylon.core.base.entity.Create;
 import com.rab.babylon.core.base.entity.Update;
+import com.rab.babylon.core.consts.entity.UsingState;
 
 import java.util.Date;
 
 public class WeChatAccount implements Create, Update{
 
+    private String id;
     @SerializedName(value = "openId", alternate = {"openId", "openid"})
     private String openId;
     @SerializedName(value = "unionId", alternate = {"unionId", "unionid"})
@@ -26,10 +28,20 @@ public class WeChatAccount implements Create, Update{
     @SerializedName(value = "subscribeTime", alternate = {"subscribeTime", "subscribe_time"})
     private Date subscribeTime;
     private String remark;
+    private UsingState state;
     private Date createTime;
     private Date updateTime;
 
     public WeChatAccount(){
+
+    }
+
+    public String getId(){
+        return id;
+    }
+
+    public void setId(String id){
+        this.id = id;
     }
 
     public String getOpenId(){
@@ -126,6 +138,14 @@ public class WeChatAccount implements Create, Update{
 
     public void setRemark(String remark){
         this.remark = remark;
+    }
+
+    public UsingState getState(){
+        return state;
+    }
+
+    public void setState(UsingState state){
+        this.state = state;
     }
 
     @Override

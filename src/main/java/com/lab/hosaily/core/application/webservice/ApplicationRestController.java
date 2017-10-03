@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
@@ -26,9 +27,10 @@ public class ApplicationRestController{
      * 查询网站应用授权二维码参数
      */
     @RequestMapping(value = "/qr", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Map<String, Object>> getQRParams(String token, String redirectUrl){
+    public Response<Map<String, Object>> getQRParams(HttpServletRequest request, String token, String redirectUrl){
         try{
-            Map<String, Object> result = applicationService.getQRParams(token, redirectUrl);
+            String sessionId = request.getSession().getId();
+            Map<String, Object> result = applicationService.getQRParams(sessionId, token, redirectUrl);
 
             return new Response<Map<String, Object>>("查询成功", result);
         }catch(Exception e){

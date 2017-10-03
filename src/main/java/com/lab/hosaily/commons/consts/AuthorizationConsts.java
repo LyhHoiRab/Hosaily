@@ -7,12 +7,6 @@ import java.net.URLEncoder;
  */
 public class AuthorizationConsts{
 
-    //加密前缀
-    public final static String ENCRYP_PREFIX = "KULIAO_";
-
-    //密钥
-    public final static String DECRYPT_KEY = "KULIAO_HOSAILY";
-
     //默认跳转路径
     public final static String DEFAULT_REDIRECT = "/page/index";
 

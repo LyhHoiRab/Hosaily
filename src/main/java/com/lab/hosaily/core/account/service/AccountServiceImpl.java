@@ -1,5 +1,8 @@
 package com.lab.hosaily.core.account.service;
 
+import com.lab.hosaily.commons.response.wechat.AccessTokenResponse;
+import com.lab.hosaily.commons.response.wechat.SessionKeyResponse;
+import com.lab.hosaily.commons.utils.WeChatUtils;
 import com.lab.hosaily.commons.utils.XcxUtils;
 import com.lab.hosaily.core.account.dao.AccountDao;
 import com.lab.hosaily.core.account.entity.XcxAccount;
@@ -53,13 +56,13 @@ public class AccountServiceImpl implements AccountService{
             String secret = application.getSecret();
 
             //查询sessionKey
-            Map<String, Object> info = XcxUtils.getOpenIdAndSessionKey(appId, secret, code);
+            SessionKeyResponse response = XcxUtils.getOpenIdAndSessionKey(appId, secret, code);
             //sessionKey
-            String sessionKey = (String) info.get(XcxUtils.NODE_SESSION_KEY);
-            //openid
-            String openId = (String) info.get(XcxUtils.NODE_OPENID);
-            //unionid
-            String unionId = (String) info.get(XcxUtils.NODE_UNION_ID);
+            String sessionKey = response.getSessionKey();
+            //openId
+            String openId = response.getOpenId();
+            //unionId
+            String unionId = response.getUnionId();
 
             //验签
             String sign = SHAUtils.bySHA1(rawData + sessionKey);
@@ -68,7 +71,7 @@ public class AccountServiceImpl implements AccountService{
                 //解密用户信息
                 XcxAccount xcxAccount = XcxUtils.decrypt(encryptedData, sessionKey, iv);
                 //校验水印
-                if(xcxAccount.getWatermark().get(XcxUtils.NODE_APP_ID).equals(appId)){
+                if(xcxAccount.getWatermark().get("openid").equals(appId)){
                     String weChat = StringUtils.isBlank(unionId) ? openId : unionId;
 
                     Account account = accountDao.getByWeChat(weChat);
@@ -93,9 +96,35 @@ public class AccountServiceImpl implements AccountService{
      */
     @Override
     @Transactional(readOnly = false)
-    public void registerByWeb(String code){
+    public void registerByWeb(String token, String code){
         try{
+            Assert.hasText(code, "code值不能为空");
+            Assert.hasText(token, "网站应用Token不能为空");
 
+            //查询网站应用
+            Application application = applicationDao.getByToken(token);
+            //appId
+            String appId = application.getAppId();
+            //secret
+            String secret = application.getSecret();
+
+            //查询accessToken
+            AccessTokenResponse accessToken = WeChatUtils.getAccessToken(code, appId, secret);
+
+            if(StringUtils.isBlank(accessToken.getOpenId()) && StringUtils.isBlank(accessToken.getUnionId())){
+                //TODO 查询opneId失败
+            }
+
+            String weChat = StringUtils.isBlank(accessToken.getUnionId()) ? accessToken.getOpenId() : accessToken.getUnionId();
+            Account account = accountDao.getByWeChat(weChat);
+            //未注册
+            if(account == null){
+                account = new Account();
+                account.setWeChat(weChat);
+                //设置默认密码
+                account.setPassword(MD5Utils.encrypt("kuliao5201314"));
+                accountDao.saveOrUpdate(account);
+            }
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -106,9 +135,20 @@ public class AccountServiceImpl implements AccountService{
      * 公众账号注册
      */
     @Override
-    public Account registerByWeChat(Account account){
+    @Transactional(readOnly = false)
+    public void registerByWeChat(String weChat){
         try{
-            return account;
+            Assert.hasText(weChat, "用户微信帐号不能为空");
+
+            Account account = accountDao.getByWeChat(weChat);
+            //未注册
+            if(account == null){
+                account = new Account();
+                account.setWeChat(weChat);
+                //设置默认密码
+                account.setPassword(MD5Utils.encrypt("kuliao5201314"));
+                accountDao.saveOrUpdate(account);
+            }
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
