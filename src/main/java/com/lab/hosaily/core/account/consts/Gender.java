@@ -1,6 +1,7 @@
 package com.lab.hosaily.core.account.consts;
 
 import com.google.gson.annotations.SerializedName;
+import com.rab.babylon.core.consts.entity.Sex;
 
 public enum Gender{
 
@@ -35,5 +36,18 @@ public enum Gender{
         }
 
         return UNKNOWN;
+    }
+
+    public static Sex changeToSex(Gender gender){
+        switch(gender){
+            case UNKNOWN:
+                return Sex.UNKNOWN;
+            case MALE:
+                return Sex.MALE;
+            case FEMALE:
+                return Sex.FEMALE;
+            default:
+                return Sex.UNKNOWN;
+        }
     }
 }

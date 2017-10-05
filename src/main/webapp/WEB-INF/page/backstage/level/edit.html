@@ -1,0 +1,112 @@
+<ol class="breadcrumb">
+  <li>
+    <span>系统设置</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="level">等级管理</a>
+  </li><!-- item -->
+  <li>
+    <span>
+      #if($id)
+        修改等级
+      #else
+        添加等级
+      #end
+    </span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+    <div class="row-group">
+      <div class="img-group">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{{level.icon}}" ng-model="level.icon">
+          </div><!-- item -->
+
+          <div class="col-md-6">
+            <input type="file" nv-file-select uploader="uploader">
+            <div class="button-group">
+              <button type="button" class="btn" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                <i class="fa fa-upload"></i>
+                上传
+              </button>
+              <button type="button" class="btn" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                <i class="fa fa-trash-o"></i>
+                移除
+              </button>
+            </div><!-- button group -->
+          </div><!-- item -->
+        </div>
+      </div><!-- img group -->
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">名称</span>
+        <input type="text" class="form-control" placeholder="名称" ng-model="level.name" value="{{level.name}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">描述</span>
+        <input type="text" class="form-control" placeholder="描述" ng-model="level.description" value="{{level.description}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">状态</span>
+        <select class="form-control" ng-model="level.state" value="{{level.state}}">
+          <option value="">请选择</option>
+          #foreach($state in $states)
+            <option value="${state.id}">${state.description}</option>
+          #end
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group" ng-show="level.price.length > 0">
+      <div class="item-group">
+        <div class="row" ng-repeat="item in level.price">
+          <div class="col-md-5">
+            <div class="input-group">
+              <span class="input-group-addon">价格</span>
+              <input type="number" class="form-control" placeholder="价格" ng-model="item.price" value="{{item.price}}">
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="input-group">
+              <span class="input-group-addon">有效天数</span>
+              <input type="number" class="form-control" placeholder="有效天数" ng-model="item.effective" value="{{item.effective}}">
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <a href="javascript:;" ng-click="delete($index)">[删除]</a>
+          </div>
+        </div><!-- row -->
+      </div><!-- item group -->
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="price()">
+          <i class="fa fa-plus"></i>
+          添加价格
+        </button>
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div><!-- container -->
+</div><!-- table info -->

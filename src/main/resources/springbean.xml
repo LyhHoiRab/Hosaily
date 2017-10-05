@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+       default-lazy-init="false">
+
+  <context:property-placeholder ignore-resource-not-found="true" ignore-unresolvable="true" location="classpath:/properties/beans.properties"/>
+
+  <!-- i18n -->
+  <!--<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">-->
+    <!--<property name="basename"                value="classpath:/i18n/messages"/>-->
+    <!--<property name="useCodeAsDefaultMessage" value="true"/>  -->
+    <!--<property name="defaultEncoding"         value="UTF-8"/>  -->
+  <!--</bean>-->
+
+  <!-- velocity -->
+  <!--<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">-->
+    <!--<property name="velocityProperties">-->
+      <!--<props>-->
+        <!--<prop key="input.encoding">${velocity.input.encoding}</prop>-->
+        <!--<prop key="output.encoding">${velocity.output.encoding}</prop>-->
+        <!--<prop key="directive.set.null.allowed">${velocity.directive.set.null.allowed}</prop>-->
+        <!--<prop key="file.resource.loader.cache">${velocity.file.resource.loader.cache}</prop>-->
+      <!--</props>-->
+    <!--</property>-->
+    <!--<property name="resourceLoaderPath" value="${velocity.resource.loader.path}"/>-->
+  <!--</bean>-->
+
+  <!-- reids -->
+  <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+    <property name="maxIdle"      value="300"/>
+    <property name="maxTotal"     value="60000"/>
+    <property name="testOnBorrow" value="true"/>
+    <property name="testOnReturn" value="true"/>
+  </bean>
+
+  <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool" destroy-method="destroy" scope="singleton">
+    <constructor-arg index="0" ref="jedisPoolConfig"/>
+    <constructor-arg index="1">
+      <list>
+        <bean class="redis.clients.jedis.JedisShardInfo">
+          <constructor-arg name="host" value="${redis.uri}"/>
+        </bean>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <!-- 文件上传 -->
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="defaultEncoding" value="utf-8"></property>
+    <!-- 1.3G -->
+    <property name="maxUploadSize" value="11166914969"></property>
+    <!-- 100M -->
+    <property name="maxInMemorySize" value="104857600"></property>
+  </bean>
+</beans>

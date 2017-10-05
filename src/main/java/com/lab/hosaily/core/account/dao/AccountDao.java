@@ -64,4 +64,31 @@ public class AccountDao{
             throw new DataAccessException(e.getMessage(), e);
         }
     }
+
+    /**
+     * 根据openId或者unionId查询
+     */
+    public Account getByOpenIdOrUnionId(String openId, String unionId){
+        try{
+            Assert.hasText(openId, "OpenId不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("openId", openId));
+            Account account = mapper.getByParams(criteria);
+
+            if(account != null){
+                return account;
+            }
+
+            Assert.hasText(unionId, "UnionId不能为空");
+
+            criteria.clear();
+            criteria.and(Restrictions.eq("unionId", unionId));
+
+            return mapper.getByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
 }

@@ -9,7 +9,7 @@
         <result column="secret"      property="secret"     javaType="java.lang.String"/>
         <result column="aes_key"     property="aesKey"     javaType="java.lang.String"/>
         <result column="token"       property="token"      javaType="java.lang.String"/>
-        <result column="type"        property="type"       typeHandler="typeHandler"/>
+        <result column="type"        property="type"       typeHandler="applicationTypeHandler"/>
         <result column="state"       property="state"      typeHandler="usingStateHandler"/>
         <result column="is_delete"   property="isDelete"   javaType="java.lang.Boolean"/>
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
@@ -135,8 +135,8 @@
               #{secret,     jdbcType=VARCHAR},
               #{aesKey,     jdbcType=VARCHAR},
               #{token,      jdbcType=VARCHAR},
-              #{type,       typeHandler=typeHander},
-              #{state,      typeHandler=usingSatetHandler},
+              #{type,       typeHandler=applicationTypeHandler},
+              #{state,      typeHandler=usingStateHandler},
               #{isDelete,   jdbcType=BOOLEAN},
               #{createTime, jdbcType=TIMESTAMP}
           )
@@ -161,7 +161,7 @@
                  token = #{token, jdbcType=VARCHAR},
              </if>
              <if test="type != null">
-                 type = #{type, typeHandler=typeHandler},
+                 type = #{type, typeHandler=applicationTypeHandler},
              </if>
              <if test="state != null">
                  state = #{state, typeHandler=usingStateHandler},
@@ -190,7 +190,7 @@
         SELECT *
           FROM application
         <if test="params != null">
-            <include refid="SELECT_COLUMN"/>
+            <include refid="WHERE_COLUMN"/>
         </if>
     </select>
 
@@ -198,7 +198,7 @@
         SELECT *
           FROM application
         <if test="params != null">
-            <include refid="SELECT_COLUMN"/>
+            <include refid="WHERE_COLUMN"/>
 
             <if test="params.sorts != null and params.sorts.size > 0">
                 ORDER BY
@@ -217,7 +217,7 @@
         SELECT COUNT(*)
           FROM application
         <if test="params != null">
-            <include refid="SELECT_COLUMN"/>
+            <include refid="WHERE_COLUMN"/>
         </if>
     </select>
 </mapper>

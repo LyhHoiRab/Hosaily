@@ -1,6 +1,7 @@
 package com.lab.hosaily.core.account.consts;
 
 import com.google.gson.annotations.SerializedName;
+import com.rab.babylon.core.consts.entity.Sex;
 
 public enum WeChatSex{
 
@@ -35,5 +36,18 @@ public enum WeChatSex{
         }
 
         throw new IllegalArgumentException("未知性别");
+    }
+
+    public static Sex changeToSex(WeChatSex sex){
+        switch(sex){
+            case UNKNOWN:
+                return Sex.UNKNOWN;
+            case MALE:
+                return Sex.MALE;
+            case FEMALE:
+                return Sex.FEMALE;
+            default:
+                return Sex.UNKNOWN;
+        }
     }
 }

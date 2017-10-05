@@ -1,0 +1,81 @@
+<ol class="breadcrumb">
+  <li>
+    <span>系统设置</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="application">应用管理</a>
+  </li><!-- item -->
+  <li>
+    <span>
+      #if($id)
+        修改应用
+      #else
+        添加应用
+      #end
+    </span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">名称</span>
+        <input type="text" class="form-control" placeholder="名称" ng-model="application.name" value="{{application.name}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">APPID</span>
+        <input type="text" class="form-control" placeholder="APPID" ng-model="application.appId" value="{{application.appId}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">SECRET</span>
+        <input type="text" class="form-control" placeholder="SECRET" ng-model="application.secret" value="{{application.secret}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">AES KEY</span>
+        <input type="text" class="form-control" placeholder="AES KEY" ng-model="application.aesKey" value="{{application.aesKey}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">TOKEN</span>
+        <input type="text" class="form-control" placeholder="TOKEN" ng-model="application.token" value="{{application.token}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">类型</span>
+        <select class="form-control" ng-model="application.type" value="{{application.type}}">
+          <option value="">请选择</option>
+          #foreach($type in $types)
+            <option value="$!{type.id}">$!{type.description}</option>
+          #end
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div><!-- container -->
+</div><!-- table info -->

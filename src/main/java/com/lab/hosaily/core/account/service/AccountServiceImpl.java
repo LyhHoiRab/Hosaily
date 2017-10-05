@@ -2,9 +2,14 @@ package com.lab.hosaily.core.account.service;
 
 import com.lab.hosaily.commons.response.wechat.AccessTokenResponse;
 import com.lab.hosaily.commons.response.wechat.SessionKeyResponse;
+import com.lab.hosaily.commons.response.wechat.UserInfoResponse;
 import com.lab.hosaily.commons.utils.WeChatUtils;
 import com.lab.hosaily.commons.utils.XcxUtils;
 import com.lab.hosaily.core.account.dao.AccountDao;
+import com.lab.hosaily.core.account.dao.UserDao;
+import com.lab.hosaily.core.account.dao.WeChatAccountDao;
+import com.lab.hosaily.core.account.dao.XcxAccountDao;
+import com.lab.hosaily.core.account.entity.WeChatAccount;
 import com.lab.hosaily.core.account.entity.XcxAccount;
 import com.lab.hosaily.core.application.dao.ApplicationDao;
 import com.lab.hosaily.core.application.entity.Application;
@@ -12,6 +17,7 @@ import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.commons.utils.MD5Utils;
 import com.rab.babylon.commons.utils.SHAUtils;
 import com.rab.babylon.core.account.entity.Account;
+import com.rab.babylon.core.account.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +38,16 @@ public class AccountServiceImpl implements AccountService{
     private AccountDao accountDao;
 
     @Autowired
+    private UserDao userDao;
+
+    @Autowired
     private ApplicationDao applicationDao;
+
+    @Autowired
+    private XcxAccountDao xcxAccountDao;
+
+    @Autowired
+    private WeChatAccountDao weChatAccountDao;
 
     /**
      * 小程序注册
@@ -69,19 +84,40 @@ public class AccountServiceImpl implements AccountService{
             //验签成功
             if(sign.equals(signature)){
                 //解密用户信息
-                XcxAccount xcxAccount = XcxUtils.decrypt(encryptedData, sessionKey, iv);
+                XcxAccount decrypt = XcxUtils.decrypt(encryptedData, sessionKey, iv);
                 //校验水印
-                if(xcxAccount.getWatermark().get("openid").equals(appId)){
-                    String weChat = StringUtils.isBlank(unionId) ? openId : unionId;
+                if(decrypt.getWatermark().get("openid").equals(appId)){
+                    XcxAccount xcxAccount = xcxAccountDao.getByOpenId(decrypt.getOpenId());
+                    if(xcxAccount == null){
+                        //未注册
+                        xcxAccount = decrypt;
+                        xcxAccountDao.saveOrUpdate(xcxAccount);
+                    }
+                    //更新unionId
+                    if(!StringUtils.isBlank(decrypt.getUnionId()) && !decrypt.getUnionId().equals(xcxAccount.getUnionId())){
+                        xcxAccount.setUnionId(decrypt.getUnionId());
+                        xcxAccountDao.saveOrUpdate(xcxAccount);
+                    }
 
-                    Account account = accountDao.getByWeChat(weChat);
-                    //未注册
+                    String weChat = StringUtils.isBlank(xcxAccount.getUnionId()) ? xcxAccount.getOpenId() : xcxAccount.getUnionId();
+                    Account account = accountDao.getByOpenIdOrUnionId(xcxAccount.getOpenId(), xcxAccount.getUnionId());
                     if(account == null){
+                        //未注册
                         account = new Account();
                         account.setWeChat(weChat);
-                        //设置默认密码
-                        account.setPassword(MD5Utils.encrypt("kuliao5201314"));
                         accountDao.saveOrUpdate(account);
+                    }else if(!account.getWeChat().equals(weChat)){
+                        account.setWeChat(weChat);
+                        accountDao.saveOrUpdate(account);
+                    }
+
+                    //用户信息
+                    User user = userDao.getByAccountId(account.getId());
+                    if(user == null){
+                        //未注册
+                        user = XcxUtils.changeToUser(xcxAccount);
+                        user.setAccountId(account.getId());
+                        userDao.saveOrUpdate(user);
                     }
                 }
             }
@@ -115,39 +151,32 @@ public class AccountServiceImpl implements AccountService{
                 //TODO 查询opneId失败
             }
 
+            WeChatAccount weChatAccount = weChatAccountDao.getByOpenId(accessToken.getOpenId());
+            if(weChatAccount == null){
+                UserInfoResponse userInfo = WeChatUtils.getUserInfo(accessToken.getAccessToken(), appId);
+                weChatAccount = userInfo.changeToWeChatAccount();
+                weChatAccountDao.saveOrUpdate(weChatAccount);
+            }
+
             String weChat = StringUtils.isBlank(accessToken.getUnionId()) ? accessToken.getOpenId() : accessToken.getUnionId();
-            Account account = accountDao.getByWeChat(weChat);
-            //未注册
+            Account account = accountDao.getByOpenIdOrUnionId(accessToken.getOpenId(), accessToken.getUnionId());
             if(account == null){
+                //未注册
                 account = new Account();
                 account.setWeChat(weChat);
-                //设置默认密码
-                account.setPassword(MD5Utils.encrypt("kuliao5201314"));
+                accountDao.saveOrUpdate(account);
+            }else if(!account.getWeChat().equals(weChat)){
+                account.setWeChat(weChat);
                 accountDao.saveOrUpdate(account);
             }
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
 
-    /**
-     * 公众账号注册
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public void registerByWeChat(String weChat){
-        try{
-            Assert.hasText(weChat, "用户微信帐号不能为空");
-
-            Account account = accountDao.getByWeChat(weChat);
-            //未注册
-            if(account == null){
-                account = new Account();
-                account.setWeChat(weChat);
-                //设置默认密码
-                account.setPassword(MD5Utils.encrypt("kuliao5201314"));
-                accountDao.saveOrUpdate(account);
+            //用户信息
+            User user = userDao.getByAccountId(account.getId());
+            if(user == null){
+                //未注册
+                user = WeChatUtils.changeToUser(weChatAccount);
+                user.setAccountId(account.getId());
+                userDao.saveOrUpdate(user);
             }
         }catch(Exception e){
             logger.error(e.getMessage(), e);

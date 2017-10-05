@@ -1,0 +1,84 @@
+<ol class="breadcrumb">
+  <li>
+    <span>系统设置</span>
+  </li><!-- item -->
+  <li>
+    <span>等级管理</span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="search-bar">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-md-3">
+        <div class="input-group">
+          <span class="input-group-addon">名称</span>
+          <input type="text" class="form-control" placeholder="名称">
+        </div>
+      </div><!-- item -->
+
+      <div class="col-xs-12 col-md-3">
+        <div class="input-group">
+          <span class="input-group-addon">价格</span>
+          <input type="number" class="form-control double" placeholder="不小于">
+          <input type="number" class="form-control double" placeholder="不大于">
+        </div>
+      </div><!-- item -->
+
+      <div class="col-xs-12 col-md-3">
+        <div class="input-group">
+          <span class="input-group-addon">状态</span>
+          <select class="form-control">
+            <option value="">请选择</option>
+            #foreach($state in $states)
+              <option value="$!{state.id}">$!{state.description}</option>
+            #end
+          </select>
+        </div>
+      </div><!-- item -->
+
+      <div class="col-xs-12 col-md-3">
+        <div class="input-group">
+          <span class="input-group-addon">创建时间</span>
+          <input type="date" class="form-control" placeholder="创建时间">
+        </div>
+      </div><!-- item -->
+
+      <div class="col-xs-12 col-md-3">
+        <div class="input-group">
+          <span class="input-group-addon">创建时间</span>
+          <input type="date" class="form-control double" placeholder="不早于">
+          <input type="date" class="form-control double" placeholder="不晚于">
+        </div>
+      </div><!-- item -->
+    </div>
+  </div><!-- container -->
+
+  <div class="container-fluid">
+    <button type="button" class="btn">
+      <i class="fa fa-search"></i>
+      搜索
+    </button><!-- item -->
+
+    <button type="button" class="btn">
+      <i class="fa fa-retweet"></i>
+      重置
+    </button><!-- item -->
+
+    <button type="button" class="btn">
+      <i class="fa fa-refresh"></i>
+      刷新
+    </button><!-- item -->
+
+    <button type="button" class="btn" ui-sref="levelAdd">
+      <i class="fa fa-plus"></i>
+      添加
+    </button><!-- item -->
+  </div><!-- container -->
+</div><!-- search bar -->
+
+<div class="table-bar">
+  <div clas="container">
+    <div class="gridStyle" ng-grid="gridOptions"></div><!-- table -->
+  </div><!-- container -->
+</div><!-- table bar -->

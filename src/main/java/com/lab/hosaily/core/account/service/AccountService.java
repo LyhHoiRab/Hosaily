@@ -11,9 +11,4 @@ public interface AccountService{
      * 网站应用注册
      */
     void registerByWeb(String token, String code);
-
-    /**
-     * 公众账号注册
-     */
-    void registerByWeChat(String weChat);
 }

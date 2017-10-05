@@ -2,9 +2,12 @@ package com.lab.hosaily.commons.utils;
 
 import com.lab.hosaily.commons.response.wechat.AccessTokenResponse;
 import com.lab.hosaily.commons.response.wechat.UserInfoResponse;
+import com.lab.hosaily.core.account.consts.WeChatSex;
+import com.lab.hosaily.core.account.entity.WeChatAccount;
 import com.rab.babylon.commons.security.exception.HttpClientException;
 import com.rab.babylon.commons.utils.HttpClientUtils;
 import com.rab.babylon.commons.utils.ObjectUtils;
+import com.rab.babylon.core.account.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -150,5 +153,20 @@ public class WeChatUtils{
         }finally{
             client.close();
         }
+    }
+
+    /**
+     * 转换成User对象
+     */
+    public static User changeToUser(WeChatAccount account){
+        if(account == null){
+            throw new IllegalArgumentException("微信账户信息不能为空");
+        }
+
+        User user = new User();
+        user.setNickname(account.getNickname());
+        user.setHeadImgUrl(account.getHeadImgUrl());
+        user.setSex(WeChatSex.changeToSex(account.getSex()));
+        return user;
     }
 }

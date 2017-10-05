@@ -63,23 +63,7 @@ public class ApplicationDao{
 
             Criteria criteria = new Criteria();
             criteria.and(Restrictions.eq("id", id));
-
-            return mapper.getByParams(criteria);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据AppId查询
-     */
-    public Application getByAppId(String appId){
-        try{
-            Assert.hasText(appId, "应用AppId不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("appId", appId));
+            criteria.and(Restrictions.eq("isDelete", false));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -97,6 +81,7 @@ public class ApplicationDao{
 
             Criteria criteria = new Criteria();
             criteria.and(Restrictions.eq("token", token));
+            criteria.and(Restrictions.eq("isDelete", false));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -113,6 +98,7 @@ public class ApplicationDao{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("isDelete", false));
             criteria.setLimit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             Long total = mapper.countByParams(criteria);

@@ -4,7 +4,8 @@ import com.lab.hosaily.commons.consts.AuthorizationConsts;
 import com.lab.hosaily.core.application.dao.ApplicationDao;
 import com.lab.hosaily.core.application.entity.Application;
 import com.rab.babylon.commons.security.exception.ServiceException;
-import com.rab.babylon.commons.utils.AESUtils;
+import com.rab.babylon.commons.security.response.Page;
+import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.utils.MD5Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -26,6 +27,42 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     @Autowired
     private ApplicationDao applicationDao;
+
+    /**
+     * 保存应用
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void save(Application application){
+        try{
+            Assert.notNull(application, "应用信息不能为空");
+            Assert.hasText(application.getAppId(), "应用AppId不能为空");
+            Assert.hasText(application.getToken(), "应用Token不能为空");
+            Assert.notNull(application.getType(), "应用类型不能为空");
+
+            applicationDao.saveOrUpdate(application);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 更新应用
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void update(Application application){
+        try{
+            Assert.notNull(application, "应用信息不能为空");
+            Assert.hasText(application.getId(), "应用信息ID不能为空");
+
+            applicationDao.saveOrUpdate(application);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 
     /**
      * 查询生成二维码参数
@@ -53,6 +90,36 @@ public class ApplicationServiceImpl implements ApplicationService{
             params.put(AuthorizationConsts.NODE_STATE, state);
 
             return params;
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 分页查询
+     */
+    @Override
+    public Page<Application> page(PageRequest pageRequest){
+        try{
+            Assert.notNull(pageRequest, "分页信息不能为空");
+
+            return applicationDao.page(pageRequest);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据ID查询
+     */
+    @Override
+    public Application getById(String id){
+        try{
+            Assert.hasText(id, "应用ID不能为空");
+
+            return applicationDao.getById(id);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

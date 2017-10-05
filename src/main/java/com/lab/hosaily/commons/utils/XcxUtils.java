@@ -1,11 +1,12 @@
 package com.lab.hosaily.commons.utils;
 
-import com.google.gson.reflect.TypeToken;
 import com.lab.hosaily.commons.response.wechat.SessionKeyResponse;
+import com.lab.hosaily.core.account.consts.Gender;
 import com.lab.hosaily.core.account.entity.XcxAccount;
 import com.rab.babylon.commons.security.exception.HttpClientException;
 import com.rab.babylon.commons.utils.HttpClientUtils;
 import com.rab.babylon.commons.utils.ObjectUtils;
+import com.rab.babylon.core.account.entity.User;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
@@ -18,7 +19,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.security.AlgorithmParameters;
 import java.security.Security;
@@ -128,5 +128,20 @@ public class XcxUtils{
         }finally{
             client.close();
         }
+    }
+
+    /**
+     * 转换成User对象
+     */
+    public static User changeToUser(XcxAccount account){
+        if(account == null){
+            throw new IllegalArgumentException("小程序账户不能为空");
+        }
+
+        User user = new User();
+        user.setNickname(account.getNickname());
+        user.setHeadImgUrl(account.getAvatarUrl());
+        user.setSex(Gender.changeToSex(account.getGender()));
+        return user;
     }
 }

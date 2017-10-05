@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+  <mvc:default-servlet-handler/>
+
+  <!-- 注解扫描 -->            
+  <context:component-scan base-package="com.lab" use-default-filters="false">
+    <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+  </context:component-scan>
+
+  <!-- media type -->
+  <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
+    <mvc:message-converters register-defaults="true">
+      <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+        <constructor-arg value="UTF-8"/>
+      </bean>
+
+      <bean class="com.rab.babylon.commons.security.converter.RsonHttpMessageConverter">
+        <property name="supportedMediaTypes">
+          <list>
+            <value>application/json;charset=UTF-8</value>
+            <value>application/xml;charset=UTF-8</value>
+          </list>
+        </property>
+      </bean>
+    </mvc:message-converters>
+  </mvc:annotation-driven>
+
+  <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+    <property name="mediaTypes">
+      <value>
+        json=application/json
+        xml=application/xml
+      </value>
+    </property>
+  </bean>
+
+  <!-- 静态资源 -->
+  <mvc:resources mapping="/commons/css/**/*.css"      location="/commons/css/"/>
+  <mvc:resources mapping="/commons/js/**/*.js"        location="/commons/js/"/>
+  <mvc:resources mapping="/commons/img/**/*.png"      location="/commons/img/"/>
+  <mvc:resources mapping="/commons/img/**/*.jpg"      location="/commons/img/"/>
+  <mvc:resources mapping="/commons/img/**/*.gif"      location="/commons/img/"/>
+  <mvc:resources mapping="/commons/img/**/*.ico"      location="/commons/img/"/>
+  <mvc:resources mapping="/commons/fonts/**/*.otf"    location="/commons/fonts/"/>
+  <mvc:resources mapping="/commons/fonts/**/*.eot"    location="/commons/fonts/"/>
+  <mvc:resources mapping="/commons/fonts/**/*.svg"    location="/commons/fonts/"/>
+  <mvc:resources mapping="/commons/fonts/**/*.ttf"    location="/commons/fonts/"/>
+  <mvc:resources mapping="/commons/fonts/**/*.woff"   location="/commons/fonts/"/>
+  <mvc:resources mapping="/commons/fonts/**/*.woff2"  location="/commons/fonts/"/>
+
+  <!-- 视图 -->
+  <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+    <property name="resourceLoaderPath">
+      <value>/WEB-INF/page</value>
+    </property>
+    <property name="velocityProperties">
+      <props>
+        <prop key="input.encoding">UTF-8</prop>
+        <prop key="output.encoding">UTF-8</prop>
+        <prop key="contentType">text/html;charset=UTF-8</prop>
+      </props>
+    </property>
+  </bean>
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+    <property name="cache"                    value="false"/>
+    <property name="prefix"                   value="/"/>
+    <property name="suffix"                   value=".html"/>
+    <property name="contentType"              value="text/html;charset=UTF-8"/>
+    <property name="exposeSessionAttributes"  value="true"/>
+    <property name="exposeRequestAttributes"  value="true"/>
+    <property name="requestContextAttribute"  value="request"/>
+    <property name="toolboxConfigLocation"    value="/WEB-INF/classes/velocity-tool.xml"/>
+  </bean>
+
+  <!-- i18n -->
+  <!--<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">-->
+    <!--<property name="defaultLocale" value="zh_CN"/>-->
+  <!--</bean>-->
+
+  <!-- 拦截器 -->
+  <!--<mvc:interceptors>-->
+    <!--&lt;!&ndash; 环境语言切换 &ndash;&gt;-->
+    <!--<mvc:interceptor>-->
+      <!--<mvc:mapping path="/**"/>-->
+      <!--<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>-->
+    <!--</mvc:interceptor>-->
+
+    <!--&lt;!&ndash; 设备检测 &ndash;&gt;-->
+    <!--<mvc:interceptor>-->
+      <!--<mvc:mapping path="/page/**"/>-->
+      <!--<bean class="com.rab.orpheus.commons.security.interceptor.DeviceInterceptor">-->
+        <!--<property name="includes">-->
+          <!--<list>-->
+            <!--<value>/page/index</value>-->
+            <!--<value>/page/aboutUs</value>-->
+            <!--<value>${url.browserNotSupport}</value>-->
+          <!--</list>-->
+        <!--</property>-->
+      <!--</bean>-->
+    <!--</mvc:interceptor>-->
+
+    <!--&lt;!&ndash; 浏览器版本支持检测 &ndash;&gt;-->
+    <!--<mvc:interceptor>-->
+      <!--<mvc:mapping path="/page/**"/>-->
+      <!--<bean class="com.rab.orpheus.commons.security.interceptor.BrowserSupportInterceptor">-->
+        <!--<property name="excludes">-->
+          <!--<list>-->
+            <!--<value>${url.browserNotSupport}</value>-->
+          <!--</list>-->
+        <!--</property>-->
+      <!--</bean>-->
+    <!--</mvc:interceptor>-->
+  <!--</mvc:interceptors>-->
+</beans>
