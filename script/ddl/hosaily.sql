@@ -53,3 +53,18 @@ CREATE TABLE `media` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `md5_UNIQUE` (`md5`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='媒体资源表';
+
+CREATE TABLE `advisor` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `nickname` varchar(45) DEFAULT NULL,
+  `sex` tinyint(1) DEFAULT NULL,
+  `wechat` varchar(60) DEFAULT NULL,
+  `age` int(1) DEFAULT NULL,
+  `introduction` varchar(255) DEFAULT NULL,
+  `head_img_url` varchar(255) DEFAULT NULL,
+  `state` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='导师表';
