@@ -1,6 +1,4 @@
-app.controller('mediaEditController', function($scope, $state, $stateParams, $sce, FileUploader){
-	var uploader = $scope.uploader = new FileUploader({});
-
+app.controller('mediaEditController', function($scope, $state, $stateParams, $sce){
 	$scope.media = {
 		id       : '',
 		fileName : '',
@@ -13,7 +11,6 @@ app.controller('mediaEditController', function($scope, $state, $stateParams, $sc
 		state    : ''
 	};
 	$scope.id = $stateParams.id;
-	$scope.isShow = false;
 	$scope.type = {
     	0: '未知',
     	1: '音频',
@@ -68,7 +65,7 @@ app.controller('mediaEditController', function($scope, $state, $stateParams, $sc
 	$scope.reset = function(){
 		$scope.media.remark = '';
 		$scope.media.state = '';
-	}
+	};
 
 	$scope.getById();
 });

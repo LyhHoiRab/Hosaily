@@ -10,7 +10,7 @@ app.controller('mediaAddController', function($scope, $state, FileUploader){
     //     name: 'imageFilter',
     //     fn: function(item){
     //         var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-    //         return '|rm|rmvb|wmv|avi|mp4|mkv|mov|wav|mp3|wma|ogg|acc|wave|ape|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+    //         return 'rm|rmvb|wmv|avi|mp4|mkv|mov|wav|mp3|wma|ogg|acc|wave|ape|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
     //     }
     // });
 
@@ -27,7 +27,5 @@ app.controller('mediaAddController', function($scope, $state, FileUploader){
 
     uploader.onErrorItem = function(item, response, status, headers){
         
-    }
-
-    $scope.isShow = false;
+    };
 });

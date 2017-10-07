@@ -19,6 +19,8 @@ public class UpyunUtils{
     public final static String COURSE_COVER_DIR = "/course/cover/";
     //用户头像目录
     public final static String USER_HEAD_DIR = "/user/head/";
+    //导师头像目录
+    public final static String ADVISOR_HEAD_DIR = "/advisor/head/";
     //会员等级图片目录
     public final static String LEVEL_COVER_DIR = "/level/cover/";
     //访问外链

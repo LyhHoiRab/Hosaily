@@ -138,9 +138,52 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
-                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/media/edit.js'
+                ]);
+            }]
+        }
+    }).state('advisor', {
+        url: '/advisor',
+        templateUrl: '/page/backstage/advisor',
+        controller: 'advisorController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/advisor/index.js'
+                ]);
+            }]
+        }
+    }).state('advisorAdd', {
+        url: '/advisor/add',
+        templateUrl: '/page/backstage/advisor/add',
+        controller: 'advisorAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/advisor/add.js'
+                ]);
+            }]
+        }
+    }).state('advisorEdit', {
+        url: '/advisor/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/advisor/edit/' + $stateParams.id;
+        },
+        controller: 'advisorEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/advisor/edit.js'
                 ]);
             }]
         }

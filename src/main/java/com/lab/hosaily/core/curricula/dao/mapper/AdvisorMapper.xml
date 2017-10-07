@@ -124,18 +124,20 @@
               wechat,
               age,
               head_img_url,
+              introduction,
               state,
               create_time
           ) VALUE (
-              #{id,         jdbcType=VARCHAR},
-              #{name,       jdbcType=VARCHAR},
-              #{nickname,   jdbcType=VARCHAR},
-              #{sex,        typeHandler=sexHandler},
-              #{wechat,     jdbcType=VARCHAR},
-              #{age,        jdbcType=INTEGER},
-              #{headImgUrl, jdbcType=VARCHAR},
-              #{state,      typeHandler=usingStateHandler},
-              #{createTime, jdbcType=TIMESTAMP}
+              #{id,           jdbcType=VARCHAR},
+              #{name,         jdbcType=VARCHAR},
+              #{nickname,     jdbcType=VARCHAR},
+              #{sex,          typeHandler=sexHandler},
+              #{wechat,       jdbcType=VARCHAR},
+              #{age,          jdbcType=INTEGER},
+              #{headImgUrl,   jdbcType=VARCHAR},
+              #{introduction, jdbcType=VARCHAR},
+              #{state,        typeHandler=usingStateHandler},
+              #{createTime,   jdbcType=TIMESTAMP}
           )
     </insert>
 
