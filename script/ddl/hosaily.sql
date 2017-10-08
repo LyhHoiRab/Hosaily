@@ -68,3 +68,66 @@ CREATE TABLE `advisor` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='导师表';
+
+CREATE TABLE `tag` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(60) NOT NULL,
+  `description` varchar(60) DEFAULT NULL,
+  `state` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='标签表';
+
+CREATE TABLE `comment` (
+  `id` varchar(32) NOT NULL,
+  `parent_id` varchar(32) DEFAULT NULL,
+  `course_id` varchar(32) NOT NULL,
+  `sender` varchar(32) NOT NULL,
+  `receiver` varchar(32) DEFAULT NULL,
+  `content` varchar(255) NOT NULL,
+  `state` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评论表';
+
+CREATE TABLE `course` (
+  `id` varchar(32) NOT NULL,
+  `type` tinyint(1) NOT NULL,
+  `title` varchar(60) DEFAULT NULL,
+  `introduction` varchar(255) DEFAULT NULL,
+  `cover` varchar(255) DEFAULT NULL,
+  `price` double NOT NULL DEFAULT '0',
+  `likes` int(1) NOT NULL DEFAULT '0',
+  `view` int(1) NOT NULL DEFAULT '0',
+  `weight` int(1) NOT NULL DEFAULT '0',
+  `advisor_id` varchar(32) DEFAULT NULL,
+  `parent_id` varchar(32) DEFAULT NULL,
+  `state` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程表';
+
+CREATE TABLE `course_tag` (
+  `crouse_id` varchar(32) NOT NULL,
+  `tag_id` varchar(32) NOT NULL,
+  PRIMARY KEY (`crouse_id`,`tag_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程 - 标签关联表';
+
+CREATE TABLE `course_media` (
+  `course_id` varchar(32) NOT NULL,
+  `media_id` varchar(32) NOT NULL,
+  PRIMARY KEY (`course_id`,`media_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='课程 - 媒体关联表';
+
+CREATE TABLE `course_level` (
+  `course_id` varchar(32) NOT NULL,
+  `level_id` varchar(32) NOT NULL,
+  PRIMARY KEY (`course_id`,`level_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程 -  等级关联表';
+
+
+
+

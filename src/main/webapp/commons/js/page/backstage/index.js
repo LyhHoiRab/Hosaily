@@ -187,5 +187,75 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 ]);
             }]
         }
+    }).state('tag', {
+        url: '/tag',
+        templateUrl: '/page/backstage/tag',
+        controller: 'tagController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/tag/index.js'
+                ]);
+            }]
+        }
+    }).state('tagAdd', {
+        url: '/tag/add',
+        templateUrl: '/page/backstage/tag/add',
+        controller: 'tagAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/tag/add.js'
+                ]);
+            }]
+        }
+    }).state('tagEdit', {
+        url: '/tag/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/tag/edit/' + $stateParams.id;
+        },
+        controller: 'tagEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/tag/edit.js'
+                ]);
+            }]
+        }
+    }).state('course', {
+        url: '/course',
+        templateUrl: '/page/backstage/course',
+        controller: 'courseController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/course/index.js'
+                ]);
+            }]
+        }
+    }).state('courseAdd', {
+        url: '/course/add',
+        templateUrl: '/page/backstage/course/add',
+        controller: 'courseAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/course/add.js'
+                ]);
+            }]
+        }
     });
 }]);

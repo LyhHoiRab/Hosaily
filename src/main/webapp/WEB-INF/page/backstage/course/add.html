@@ -1,0 +1,156 @@
+<ol class="breadcrumb">
+  <li>
+    <span>系统设置</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="course">课程管理</a>
+  </li><!-- item -->
+  <li>
+    <span>
+      添加课程
+    </span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+    <div class="row-group">
+      <div class="img-group">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{{course.cover}}" ng-model="course.cover">
+          </div><!-- item -->
+
+          <div class="col-md-6">
+            <input type="file" nv-file-select uploader="uploader">
+            <div class="button-group">
+              <button type="button" class="btn" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                <i class="fa fa-upload"></i>
+                上传
+              </button>
+              <button type="button" class="btn" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                <i class="fa fa-trash-o"></i>
+                移除
+              </button>
+            </div><!-- button group -->
+          </div><!-- item -->
+        </div>
+      </div><!-- img group -->
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">标题</span>
+        <input type="text" class="form-control" placeholder="标题" ng-model="course.title" value="{{course.title}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">简介</span>
+        <input type="text" class="form-control" placeholder="简介" ng-model="course.introduction" value="{{course.introduction}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">价格</span>
+        <input type="number" class="form-control" placeholder="价格" ng-model="course.price" value="{{course.price}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">点赞量</span>
+        <input type="number" class="form-control" placeholder="like" ng-model="course.like" value="{{course.like}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">浏览量</span>
+        <input type="number" class="form-control" placeholder="浏览量" ng-model="course.view" value="{{course.view}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">权重</span>
+        <input type="number" class="form-control" placeholder="权重" ng-model="course.weight" value="{{course.weight}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">导师</span>
+        <select class="form-control">
+          <option value="">请选择</option>
+          #foreach($advisor in $advisors)
+            <option value="${advisor.id}">${advisor.nickname}</option>
+          #end
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">标签</span>
+        <select class="form-control">
+          <option value="">请选择</option>
+          #foreach($tag in $tags)
+            <option value="${tag.id}">${tag.name}</option>
+          #end
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">等级限制</span>
+        <select class="form-control">
+          <option value="">请选择</option>
+          #foreach($level in $levels)
+            <option value="${level.id}">${level.name}</option>
+          #end
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">媒体</span>
+        <select class="form-control">
+          <option value="">请选择</option>
+          #foreach($media in $medias)
+            <option value="${media.id}">${media.remark}</option>
+          #end
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">状态</span>
+        <select class="form-control" ng-model="course.state" value="{{course.state}}">
+          <option value="">请选择</option>
+          #foreach($state in $states)
+            <option value="${state.id}">${state.description}</option>
+          #end
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div><!-- container -->
+</div><!-- table info -->

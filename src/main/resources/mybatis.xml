@@ -20,6 +20,7 @@
     <typeAlias type="com.rab.babylon.core.consts.handler.SexHandler"                        alias="sexHandler"/>
     <typeAlias type="com.rab.babylon.core.consts.handler.UsingStateHandler"                 alias="usingStateHandler"/>
     <typeAlias type="com.lab.hosaily.core.application.utils.handler.ApplicationTypeHandler" alias="applicationTypeHandler"/>
-    <typeAlias type="com.lab.hosaily.core.curricula.utils.handler.MediaTypeHandler"         alias="mediaTypeHandler"/>
+    <typeAlias type="com.lab.hosaily.core.course.utils.handler.MediaTypeHandler"            alias="mediaTypeHandler"/>
+    <typeAlias type="com.lab.hosaily.core.course.utils.handler.CourseTypeHandler"           alias="courseTypeHandler"/>
   </typeAliases>
 </configuration>

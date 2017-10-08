@@ -1,6 +1,6 @@
 package com.lab.hosaily.commons.utils;
 
-import com.lab.hosaily.core.curricula.consts.MediaType;
+import com.lab.hosaily.core.course.consts.MediaType;
 
 public class MediaUtils{
 

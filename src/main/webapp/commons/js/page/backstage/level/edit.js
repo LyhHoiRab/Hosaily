@@ -64,6 +64,7 @@ app.controller('levelEditController', function($scope, $state, $stateParams, Fil
     $scope.reset = function(){
         $scope.level.name         = '';
         $scope.level.description  = '';
+        $scope.level.state        = '';
         $scope.level.price        = [];
     };
 

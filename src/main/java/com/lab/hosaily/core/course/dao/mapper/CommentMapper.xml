@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lab.hosaily.core.course.dao.mapper.CommentMapper">
+    <resultMap id="comment" type="com.lab.hosaily.core.course.entity.Comment">
+        <id     column="id"          property="id"         javaType="java.lang.String"/>
+        <result column="parent_id"   property="parentId"   javaType="java.lang.String"/>
+        <result column="course_id"   property="courseId"   javaType="java.lang.String"/>
+        <result column="content"     property="content"    javaType="java.lang.String"/>
+        <result column="state"       property="state"      typeHandler="usingStateHandler"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+        <association property="sender"   resultMap="user" columnPrefix="s_"/>
+        <association property="receiver" resultMap="user" columnPrefix="r_"/>
+    </resultMap>
+
+    <resultMap id="user" type="com.rab.babylon.core.account.entity.User">
+        <id     column="id"           property="id"         javaType="java.lang.String"/>
+        <result column="account_id"   property="accountId"  javaType="java.lang.String"/>
+        <result column="nickname"     property="nickname"   javaType="java.lang.String"/>
+        <result column="head_img_url" property="headImgUrl" javaType="java.lang.String"/>
+    </resultMap>
+
+    <sql id="WHERE_COLUMN">
+        <where>
+            <if test="params.andCreiterions != null and params.andCreiterions.size > 0">
+                <foreach collection="params.andCreiterions" item="criterion" separator="AND">
+                    <trim prefix="(" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.criterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="listItem" open="(" close=")" separator=",">
+                                                    #{listItem}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+
+            <if test="params.orCreiterions != null and params.orCreiterions.size > 0">
+                <foreach collection="params.orCreiterions" item="criterion" separator="AND">
+                    <trim prefix="(" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.criterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="listItem" open="(" close=")" separator=",">
+                                                    #{listItem}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <insert id="save">
+        INSERT
+          INTO comment (
+              id,
+              parent_id,
+              course_id,
+              sender,
+              receiver,
+              content,
+              state,
+              create_time
+          ) VALUE (
+              #{id,          jdbcType=VARCHAR},
+              #{parentId,    jdbcType=VARCHAR},
+              #{courseId,    jdbcType=VARCHAR},
+              #{sender.id,   jdbcType=VARCHAR},
+              #{receiver.id, jdbcType=VARCHAR},
+              #{content,     jdbcType=VARCHAR},
+              #{state,       typeHandler=usingStateHandler},
+              #{createTime,  jdbcType=TIMESTAMP}
+          )
+    </insert>
+
+    <update id="update">
+        UPDATE comment
+         <set>
+             <if test="parentId != null and parentId != ''">
+                 parent_id = #{parentId, jdbcType=VARCHAR},
+             </if>
+             <if test="courseId != null and courseId != ''">
+                 course_id = #{courseId, jdbcType=VARCHAR},
+             </if>
+             <if test="sender != null and sender.id != null and sender.id != ''">
+                 sender = #{sender.id, jdbcType=VARCHAR},
+             </if>
+             <if test="receiver != null and receiver.id != null and receiver.id != ''">
+                 receiver = #{receiver.id, jdbcType=VARCHAR},
+             </if>
+             <if test="content != null and content != ''">
+                 content = #{content, jdbcType=VARCHAR},
+             </if>
+             <if test="state != null">
+                 state = #{state, typeHandler=usingStateHandler},
+             </if>
+             <if test="updateTime != null">
+                 update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+         </set>
+          WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+          FROM comment
+         WHERE id = #{id}
+    </delete>
+
+    <select id="getByParams" resultMap="comment">
+        SELECT c.*,
+               s.id           AS s_id,
+               s.nickname     AS s_nickname,
+               s.account_id   AS s_account_id,
+               s.head_img_url AS s_head_img_url,
+               r.id           AS r_id,
+               r.nickname     AS r_nickname,
+               r.account_id   AS r_account_id,
+               r.head_img_url AS r_head_img_url
+          FROM comment c
+     LEFT JOIN user s
+            ON s.id = c.sender
+     LEFT JOIN user r
+            ON r.id = c.receiver
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+    <select id="findByParams" resultMap="comment">
+        SELECT c.*,
+               s.id           AS s_id,
+               s.nickname     AS s_nickname,
+               s.account_id   AS s_account_id,
+               s.head_img_url AS s_head_img_url,
+               r.id           AS r_id,
+               r.nickname     AS r_nickname,
+               r.account_id   AS r_account_id,
+               r.head_img_url AS r_head_img_url
+          FROM comment c
+     LEFT JOIN user s
+            ON s.id = c.sender
+     LEFT JOIN user r
+            ON r.id = c.receiver
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+        </if>
+    </select>
+
+    <select id="countByParams" resultType="java.lang.Long">
+        SELECT COUNT(*)
+          FROM comment
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+</mapper>

@@ -22,13 +22,13 @@ app.controller('levelAddController', function($scope, $state, FileUploader){
         }
     };
 
-	$scope.level = {
-		name        : '',
-		description : '',
+    $scope.level = {
+        name        : '',
+        description : '',
         state       : '',
-		icon        : basePath + '/commons/img/level_default.jpg',
+        icon        : basePath + '/commons/img/level_default.jpg',
         price       : []
-	};
+    };
 
     $scope.price = function(){
         var item = {
@@ -46,6 +46,7 @@ app.controller('levelAddController', function($scope, $state, FileUploader){
 	$scope.reset = function(){
         $scope.level.name         = '';
         $scope.level.description  = '';
+        $scope.level.state        = '';
         $scope.level.price        = [];
     };
 
