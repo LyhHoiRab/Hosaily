@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lab.hosaily.core.course.dao.mapper.LevelMapper">
-    <resultMap id="level" type="com.lab.hosaily.core.course.entity.Level">
-        <id     column="id"          property="id"          javaType="java.lang.String"/>
-        <result column="name"        property="name"        javaType="java.lang.String"/>
-        <result column="icon"        property="icon"        javaType="java.lang.String"/>
-        <result column="description" property="description" javaType="java.lang.String"/>
-        <result column="state"       property="state"       typeHandler="usingStateHandler"/>
-        <result column="is_delete"   property="isDelete"    javaType="java.lang.Boolean"/>
-        <result column="create_time" property="createTime"  javaType="java.util.Date"/>
-        <result column="update_time" property="updateTime"  javaType="java.util.Date"/>
-        <result column="delete_time" property="deleteTime"  javaType="java.util.Date"/>
-        <collection property="price" resultMap="price" columnPrefix="p_"/>
-    </resultMap>
-
-    <resultMap id="price" type="com.lab.hosaily.core.course.entity.LevelPrice">
+<mapper namespace="com.lab.hosaily.core.course.dao.mapper.AccountLevelMapper">
+    <resultMap id="accountLevel" type="com.lab.hosaily.core.course.entity.AccountLevel">
         <id     column="id"          property="id"         javaType="java.lang.String"/>
         <result column="level_id"    property="levelId"    javaType="java.lang.String"/>
-        <result column="price"       property="price"      javaType="java.lang.Double"/>
+        <result column="account_id"  property="accountId"  javaType="java.lang.String"/>
         <result column="effective"   property="effective"  javaType="java.lang.Integer"/>
-        <result column="state"       property="state"      typeHandler="usingStateHandler"/>
+        <result column="is_valid"    property="isValid"    javaType="java.lang.Boolean"/>
+        <result column="start_time"  property="startTime"  javaType="java.util.Date"/>
+        <result column="end_time"    property="endTime"    javaType="java.util.Date"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -123,70 +114,60 @@
 
     <insert id="save">
         INSERT
-          INTO level (
+          INTO account_level (
               id,
-              name,
-              icon,
-              description,
-              state,
-              is_delete,
+              level_id,
+              account_id,
+              effective,
+              is_valid,
+              start_time,
+              end_time,
               create_time
           ) VALUE (
-              #{id,          jdbcType=VARCHAR},
-              #{name,        jdbcType=VARCHAR},
-              #{icon,        jdbcType=VARCHAR},
-              #{description, jdbcType=VARCHAR},
-              #{state,       typeHandler=usingStateHandler},
-              #{isDelete,    jdbcType=BOOLEAN},
-              #{createTime,  jdbcType=TIMESTAMP}
+              #{id,         jdbcType=VARCHAR},
+              #{levelId,    jdbcType=VARCHAR},
+              #{accountId,  jdbcType=VARCHAR},
+              #{effective,  jdbcType=INTEGER},
+              #{isValid,    jdbcType=BOOLEAN},
+              #{startTime,  jdbcType=TIMESTAMP},
+              #{endTime,    jdbcType=TIMESTAMP},
+              #{createTime, jdbcType=TIMESTAMP}
           )
     </insert>
 
     <update id="update">
-        UPDATE level
+        UPDATE account_level
          <set>
-             <if test="name != null and name != ''">
-                 name = #{name, jdbcType=VARCHAR},
+             <if test="effective != null and effective >= 0">
+                 effective = #{effective, jdbcType=INTEGER},
              </if>
-             <if test="icon != null and icon != ''">
-                 icon = #{icon, jdbcType=VARCHAR},
+             <if test="isValid != null">
+                 is_valid = #{isValid, jdbcType=BOOLEAN},
              </if>
-             <if test="description != null and description != ''">
-                 description = #{description, jdbcType=VARCHAR},
+             <if test="startTime != null">
+                 start_time = #{startTime, jdbcType=TIMESTAMP},
              </if>
-             <if test="state != null">
-                 state = #{state, typeHandler=usingStateHandler},
-             </if>
-             <if test="isDelete != null">
-                 is_delete = #{isDelete, jdbcType=BOOLEAN},
+             <if test="endTime != null">
+                 end_time = #{endTime, jdbcType=TIMESTAMP},
              </if>
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
-             </if>
-             <if test="deleteTime != null">
-                 delete_time = #{deleteTime, jdbcType=TIMESTAMP},
              </if>
          </set>
           WHERE id = #{id}
     </update>
 
-    <select id="getByParams" resultMap="level">
-        SELECT l.*,
-               p.id        AS p_id,
-               p.price     AS p_price,
-               p.effective AS p_effective,
-               p.level_id  AS p_level_id
-          FROM level l
-     LEFT JOIN level_price p
-            ON p.level_id = l.id
+    <select id="getByParams" resultMap="accountLevel">
+        SELECT *
+          FROM account_level
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
     </select>
 
-    <select id="findByParams" resultMap="level">
+    <select id="findByParams" resultMap="accountLevel">
         SELECT *
-          FROM level
+          FROM account_level
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -205,30 +186,9 @@
 
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
-          FROM level
+          FROM advisor
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
-        </if>
-    </select>
-
-    <select id="findLazyLoadingByParams" resultMap="level">
-        SELECT l.*,
-               p.id        AS p_id,
-               p.price     AS p_price,
-               p.effective AS p_effective,
-               p.level_id  AS p_level_id
-          FROM level l
-     LEFT JOIN level_price p
-            ON p.level_id = l.id
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
-
-            <if test="params.sorts != null and params.sorts.size > 0">
-                ORDER BY
-                <foreach collection="params.sorts" item="sort" separator=",">
-                    ${sort.property} ${sort.operator}
-                </foreach>
-            </if>
         </if>
     </select>
 </mapper>

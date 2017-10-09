@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.router', 'oc.lazyLoad', 'ngGrid', 'ui.bootstrap']);
+var app = angular.module('app', ['ui.router', 'oc.lazyLoad', 'ngGrid']);
 
 app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', function($controllerProvider, $compileProvider, $filterProvider, $provide){
     app.controller = $controllerProvider.register;
@@ -251,9 +251,47 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/course/add.js'
+                ]);
+            }]
+        }
+    }).state('courseEdit', {
+        url: '/course/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/course/edit/' + $stateParams.id;
+        },
+        controller: 'courseEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/course/edit.js'
+                ]);
+            }]
+        }
+    }).state('courseAddChapter', {
+        url: '/course/courseAddChapter/:parentId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/course/add/' + $stateParams.parentId;
+        },
+        controller: 'courseAddChapterController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/course/addChapter.js'
                 ]);
             }]
         }

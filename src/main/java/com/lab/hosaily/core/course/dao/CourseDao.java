@@ -85,6 +85,23 @@ public class CourseDao{
     }
 
     /**
+     * 根据ID查询
+     */
+    public Course getById(String id){
+        try{
+            Assert.hasText(id, "课程ID不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("c.id", id));
+
+            return mapper.getByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 分页查询
      */
     public Page<Course> page(PageRequest pageRequest){

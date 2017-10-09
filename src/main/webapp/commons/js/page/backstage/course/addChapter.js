@@ -1,4 +1,4 @@
-app.controller('courseAddController', function($scope, $state, FileUploader){
+app.controller('courseAddChapterController', function($scope, $state, $stateParams, FileUploader){
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/course/upload',
         queueLimit: 1,
@@ -22,9 +22,11 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         }
     };
 
+    $scope.parentId = $stateParams.parentId;
     $scope.course = {
+        parentId     : $scope.parentId,
         title        : '',
-        type         : 0,
+        type         : 1,
         introduction : '',
         state        : '',
         cover        : basePath + '/commons/img/level_default.jpg',
@@ -88,7 +90,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
             success: function(res){
                 if(res.success){
                     alert(res.msg);
-                    $state.go('course');
+                    $state.go('courseEdit', {id:$scope.parentId});
                 }
             }
         });

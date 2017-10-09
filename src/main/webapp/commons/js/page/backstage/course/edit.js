@@ -1,4 +1,4 @@
-app.controller('courseAddController', function($scope, $state, FileUploader){
+app.controller('courseEditController', function($scope, $state, $stateParams, FileUploader){
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/course/upload',
         queueLimit: 1,
@@ -22,6 +22,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         }
     };
 
+    $scope.id = $stateParams.id;
     $scope.course = {
         title        : '',
         type         : 0,
@@ -36,6 +37,42 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         tag          : [],
         media        : [],
         level        : []
+    };
+
+    $scope.getById = function(){
+        $.ajax({
+            url: '/api/1.0/course/' + $scope.id,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function(res){
+                if(res.success){
+                    $scope.course = res.result;
+                }
+
+                var medias = [];
+                var tags = [];
+                var levels = [];
+
+                angular.forEach($scope.course.media, function(data){
+                    medias.push(data.id);
+                });
+                angular.forEach($scope.course.tag, function(data){
+                    tags.push(data.id);
+                });
+                angular.forEach($scope.course.level, function(data){
+                    levels.push(data.id);
+                });
+
+                $('#medias').selectpicker('val', medias);
+                $('#tags').selectpicker('val', tags);
+                $('#levels').selectpicker('val', levels);
+                $('#advisor').val($scope.course.advisor.id);
+
+                if(!$scope.$$phase){
+                    $scope.$apply();
+                }
+            }
+        });
     };
 
     $scope.reset = function(){
@@ -61,16 +98,19 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         var advisor = $('#advisor').val();
 
         if(levels !== null && levels.length > 0){
+            $scope.course.level = [];
             angular.forEach(levels, function(data){
                 $scope.course.level.push({id:data});
             });
         };
         if(tags !== null && tags.length > 0){
+            $scope.course.tag = [];
             angular.forEach(tags, function(data){
                 $scope.course.tag.push({id:data});
             });
         };
         if(medias !== null && medias.length > 0){
+            $scope.course.media = [];
             angular.forEach(medias, function(data){
                 $scope.course.media.push({id:data});
             });
@@ -81,7 +121,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
 
         $.ajax({
             url: '/api/1.0/course',
-            type: 'POST',
+            type: 'PUT',
             data: JSON.stringify($scope.course),
             dataType: 'JSON',
             contentType: 'application/json',
@@ -94,7 +134,13 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         });
     };
 
+    $scope.addChildren = function(){
+        $state.go('courseAddChapter', {parentId : $scope.course.id});
+    };
+
     $('.selectpicker').selectpicker({
         title: '请选择'
     });
+
+    $scope.getById();
 });

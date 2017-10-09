@@ -39,4 +39,9 @@ public interface LevelService{
      * 分页查询
      */
     Page<Level> page(PageRequest pageRequest);
+
+    /**
+     * 根据状态查询
+     */
+    List<Level> findLazyLoadingByState(UsingState state);
 }

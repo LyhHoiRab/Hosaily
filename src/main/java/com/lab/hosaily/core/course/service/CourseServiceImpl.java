@@ -60,6 +60,21 @@ public class CourseServiceImpl implements CourseService{
     }
 
     /**
+     * 根据ID查询
+     */
+    @Override
+    public Course getById(String id){
+        try{
+            Assert.hasText(id, "课程ID不能为空");
+
+            return courseDao.getById(id);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 上传图片
      */
     @Override

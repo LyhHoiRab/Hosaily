@@ -37,6 +37,34 @@ public class CourseRestController{
     }
 
     /**
+     * 更新课程
+     */
+    @RequestMapping(value = "", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Course> update(@RequestBody Course course){
+        try{
+            courseService.update(course);
+            return new Response<Course>("修改成功", course);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据ID查询课程
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Course> getById(@PathVariable("id") String id){
+        try{
+            Course course = courseService.getById(id);
+            return new Response<Course>("查询成功", course);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 上传图片
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

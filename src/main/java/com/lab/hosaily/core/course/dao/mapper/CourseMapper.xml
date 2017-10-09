@@ -16,11 +16,21 @@
         <result column="state"        property="state"        typeHandler="usingStateHandler"/>
         <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
         <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
-        <association property="advisor"  resultMap="advisor" columnPrefix="a_"/>
-        <collection  property="level"    resultMap="level"   columnPrefix="l_"/>
-        <collection  property="tag"      resultMap="tag"     columnPrefix="t_"/>
-        <collection  property="media"    resultMap="media"   columnPrefix="m_"/>
-        <collection  property="children" resultMap="course"  columnPrefix="c_"/>
+        <association property="advisor"  resultMap="advisor"   columnPrefix="a_"/>
+        <collection  property="level"    resultMap="level"     columnPrefix="l_"/>
+        <collection  property="tag"      resultMap="tag"       columnPrefix="t_"/>
+        <collection  property="media"    resultMap="media"     columnPrefix="m_"/>
+        <collection  property="children" resultMap="children"  columnPrefix="ch_"/>
+    </resultMap>
+
+    <resultMap id="children" type="com.lab.hosaily.core.course.entity.Course">
+        <id     column="id"           property="id"           javaType="java.lang.String"/>
+        <result column="type"         property="type"         typeHandler="courseTypeHandler"/>
+        <result column="title"        property="title"        javaType="java.lang.String"/>
+        <result column="introduction" property="introduction" javaType="java.lang.String"/>
+        <result column="cover"        property="cover"        javaType="java.lang.String"/>
+        <result column="price"        property="price"        javaType="java.lang.Double"/>
+        <result column="parent_id"    property="parentId"     javaType="java.lang.String"/>
     </resultMap>
 
     <resultMap id="media" type="com.lab.hosaily.core.course.entity.Media">
@@ -278,7 +288,7 @@
 
     <delete id="deleteLevel">
         DELETE
-          FROM course_tag
+          FROM course_level
          WHERE course_id = #{courseId}
     </delete>
 
@@ -295,20 +305,21 @@
                a.head_img_url  AS a_head_img_url,
                l.id            AS l_id,
                l.name          AS l_name,
-               t.id            AS t.id,
+               t.id            AS t_id,
                t.name          AS t_name,
-               ch.id           AS c_id,
+               ch.id           AS ch_id,
                ch.title        AS ch_title,
                ch.introduction AS ch_introduction,
                ch.cover        AS ch_cover,
                ch.price        AS ch_price,
-               ch.weight       AS ch.weight
+               ch.weight       AS ch_weight
+          FROM course c
      LEFT JOIN advisor a
             ON c.advisor_id = a.id
      LEFT JOIN course_media cm
             ON cm.course_id = c.id
-     LEFT JOIN media a
-            ON cm.media_id = a.id
+     LEFT JOIN media m
+            ON cm.media_id = m.id
      LEFT JOIN course_level cl
             ON cl.course_id = c.id
      LEFT JOIN level l

@@ -40,4 +40,9 @@ public interface LevelMapper{
      * 查询记录数量
      */
     Long countByParams(@Param("params") Criteria criteria);
+
+    /**
+     * 懒加载查询
+     */
+    List<Level> findLazyLoadingByParams(@Param("params") Criteria criteria);
 }

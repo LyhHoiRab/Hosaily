@@ -5,9 +5,18 @@
   <li>
     <a ui-sref="course">课程管理</a>
   </li><!-- item -->
+  #if($parentId)
+  <li>
+    <a ui-sref="courseEdit({id:'$parentId'})">父课程</a>
+  </li><!-- item -->
+  #end
   <li>
     <span>
-      添加课程
+      #if($id)
+        修改课程
+      #else
+        添加课程
+      #end
     </span>
   </li><!-- item -->
 </ol><!-- 面包屑 -->
@@ -62,7 +71,7 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">点赞量</span>
-        <input type="number" class="form-control" placeholder="like" ng-model="course.like" value="{{course.like}}">
+        <input type="number" class="form-control" placeholder="点赞量" ng-model="course.likes" value="{{course.likes}}">
       </div>
     </div><!-- item -->
 
@@ -83,7 +92,7 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">导师</span>
-        <select class="form-control">
+        <select class="form-control" id="advisor">
           <option value="">请选择</option>
           #foreach($advisor in $advisors)
             <option value="${advisor.id}">${advisor.nickname}</option>
@@ -95,8 +104,7 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">标签</span>
-        <select class="form-control">
-          <option value="">请选择</option>
+        <select class="selectpicker form-control" multiple id="tags">
           #foreach($tag in $tags)
             <option value="${tag.id}">${tag.name}</option>
           #end
@@ -107,8 +115,7 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">等级限制</span>
-        <select class="form-control">
-          <option value="">请选择</option>
+        <select class="selectpicker form-control" multiple id="levels">
           #foreach($level in $levels)
             <option value="${level.id}">${level.name}</option>
           #end
@@ -119,8 +126,7 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">媒体</span>
-        <select class="form-control">
-          <option value="">请选择</option>
+        <select class="selectpicker form-control" multiple id="medias">
           #foreach($media in $medias)
             <option value="${media.id}">${media.remark}</option>
           #end
@@ -140,8 +146,38 @@
       </div>
     </div><!-- item -->
 
+    <div class="row-group" ng-show="course.children.length > 0">
+      <div class="item-group">
+        <div class="row" ng-repeat="item in course.children">
+          <div class="col-md-5">
+            <div class="input-group">
+              <span class="input-group-addon">标题</span>
+              <input type="text" class="form-control" placeholder="标题" ng-model="item.title" value="{{item.title}}" readonly="readonly">
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="input-group">
+              <span class="input-group-addon">简介</span>
+              <input type="text" class="form-control" placeholder="简介" ng-model="item.introduction" value="{{item.introduction}}" readonly="readonly">
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <a href="javascript:;" ng-click="delete($index)">[删除]</a>
+          </div>
+        </div><!-- row -->
+      </div><!-- item group -->
+    </div><!-- item -->
+
     <div class="row-group">
       <div class="button-group">
+        #if($id)
+        <button type="button" class="btn" ng-click="addChildren()">
+          <i class="fa fa-plus"></i>
+          添加子课程
+        </button>
+        #end
         <button type="button" class="btn" ng-click="submit()">
           <i class="fa fa-check"></i>
           提交

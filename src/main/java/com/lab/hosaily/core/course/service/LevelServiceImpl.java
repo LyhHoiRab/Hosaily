@@ -174,4 +174,19 @@ public class LevelServiceImpl implements LevelService{
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
+    /**
+     * 根据状态查询
+     */
+    @Override
+    public List<Level> findLazyLoadingByState(UsingState state){
+        try{
+            Assert.notNull(state, "等级状态不能为空");
+
+            return levelDao.findLazyLoadingByState(state);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 }

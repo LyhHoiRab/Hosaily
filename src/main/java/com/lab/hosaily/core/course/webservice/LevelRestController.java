@@ -6,12 +6,15 @@ import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
+import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/1.0/level")
@@ -88,6 +91,20 @@ public class LevelRestController{
             Page<Level> page = levelService.page(pageRequest);
 
             return new Response<Page<Level>>("查询成功", page);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 查询所有可购买的等级记录
+     */
+    @RequestMapping(value = "/find/normal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<Level>> normal(){
+        try{
+            List<Level> list = levelService.findLazyLoadingByState(UsingState.NORMAL);
+            return new Response<List<Level>>("查询成功", list);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

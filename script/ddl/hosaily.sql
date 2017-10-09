@@ -111,10 +111,11 @@ CREATE TABLE `course` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程表';
 
 CREATE TABLE `course_tag` (
-  `crouse_id` varchar(32) NOT NULL,
+  `course_id` varchar(32) NOT NULL,
   `tag_id` varchar(32) NOT NULL,
-  PRIMARY KEY (`crouse_id`,`tag_id`)
+  PRIMARY KEY (`course_id`,`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程 - 标签关联表';
+SELECT * FROM hosaily.level_price;
 
 CREATE TABLE `course_media` (
   `course_id` varchar(32) NOT NULL,

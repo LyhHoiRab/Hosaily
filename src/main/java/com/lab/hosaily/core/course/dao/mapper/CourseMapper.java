@@ -56,7 +56,7 @@ public interface CourseMapper{
     /**
      * 根据条件查询单条记录
      */
-    CourseMapper getByParams(@Param("params") Criteria criteria);
+    Course getByParams(@Param("params") Criteria criteria);
 
     /**
      * 根据条件查询多条记录

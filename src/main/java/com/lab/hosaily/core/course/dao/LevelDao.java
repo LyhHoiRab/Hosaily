@@ -105,4 +105,22 @@ public class LevelDao{
             throw new DataAccessException(e.getMessage(), e);
         }
     }
+
+    /**
+     * 懒加载查询
+     */
+    public List<Level> findLazyLoadingByState(UsingState state){
+        try{
+            Assert.notNull(state, "等级状态不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("l.state", state.getId()));
+            criteria.and(Restrictions.eq("p.state", state.getId()));
+
+            return mapper.findLazyLoadingByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
 }

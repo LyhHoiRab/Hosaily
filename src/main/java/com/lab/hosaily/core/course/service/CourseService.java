@@ -18,6 +18,11 @@ public interface CourseService{
     void update(Course course);
 
     /**
+     * 根据ID查询
+     */
+    Course getById(String id);
+
+    /**
      * 上传图片
      */
     String upload(CommonsMultipartFile file);
