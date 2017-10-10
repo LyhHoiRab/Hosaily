@@ -26,7 +26,7 @@ app.controller('levelAddController', function($scope, $state, FileUploader){
         name        : '',
         description : '',
         state       : '',
-        icon        : basePath + '/commons/img/level_default.jpg',
+        icon        : '/commons/img/level_default.jpg',
         price       : []
     };
 

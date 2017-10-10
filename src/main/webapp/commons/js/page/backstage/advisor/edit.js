@@ -31,7 +31,7 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         wechat       : '',
         introduction : '',
         state        : '',
-        headImgUrl   : basePath + '/commons/img/level_default.jpg'
+        headImgUrl   : '/commons/img/level_default.jpg'
     };
 
     $scope.reset = function(){

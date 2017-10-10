@@ -1,0 +1,78 @@
+package com.lab.hosaily.core.account.webservice;
+
+import com.lab.hosaily.core.account.service.UserService;
+import com.rab.babylon.commons.security.exception.ApplicationException;
+import com.rab.babylon.commons.security.response.Response;
+import com.rab.babylon.core.account.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
+@RestController
+@RequestMapping(value = "/api/1.0/user")
+public class UserRestController{
+
+    private static Logger logger = LoggerFactory.getLogger(UserRestController.class);
+
+    @Autowired
+    private UserService userService;
+
+    /**
+     * 添加用户
+     */
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<User> save(@RequestBody User user){
+        try{
+            userService.save(user);
+            return new Response<User>("添加成功", user);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 修改用户
+     */
+    @RequestMapping(value = "", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<User> update(@RequestBody User user){
+        try{
+            userService.update(user);
+            return new Response<User>("修改成功", user);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据ID查询用户
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<User> getById(@PathVariable("id") String id){
+        try{
+            User user = userService.getById(id);
+            return new Response<User>("查询成功", user);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 上传头像
+     */
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<String> upload(@RequestParam("file") CommonsMultipartFile file){
+        try{
+            String url = userService.upload(file);
+            return new Response<String>("上传成功", url);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+}

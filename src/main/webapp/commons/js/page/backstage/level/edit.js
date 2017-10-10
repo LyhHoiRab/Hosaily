@@ -29,7 +29,7 @@ app.controller('levelEditController', function($scope, $state, $stateParams, Fil
         name        : '',
         state       : '',
         description : '',
-        icon        : basePath + '/commons/img/level_default.jpg',
+        icon        : '/commons/img/level_default.jpg',
         price       : []
     };
 

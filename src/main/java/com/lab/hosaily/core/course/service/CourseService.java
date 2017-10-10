@@ -8,27 +8,27 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 public interface CourseService{
 
     /**
-     * 保存记录
+     * 分页查询帖子记录
      */
-    void save(Course course);
+    Page<Course> pageByPost(PageRequest pageRequest);
 
     /**
-     * 更新记录
+     * 分页查询课程记录
      */
-    void update(Course course);
+    Page<Course> pageByCourse(PageRequest pageRequest);
 
     /**
-     * 根据ID查询
+     * H5分页查询课程记录
      */
-    Course getById(String id);
+    Page<Course> pageByH5AndCourse(PageRequest pageRequest);
+
+    /**
+     * H5分页查询帖子记录
+     */
+    Page<Course> pageByH5AndPost(PageRequest pageRequest);
 
     /**
      * 上传图片
      */
     String upload(CommonsMultipartFile file);
-
-    /**
-     * 分页查询
-     */
-    Page<Course> page(PageRequest pageRequest);
 }

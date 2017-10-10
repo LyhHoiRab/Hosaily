@@ -95,13 +95,16 @@ CREATE TABLE `comment` (
 CREATE TABLE `course` (
   `id` varchar(32) NOT NULL,
   `type` tinyint(1) NOT NULL,
+  `kind` tinyint(1) NOT NULL,
   `title` varchar(60) DEFAULT NULL,
-  `introduction` varchar(255) DEFAULT NULL,
+  `introduction` mediumtext,
+  `summary` varchar(255) DEFAULT NULL,
   `cover` varchar(255) DEFAULT NULL,
   `price` double NOT NULL DEFAULT '0',
   `likes` int(1) NOT NULL DEFAULT '0',
   `view` int(1) NOT NULL DEFAULT '0',
   `weight` int(1) NOT NULL DEFAULT '0',
+  `comments` int(1) NOT NULL DEFAULT '0',
   `advisor_id` varchar(32) DEFAULT NULL,
   `parent_id` varchar(32) DEFAULT NULL,
   `state` tinyint(1) NOT NULL,
@@ -115,7 +118,6 @@ CREATE TABLE `course_tag` (
   `tag_id` varchar(32) NOT NULL,
   PRIMARY KEY (`course_id`,`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程 - 标签关联表';
-SELECT * FROM hosaily.level_price;
 
 CREATE TABLE `course_media` (
   `course_id` varchar(32) NOT NULL,

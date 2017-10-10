@@ -22,5 +22,6 @@
     <typeAlias type="com.lab.hosaily.core.application.utils.handler.ApplicationTypeHandler" alias="applicationTypeHandler"/>
     <typeAlias type="com.lab.hosaily.core.course.utils.handler.MediaTypeHandler"            alias="mediaTypeHandler"/>
     <typeAlias type="com.lab.hosaily.core.course.utils.handler.CourseTypeHandler"           alias="courseTypeHandler"/>
+    <typeAlias type="com.lab.hosaily.core.course.utils.handler.CourseKindHandler"           alias="courseKindHandler"/>
   </typeAliases>
 </configuration>

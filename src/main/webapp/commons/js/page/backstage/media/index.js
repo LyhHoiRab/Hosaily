@@ -73,52 +73,41 @@ app.controller('mediaController', function($scope){
             visible: false
         },{
             field: 'fileName',
-            displayName: '文件名称',
-            minWidth: 150
+            displayName: '文件名称'
         },{
             field: 'suffix',
-            displayName: '格式',
-            minWidth: 150
+            displayName: '格式'
         },{
             field: 'type',
             displayName: '类型',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{type[COL_FIELD]}}</span></div>'
         },{
             field: 'url',
-            displayName: '外链',
-            minWidth: 150
+            displayName: '外链'
         },{
             field: 'md5',
-            displayName: 'MD5',
-            minWidth: 150
+            displayName: 'MD5'
         },{
             field: 'size',
             displayName: '大小(MB)',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD/1024/1024 | number:3}}</span></div>'
         },{
             field: 'remark',
-            displayName: '备注',
-            minWidth: 150
+            displayName: '备注'
         },{
             field: 'state',
             displayName: '状态',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{state[COL_FIELD]}}</span></div>'
         },{
             field: 'createTime',
             displayName: '创建时间',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             field: 'updateTime',
             displayName: '更新时间',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="mediaEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
         }]
     };

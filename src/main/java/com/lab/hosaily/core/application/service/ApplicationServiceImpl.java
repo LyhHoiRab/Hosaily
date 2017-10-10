@@ -6,7 +6,6 @@ import com.lab.hosaily.core.application.entity.Application;
 import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
-import com.rab.babylon.commons.utils.MD5Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +81,7 @@ public class ApplicationServiceImpl implements ApplicationService{
                 throw new ServiceException(String.format("无效的应用Token[%s]", token));
             }
 
-            String state = URLEncoder.encode(redirectUrl + "_" + MD5Utils.encrypt(sessionId), "UTF-8");
+            String state = URLEncoder.encode(redirectUrl + "_" + sessionId + "_" + token, "UTF-8");
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(AuthorizationConsts.NODE_APPID, application.getAppId());

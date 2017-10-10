@@ -5,13 +5,16 @@
     <resultMap id="course" type="com.lab.hosaily.core.course.entity.Course">
         <id     column="id"           property="id"           javaType="java.lang.String"/>
         <result column="type"         property="type"         typeHandler="courseTypeHandler"/>
+        <result column="kind"         property="kind"         typeHandler="courseKindHandler"/>
         <result column="title"        property="title"        javaType="java.lang.String"/>
         <result column="introduction" property="introduction" javaType="java.lang.String"/>
+        <result column="summary"      property="summary"      javaType="java.lang.String"/>
         <result column="cover"        property="cover"        javaType="java.lang.String"/>
         <result column="price"        property="price"        javaType="java.lang.Double"/>
         <result column="likes"        property="likes"        javaType="java.lang.Integer"/>
         <result column="view"         property="view"         javaType="java.lang.Integer"/>
         <result column="weight"       property="weight"       javaType="java.lang.Integer"/>
+        <result column="comments"     property="comments"     javaType="java.lang.Integer"/>
         <result column="parent_id"    property="parentId"     javaType="java.lang.String"/>
         <result column="state"        property="state"        typeHandler="usingStateHandler"/>
         <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
@@ -156,143 +159,7 @@
         </where>
     </sql>
 
-    <insert id="save">
-        INSERT
-          INTO course (
-              id,
-              advisor_id,
-              type,
-              title,
-              introduction,
-              cover,
-              price,
-              likes,
-              view,
-              weight,
-              parent_id,
-              state,
-              create_time
-          ) VALUE (
-              #{id,           jdbcType=VARCHAR},
-              #{advisor.id,   jdbcType=VARCHAR},
-              #{type,         typeHandler=courseTypeHandler},
-              #{title,        jdbcType=VARCHAR},
-              #{introduction, jdbcType=VARCHAR},
-              #{cover,        jdbcType=VARCHAR},
-              #{price,        jdbcType=DOUBLE},
-              #{likes,        jdbcType=INTEGER},
-              #{view,         jdbcType=INTEGER},
-              #{weight,       jdbcType=INTEGER},
-              #{parentId,     jdbcType=VARCHAR},
-              #{state,        typeHandler=usingStateHandler},
-              #{createTime,   jdbcType=TIMESTAMP}
-          )
-    </insert>
-
-    <update id="update">
-        UPDATE course
-         <set>
-             <if test="advisor != null and advisor.id != null and advisor.id != ''">
-                 advisor_id = #{advisor.id, jdbcType=VARCHAR},
-             </if>
-             <if test="type != null">
-                 type = #{type, typeHandler=courseTypeHandler},
-             </if>
-             <if test="title != null and title != ''">
-                 title = #{title, jdbcType=VARCHAR},
-             </if>
-             <if test="introduction != null and introduction != ''">
-                 introduction = #{introduction, jdbcType=VARCHAR},
-             </if>
-             <if test="cover != null and cover != ''">
-                 cover = #{cover, jdbcType=VARCHAR},
-             </if>
-             <if test="price != null and price >= 0">
-                 price = #{price, jdbcType=DOUBLE},
-             </if>
-             <if test="likes != null and likes >= 0">
-                 likes = #{likes, jdbcType=INTEGER},
-             </if>
-             <if test="view != null and view >= 0">
-                 view = #{view, jdbcType=INTEGER},
-             </if>
-             <if test="weight != null and weight >= 0">
-                 weight = #{weight, jdbcType=INTEGER},
-             </if>
-             <if test="parentId != null and parentId != ''">
-                 parent_id = #{parentId, jdbcType=VARCHAR},
-             </if>
-             <if test="state != null">
-                 state = #{state, typeHandler=usingStateHandler},
-             </if>
-             <if test="updateTime != null">
-                 update_time = #{updateTime, jdbcType=TIMESTAMP},
-             </if>
-         </set>
-          WHERE id = #{id}
-    </update>
-
-    <insert id="addMedia">
-        INSERT
-          INTO course_media (
-              course_id,
-              media_id
-          ) VALUES
-        <foreach collection="medias" item="media" separator=",">
-            (
-              #{courseId, jdbcType=VARCHAR},
-              #{media.id, jdbcType=VARCHAR}
-            )
-        </foreach>
-    </insert>
-
-    <delete id="deleteMedia">
-        DELETE
-          FROM course_media
-         WHERE course_id = #{courseId}
-    </delete>
-
-    <insert id="addTag">
-        INSERT
-          INTO course_tag (
-              course_id,
-              tag_id
-        ) VALUES
-        <foreach collection="tags" item="tag" separator=",">
-            (
-              #{courseId, jdbcType=VARCHAR},
-              #{tag.id, jdbcType=VARCHAR}
-            )
-        </foreach>
-    </insert>
-
-    <delete id="deleteTag">
-        DELETE
-          FROM course_tag
-         WHERE course_id = #{courseId}
-    </delete>
-
-    <insert id="addLevel">
-        INSERT
-          INTO course_level (
-              course_id,
-              level_id
-        ) VALUES
-        <foreach collection="levels" item="level" separator=",">
-            (
-              #{courseId, jdbcType=VARCHAR},
-              #{level.id, jdbcType=VARCHAR}
-            )
-        </foreach>
-    </insert>
-
-    <delete id="deleteLevel">
-        DELETE
-          FROM course_level
-         WHERE course_id = #{courseId}
-    </delete>
-
-    <select id="getByParams" resultMap="course">
+    <select id="findByParams" resultMap="course">
         SELECT c.*,
                m.id            AS m_id,
                m.url           AS m_url,
@@ -313,7 +180,15 @@
                ch.cover        AS ch_cover,
                ch.price        AS ch_price,
                ch.weight       AS ch_weight
-          FROM course c
+          FROM (
+                  SELECT *
+                    FROM course
+                  <if test="params != null">
+                    <if test="params.limit != null">
+                      ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+                    </if>
+                  </if>
+          ) AS c
      LEFT JOIN advisor a
             ON c.advisor_id = a.id
      LEFT JOIN course_media cm
@@ -332,14 +207,6 @@
             ON ch.parent_id = c.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
-        </if>
-    </select>
-
-    <select id="findByParams" resultMap="course">
-        SELECT *
-          FROM course
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
 
             <if test="params.sorts != null and params.sorts.size > 0">
                 ORDER BY
@@ -347,18 +214,34 @@
                     ${sort.property} ${sort.operator}
                 </foreach>
             </if>
-
-            <if test="params.limit != null">
-                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
-            </if>
         </if>
     </select>
 
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
-          FROM course
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
-        </if>
+          FROM (
+                  SELECT c.*
+                    FROM course c
+               LEFT JOIN advisor a
+                      ON c.advisor_id = a.id
+               LEFT JOIN course_media cm
+                      ON cm.course_id = c.id
+               LEFT JOIN media m
+                      ON cm.media_id = m.id
+               LEFT JOIN course_level cl
+                      ON cl.course_id = c.id
+               LEFT JOIN level l
+                      ON cl.level_id = l.id
+               LEFT JOIN course_tag ct
+                      ON ct.course_id = c.id
+               LEFT JOIN tag t
+                      ON ct.tag_id = t.id
+               LEFT JOIN course ch
+                      ON ch.parent_id = c.id
+                  <if test="params != null">
+                    <include refid="WHERE_COLUMN"/>
+                  </if>
+                GROUP BY c.id
+        ) AS a
     </select>
 </mapper>

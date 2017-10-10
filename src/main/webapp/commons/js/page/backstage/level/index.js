@@ -67,35 +67,28 @@ app.controller('levelController', function($scope){
             visible: false
         },{
             field: 'name',
-            displayName: '名称',
-            minWidth: 150
+            displayName: '名称'
         },{
             field: 'icon',
             displayName: '图标',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><img src="{{COL_FIELD}}" width="50" height="50" style="vertical-align:middle;"></div>'
         },{
             field: 'description',
-            displayName: '描述',
-            minWidth: 150
+            displayName: '描述'
         },{
             field: 'state',
             displayName: '状态',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{state[COL_FIELD]}}</span></div>'
         },{
             field: 'createTime',
             displayName: '创建时间',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             field: 'updateTime',
             displayName: '更新时间',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="levelEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
         }]
     };

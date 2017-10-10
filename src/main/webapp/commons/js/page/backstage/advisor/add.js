@@ -30,7 +30,7 @@ app.controller('advisorAddController', function($scope, $state, FileUploader){
         wechat       : '',
         introduction : '',
         state        : '',
-        headImgUrl   : basePath + '/commons/img/level_default.jpg'
+        headImgUrl   : '/commons/img/level_default.jpg'
     };
 
     $scope.reset = function(){

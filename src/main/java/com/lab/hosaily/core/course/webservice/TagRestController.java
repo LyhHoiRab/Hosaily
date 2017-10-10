@@ -6,11 +6,14 @@ import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
+import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/1.0/tag")
@@ -73,6 +76,20 @@ public class TagRestController{
             Page<Tag> page = tagService.page(pageRequest);
 
             return new Response<Page<Tag>>("查询成功", tagService.page(pageRequest));
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 查询可用的标签列表
+     */
+    @RequestMapping(value = "/list/normal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<Tag>> normal(){
+        try{
+            List<Tag> list = tagService.findByState(UsingState.NORMAL);
+            return new Response<List<Tag>>("查询成功", list);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

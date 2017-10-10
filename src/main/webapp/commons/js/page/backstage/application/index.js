@@ -71,39 +71,31 @@ app.controller('applicationController', function($scope){
             visible: false
         },{
             field: 'name',
-            displayName: '名称',
-            minWidth: 150
+            displayName: '名称'
         },{
         	field: 'appId',
-        	displayName: 'APPID',
-        	minWidth: 150
+        	displayName: 'APPID'
         },{
         	field: 'token',
-        	displayName: 'TOKEN',
-        	minWidth: 150
+        	displayName: 'TOKEN'
         },{
         	field: 'type',
         	displayName: '类型',
-        	minWidth: 150,
         	cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{type[COL_FIELD]}}</span></div>'
         },{
             field: 'state',
             displayName: '状态',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{state[COL_FIELD]}}</span></div>'
         },{
         	field: 'createTime',
         	displayName: '创建时间',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
         	field: 'updateTime',
         	displayName: '更新时间',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="applicationEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
         }]
     };

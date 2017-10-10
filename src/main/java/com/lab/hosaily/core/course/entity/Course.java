@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.course.entity;
 
+import com.lab.hosaily.core.course.consts.CourseKind;
 import com.lab.hosaily.core.course.consts.CourseType;
 import com.rab.babylon.core.base.entity.Create;
 import com.rab.babylon.core.base.entity.Update;
@@ -14,10 +15,14 @@ public class Course implements Create, Update{
     private String id;
     //课程层级类型
     private CourseType type;
+    //课程类型
+    private CourseKind kind;
     //标题
     private String title;
-    //简介
+    //图文介绍
     private String introduction;
+    //概要
+    private String summary;
     //封面
     private String cover;
     //价格
@@ -26,6 +31,8 @@ public class Course implements Create, Update{
     private Integer likes;
     //浏览量
     private Integer view;
+    //评论量
+    private Integer comments;
     //权重
     private Integer weight;
     //父课程ID
@@ -177,6 +184,30 @@ public class Course implements Create, Update{
 
     public void setTag(List<Tag> tag){
         this.tag = tag;
+    }
+
+    public CourseKind getKind(){
+        return kind;
+    }
+
+    public void setKind(CourseKind kind){
+        this.kind = kind;
+    }
+
+    public String getSummary(){
+        return summary;
+    }
+
+    public void setSummary(String summary){
+        this.summary = summary;
+    }
+
+    public Integer getComments(){
+        return comments;
+    }
+
+    public void setComments(Integer comments){
+        this.comments = comments;
     }
 
     @Override

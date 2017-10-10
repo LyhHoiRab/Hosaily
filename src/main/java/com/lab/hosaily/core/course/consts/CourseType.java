@@ -34,6 +34,6 @@ public enum CourseType{
             }
         }
 
-        throw new IllegalArgumentException("未知的课程类型");
+        throw new IllegalArgumentException("未知的课程层级类型");
     }
 }

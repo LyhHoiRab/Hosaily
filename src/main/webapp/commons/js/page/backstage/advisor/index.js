@@ -75,52 +75,41 @@ app.controller('advisorController', function($scope){
             visible: false
         },{
             field: 'name',
-            displayName: '名称',
-            minWidth: 150
+            displayName: '名称'
         },{
             field: 'nickname',
-            displayName: '昵称',
-            minWidth: 150
+            displayName: '昵称'
         },{
             field: 'wechat',
-            displayName: '微信号',
-            minWidth: 150
+            displayName: '微信号'
         },{
             field: 'headImgUrl',
             displayName: '头像',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><img src="{{COL_FIELD}}" width="50" height="50" style="vertical-align:middle;"></div>'
         },{
             field: 'sex',
             displayName: '性别',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{sex[COL_FIELD]}}</span></div>'
         },{
             field: 'age',
-            displayName: '年龄',
-            minWidth: 150
+            displayName: '年龄'
         },{
             field: 'introduction',
-            displayName: '简介',
-            minWidth: 150
+            displayName: '简介'
         },{
             field: 'state',
             displayName: '状态',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{state[COL_FIELD]}}</span></div>'
         },{
             field: 'createTime',
             displayName: '创建时间',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             field: 'updateTime',
             displayName: '更新时间',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="advisorEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
         }]
     };

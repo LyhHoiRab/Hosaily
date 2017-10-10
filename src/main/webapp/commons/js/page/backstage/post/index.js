@@ -1,4 +1,4 @@
-app.controller('courseController', function($scope){
+app.controller('postController', function($scope){
     $scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
@@ -19,7 +19,7 @@ app.controller('courseController', function($scope){
 
     $scope.getData = function(pageNum, pageSize){
         $.ajax({
-            url: '/api/1.0/course/page',
+            url: '/api/1.0/course/page/post',
             type: 'POST',
             dataType: 'JSON',
             data: {
@@ -66,48 +66,37 @@ app.controller('courseController', function($scope){
             visible: false
         },{
             field: 'title',
-            displayName: '标题',
-            minWidth: 150
+            displayName: '标题'
         },{
-            field: 'introduction',
-            displayName: '简介',
-            minWidth: 150
-        },{
-            field: 'price',
-            displayName: '价格',
-            minWidth: 150,
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | number:2}}</span></div>'
+            field: 'summary',
+            displayName: '概要'
         },{
             field: 'view',
-            displayName: '浏览量',
-            minWidth: 150
+            displayName: '浏览量'
         },{
             field: 'likes',
-            displayName: '点赞量',
-            minWidth: 150
+            displayName: '点赞量'
+        },{
+            field: 'comments',
+            displayName: '回复量'
         },{
             field: 'weight',
-            displayName: '权重',
-            minWidth: 150
+            displayName: '权重'
         },{
             field: 'state',
             displayName: '状态',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{state[COL_FIELD]}}</span></div>'
         },{
             field: 'createTime',
             displayName: '创建时间',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             field: 'updateTime',
             displayName: '更新时间',
-            minWidth: 150,
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            minWidth: 150,
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="courseEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="postEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
         }]
     };
 
