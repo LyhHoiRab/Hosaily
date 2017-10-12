@@ -2,6 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.lab.hosaily.core.course.dao.mapper.CourseMapper">
+    <!-- 帖子 -->
+    <resultMap id="post" type="com.lab.hosaily.core.course.entity.Course">
+        <id     column="id"           property="id"           javaType="java.lang.String"/>
+        <result column="type"         property="type"         typeHandler="courseTypeHandler"/>
+        <result column="kind"         property="kind"         typeHandler="courseKindHandler"/>
+        <result column="title"        property="title"        javaType="java.lang.String"/>
+        <result column="introduction" property="introduction" javaType="java.lang.String"/>
+        <result column="summary"      property="summary"      javaType="java.lang.String"/>
+        <result column="cover"        property="cover"        javaType="java.lang.String"/>
+        <result column="price"        property="price"        javaType="java.lang.Double"/>
+        <result column="likes"        property="likes"        javaType="java.lang.Integer"/>
+        <result column="view"         property="view"         javaType="java.lang.Integer"/>
+        <result column="weight"       property="weight"       javaType="java.lang.Integer"/>
+        <result column="comments"     property="comments"     javaType="java.lang.Integer"/>
+        <result column="state"        property="state"        typeHandler="usingStateHandler"/>
+        <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
+        <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
+        <association property="advisor"  resultMap="advisor"   columnPrefix="a_"/>
+        <collection  property="tag"      resultMap="tag"       columnPrefix="t_"/>
+        <collection  property="children" resultMap="course"    columnPrefix="co_"/>
+    </resultMap>
+
+    <!-- 课程 -->
     <resultMap id="course" type="com.lab.hosaily.core.course.entity.Course">
         <id     column="id"           property="id"           javaType="java.lang.String"/>
         <result column="type"         property="type"         typeHandler="courseTypeHandler"/>
@@ -22,18 +45,49 @@
         <association property="advisor"  resultMap="advisor"   columnPrefix="a_"/>
         <collection  property="level"    resultMap="level"     columnPrefix="l_"/>
         <collection  property="tag"      resultMap="tag"       columnPrefix="t_"/>
-        <collection  property="media"    resultMap="media"     columnPrefix="m_"/>
-        <collection  property="children" resultMap="children"  columnPrefix="ch_"/>
+        <collection  property="children" resultMap="chapter"   columnPrefix="ch_"/>
     </resultMap>
 
-    <resultMap id="children" type="com.lab.hosaily.core.course.entity.Course">
+    <!-- 章节 -->
+    <resultMap id="chapter" type="com.lab.hosaily.core.course.entity.Course">
         <id     column="id"           property="id"           javaType="java.lang.String"/>
         <result column="type"         property="type"         typeHandler="courseTypeHandler"/>
+        <result column="kind"         property="kind"         typeHandler="courseKindHandler"/>
         <result column="title"        property="title"        javaType="java.lang.String"/>
         <result column="introduction" property="introduction" javaType="java.lang.String"/>
+        <result column="summary"      property="summary"      javaType="java.lang.String"/>
         <result column="cover"        property="cover"        javaType="java.lang.String"/>
         <result column="price"        property="price"        javaType="java.lang.Double"/>
+        <result column="likes"        property="likes"        javaType="java.lang.Integer"/>
+        <result column="view"         property="view"         javaType="java.lang.Integer"/>
+        <result column="weight"       property="weight"       javaType="java.lang.Integer"/>
+        <result column="comments"     property="comments"     javaType="java.lang.Integer"/>
         <result column="parent_id"    property="parentId"     javaType="java.lang.String"/>
+        <result column="state"        property="state"        typeHandler="usingStateHandler"/>
+        <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
+        <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
+        <collection property="children" resultMap="section"   columnPrefix="se_"/>
+    </resultMap>
+
+    <!-- 课时 -->
+    <resultMap id="section" type="com.lab.hosaily.core.course.entity.Course">
+        <id     column="id"           property="id"           javaType="java.lang.String"/>
+        <result column="type"         property="type"         typeHandler="courseTypeHandler"/>
+        <result column="kind"         property="kind"         typeHandler="courseKindHandler"/>
+        <result column="title"        property="title"        javaType="java.lang.String"/>
+        <result column="introduction" property="introduction" javaType="java.lang.String"/>
+        <result column="summary"      property="summary"      javaType="java.lang.String"/>
+        <result column="cover"        property="cover"        javaType="java.lang.String"/>
+        <result column="price"        property="price"        javaType="java.lang.Double"/>
+        <result column="likes"        property="likes"        javaType="java.lang.Integer"/>
+        <result column="view"         property="view"         javaType="java.lang.Integer"/>
+        <result column="weight"       property="weight"       javaType="java.lang.Integer"/>
+        <result column="comments"     property="comments"     javaType="java.lang.Integer"/>
+        <result column="parent_id"    property="parentId"     javaType="java.lang.String"/>
+        <result column="state"        property="state"        typeHandler="usingStateHandler"/>
+        <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
+        <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
+        <collection  property="media"    resultMap="media"     columnPrefix="m_"/>
     </resultMap>
 
     <resultMap id="media" type="com.lab.hosaily.core.course.entity.Media">
@@ -46,6 +100,7 @@
 
     <resultMap id="advisor" type="com.lab.hosaily.core.course.entity.Advisor">
         <id     column="id"           property="id"           javaType="java.lang.String"/>
+        <result column="name"         property="name"         javaType="java.lang.String"/>
         <result column="nickname"     property="nickname"     javaType="java.lang.String"/>
         <result column="wechat"       property="wechat"       javaType="java.lang.String"/>
         <result column="head_img_url" property="headImgUrl"   javaType="java.lang.String"/>
@@ -159,13 +214,159 @@
         </where>
     </sql>
 
-    <select id="findByParams" resultMap="course">
+    <insert id="save">
+        INSERT
+          INTO course (
+               id,
+               advisor_id,
+               type,
+               kind,
+               title,
+               introduction,
+               summary,
+               cover,
+               price,
+               likes,
+               view,
+               weight,
+               comments,
+               parent_id,
+               state,
+               create_time
+          ) VALUE (
+               #{id,           jdbcType=VARCHAR},
+               #{advisor.id,   jdbcType=VARCHAR},
+               #{type,         typeHandler=courseTypeHandler},
+               #{kind,         typeHandler=courseKindHandler},
+               #{title,        jdbcType=VARCHAR},
+               #{introduction, jdbcType=VARCHAR},
+               #{summary,      jdbcType=VARCHAR},
+               #{cover,        jdbcType=VARCHAR},
+               #{price,        jdbcType=DOUBLE},
+               #{likes,        jdbcType=INTEGER},
+               #{view,         jdbcType=INTEGER},
+               #{weight,       jdbcType=INTEGER},
+               #{comments,     jdbcType=INTEGER},
+               #{parentId,     jdbcType=VARCHAR},
+               #{state,        typeHandler=usingStateHandler},
+               #{createTime,   jdbcType=TIMESTAMP}
+          )
+    </insert>
+
+    <update id="update">
+        UPDATE course
+        <set>
+            <if test="advisor != null and advisor.id != null and advisor.id != ''">
+                advisor_id = #{advisor.id, jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type, typeHandler=courseTypeHandler},
+            </if>
+            <if test="kind != null">
+                kind = #{kind, typeHandler=courseKindHandler},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title, jdbcType=VARCHAR},
+            </if>
+            <if test="introduction != null and introduction != ''">
+                introduction = #{introduction, jdbcType=VARCHAR},
+            </if>
+            <if test="summary != null and summary != ''">
+                summary = #{summary, jdbcType=VARCHAR},
+            </if>
+            <if test="cover != null and cover != ''">
+                cover = #{cover, jdbcType=VARCHAR},
+            </if>
+            <if test="price != null and price >= 0">
+                price = #{price, jdbcType=DOUBLE},
+            </if>
+            <if test="likes != null and likes >= 0">
+                likes = #{likes, jdbcType=INTEGER},
+            </if>
+            <if test="view != null and view >= 0">
+                view = #{view, jdbcType=INTEGER},
+            </if>
+            <if test="weight != null and weight >= 0">
+                weight = #{weight, jdbcType=INTEGER},
+            </if>
+            <if test="comments != null and comments >= 0">
+                comments = #{comments, jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null and parentId != ''">
+                parent_id = #{parentId, jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state, typeHandler=usingStateHandler},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <insert id="addTag">
+        INSERT
+          INTO course_tag (
+               course_id,
+               tag_id
+        ) VALUES
+        <foreach collection="tags" item="tag" separator=",">
+          (
+            #{courseId, jdbcType=VARCHAR},
+            #{tag.id, jdbcType=VARCHAR}
+          )
+        </foreach>
+    </insert>
+
+    <delete id="deleteTag">
+        DELETE
+          FROM course_tag
+         WHERE course_id = #{courseId}
+    </delete>
+
+    <insert id="addLevel">
+        INSERT
+          INTO course_level (
+               course_id,
+               level_id
+        ) VALUES
+        <foreach collection="levels" item="level" separator=",">
+          (
+            #{courseId, jdbcType=VARCHAR},
+            #{level.id, jdbcType=VARCHAR}
+          )
+        </foreach>
+    </insert>
+
+    <delete id="deleteLevel">
+        DELETE
+          FROM course_level
+         WHERE course_id = #{courseId}
+    </delete>
+
+    <insert id="addMedia">
+        INSERT
+          INTO course_media (
+               course_id,
+               media_id
+        ) VALUES
+        <foreach collection="medias" item="media" separator=",">
+          (
+            #{courseId, jdbcType=VARCHAR},
+            #{media.id, jdbcType=VARCHAR}
+          )
+        </foreach>
+    </insert>
+
+    <delete id="deleteMedia">
+        DELETE
+          FROM course_media
+         WHERE course_id = #{courseId}
+    </delete>
+
+    <select id="findCourseByParams" resultMap="course">
         SELECT c.*,
-               m.id            AS m_id,
-               m.url           AS m_url,
-               m.type          AS m_type,
-               m.remark        AS m_remark,
-               m.suffix        AS m_sffix,
                a.id            AS a_id,
                a.nickname      AS a_nickname,
                a.wechat        AS a_wechat,
@@ -176,25 +377,21 @@
                t.name          AS t_name,
                ch.id           AS ch_id,
                ch.title        AS ch_title,
-               ch.introduction AS ch_introduction,
+               ch.summary      AS ch_summary,
                ch.cover        AS ch_cover,
-               ch.price        AS ch_price,
-               ch.weight       AS ch_weight
+               ch.weight       AS ch_weight,
+               ch.likes        AS ch_likes
           FROM (
                   SELECT *
                     FROM course
                   <if test="params != null">
-                    <if test="params.limit != null">
-                      ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
-                    </if>
+                      <if test="params.limit != null">
+                          ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+                      </if>
                   </if>
           ) AS c
      LEFT JOIN advisor a
             ON c.advisor_id = a.id
-     LEFT JOIN course_media cm
-            ON cm.course_id = c.id
-     LEFT JOIN media m
-            ON cm.media_id = m.id
      LEFT JOIN course_level cl
             ON cl.course_id = c.id
      LEFT JOIN level l
@@ -217,17 +414,13 @@
         </if>
     </select>
 
-    <select id="countByParams" resultType="java.lang.Long">
+    <select id="countCourseByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
           FROM (
                   SELECT c.*
                     FROM course c
                LEFT JOIN advisor a
                       ON c.advisor_id = a.id
-               LEFT JOIN course_media cm
-                      ON cm.course_id = c.id
-               LEFT JOIN media m
-                      ON cm.media_id = m.id
                LEFT JOIN course_level cl
                       ON cl.course_id = c.id
                LEFT JOIN level l
@@ -239,9 +432,178 @@
                LEFT JOIN course ch
                       ON ch.parent_id = c.id
                   <if test="params != null">
-                    <include refid="WHERE_COLUMN"/>
+                      <include refid="WHERE_COLUMN"/>
                   </if>
                 GROUP BY c.id
-        ) AS a
+          ) AS a
+    </select>
+
+    <select id="findPostByParams" resultMap="post">
+        SELECT c.*,
+               a.id            AS a_id,
+               a.nickname      AS a_nickname,
+               a.wechat        AS a_wechat,
+               a.head_img_url  AS a_head_img_url,
+               t.id            AS t_id,
+               t.name          AS t_name,
+               co.id           AS ch_id,
+               co.title        AS co_title,
+               co.summary      AS co_summary,
+               co.cover        AS co_cover,
+               co.weight       AS co_weight,
+               co.likes        AS co_likes
+          FROM (
+                  SELECT *
+                    FROM course
+                  <if test="params != null">
+                    <if test="params.limit != null">
+                        ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+                    </if>
+                  </if>
+          ) AS c
+     LEFT JOIN advisor a
+            ON c.advisor_id = a.id
+     LEFT JOIN course_tag ct
+            ON ct.course_id = c.id
+     LEFT JOIN tag t
+            ON ct.tag_id = t.id
+     LEFT JOIN course co
+            ON co.parent_id = c.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+        </if>
+    </select>
+
+    <select id="countPostByParams" resultType="java.lang.Long">
+        SELECT COUNT(*)
+          FROM (
+                  SELECT c.*
+                    FROM course c
+               LEFT JOIN advisor a
+                      ON c.advisor_id = a.id
+               LEFT JOIN course_tag ct
+                      ON ct.course_id = c.id
+               LEFT JOIN tag t
+                      ON ct.tag_id = t.id
+               LEFT JOIN course ch
+                      ON ch.parent_id = c.id
+                <if test="params != null">
+                    <include refid="WHERE_COLUMN"/>
+                </if>
+                GROUP BY c.id
+          ) AS a
+    </select>
+
+    <select id="getPostByParams" resultMap="post">
+        SELECT c.*,
+               a.id            AS a_id,
+               a.nickname      AS a_nickname,
+               a.wechat        AS a_wechat,
+               a.head_img_url  AS a_head_img_url,
+               t.id            AS t_id,
+               t.name          AS t_name,
+               co.id           AS ch_id,
+               co.title        AS co_title,
+               co.summary      AS co_summary,
+               co.cover        AS co_cover,
+               co.weight       AS co_weight,
+               co.likes        AS co_likes
+          FROM course c
+     LEFT JOIN advisor a
+            ON c.advisor_id = a.id
+     LEFT JOIN course_tag ct
+            ON ct.course_id = c.id
+     LEFT JOIN tag t
+            ON ct.tag_id = t.id
+     LEFT JOIN course co
+            ON co.parent_id = c.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+    <select id="getCourseByParams" resultMap="course">
+        SELECT c.*,
+               a.id            AS a_id,
+               a.nickname      AS a_nickname,
+               a.wechat        AS a_wechat,
+               a.head_img_url  AS a_head_img_url,
+               l.id            AS l_id,
+               l.name          AS l_name,
+               t.id            AS t_id,
+               t.name          AS t_name,
+               ch.id           AS ch_id,
+               ch.title        AS ch_title,
+               ch.summary      AS ch_summary,
+               ch.introduction AS ch_introduction,
+               ch.cover        AS ch_cover,
+               ch.weight       AS ch_weight,
+               ch.likes        AS ch_likes
+          FROM course c
+          LEFT JOIN advisor a
+            ON c.advisor_id = a.id
+     LEFT JOIN course_level cl
+            ON cl.course_id = c.id
+     LEFT JOIN level l
+            ON cl.level_id = l.id
+     LEFT JOIN course_tag ct
+            ON ct.course_id = c.id
+     LEFT JOIN tag t
+            ON ct.tag_id = t.id
+     LEFT JOIN course ch
+            ON ch.parent_id = c.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+    <select id="getChapterByParams" resultMap="chapter">
+        SELECT c.*,
+               se.id           AS se_id,
+               se.title        AS se_title,
+               se.summary      AS se_summary,
+               se.introduction AS se_introduction,
+               se.cover        AS se_cover,
+               se.likes        AS se_likes,
+               se.view         AS se_view,
+               se.weight       AS se_weight,
+               se.comments     AS se_comments,
+               m.id            AS m_id,
+               m.url           AS m_url,
+               m.type          AS m_type,
+               m.suffix        AS m_suffix
+          FROM course c
+     LEFT JOIN course se
+            ON se.parent_id = c.id
+     LEFT JOIN course_media cm
+            ON cm.course_id = se.id
+     LEFT JOIN media m
+            ON cm.media_id = m.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+    <select id="getSectionByParams" resultMap="section">
+        SELECT c.*,
+               m.id            AS m_id,
+               m.url           AS m_url,
+               m.type          AS m_type,
+               m.suffix        AS m_suffix
+          FROM course c
+     LEFT JOIN course_media cm
+            ON cm.course_id = c.id
+     LEFT JOIN media m
+            ON cm.media_id = m.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
     </select>
 </mapper>

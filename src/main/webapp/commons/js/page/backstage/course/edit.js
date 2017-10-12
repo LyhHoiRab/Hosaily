@@ -10,7 +10,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         name: 'imageFilter',
         fn: function(item){
             var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-            return 'jpeg|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            return 'jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
         }
     });
 
@@ -22,51 +22,80 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         }
     };
 
+    $('.selectpicker').selectpicker({
+        title: '请选择'
+    });
+
+    var ue = UE.getEditor('editor', {
+        initialFrameHeight: 450,
+        serverUrl: ''
+    });
+
     $scope.id = $stateParams.id;
+
     $scope.course = {
+        id           : $scope.id,
         title        : '',
         type         : 0,
+        kind         : 1,
+        summary      : '',
         introduction : '',
         state        : '',
-        cover        : basePath + '/commons/img/level_default.jpg',
-        price        : '',
-        likes        : '',
-        view         : '',
-        weight       : '',
+        cover        : '/commons/img/level_default.jpg',
+        price        : 0,
+        likes        : 0,
+        view         : 0,
+        weight       : 0,
+        comments     : 0,
         advisor      : {},
         tag          : [],
-        media        : [],
-        level        : []
+        level        : [],
+        children     : [],
     };
 
-    $scope.getById = function(){
+    $scope.chapterAdd = function(){
+        $state.go('chapterAdd', {parentId : $scope.id});
+    };
+
+    $scope.reset = function(){
+        $scope.course.title         = '';
+        $scope.course.summary       = '',
+        $scope.course.introduction  = '';
+        $scope.course.state         = '';
+        $scope.course.price         = 0;
+        $scope.course.likes         = 0;
+        $scope.course.view          = 0;
+        $scope.course.weight        = 0;
+        $scope.course.comments      = 0;
+        $scope.course.advisor       = {};
+        $scope.course.tag           = [];
+        $scope.course.level         = [];
+
+        $('.selectpicker').selectpicker('deselectAll');
+        ue.setContent('');
+    };
+
+    $scope.getCourseById = function(){
         $.ajax({
-            url: '/api/1.0/course/' + $scope.id,
-            type: 'GET',
+            url: '/api/1.0/course/course/' + $scope.id,
             dataType: 'JSON',
+            type: 'GET',
             success: function(res){
                 if(res.success){
-                    $scope.course = res.result;
+                    utils.copyOf(res.result, $scope.course);
+
+                    var tags = [];
+                    angular.forEach($scope.course.tag, function(data){
+                        tags.push(data.id);
+                    });
+                    $('#tags').selectpicker('val', tags);
+
+                    var levels = [];
+                    angular.forEach($scope.course.level, function(data){
+                        levels.push(data.id);
+                    });
+                    $('#levels').selectpicker('val', levels);
                 }
-
-                var medias = [];
-                var tags = [];
-                var levels = [];
-
-                angular.forEach($scope.course.media, function(data){
-                    medias.push(data.id);
-                });
-                angular.forEach($scope.course.tag, function(data){
-                    tags.push(data.id);
-                });
-                angular.forEach($scope.course.level, function(data){
-                    levels.push(data.id);
-                });
-
-                $('#medias').selectpicker('val', medias);
-                $('#tags').selectpicker('val', tags);
-                $('#levels').selectpicker('val', levels);
-                $('#advisor').val($scope.course.advisor.id);
 
                 if(!$scope.$$phase){
                     $scope.$apply();
@@ -75,49 +104,25 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         });
     };
 
-    $scope.reset = function(){
-        $scope.course.title         = '';
-        $scope.course.introduction  = '';
-        $scope.course.state         = '';
-        $scope.course.price         = '';
-        $scope.course.likes         = '';
-        $scope.course.view          = '';
-        $scope.course.weight        = '';
-        $scope.course.advisor       = {};
-        $scope.course.tag           = [];
-        $scope.course.media         = [];
-        $scope.course.level         = [];
-
-        $('.selectpicker').selectpicker('deselectAll');
-    };
-
     $scope.submit = function(){
-        var levels = $('#levels').val();
         var tags = $('#tags').val();
-        var medias = $('#medias').val();
-        var advisor = $('#advisor').val();
+        var levels = $('#levels').val();
 
-        if(levels !== null && levels.length > 0){
-            $scope.course.level = [];
-            angular.forEach(levels, function(data){
-                $scope.course.level.push({id:data});
-            });
-        };
         if(tags !== null && tags.length > 0){
             $scope.course.tag = [];
+
             angular.forEach(tags, function(data){
                 $scope.course.tag.push({id:data});
             });
         };
-        if(medias !== null && medias.length > 0){
-            $scope.course.media = [];
-            angular.forEach(medias, function(data){
-                $scope.course.media.push({id:data});
+        if(levels !== null && levels.length > 0){
+            $scope.course.level = [];
+
+            angular.forEach(levels, function(data){
+                $scope.course.level.push({id:data});
             });
         };
-        if(advisor !== null && advisor !== ''){
-            $scope.course.advisor.id = advisor;
-        };
+        $scope.course.introduction = ue.getContent();
 
         $.ajax({
             url: '/api/1.0/course',
@@ -134,13 +139,9 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         });
     };
 
-    $scope.addChildren = function(){
-        $state.go('courseAddChapter', {parentId : $scope.course.id});
-    };
+    $scope.getCourseById();
 
-    $('.selectpicker').selectpicker({
-        title: '请选择'
+    ue.addListener('ready', function(){
+        ue.setContent($scope.course.introduction);
     });
-
-    $scope.getById();
 });

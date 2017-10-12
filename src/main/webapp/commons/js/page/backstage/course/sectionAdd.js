@@ -1,4 +1,4 @@
-app.controller('courseAddChapterController', function($scope, $state, $stateParams, FileUploader){
+app.controller('sectionAddController', function($scope, $state, $stateParams, FileUploader){
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/course/upload',
         queueLimit: 1,
@@ -10,7 +10,7 @@ app.controller('courseAddChapterController', function($scope, $state, $statePara
         name: 'imageFilter',
         fn: function(item){
             var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-            return 'jpeg|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            return 'jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
         }
     });
 
@@ -22,64 +22,58 @@ app.controller('courseAddChapterController', function($scope, $state, $statePara
         }
     };
 
+    $('.selectpicker').selectpicker({
+        title: '请选择'
+    });
+
+    var ue = UE.getEditor('editor', {
+        initialFrameHeight: 450,
+        serverUrl: ''
+    });
+
     $scope.parentId = $stateParams.parentId;
+
     $scope.course = {
         parentId     : $scope.parentId,
         title        : '',
-        type         : 1,
+        type         : 2,
+        kind         : 0,
+        summary      : '',
         introduction : '',
         state        : '',
-        cover        : basePath + '/commons/img/level_default.jpg',
-        price        : '',
-        likes        : '',
-        view         : '',
-        weight       : '',
-        advisor      : {},
-        tag          : [],
-        media        : [],
-        level        : []
+        cover        : '/commons/img/level_default.jpg',
+        likes        : 0,
+        view         : 0,
+        weight       : 0,
+        comments     : 0,
+        price        : 0,
+        media        : []
     };
 
     $scope.reset = function(){
         $scope.course.title         = '';
+        $scope.course.summary       = '',
         $scope.course.introduction  = '';
         $scope.course.state         = '';
-        $scope.course.price         = '';
-        $scope.course.likes         = '';
-        $scope.course.view          = '';
-        $scope.course.weight        = '';
-        $scope.course.advisor       = {};
-        $scope.course.tag           = [];
+        $scope.course.likes         = 0;
+        $scope.course.view          = 0;
+        $scope.course.weight        = 0;
+        $scope.course.comments      = 0;
         $scope.course.media         = [];
-        $scope.course.level         = [];
 
         $('.selectpicker').selectpicker('deselectAll');
     };
 
     $scope.submit = function(){
-        var levels = $('#levels').val();
-        var tags = $('#tags').val();
-        var medias = $('#medias').val();
-        var advisor = $('#advisor').val();
+        $scope.course.introduction = ue.getContent();
 
-        if(levels !== null && levels.length > 0){
-            angular.forEach(levels, function(data){
-                $scope.course.level.push({id:data});
-            });
-        };
-        if(tags !== null && tags.length > 0){
-            angular.forEach(tags, function(data){
-                $scope.course.tag.push({id:data});
-            });
-        };
+        var medias = $('#medias').val();
+        console.log(medias);
         if(medias !== null && medias.length > 0){
             angular.forEach(medias, function(data){
                 $scope.course.media.push({id:data});
             });
-        };
-        if(advisor !== null && advisor !== ''){
-            $scope.course.advisor.id = advisor;
-        };
+        }
 
         $.ajax({
             url: '/api/1.0/course',
@@ -90,13 +84,9 @@ app.controller('courseAddChapterController', function($scope, $state, $statePara
             success: function(res){
                 if(res.success){
                     alert(res.msg);
-                    $state.go('courseEdit', {id:$scope.parentId});
+                    $state.go('chapterEdit', {id : $scope.parentId});
                 }
             }
         });
     };
-
-    $('.selectpicker').selectpicker({
-        title: '请选择'
-    });
 });

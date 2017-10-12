@@ -231,7 +231,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
         }
     }).state('post', {
         url: '/post',
-        templateUrl: '/page/backstage/post/index',
+        templateUrl: '/page/backstage/post',
         controller: 'postController',
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
@@ -252,12 +252,176 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
                     basePath + '/commons/js/plugin/ueditor/ueditor.all.min.js',
                     basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/post/add.js'
+                ]);
+            }]
+        }
+    }).state('postEdit', {
+        url: '/post/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/post/edit/' + $stateParams.id;
+        },
+        controller: 'postEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.all.min.js',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/post/edit.js'
+                ]);
+            }]
+        }
+    }).state('course', {
+        url: '/course',
+        templateUrl: '/page/backstage/course',
+        controller: 'courseController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/course/index.js'
+                ]);
+            }]
+        }
+    }).state('courseAdd', {
+        url: '/course/add',
+        templateUrl: '/page/backstage/course/add',
+        controller: 'courseAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.all.min.js',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/course/add.js'
+                ]);
+            }]
+        }
+    }).state('courseEdit', {
+        url: '/course/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/course/edit/' + $stateParams.id;
+        },
+        controller: 'courseEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.all.min.js',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/course/edit.js'
+                ]);
+            }]
+        }
+    }).state('chapterAdd', {
+        url: '/course/add/chapter/:parentId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/course/add/chapter/' + $stateParams.parentId;
+        },
+        controller: 'chapterAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.all.min.js',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/course/chapterAdd.js'
+                ]);
+            }]
+        }
+    }).state('chapterEdit', {
+        url: '/chapter/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/course/edit/chapter/' + $stateParams.id;
+        },
+        controller: 'chapterEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.all.min.js',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/course/chapterEdit.js'
+                ]);
+            }]
+        }
+    }).state('sectionAdd', {
+        url: '/course/add/section/:parentId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/course/add/section/' + $stateParams.parentId;
+        },
+        controller: 'sectionAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.all.min.js',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/course/sectionAdd.js'
+                ]);
+            }]
+        }
+    }).state('sectionEdit', {
+        url: '/section/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/course/edit/section/' + $stateParams.id;
+        },
+        controller: 'sectionEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.all.min.js',
+                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/course/sectionEdit.js'
                 ]);
             }]
         }

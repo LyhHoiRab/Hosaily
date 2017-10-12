@@ -3,7 +3,7 @@
     <span>系统设置</span>
   </li><!-- item -->
   <li>
-    <a ui-sref="course">课程管理</a>
+    <a ui-sref="post">帖子管理</a>
   </li><!-- item -->
   <li>
     <span>
@@ -66,7 +66,7 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">导师</span>
-        <select class="form-control" id="advisor">
+        <select class="form-control" ng-model="post.advisor.id" value="{{post.advisor.id}}">
           <option value="">请选择</option>
           #foreach($advisor in $advisors)
             <option value="${advisor.id}">${advisor.nickname}</option>

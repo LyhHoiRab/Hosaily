@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,7 +33,7 @@ public class PostController{
     @Autowired
     private TagService tagService;
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView index(ModelMap content){
         try{
             List<UsingState> states = Arrays.asList(UsingState.values());
@@ -56,6 +57,25 @@ public class PostController{
             content.put("states", states);
             content.put("advisors", advisors);
             content.put("tags", tags);
+
+            return new ModelAndView("backstage/post/edit", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView edit(@PathVariable("id") String id, ModelMap content){
+        try{
+            List<UsingState> states = Arrays.asList(UsingState.values());
+            List<Advisor> advisors = advisorService.findByState(UsingState.NORMAL);
+            List<Tag> tags = tagService.findByState(UsingState.NORMAL);
+
+            content.put("states", states);
+            content.put("advisors", advisors);
+            content.put("tags", tags);
+            content.put("id", id);
 
             return new ModelAndView("backstage/post/edit", content);
         }catch(Exception e){

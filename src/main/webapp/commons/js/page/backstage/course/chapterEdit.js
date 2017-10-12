@@ -1,4 +1,4 @@
-app.controller('courseAddController', function($scope, $state, FileUploader){
+app.controller('chapterEditController', function($scope, $state, $stateParams, FileUploader){
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/course/upload',
         queueLimit: 1,
@@ -31,24 +31,28 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         serverUrl: ''
     });
 
+    $scope.id = $stateParams.id;
+
     $scope.course = {
+        id           : $scope.id,
+        parentId     : '',
         title        : '',
-        type         : 0,
+        type         : 1,
         kind         : 0,
         summary      : '',
         introduction : '',
         state        : '',
         cover        : '/commons/img/level_default.jpg',
-        price        : 0,
         likes        : 0,
         view         : 0,
         weight       : 0,
         comments     : 0,
-        advisor      : {
-            id : ''
-        },
-        tag          : [],
-        level        : []
+        price        : 0,
+        children     : []
+    };
+
+    $scope.sectionAdd = function(){
+        $state.go('sectionAdd', {parentId : $scope.id});
     };
 
     $scope.reset = function(){
@@ -56,46 +60,52 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         $scope.course.summary       = '',
         $scope.course.introduction  = '';
         $scope.course.state         = '';
-        $scope.course.price         = 0;
         $scope.course.likes         = 0;
         $scope.course.view          = 0;
         $scope.course.weight        = 0;
         $scope.course.comments      = 0;
-        $scope.course.advisor.id    = '';
-        $scope.course.tag           = [];
-        $scope.course.level         = [];
 
         $('.selectpicker').selectpicker('deselectAll');
     };
 
     $scope.submit = function(){
-        var tags = $('#tags').val();
-        var levels = $('#levels').val();
-
-        if(tags !== null && tags.length > 0){
-            angular.forEach(tags, function(data){
-                $scope.course.tag.push({id:data});
-            });
-        };
-        if(levels !== null && levels.length > 0){
-            angular.forEach(levels, function(data){
-                $scope.course.level.push({id:data});
-            });
-        };
         $scope.course.introduction = ue.getContent();
 
         $.ajax({
             url: '/api/1.0/course',
-            type: 'POST',
+            type: 'PUT',
             data: JSON.stringify($scope.course),
             dataType: 'JSON',
             contentType: 'application/json',
             success: function(res){
                 if(res.success){
                     alert(res.msg);
-                    $state.go('course');
+                    $state.go('courseEdit', {id : $scope.course.parentId});
                 }
             }
         });
     };
+
+    $scope.getById = function(){
+        $.ajax({
+            url: '/api/1.0/course/chapter/' + $scope.id,
+            dataType: 'JSON',
+            type: 'GET',
+            success: function(res){
+                if(res.success){
+                    utils.copyOf(res.result, $scope.course);
+                }
+
+                if(!$scope.$$phase){
+                    $scope.$apply();
+                }
+            }
+        });
+    };
+
+    $scope.getById();
+
+    ue.addListener('ready', function(){
+        ue.setContent($scope.course.introduction);
+    });
 });

@@ -6,11 +6,14 @@
     <a ui-sref="course">课程管理</a>
   </li><!-- item -->
   <li>
+    <a ui-sref="courseEdit({id:course.parentId})">修改课程</a>
+  </li><!-- item -->
+  <li>
     <span>
       #if($id)
-        修改课程
+        修改章节
       #else
-        添加课程
+        添加章节
       #end
     </span>
   </li><!-- item -->
@@ -60,40 +63,6 @@
       <div class="input-group">
         <span class="input-group-addon">权重</span>
         <input type="number" class="form-control" placeholder="权重" ng-model="course.weight" value="{{course.weight}}">
-      </div>
-    </div><!-- item -->
-
-    <div class="row-group">
-      <div class="input-group">
-        <span class="input-group-addon">导师</span>
-        <select class="form-control" ng-model="course.advisor.id" value="{{course.advisor.id}}">
-          <option value="">请选择</option>
-          #foreach($advisor in $advisors)
-            <option value="${advisor.id}">${advisor.nickname}</option>
-          #end
-        </select>
-      </div>
-    </div><!-- item -->
-
-    <div class="row-group">
-      <div class="input-group">
-        <span class="input-group-addon">标签</span>
-        <select class="selectpicker form-control" multiple id="tags">
-          #foreach($tag in $tags)
-            <option value="${tag.id}">${tag.name}</option>
-          #end
-        </select>
-      </div>
-    </div><!-- item -->
-
-    <div class="row-group">
-      <div class="input-group">
-        <span class="input-group-addon">等级</span>
-        <select class="selectpicker form-control" multiple id="levels">
-          #foreach($level in $levels)
-            <option value="${level.id}">${level.name}</option>
-          #end
-        </select>
       </div>
     </div><!-- item -->
 
@@ -150,7 +119,7 @@
 
           <div class="col-md-2">
             <a href="javascript:;" ng-click="">[删除]</a>
-            <a href="javascript:;" ui-sref="chapterEdit({id:item.id})">[修改]</a>
+            <a href="javascript:;" ui-sref="sectionEdit({id:item.id})">[修改]</a>
           </div>
         </div><!-- row -->
       </div><!-- item group -->
@@ -159,9 +128,9 @@
     <div class="row-group">
       <div class="button-group">
         #if($id)
-        <button type="button" class="btn" ng-click="chapterAdd()">
+        <button type="button" class="btn" ng-click="sectionAdd()">
           <i class="fa fa-plus"></i>
-          添加章节
+          添加课时
         </button>
         #end
         <button type="button" class="btn" ng-click="submit()">

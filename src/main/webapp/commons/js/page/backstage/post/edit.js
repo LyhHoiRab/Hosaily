@@ -1,4 +1,4 @@
-app.controller('postAddController', function($scope, $state, FileUploader){
+app.controller('postEditController', function($scope, $state, $stateParams, FileUploader){
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/course/upload',
         queueLimit: 1,
@@ -15,7 +15,7 @@ app.controller('postAddController', function($scope, $state, FileUploader){
     });
 
     uploader.onSuccessItem = function(item, response, status, headers){
-        $scope.post.cover = response.result;
+        $scope.course.cover = response.result;
 
         if(!$scope.$$phase){
             $scope.$apply();
@@ -31,7 +31,10 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         serverUrl: ''
     });
 
+    $scope.id = $stateParams.id;
+
     $scope.post = {
+        id           : $scope.id,
         title        : '',
         type         : 0,
         kind         : 1,
@@ -44,9 +47,7 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         view         : 0,
         weight       : 0,
         comments     : 0,
-        advisor      : {
-            id : ''
-        },
+        advisor      : {},
         tag          : []
     };
 
@@ -60,10 +61,35 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         $scope.post.view          = 0;
         $scope.post.weight        = 0;
         $scope.post.comments      = 0;
-        $scope.post.advisor.id    = '';
+        $scope.post.advisor       = {};
         $scope.post.tag           = [];
 
         $('.selectpicker').selectpicker('deselectAll');
+        ue.setContent('');
+    };
+
+    $scope.getPostById = function(){
+        $.ajax({
+            url: '/api/1.0/course/post/' + $scope.id,
+            dataType: 'JSON',
+            type: 'GET',
+            success: function(res){
+                if(res.success){
+                    utils.copyOf(res.result, $scope.post);
+
+                    var tags = [];
+                    angular.forEach($scope.post.tag, function(data){
+                        tags.push(data.id);
+                    });
+
+                    $('#tags').selectpicker('val', tags);
+                }
+
+                if(!$scope.$$phase){
+                    $scope.$apply();
+                }
+            }
+        });
     };
 
     $scope.submit = function(){
@@ -79,7 +105,7 @@ app.controller('postAddController', function($scope, $state, FileUploader){
 
         $.ajax({
             url: '/api/1.0/course',
-            type: 'POST',
+            type: 'PUT',
             data: JSON.stringify($scope.post),
             dataType: 'JSON',
             contentType: 'application/json',
@@ -91,4 +117,10 @@ app.controller('postAddController', function($scope, $state, FileUploader){
             }
         });
     };
+
+    $scope.getPostById();
+
+    ue.addListener('ready', function(){
+        ue.setContent($scope.post.introduction);
+    });
 });
