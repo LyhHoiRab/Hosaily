@@ -4,16 +4,16 @@ import com.google.gson.annotations.SerializedName;
 
 public class AccessTokenResponse{
 
-    @SerializedName(value = "accessToken", alternate = {"accessToken", "access_token"})
+    @SerializedName(value = "accessToken", alternate = {"access_token"})
     private String accessToken;
-    @SerializedName(value = "expiresIn", alternate = {"expiresIn", "expires_in"})
+    @SerializedName(value = "expiresIn", alternate = {"expires_in"})
     private Integer expiresIn;
-    @SerializedName(value = "refreshToken", alternate = {"refreshToken", "refresh_token"})
+    @SerializedName(value = "refreshToken", alternate = {"refresh_token"})
     private String refreshToken;
-    @SerializedName(value = "openId", alternate = {"openId", "openid"})
+    @SerializedName(value = "openId", alternate = {"openid"})
     private String openId;
     private String scope;
-    @SerializedName(value = "unionId", alternate = {"unionId", "unionid"})
+    @SerializedName(value = "unionId", alternate = {"unionid"})
     private String unionId;
     private Integer errcode;
     private String errmsg;

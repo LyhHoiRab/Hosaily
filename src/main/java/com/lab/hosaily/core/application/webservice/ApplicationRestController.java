@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.application.webservice;
 
+import com.lab.hosaily.commons.utils.URLUtils;
 import com.lab.hosaily.core.application.entity.Application;
 import com.lab.hosaily.core.application.service.ApplicationService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
@@ -58,8 +59,10 @@ public class ApplicationRestController{
     @RequestMapping(value = "/qr", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Map<String, Object>> getQRParams(HttpServletRequest request, String token, String redirectUrl){
         try{
+            String basePath = URLUtils.getBasePath(request);
             String sessionId = request.getSession().getId();
-            Map<String, Object> result = applicationService.getQRParams(sessionId, token, redirectUrl);
+
+            Map<String, Object> result = applicationService.getQRParams(sessionId, token, redirectUrl, basePath);
 
             return new Response<Map<String, Object>>("查询成功", result);
         }catch(Exception e){

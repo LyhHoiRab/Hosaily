@@ -12,9 +12,10 @@ import java.util.Date;
 public class WeChatAccount implements Create, Update{
 
     private String id;
-    @SerializedName(value = "openId", alternate = {"openId", "openid"})
+    private String appId;
+    @SerializedName(value = "openId", alternate = {"openid"})
     private String openId;
-    @SerializedName(value = "unionId", alternate = {"unionId", "unionid"})
+    @SerializedName(value = "unionId", alternate = {"union_id", "unionid"})
     private String unionId;
     private Boolean subscribe;
     private String nickname;
@@ -23,9 +24,9 @@ public class WeChatAccount implements Create, Update{
     private String city;
     private String province;
     private String country;
-    @SerializedName(value = "headImgUrl", alternate = {"headImgUrl", "headimgurl"})
+    @SerializedName(value = "headImgUrl", alternate = {"headimgurl"})
     private String headImgUrl;
-    @SerializedName(value = "subscribeTime", alternate = {"subscribeTime", "subscribe_time"})
+    @SerializedName(value = "subscribeTime", alternate = {"subscribe_time"})
     private Date subscribeTime;
     private String remark;
     private UsingState state;
@@ -42,6 +43,14 @@ public class WeChatAccount implements Create, Update{
 
     public void setId(String id){
         this.id = id;
+    }
+
+    public String getAppId(){
+        return appId;
+    }
+
+    public void setAppId(String appId){
+        this.appId = appId;
     }
 
     public String getOpenId(){

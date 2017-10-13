@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lab.hosaily.core.account.dao.mapper.AccountMapper">
+    <resultMap id="account" type="com.rab.babylon.core.account.entity.Account">
+        <id     column="id"          property="id"         javaType="java.lang.String"/>
+        <result column="loginname"   property="loginname"  javaType="java.lang.String"/>
+        <result column="wechat"      property="weChat"     javaType="java.lang.String"/>
+        <result column="phone"       property="phone"      javaType="java.lang.String"/>
+        <result column="email"       property="email"      javaType="java.lang.String"/>
+        <result column="password"    property="password"   javaType="java.lang.String"/>
+        <result column="state"       property="state"      typeHandler="usingStateHandler"/>
+        <result column="is_delete"   property="isDelete"   javaType="java.lang.Boolean"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+        <result column="delete_time" property="deleteTime" javaType="java.util.Date"/>
+    </resultMap>
+
+    <sql id="WHERE_COLUMN">
+        <where>
+            <if test="params.andCreiterions != null and params.andCreiterions.size > 0">
+                <foreach collection="params.andCreiterions" item="criterion" separator="AND">
+                    <trim prefix="(" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.criterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="listItem" open="(" close=")" separator=",">
+                                                    #{listItem}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+
+            <if test="params.orCreiterions != null and params.orCreiterions.size > 0">
+                <foreach collection="params.orCreiterions" item="criterion" separator="OR">
+                    <trim prefix="(" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.criterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="listItem" open="(" close=")" separator=",">
+                                                    #{listItem}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <insert id="save">
+        INSERT
+          INTO account (
+               id,
+               loginname,
+               wechat,
+               phone,
+               email,
+               password,
+               state,
+               is_delete,
+               create_time
+          ) VALUE (
+               #{id,         jdbcType=VARCHAR},
+               #{loginname,  jdbcType=VARCHAR},
+               #{weChat,     jdbcType=VARCHAR},
+               #{phone,      jdbcType=VARCHAR},
+               #{email,      jdbcType=VARCHAR},
+               #{password,   jdbcType=VARCHAR},
+               #{state,      typeHandler=usingStateHandler},
+               #{isDelete,   jdbcType=BOOLEAN},
+               #{createTime, jdbcType=TIMESTAMP}
+          )
+    </insert>
+
+    <update id="update">
+        UPDATE account
+         <set>
+             <if test="loginname != null and loginname != ''">
+                 loginname = #{loginname, jdbcType=VARCHAR},
+             </if>
+             <if test="weChat != null and weChat != ''">
+                 wechat = #{weChat, jdbcType=VARCHAR},
+             </if>
+             <if test="phone != null and phone != ''">
+                 phone = #{phone, jdbcType=VARCHAR},
+             </if>
+             <if test="email != null and email != ''">
+                 email = #{email, jdbcType=VARCHAR},
+             </if>
+             <if test="password != null and password != ''">
+                 password = #{password, jdbcType=VARCHAR},
+             </if>
+             <if test="state != null">
+                 state = #{state, typeHandler=usingStateHandler},
+             </if>
+             <if test="isDelete != null">
+                 is_delete = #{isDelete, jdbcType=BOOLEAN},
+             </if>
+             <if test="updateTime != null">
+                 update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+             <if test="deleteTime != null">
+                 delete_time = #{deleteTime, jdbcType=TIMESTAMP},
+             </if>
+         </set>
+          WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+        UPDATE account
+           SET is_delete = TRUE,
+               delete_time = NOW()
+         WHERE id = #{id}
+    </update>
+
+    <select id="getByParams" resultMap="account">
+        SELECT *
+          FROM account
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+    <select id="findByParams" resultMap="account">
+        SELECT *
+          FROM account
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+    <select id="countByParams" resultType="java.lang.Long">
+        SELECT COUNT(*)
+          FROM account
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+</mapper>

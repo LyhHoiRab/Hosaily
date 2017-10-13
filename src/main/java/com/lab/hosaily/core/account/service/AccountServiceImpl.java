@@ -14,7 +14,6 @@ import com.lab.hosaily.core.account.entity.XcxAccount;
 import com.lab.hosaily.core.application.dao.ApplicationDao;
 import com.lab.hosaily.core.application.entity.Application;
 import com.rab.babylon.commons.security.exception.ServiceException;
-import com.rab.babylon.commons.utils.MD5Utils;
 import com.rab.babylon.commons.utils.SHAUtils;
 import com.rab.babylon.core.account.entity.Account;
 import com.rab.babylon.core.account.entity.User;
@@ -25,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
-import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
@@ -132,7 +129,7 @@ public class AccountServiceImpl implements AccountService{
      */
     @Override
     @Transactional(readOnly = false)
-    public void registerByWeb(String token, String code){
+    public Account registerByWeb(String token, String code){
         try{
             Assert.hasText(code, "code值不能为空");
             Assert.hasText(token, "网站应用Token不能为空");
@@ -148,13 +145,14 @@ public class AccountServiceImpl implements AccountService{
             AccessTokenResponse accessToken = WeChatUtils.getAccessToken(code, appId, secret);
 
             if(StringUtils.isBlank(accessToken.getOpenId()) && StringUtils.isBlank(accessToken.getUnionId())){
-                //TODO 查询opneId失败
+                throw new ServiceException("获取openId失败");
             }
 
             WeChatAccount weChatAccount = weChatAccountDao.getByOpenId(accessToken.getOpenId());
             if(weChatAccount == null){
                 UserInfoResponse userInfo = WeChatUtils.getUserInfo(accessToken.getAccessToken(), appId);
                 weChatAccount = userInfo.changeToWeChatAccount();
+                weChatAccount.setAppId(appId);
                 weChatAccountDao.saveOrUpdate(weChatAccount);
             }
 
@@ -178,6 +176,11 @@ public class AccountServiceImpl implements AccountService{
                 user.setAccountId(account.getId());
                 userDao.saveOrUpdate(user);
             }
+
+            //缓存用户信息
+            userDao.cache(user);
+
+            return account;
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

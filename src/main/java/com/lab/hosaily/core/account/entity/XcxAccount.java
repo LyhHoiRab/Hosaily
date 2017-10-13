@@ -20,7 +20,7 @@ public class XcxAccount implements Create, Update{
     //openId
     private String openId;
     //昵称
-    @SerializedName(value = "nickname", alternate = {"nickname", "nickName"})
+    @SerializedName(value = "nickname", alternate = {"nickName"})
     private String nickname;
     //性别
     private Gender gender;

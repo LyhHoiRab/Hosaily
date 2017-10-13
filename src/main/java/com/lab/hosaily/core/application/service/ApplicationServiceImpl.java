@@ -6,6 +6,7 @@ import com.lab.hosaily.core.application.entity.Application;
 import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
+import com.rab.babylon.commons.utils.AESUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,7 @@ public class ApplicationServiceImpl implements ApplicationService{
      * 查询生成二维码参数
      */
     @Override
-    public Map<String, Object> getQRParams(String sessionId, String token, String redirectUrl){
+    public Map<String, Object> getQRParams(String sessionId, String token, String redirectUrl, String basePath){
         try{
             Assert.hasText(token, "应用Token不能为空");
 
@@ -81,11 +82,11 @@ public class ApplicationServiceImpl implements ApplicationService{
                 throw new ServiceException(String.format("无效的应用Token[%s]", token));
             }
 
-            String state = URLEncoder.encode(redirectUrl + "_" + sessionId + "_" + token, "UTF-8");
+            String state = AESUtils.encryptBy128(redirectUrl + "_" + token, sessionId);
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(AuthorizationConsts.NODE_APPID, application.getAppId());
-            params.put(AuthorizationConsts.NODE_REDIRECT_URL, AuthorizationConsts.getAuthorizeApi());
+            params.put(AuthorizationConsts.NODE_REDIRECT_URL, basePath + AuthorizationConsts.AUTHORIZE_API);
             params.put(AuthorizationConsts.NODE_STATE, state);
 
             return params;

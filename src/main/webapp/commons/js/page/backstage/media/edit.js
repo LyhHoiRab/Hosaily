@@ -27,8 +27,8 @@ app.controller('mediaEditController', function($scope, $state, $stateParams, $sc
 			dataType: 'JSON',
 			success: function(res){
 				if(res.success){
-					$scope.media = res.result;
-					$scope.isShow = true;
+					//$scope.media = res.result;
+					utils.copyOf(res.result, $scope.media);
 
 					if($scope.media.type == 1){
 						$scope.mediaView = $sce.trustAsHtml('<audio src="' + $scope.media.url + '" controls></audio>');

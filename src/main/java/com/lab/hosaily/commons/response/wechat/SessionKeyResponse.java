@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class SessionKeyResponse{
 
-    @SerializedName(value = "openId", alternate = {"openId", "openid", "open_id"})
+    @SerializedName(value = "openId", alternate = {"openid", "open_id"})
     private String openId;
-    @SerializedName(value = "sessionKey", alternate = {"sessionKey", "session_key"})
+    @SerializedName(value = "sessionKey", alternate = {"session_key"})
     private String sessionKey;
-    @SerializedName(value = "unionId", alternate = {"unionId", "unionid"})
+    @SerializedName(value = "unionId", alternate = {"unionid"})
     private String unionId;
     private Integer errcode;
     private String errmsg;

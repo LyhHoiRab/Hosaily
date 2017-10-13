@@ -15,7 +15,7 @@
         <result column="is_delete"    property="isDelete"   javaType="java.lang.Boolean"/>
         <result column="create_time"  property="createTime" javaType="java.util.Date"/>
         <result column="update_time"  property="updateTime" javaType="java.util.Date"/>
-        <collection property="expands" resultMap="userExpands" columnPrefix="e_"/>
+        <collection property="expands" resultMap="userExpand" columnPrefix="e_"/>
     </resultMap>
 
     <resultMap id="userExpand" type="com.rab.babylon.core.account.entity.UserExpand">
@@ -75,7 +75,7 @@
             </if>
 
             <if test="params.orCreiterions != null and params.orCreiterions.size > 0">
-                <foreach collection="params.orCreiterions" item="criterion" separator="AND">
+                <foreach collection="params.orCreiterions" item="criterion" separator="OR">
                     <trim prefix="(" suffix=")">
                         <choose>
                             <when test="criterion.noValue">
@@ -191,11 +191,12 @@
 
     <select id="getByParams" resultMap="user">
         SELECT u.*,
-               e.id      AS e_id,
-               e.user_id AS e_user_id,
-               e.name    AS e_name,
-               e.value   AS e_value
-          FROM user
+               e.id          AS e_id,
+               e.user_id     AS e_user_id,
+               e.name        AS e_name,
+               e.value       AS e_value,
+               e.description AS e_description
+          FROM user u
      LEFT JOIN user_expand e
             ON e.user_id = u.id
         <if test="params != null">
@@ -205,11 +206,12 @@
 
     <select id="findByParams" resultMap="user">
         SELECT u.*,
-               e.id      AS e_id,
-               e.user_id AS e_user_id,
-               e.name    AS e_name,
-               e.value   AS e_value
-          FROM user
+               e.id          AS e_id,
+               e.user_id     AS e_user_id,
+               e.name        AS e_name,
+               e.value       AS e_value,
+               e.description AS e_description
+          FROM user u
      LEFT JOIN user_expand e
             ON e.user_id = u.id
         <if test="params != null">

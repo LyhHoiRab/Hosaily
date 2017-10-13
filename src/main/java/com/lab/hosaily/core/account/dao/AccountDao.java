@@ -4,12 +4,17 @@ import com.lab.hosaily.core.account.dao.mapper.AccountMapper;
 import com.rab.babylon.commons.security.exception.DataAccessException;
 import com.rab.babylon.commons.security.mybatis.Criteria;
 import com.rab.babylon.commons.security.mybatis.Restrictions;
+import com.rab.babylon.commons.utils.UUIDGenerator;
 import com.rab.babylon.core.account.entity.Account;
+import com.rab.babylon.core.consts.entity.UsingState;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
+
+import java.util.Date;
 
 @Repository
 public class AccountDao{
@@ -24,7 +29,19 @@ public class AccountDao{
      */
     public void saveOrUpdate(Account account){
         try{
+            Assert.notNull(account, "账户信息不能为空");
 
+            if(StringUtils.isBlank(account.getId())){
+                account.setId(UUIDGenerator.by32());
+                account.setState(UsingState.NORMAL);
+                account.setIsDelete(false);
+                account.setCreateTime(new Date());
+
+                mapper.save(account);
+            }else{
+                account.setUpdateTime(new Date());
+                mapper.update(account);
+            }
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
@@ -73,17 +90,11 @@ public class AccountDao{
             Assert.hasText(openId, "OpenId不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("openId", openId));
-            Account account = mapper.getByParams(criteria);
+            criteria.or(Restrictions.eq("wechat", openId));
 
-            if(account != null){
-                return account;
+            if(!StringUtils.isBlank(unionId)){
+                criteria.or(Restrictions.eq("wechat", unionId));
             }
-
-            Assert.hasText(unionId, "UnionId不能为空");
-
-            criteria.clear();
-            criteria.and(Restrictions.eq("unionId", unionId));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){

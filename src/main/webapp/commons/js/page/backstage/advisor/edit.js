@@ -67,7 +67,8 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
             dataType: 'JSON',
             success: function(res){
                 if(res.success){
-                    $scope.advisor = res.result;
+                    //$scope.advisor = res.result;
+                    utils.copyOf(res.result, $scope.advisor);
                 }
 
                 if(!$scope.$$phase){

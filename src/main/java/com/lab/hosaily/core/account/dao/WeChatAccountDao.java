@@ -34,6 +34,7 @@ public class WeChatAccountDao{
 
             if(StringUtils.isBlank(account.getId())){
                 Assert.hasText(account.getOpenId(), "微信账户openId不能为空");
+                Assert.hasText(account.getAppId(), "微信账户AppId不能为空");
 
                 account.setId(UUIDGenerator.by32());
                 account.setState(UsingState.NORMAL);

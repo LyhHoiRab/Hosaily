@@ -36,7 +36,8 @@ app.controller('tagEditController', function($scope, $state, $stateParams){
             dataType: 'JSON',
             success: function(res){
                 if(res.success){
-                    $scope.tag = res.result;
+                    //$scope.tag = res.result;
+                    utils.copyOf(res.result, $scope.tag);
                 }
 
                 if(!$scope.$$phase){

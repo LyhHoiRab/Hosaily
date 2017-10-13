@@ -25,7 +25,7 @@ app.controller('levelEditController', function($scope, $state, $stateParams, Fil
     $scope.id = $stateParams.id;
 
     $scope.level = {
-        id          : '',
+        id          : $scope.id,
         name        : '',
         state       : '',
         description : '',
@@ -91,7 +91,8 @@ app.controller('levelEditController', function($scope, $state, $stateParams, Fil
             dataType: 'JSON',
             success: function(res){
                 if(res.success){
-                    $scope.level = res.result;
+                    //$scope.level = res.result;
+                    utils.copyOf(res.result, $scope.level);
                 }
 
                 if(!$scope.$$phase){

@@ -1,6 +1,15 @@
 app.controller('applicationEditController', function($scope, $stateParams, $state){
     $scope.id = $stateParams.id;
-    $scope.application = {};
+    $scope.application = {
+        id     : $scope.id,
+        name   : '',
+        appId  : '',
+        secret : '',
+        aesKey : '',
+        token  : '',
+        type   : '',
+        state  : ''
+    };
 
     $scope.getById = function(){
         $.ajax({
@@ -9,7 +18,8 @@ app.controller('applicationEditController', function($scope, $stateParams, $stat
             dataType: 'JSON',
             success: function(res){
                 if(res.success){
-                    $scope.application = res.result;
+                    //$scope.application = res.result;
+                    utils.copyOf(res.result, $scope.application);
                 }
 
                 if(!$scope.$$phase){

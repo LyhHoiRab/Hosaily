@@ -6,16 +6,16 @@ import com.lab.hosaily.core.account.entity.WeChatAccount;
 
 public class UserInfoResponse{
 
-    @SerializedName(value = "openId", alternate = {"openId", "openid", "open_id"})
+    @SerializedName(value = "openId", alternate = {"openid", "open_id"})
     private String openId;
     private String nickname;
     private WeChatSex sex;
     private String province;
     private String city;
     private String country;
-    @SerializedName(value = "headImgUrl", alternate = {"headImgUrl", "headimgurl"})
+    @SerializedName(value = "headImgUrl", alternate = {"headimgurl"})
     private String headImgUrl;
-    @SerializedName(value = "unionId", alternate = {"unionId", "unionid"})
+    @SerializedName(value = "unionId", alternate = {"union_id", "unionid"})
     private String unionId;
     private Integer errcode;
     private String errmsg;
@@ -107,12 +107,13 @@ public class UserInfoResponse{
     public WeChatAccount changeToWeChatAccount(){
         WeChatAccount account = new WeChatAccount();
         account.setOpenId(this.openId);
+        account.setUnionId(this.unionId);
+        account.setNickname(this.nickname);
         account.setSex(this.sex);
         account.setProvince(this.province);
         account.setCity(this.city);
         account.setCountry(this.country);
         account.setHeadImgUrl(this.headImgUrl);
-        account.setUnionId(this.unionId);
 
         return account;
     }
