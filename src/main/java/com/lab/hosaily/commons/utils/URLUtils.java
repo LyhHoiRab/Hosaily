@@ -17,6 +17,6 @@ public class URLUtils{
             throw new IllegalArgumentException("请求信息不能为空");
         }
 
-        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
 }

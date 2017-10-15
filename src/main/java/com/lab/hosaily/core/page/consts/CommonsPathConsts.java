@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 public class CommonsPathConsts{
 
     public static String JS_PATH;
-
     public static String CSS_PATH;
+    public static String IMG_PATH;
 
     @Value(value = "${url.commons.js}")
     public void setJsPath(String jsPath){
@@ -18,18 +18,29 @@ public class CommonsPathConsts{
         }
     }
 
-    public static String getJsPath(){
+    public String getJsPath(){
         return JS_PATH;
     }
 
     @Value(value = "${url.commons.css}")
-    public static void setCssPath(String cssPath){
+    public void setCssPath(String cssPath){
         if(StringUtils.isBlank(CSS_PATH)){
             CSS_PATH = cssPath;
         }
     }
 
-    public static String getCssPath(){
+    public String getCssPath(){
         return CSS_PATH;
+    }
+
+    @Value(value = "${url.commons.img}")
+    public void setImgPath(String imgPath){
+        if(StringUtils.isBlank(IMG_PATH)){
+            IMG_PATH = imgPath;
+        }
+    }
+
+    public String getImgPath(){
+        return IMG_PATH;
     }
 }

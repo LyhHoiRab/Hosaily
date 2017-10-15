@@ -64,6 +64,7 @@ CREATE TABLE `advisor` (
   `introduction` varchar(255) DEFAULT NULL,
   `head_img_url` varchar(255) DEFAULT NULL,
   `state` tinyint(1) NOT NULL,
+  `weight` int(1) DEFAULT NULL,
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)

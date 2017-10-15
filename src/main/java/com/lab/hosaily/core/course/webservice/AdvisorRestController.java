@@ -93,4 +93,20 @@ public class AdvisorRestController{
             throw new ApplicationException(e.getMessage(), e);
         }
     }
+
+    /**
+     * h5分页查询导师
+     */
+    @RequestMapping(value = "/page/h5", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Page<Advisor>> pageByH5(Long pageNum, Long pageSize){
+        try{
+            PageRequest pageRequest = new PageRequest(pageNum, pageSize);
+            Page<Advisor> page = advisorService.pageByH5(pageRequest);
+
+            return new Response<Page<Advisor>>("查询成功", page);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 }

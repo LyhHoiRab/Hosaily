@@ -133,4 +133,19 @@ public class AdvisorServiceImpl implements AdvisorService{
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
+    /**
+     * H5分页查询
+     */
+    @Override
+    public Page<Advisor> pageByH5(PageRequest pageRequest){
+        try{
+            Assert.notNull(pageRequest, "分页信息不能为空");
+
+            return advisorDao.pageByH5(pageRequest);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 }

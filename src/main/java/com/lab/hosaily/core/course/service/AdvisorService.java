@@ -39,4 +39,9 @@ public interface AdvisorService{
      * 上传图片
      */
     String upload(CommonsMultipartFile file);
+
+    /**
+     * H5分页查询
+     */
+    Page<Advisor> pageByH5(PageRequest pageRequest);
 }

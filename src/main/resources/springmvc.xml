@@ -90,6 +90,19 @@
   <!--</bean>-->
 
   <!-- 拦截器 -->
+  <mvc:interceptors>
+    <mvc:interceptor>
+      <mvc:mapping path="/page/h5/**"/>
+      <bean class="com.lab.hosaily.commons.interceptor.CommonsInterceptor">
+        <property name="includes">
+          <list>
+            <value>/page/h5/**</value>
+          </list>
+        </property>
+      </bean>
+    </mvc:interceptor>
+  </mvc:interceptors>
+    
   <!--<mvc:interceptors>-->
     <!--&lt;!&ndash; 环境语言切换 &ndash;&gt;-->
     <!--<mvc:interceptor>-->

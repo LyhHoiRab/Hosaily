@@ -102,4 +102,26 @@ public class AdvisorDao{
             throw new DataAccessException(e.getMessage(), e);
         }
     }
+
+    /**
+     * H5分页查询
+     */
+    public Page<Advisor> pageByH5(PageRequest pageRequest){
+        try{
+            Assert.notNull(pageRequest, "分页信息不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("state", UsingState.NORMAL.getId()));
+            criteria.sort(Restrictions.asc("weight"));
+            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+
+            Long count = mapper.countByParams(criteria);
+            List<Advisor> list = mapper.findByParams(criteria);
+
+            return new Page<Advisor>(list, pageRequest, count);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
 }

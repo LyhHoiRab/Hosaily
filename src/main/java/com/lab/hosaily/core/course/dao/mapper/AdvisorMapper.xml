@@ -11,6 +11,7 @@
         <result column="age"          property="age"          javaType="java.lang.Integer"/>
         <result column="introduction" property="introduction" javaType="java.lang.String"/>
         <result column="head_img_url" property="headImgUrl"   javaType="java.lang.String"/>
+        <result column="weight"       property="weight"       javaType="java.lang.Integer"/>
         <result column="state"        property="state"        typeHandler="usingStateHandler"/>
         <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
         <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
@@ -126,6 +127,7 @@
               head_img_url,
               introduction,
               state,
+              weight,
               create_time
           ) VALUE (
               #{id,           jdbcType=VARCHAR},
@@ -137,6 +139,7 @@
               #{headImgUrl,   jdbcType=VARCHAR},
               #{introduction, jdbcType=VARCHAR},
               #{state,        typeHandler=usingStateHandler},
+              #{weight,       jdbcType=INTEGER},
               #{createTime,   jdbcType=TIMESTAMP}
           )
     </insert>
@@ -170,6 +173,9 @@
              </if>
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+             <if test="weight != nulll and weight >= 0">
+                 weight = #{weight, jdbcType=INTEGER},
              </if>
          </set>
           WHERE id = #{id}
