@@ -60,9 +60,8 @@ public class ApplicationRestController{
     public Response<Map<String, Object>> getQRParams(HttpServletRequest request, String token, String redirectUrl){
         try{
             String basePath = URLUtils.getBasePath(request);
-            String sessionId = request.getSession().getId();
 
-            Map<String, Object> result = applicationService.getQRParams(sessionId, token, redirectUrl, basePath);
+            Map<String, Object> result = applicationService.getQRParams(token, redirectUrl, basePath);
 
             return new Response<Map<String, Object>>("查询成功", result);
         }catch(Exception e){

@@ -1,6 +1,7 @@
 package com.lab.hosaily.core.account.service;
 
 import com.rab.babylon.core.account.entity.Account;
+import com.rab.babylon.core.account.entity.User;
 
 public interface AccountService{
 
@@ -12,5 +13,5 @@ public interface AccountService{
     /**
      * 网站应用注册
      */
-    Account registerByWeb(String token, String code);
+    User registerByWeb(String token, String code);
 }

@@ -11,9 +11,24 @@
 		</ul>
 
         #if(${account_id})
-        <a class="login" href="${basePath}/page/h5/personalCenter">${nickname}</a>
-        #else
-		<a class="login" href="javascript:;"><img src="${commonsImgPath}/my01.png"/>登录</a>
+		<a class="login" href="${basePath}/page/h5/personalCenter"><img src="$!{user_head_img_url}"/>$!{user_nickname}</a>
+		#else
+		<a class="login" href="javascript:;" id="qrDialog"><img src="${commonsImgPath}/my01.png"/>登录</a>
         #end
+	</div>
+
+	<!--支付二维码弹出框-->
+	<div class="popup popupLogin">
+		<div class="popup_dioag popup_login">
+			<div class="popupTitle">
+				<span class="popupText">登录-酷撩俱乐部 情感学堂</span>
+				<img class="closeIcon" src="${commonsImgPath}/Close.png"/>
+			</div>
+			<div class="popupLoginContent">
+				<!--<img src="${commonsImgPath}/WeChat.png"/><br/>-->
+				<div id="qr"></div><br>
+				<!--<label>微信扫一扫 安全登录</label>-->
+			</div>
+		</div>
 	</div>
 </div>

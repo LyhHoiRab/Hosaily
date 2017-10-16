@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.account.webservice;
 
+import com.lab.hosaily.commons.consts.AuthorizationConsts;
 import com.lab.hosaily.commons.consts.SessionConsts;
 import com.lab.hosaily.core.account.service.AccountService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
@@ -32,18 +33,19 @@ public class AccountRestController{
     @RequestMapping(value = "/register/web", method = RequestMethod.GET)
     public void registerByWeb(HttpServletRequest request, HttpServletResponse response, String code, String state){
         try{
-            String sessionId = request.getSession().getId();
-
-//            String decrypt = AESUtils.decryptBy128(state, sessionId);
-            String decrypt = state;
+            String decrypt = AESUtils.decryptBy128(state, AuthorizationConsts.KEY);
             String[] info = decrypt.split("_");
             String redirectUrl = info[0];
             String token = info[1];
 
-            Account account = accountService.registerByWeb(token, code);
+            User user = accountService.registerByWeb(token, code);
 
             HttpSession session = request.getSession();
-            session.setAttribute(SessionConsts.ACCOUNT_ID, account.getId());
+            //用户信息
+            session.setAttribute(SessionConsts.ACCOUNT_ID, user.getAccountId());
+            session.setAttribute(SessionConsts.USER_NICKNAME, user.getNickname());
+            session.setAttribute(SessionConsts.USER_HEAD_IMG_URL, user.getHeadImgUrl());
+            //有效时长
             session.setMaxInactiveInterval(SessionConsts.EFFECTIVE_SECOND);
 
             response.sendRedirect(redirectUrl);

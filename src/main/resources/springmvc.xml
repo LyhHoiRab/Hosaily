@@ -91,49 +91,25 @@
 
   <!-- 拦截器 -->
   <mvc:interceptors>
+    <!-- 登录拦截器 -->
     <mvc:interceptor>
       <mvc:mapping path="/page/h5/**"/>
-      <bean class="com.lab.hosaily.commons.interceptor.CommonsInterceptor">
-        <property name="includes">
+      <bean class="com.lab.hosaily.commons.interceptor.LoginInterceptor">
+        <property name="excludes">
           <list>
-            <value>/page/h5/**</value>
+            <value>/page/h5/index</value>
+            <value>/page/h5/discover</value>
+            <value>/page/h5/skillTest</value>
+            <value>/page/h5/teamIntroduce</value>
           </list>
         </property>
       </bean>
     </mvc:interceptor>
+
+    <!-- h5资源拦截器 -->
+    <mvc:interceptor>
+      <mvc:mapping path="/page/h5/**"/>
+      <bean class="com.lab.hosaily.commons.interceptor.CommonsInterceptor"/>
+    </mvc:interceptor>
   </mvc:interceptors>
-    
-  <!--<mvc:interceptors>-->
-    <!--&lt;!&ndash; 环境语言切换 &ndash;&gt;-->
-    <!--<mvc:interceptor>-->
-      <!--<mvc:mapping path="/**"/>-->
-      <!--<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>-->
-    <!--</mvc:interceptor>-->
-
-    <!--&lt;!&ndash; 设备检测 &ndash;&gt;-->
-    <!--<mvc:interceptor>-->
-      <!--<mvc:mapping path="/page/**"/>-->
-      <!--<bean class="com.rab.orpheus.commons.security.interceptor.DeviceInterceptor">-->
-        <!--<property name="includes">-->
-          <!--<list>-->
-            <!--<value>/page/index</value>-->
-            <!--<value>/page/aboutUs</value>-->
-            <!--<value>${url.browserNotSupport}</value>-->
-          <!--</list>-->
-        <!--</property>-->
-      <!--</bean>-->
-    <!--</mvc:interceptor>-->
-
-    <!--&lt;!&ndash; 浏览器版本支持检测 &ndash;&gt;-->
-    <!--<mvc:interceptor>-->
-      <!--<mvc:mapping path="/page/**"/>-->
-      <!--<bean class="com.rab.orpheus.commons.security.interceptor.BrowserSupportInterceptor">-->
-        <!--<property name="excludes">-->
-          <!--<list>-->
-            <!--<value>${url.browserNotSupport}</value>-->
-          <!--</list>-->
-        <!--</property>-->
-      <!--</bean>-->
-    <!--</mvc:interceptor>-->
-  <!--</mvc:interceptors>-->
 </beans>

@@ -4,4 +4,14 @@
     <key>StringUtils</key>
     <class>org.apache.commons.lang3.StringUtils</class>
   </tool>
+
+  <tool>
+    <key>UserExpandsUtils</key>
+    <class>com.lab.hosaily.commons.utils.UserExpandsUtils</class>
+  </tool>
+
+  <tool>
+    <key>DateTool</key>
+    <class>org.apache.velocity.tools.generic.DateTool</class>
+  </tool>
 </toolbox>

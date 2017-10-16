@@ -68,7 +68,7 @@ public class ApplicationServiceImpl implements ApplicationService{
      * 查询生成二维码参数
      */
     @Override
-    public Map<String, Object> getQRParams(String sessionId, String token, String redirectUrl, String basePath){
+    public Map<String, Object> getQRParams(String token, String redirectUrl, String basePath){
         try{
             Assert.hasText(token, "应用Token不能为空");
 
@@ -82,7 +82,7 @@ public class ApplicationServiceImpl implements ApplicationService{
                 throw new ServiceException(String.format("无效的应用Token[%s]", token));
             }
 
-            String state = AESUtils.encryptBy128(redirectUrl + "_" + token, sessionId);
+            String state = AESUtils.encryptBy128(redirectUrl + "_" + token, AuthorizationConsts.KEY);
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(AuthorizationConsts.NODE_APPID, application.getAppId());

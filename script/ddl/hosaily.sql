@@ -183,11 +183,14 @@ CREATE TABLE `user` (
   `id_card` varchar(18) DEFAULT NULL,
   `sex` tinyint(1) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
+  `phone` varchar(11) DEFAULT NULL,
+  `position` varchar(60) DEFAULT NULL,
   `head_img_url` varchar(255) DEFAULT NULL,
   `state` tinyint(1) NOT NULL,
   `is_delete` tinyint(1) NOT NULL DEFAULT '0',
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
+  `delete_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户信息表';
 

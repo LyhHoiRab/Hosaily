@@ -117,7 +117,7 @@ public class UserDao{
             ShardedJedis jedis = jedisPool.getResource();
             User user = RedisUtils.get(jedis, RedisConsts.USER_INFO + accountId, User.class);
 
-            //缓存没有
+            //没有缓存
             if(user == null){
                 user = getByAccountId(accountId);
                 cache(user);

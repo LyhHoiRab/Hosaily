@@ -16,6 +16,11 @@ public interface UserService{
     void update(User user);
 
     /**
+     * 修改用户信息
+     */
+    void updateByH5(User user);
+
+    /**
      * 上传头像
      */
     String upload(CommonsMultipartFile file);
@@ -24,4 +29,9 @@ public interface UserService{
      * 根据ID查询记录
      */
     User getById(String id);
+
+    /**
+     * 根据accountId查询用户缓存信息
+     */
+    User getCacheByAccountId(String accountId);
 }

@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.account.webservice;
 
+import com.lab.hosaily.commons.consts.SessionConsts;
 import com.lab.hosaily.core.account.service.UserService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Response;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/api/1.0/user")
@@ -41,6 +44,24 @@ public class UserRestController{
     public Response<User> update(@RequestBody User user){
         try{
             userService.update(user);
+            return new Response<User>("修改成功", user);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据accountId修改用户
+     */
+    @RequestMapping(value = "/h5", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<User> updateByH5(HttpServletRequest request, @RequestBody User user){
+        try{
+            String accountId = (String) request.getSession().getAttribute(SessionConsts.ACCOUNT_ID);
+
+            user.setAccountId(accountId);
+            userService.updateByH5(user);
+
             return new Response<User>("修改成功", user);
         }catch(Exception e){
             logger.error(e.getMessage(), e);

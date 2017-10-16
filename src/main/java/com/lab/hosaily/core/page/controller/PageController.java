@@ -1,8 +1,12 @@
 package com.lab.hosaily.core.page.controller;
 
+import com.lab.hosaily.commons.consts.SessionConsts;
+import com.lab.hosaily.core.account.service.UserService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
+import com.rab.babylon.core.account.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -10,11 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping(value = "/page/h5")
 public class PageController{
 
     private static Logger logger = LoggerFactory.getLogger(PageController.class);
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 首页
@@ -75,6 +84,24 @@ public class PageController{
     public ModelAndView clubIntroduce(ModelMap content){
         try{
             return new ModelAndView("web/clubIntroduce", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 用户信息
+     */
+    @RequestMapping(value = "/personalCenter", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView personalCenter(HttpServletRequest request, ModelMap content){
+        try{
+            String accountId = (String) request.getSession().getAttribute(SessionConsts.ACCOUNT_ID);
+            User user = userService.getCacheByAccountId(accountId);
+
+            content.put("user", user);
+
+            return new ModelAndView("web/personalCenter", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

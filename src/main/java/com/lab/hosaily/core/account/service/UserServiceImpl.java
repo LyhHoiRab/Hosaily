@@ -57,6 +57,28 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
+     * 修改用户信息
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void updateByH5(User user){
+        try{
+            Assert.notNull(user, "用户信息不能为空");
+            Assert.hasText(user.getAccountId(), "账户ID不能为空");
+
+            User source = userDao.getCacheByAccountId(user.getAccountId());
+            user.setId(source.getId());
+            //更新数据库
+            userDao.saveOrUpdate(user);
+            //更新缓存
+            userDao.cache(user);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 上传头像
      */
     @Override
@@ -93,6 +115,21 @@ public class UserServiceImpl implements UserService{
             Assert.hasText(id, "用户ID不能为空");
 
             return userDao.getById(id);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据accountId查询用户缓存信息
+     */
+    @Override
+    public User getCacheByAccountId(String accountId){
+        try{
+            Assert.hasText(accountId, "账号ID不能为空");
+
+            return userDao.getCacheByAccountId(accountId);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

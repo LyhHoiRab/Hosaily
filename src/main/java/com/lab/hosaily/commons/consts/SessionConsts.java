@@ -10,4 +10,13 @@ public class SessionConsts{
 
     //账户ID
     public static final String ACCOUNT_ID = "account_id";
+
+    //用户ID
+    public static final String USER_ID = "user_id";
+
+    //用户昵称
+    public static final String USER_NICKNAME = "user_nickname";
+
+    //用户头像
+    public static final String USER_HEAD_IMG_URL = "user_head_img_url";
 }

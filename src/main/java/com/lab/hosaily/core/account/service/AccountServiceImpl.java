@@ -129,7 +129,7 @@ public class AccountServiceImpl implements AccountService{
      */
     @Override
     @Transactional(readOnly = false)
-    public Account registerByWeb(String token, String code){
+    public User registerByWeb(String token, String code){
         try{
             Assert.hasText(code, "code值不能为空");
             Assert.hasText(token, "网站应用Token不能为空");
@@ -180,7 +180,7 @@ public class AccountServiceImpl implements AccountService{
             //缓存用户信息
             userDao.cache(user);
 
-            return account;
+            return user;
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

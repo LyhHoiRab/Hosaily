@@ -10,11 +10,14 @@
         <result column="id_card"      property="idCard"     javaType="java.lang.String"/>
         <result column="sex"          property="sex"        typeHandler="sexHandler"/>
         <result column="birthday"     property="birthday"   javaType="java.util.Date"/>
+        <result column="phone"        property="phone"      javaType="java.lang.String"/>
+        <result column="position"     property="position"   javaType="java.lang.String"/>
         <result column="head_img_url" property="headImgUrl" javaType="java.lang.String"/>
         <result column="state"        property="state"      typeHandler="usingStateHandler"/>
         <result column="is_delete"    property="isDelete"   javaType="java.lang.Boolean"/>
         <result column="create_time"  property="createTime" javaType="java.util.Date"/>
         <result column="update_time"  property="updateTime" javaType="java.util.Date"/>
+        <result column="delete_time"  property="deleteTime" javaType="java.util.Date"/>
         <collection property="expands" resultMap="userExpand" columnPrefix="e_"/>
     </resultMap>
 
@@ -134,6 +137,8 @@
               sex,
               birthday,
               head_img_url,
+              phone,
+              position,
               state,
               is_delete,
               create_time
@@ -146,6 +151,8 @@
               #{sex,        typeHandler=sexHandler},
               #{birthday,   jdbcType=TIMESTAMP},
               #{headImgUrl, jdbcType=VARCHAR},
+              #{phone,      jdbcType=VARCHAR},
+              #{position,   jdbcType=VARCHAR},
               #{state,      typeHandler=usingStateHandler},
               #{isDelete,   jdbcType=BOOLEAN},
               #{createTime, jdbcType=TIMESTAMP}
@@ -184,6 +191,12 @@
              </if>
              <if test="deleteTime != null">
                  delete_time = #{deleteTime, jdbcType=TIMESTAMP},
+             </if>
+             <if test="phone != null and phone != ''">
+                 phone = #{phone, jdbcType=VARCHAR},
+             </if>
+             <if test="position != null and position != ''">
+                 position = #{position, jdbcType=VARCHAR},
              </if>
          </set>
           WHERE id = #{id}

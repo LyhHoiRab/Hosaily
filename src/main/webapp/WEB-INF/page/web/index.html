@@ -19,7 +19,9 @@
 				
 				<div class="btnDiv">
 					<span class="goUseBtn"><a href="${basePath}/page/h5/discover">GET STARTED | 立即体验</a></span>
-					<span class="goLogin"><img src="${commonsImgPath}/my01.png"/>登录</span>
+					#if(!${account_id})
+					<span class="goLogin" id="qrDialog"><img src="${commonsImgPath}/my01.png"/>登录</span>
+					#end
 				</div>
 				
 				<div class="indexBottom">
@@ -43,14 +45,16 @@
 						<img class="closeIcon" src="${commonsImgPath}/Close.png"/>
 					</div>
 					<div class="popupLoginContent">
-						<img src="${commonsImgPath}/WeChat.png"/><br />
-						<label>微信扫一扫 安全登录</label>
+						<!--<img src="${commonsImgPath}/WeChat.png"/><br/>-->
+						<div id="qr"></div><br>
+						<!--<label>微信扫一扫 安全登录</label>-->
 					</div>
-
 				</div>
 		</div>
 
         <script type="text/javascript" src="${basePath}/commons/js/jquery.min.js"></script>
-        <script type="text/javascript" src="${commonsJsPath}/js.js"></script>
+		<script type="text/javascript" src="${commonsJsPath}/wxLogin.js"></script>
+		<script type="text/javascript" src="${commonsJsPath}/js.js"></script>
+		<script type="text/javascript" src="${commonsJsPath}/index.js"></script>
 	</body>
 </html>

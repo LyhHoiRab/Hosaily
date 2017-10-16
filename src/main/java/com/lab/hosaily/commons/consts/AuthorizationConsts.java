@@ -11,6 +11,9 @@ public class AuthorizationConsts{
     //网页授权登录接口
     public final static String AUTHORIZE_API = "/api/1.0/account/register/web";
 
+    //密钥
+    public final static String KEY = "ku1ia0";
+
     //节点名称
     public final static String NODE_APPID = "appid";
     public final static String NODE_STATE = "state";
