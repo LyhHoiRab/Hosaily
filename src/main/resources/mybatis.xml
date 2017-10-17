@@ -25,5 +25,6 @@
     <typeAlias type="com.lab.hosaily.core.course.utils.handler.CourseKindHandler"           alias="courseKindHandler"/>
     <typeAlias type="com.lab.hosaily.core.account.utils.handler.WeChatSexHandler"           alias="weChatSexHandler"/>
     <typeAlias type="com.lab.hosaily.core.account.utils.handler.GenderHandler"              alias="genderHandler"/>
+    <typeAlias type="com.lab.hosaily.core.account.utils.handler.AttentionTypeHandler"       alias="attentionTypeHandler"/>
   </typeAliases>
 </configuration>

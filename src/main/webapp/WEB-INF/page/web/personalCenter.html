@@ -31,10 +31,10 @@
 								<span class="timeBottom"></span>
 								<span class="timeBottom timeBottomOn"></span>
 							</div>
-							<div class="sortAll">全部（50）</div>
+							<div class="sortAll">全部($!collects.size())</div>
 						</div>
 						<!--单个收藏开始-->
-						<div class="favClass">
+						<!-- <div class="favClass">
 							<img class="favClassPre" src="${commonsImgPath}/img_02.png"/>
 							<div class="favClassRight">
 								<h4>课程-《如何追女孩》</h4>
@@ -44,8 +44,28 @@
 							</div>
 							<span>￥298.00元</span>
 							<img class="favDelete" src="${commonsImgPath}/Trash.png"/>
-						</div>
+						</div> -->
 						<!--单个收藏结束-->
+
+						#foreach($collect in $collects)
+						<div class="favClass">
+							<img class="favClassPre" src="$!{collect.course.cover}"/>
+							<div class="favClassRight">
+								<h4>
+									#if($collect.course.kind.id == 0)
+										课程
+									#elseif($collect.course.kind.id == 1)
+										帖子
+									#end
+								 - $!{collect.course.title}</h4>
+								<p>
+									$!{collect.course.summary}
+								</p>
+							</div>
+							<span>￥$!{collect.course.price}元</span>
+							<img class="favDelete" src="${commonsImgPath}/Trash.png" onclick="personalCenter.delete('$!{collect.id}');">
+						</div><!-- item -->
+						#end
 					</div>
 					<!--已购课程-->
 					<div class="leftContent" style="display: none;">
@@ -98,11 +118,11 @@
 						</div>
 						<!--单个content-->
 						<div class="footPrintContent">
-							<div class="fontPrintTime">
-								今天
-							</div>
+							<!--<div class="fontPrintTime">-->
+								<!--今天-->
+							<!--</div>-->
 							<!--单条-->
-							<div class="fontPrintAContent">
+							<!-- <div class="fontPrintAContent">
 								<div class="fontPrintALeft">
 									<input type="checkbox" name="" id="" value="" />
 									<span>12:11</span>
@@ -112,7 +132,21 @@
 									<h4>课程-《如何追女神》</h4>
 									<a href="http://www.baidu.com">http://www.baidu.com</a>
 								</div>
-							</div>
+							</div> -->
+
+							#foreach($track in $tracks)
+							<div class="fontPrintAContent">
+								<div class="fontPrintALeft">
+									<input type="checkbox" name="" id="" value="$!{track.id}" />
+									<span>$!DateTool.format('yyyy-MM-dd', $!{track.createTime})</span>
+									<img src="$!{track.course.cover}"/>
+								</div>
+								<div class="fontPrintARight">
+									<h4>课程 - $!{track.course.title}</h4>
+									<a href="javascript:;">http://www.baidu.com</a>
+								</div>
+							</div><!-- item -->
+							#end
 						</div>
 					</div>
 				</div>
@@ -172,7 +206,7 @@
 						<div class="msgLine">
 							<span>生日</span>
 							<div class="msgRight">
-								<input type="date" name="birthday" id="birthday" value="$DateTool.format('yyyy-MM-dd', $!user.birthday)" />
+								<input type="date" name="birthday" id="birthday" value="$!DateTool.format('yyyy-MM-dd', $!user.birthday)" />
 							</div>
 						</div>
 						
@@ -271,8 +305,8 @@
 			<div class="contentRight">
 				<div class="pcPerson">
 					<div class="pcLevel">
-						<img class="pcHeadImg" src="${commonsImgPath}/head.jpg"/>
-						<div class="pcText">Sasan</div>
+						<img class="pcHeadImg" src="$!{head_img_url}"/>
+						<div class="pcText">$!{nickname}</div>
 						<img class="pcLevelImg" src="${commonsImgPath}/vip.png"/>
 					</div>
 					
@@ -286,10 +320,10 @@
 						<img src="${commonsImgPath}/Navigation02.png"/>
 					</div>
 				</div>
-				<div class="rightText">
-					学会撩妹子  简单三步
-					<img src="${commonsImgPath}/Navigation03.png"/>
-				</div>
+				<!--<div class="rightText">-->
+					<!--学会撩妹子  简单三步-->
+					<!--<img src="${commonsImgPath}/Navigation03.png"/>-->
+				<!--</div>-->
 				<div class="rightQrImg">
 					<img src="${commonsImgPath}/WeChat.png"/>
 					<br />

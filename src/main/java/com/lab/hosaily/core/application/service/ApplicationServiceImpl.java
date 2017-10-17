@@ -83,10 +83,11 @@ public class ApplicationServiceImpl implements ApplicationService{
             }
 
             String state = AESUtils.encryptBy128(redirectUrl + "_" + token, AuthorizationConsts.KEY);
+//            String state = redirectUrl + "&" + token;
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(AuthorizationConsts.NODE_APPID, application.getAppId());
-            params.put(AuthorizationConsts.NODE_REDIRECT_URL, basePath + AuthorizationConsts.AUTHORIZE_API);
+            params.put(AuthorizationConsts.NODE_REDIRECT_URL, URLEncoder.encode(basePath + AuthorizationConsts.AUTHORIZE_API, "UTF-8"));
             params.put(AuthorizationConsts.NODE_STATE, state);
 
             return params;

@@ -15,11 +15,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 public class WeChatUtils{
 
+    private static final Charset SOURCE_CHARSET = Charset.forName("ISO-8859-1");
+    private static final Charset CHARSET = Charset.forName("UTF-8");
     private final static String GET_ACCESS_TOKEN = "https://api.weixin.qq.com/sns/oauth2/access_token";
     private final static String REFRESH_TOKEN = "https://api.weixin.qq.com/sns/oauth2/refresh_token";
     private final static String GET_USER_INFO = "https://api.weixin.qq.com/sns/userinfo";
@@ -143,7 +146,7 @@ public class WeChatUtils{
                 String json = EntityUtils.toString(response.getEntity());
 
                 if(!StringUtils.isBlank(json)){
-                    return ObjectUtils.deserialize(json, UserInfoResponse.class);
+                    return ObjectUtils.deserialize(new String(json.getBytes(SOURCE_CHARSET), CHARSET), UserInfoResponse.class);
                 }
 
                 return null;

@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import com.lab.hosaily.core.account.consts.WeChatSex;
 import com.lab.hosaily.core.account.entity.WeChatAccount;
 
+import java.util.Date;
+
 public class UserInfoResponse{
 
     @SerializedName(value = "openId", alternate = {"openid", "open_id"})
@@ -113,6 +115,8 @@ public class UserInfoResponse{
         account.setProvince(this.province);
         account.setCity(this.city);
         account.setCountry(this.country);
+        account.setSubscribe(true);
+        account.setSubscribeTime(new Date());
         account.setHeadImgUrl(this.headImgUrl);
 
         return account;

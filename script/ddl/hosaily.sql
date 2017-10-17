@@ -225,4 +225,13 @@ CREATE TABLE `account` (
   UNIQUE KEY `email_UNIQUE` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账户表';
 
+CREATE TABLE `attention` (
+  `id` varchar(32) NOT NULL,
+  `account_id` varchar(32) NOT NULL,
+  `course_id` varchar(32) NOT NULL,
+  `type` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程关注表';
+
 

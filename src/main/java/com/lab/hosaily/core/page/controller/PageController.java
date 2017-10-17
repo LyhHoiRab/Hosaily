@@ -1,6 +1,8 @@
 package com.lab.hosaily.core.page.controller;
 
 import com.lab.hosaily.commons.consts.SessionConsts;
+import com.lab.hosaily.core.account.entity.Attention;
+import com.lab.hosaily.core.account.service.AttentionService;
 import com.lab.hosaily.core.account.service.UserService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.core.account.entity.User;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/page/h5")
@@ -24,6 +27,9 @@ public class PageController{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AttentionService attentionService;
 
     /**
      * 首页
@@ -98,8 +104,12 @@ public class PageController{
         try{
             String accountId = (String) request.getSession().getAttribute(SessionConsts.ACCOUNT_ID);
             User user = userService.getCacheByAccountId(accountId);
+            List<Attention> tracks = attentionService.findTrackByAccountId(accountId);
+            List<Attention> collects = attentionService.findCollectByAccountId(accountId);
 
             content.put("user", user);
+            content.put("tracks", tracks);
+            content.put("collects", collects);
 
             return new ModelAndView("web/personalCenter", content);
         }catch(Exception e){

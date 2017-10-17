@@ -17,22 +17,6 @@ public class CommonsInterceptor extends HandlerInterceptorAdapter{
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception{
-//        String url = request.getRequestURI().substring(request.getContextPath().length());
-//
-//        if(includes != null && !includes.isEmpty()){
-//            for(String include : includes){
-//                if(matcher.match(include, url)){
-//                    String basePath = URLUtils.getBasePath(request);
-//
-//                    ModelMap content = modelAndView.getModelMap();
-//                    content.put("commonsJsPath", CommonsPathConsts.JS_PATH);
-//                    content.put("commonsCssPath", CommonsPathConsts.CSS_PATH);
-//                    content.put("commonsImgPath", CommonsPathConsts.IMG_PATH);
-//                    content.put("basePath", basePath);
-//                }
-//            }
-//        }
-
         String basePath = URLUtils.getBasePath(request);
 
         ModelMap content = modelAndView.getModelMap();

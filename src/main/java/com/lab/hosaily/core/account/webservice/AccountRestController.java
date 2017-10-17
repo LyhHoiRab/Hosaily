@@ -34,6 +34,7 @@ public class AccountRestController{
     public void registerByWeb(HttpServletRequest request, HttpServletResponse response, String code, String state){
         try{
             String decrypt = AESUtils.decryptBy128(state, AuthorizationConsts.KEY);
+//            String decrypt = state;
             String[] info = decrypt.split("_");
             String redirectUrl = info[0];
             String token = info[1];
