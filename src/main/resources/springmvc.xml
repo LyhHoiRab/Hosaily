@@ -104,6 +104,8 @@
             <value>/page/h5/teamIntroduce</value>
             <value>/page/h5/clubIntroduce</value>
             <value>/page/h5/course</value>
+            <value>/page/h5/course/{id}</value>
+            <value>/page/h5/chapter/{id}</value>
           </list>
         </property>
       </bean>

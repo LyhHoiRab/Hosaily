@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>会员课程-详情</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="${commonsCssPath}/style.css"/>
+	<link rel="stylesheet" type="text/css" href="${commonsCssPath}/memberCourseDetails.css"/>
+	<body>
+		#parse("web/head.html")
+		<div class="fixH"></div>
+		<!--内容开始-->
+		<div class="content">
+			<!--左边内容开始-->
+			<div class="contentLeft">
+				
+				<div class="mdHead">
+					<img class="mdHeadImg" src="$!{course.cover}"/>
+					<div class="mdHeadRight">
+						<h3>$!{course.title}</h3>
+						<span class="mdPrice">￥$!{course.price}元</span>
+						<div class="mdBtnGp">
+							<div class="btnBuy btn">
+							立即购买
+							</div>
+							<div class="btnFree btn">
+								会员免费
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="mHead">
+					<div class="mTabL">
+						<span class="mtab mtabAtive">课程介绍</span>
+						<span class="mtab">评论</span>
+					</div>
+				</div>
+				
+				<div class="mdTabH">
+					<!--课程简介开始-->
+					<div class="classJieShao mdTab">
+						#foreach($chapter in $chapters)
+						<div class="classZhang">
+							<h4>$!{chapter.title}</h4>
+
+							#foreach($children in $chapter.children)
+							<div class="mdClassLine" onclick="courseDetail.toDetail('$!{children.id}');">
+								#if($!velocityCount == 1)
+								<span class="tip tipFree">
+									免费
+								</span>
+								#else
+								<span class="tip">&nbsp;</span>
+								#end
+								<img class="progressImg" style="" src="http://kuliao.b0.upaiyun.com/img/Classhour01.png"/>
+								<span>$!{children.title}</span>
+								<div class="timeLong">
+									<!-- <span>30'25''</span> -->
+									#foreach($media in $children.media)
+										#if($media.type.id == 1)
+											<img src="http://kuliao.b0.upaiyun.com/img/coursea.png"/>
+										#elseif($media.type.id == 2)
+											<img src="http://kuliao.b0.upaiyun.com/img/coursec.png"/>
+										#end
+									#end
+								</div>
+							</div>
+							#end
+						</div><!-- item -->
+						#end
+
+						<!-- <div class="loadMore">加载更多章节</div> -->
+						<div class="classGai">
+							<h4 class="mGaiTitle">课程概述</h4>
+							<!-- <div class="classWen">
+								<h4>第一章节</h4>
+								<img src="img/suggest_img.jpg"/>
+								<div class="question">
+									<h4>问：什么是情绪聊天？</h4>
+									<p>答：90%的男生不懂怎么跟异性聊微信，情绪聊天解决这个问题。答：90%的男生不懂怎么跟异性聊微信，情绪聊天解决这个问题。答：90%的男生不懂怎么跟异性聊微信，情绪聊天解决这个问题。答：90%的男生不懂怎么跟异性聊微信，情绪聊天解决这个问题。</p>
+								</div>
+							</div> -->
+							#foreach($children in $course.children)
+								<div class="classWen">
+									<h4>$!{children.title}</h4>
+									<img src="$!{children.cover}"/>
+									<div class="question">
+										$!{children.summary}
+									</div>
+								</div>
+							#end
+						</div>
+						<!-- <div class="loadMore">加载更多章节</div> -->
+					</div>
+					<!--课程简介结束-->
+					<!--评论开始-->
+					<div class="comment mdTab" style="display: none;">
+						<div class="conPadding">
+							<div class="conTitle"></div>
+							#if(${account_id})
+							<textarea placeholder="我要发表心得..."></textarea>
+							<div class="commitBtn">发表</div>
+							#end
+							<div class="clear"></div>
+							
+							<div class="commentStart"></div><!-- comment content -->
+							<!-- <div class="aComment">
+								<img class="aHeadImg" src="img/head.jpg"/>
+								<div class="aRight">
+									<label class="aUser">Sasan</label><span class="aTime">2017/05/13</span>
+									<p class="aText">
+										也有校内知情者透露:“活动不是北交举办的，是某app的宣传活动。女生不是北交的学生，是外面找的。男生是花钱雇来的。场地不在主校区教学区内，在校外的宿舍区院内。”
+									</p>
+									<p>
+										<img class="aZanImg" src="img/Give01.png"/><span class="aZan">（898）</span>
+									</p>
+								</div>
+							</div> -->
+							<div class="clear"></div>
+						</div>
+						<div class="loadMore" id="commentLoadMore" onclick="courseDetail.getComments('$!{course.id}')">加载更多评论</div>
+					</div>
+					<!--评论结束-->
+				</div>
+			</div>
+			<!--左边内容结束-->
+			<!--右边内容开始-->
+			<div class="contentRight">
+				<div class="mdRight">
+					<div class="mdLike">
+						<img src="http://kuliao.b0.upaiyun.com/img/Fans.png"/><br />
+						<span style="">$!{course.likes}</span>
+					</div>
+					<div class="mdZan">
+						<div class="mdZanLine mdZLeft">
+							<img src="http://kuliao.b0.upaiyun.com/img/chat01a.png"/><br />
+							<span>$!{course.view}</span>
+						</div>
+						<div class="mdZanLine maZMid">
+							<img src="http://kuliao.b0.upaiyun.com/img/chat03.png"/><br />
+							<span>$!{course.comments}</span>
+						</div>
+						<div class="mdZanLine mdZRight">
+							<img src="http://kuliao.b0.upaiyun.com/img/chat08.png"/><br />
+							<span>$!{course.likes}</span>
+						</div>
+					</div>
+					
+					<div class="mdTeacher">
+						<div class="mdTeacherH">
+							<span>授课老师</span>
+							<span class="moreClass">更多课程<img src="http://kuliao.b0.upaiyun.com/img/Navigation02.png"/></span>
+						</div>
+						<div class="mdTeaDetails">
+							<img src="$!{course.advisor.headImgUrl}"/>
+							<div class="mdTeaDetailsRight">
+								<label>$!{course.advisor.nickname}</label><br />
+								<!-- <span>酷撩特级指导导师</span> -->
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<!--右边内容结束-->
+		</div>
+		<!--内容结束-->
+		#parse("web/foot.html")
+
+		<!--购买会员弹出框-->
+		<div class="popup popupVip">
+				<div class="popup_dioag popup_vip">
+					<div class="popupTitle">
+						<span class="popupText">酷撩俱乐部会员权限</span>
+						<img class="closeIcon" src="http://kuliao.b0.upaiyun.com/img/Close.png"/>
+					</div>
+					<div class="tableContent">
+						<table>
+						  <thead>
+						    <tr>
+						     	<th>级别</th>
+							    <th>权限</th>
+							    <th>时间</th>
+							    <th>费用</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <!-- <tr class="trDefault trActive">
+							    <td class="tdPosition">
+							    	幼稚园
+							    	<div><img src="img/Navigation05.png"/></div>
+							    </td>
+							    <td>免费课时、评论</td>
+							    <td>无</td>
+							    <td>终生</td>
+							    <td>免费</td>
+							</tr> -->
+							#foreach($level in $levels)
+								#foreach($price in $level.price)
+									<tr class="trDefault trActive">
+										<td class="tdPosition">
+								    		$!{level.name}
+								    		<img src="$!{level.icon}"/>
+								    	</td>
+								    	<td>$!{level.description}</td>
+							    		<td>$!{price.effective}天</td>
+							    		<td>￥$!{price.price}</td>
+									</tr><!-- item -->
+								#end
+							#end
+						  </tbody>
+						</table>
+					</div>
+					<div class="goPay">立即升级</div>
+				</div>
+		</div>
+		<!--支付二维码弹出框-->
+		<div class="popup popupPay">
+				<div class="popup_dioag popup_pay">
+					<div class="popupTitle">
+						<span class="popupText">在线支付</span>
+						<img class="closeIcon" src="http://kuliao.b0.upaiyun.com/img/Close.png"/>
+					</div>
+					<div class="payTypeH">
+						<div class="payType typeOn">
+							<img src="http://kuliao.b0.upaiyun.com/img/zhWe04.png"/>
+							<img src="http://kuliao.b0.upaiyun.com/img/zhWe03.png"/>
+						</div>
+						<span class="midLine"></span>
+						<div class="payType">
+							<img src="http://kuliao.b0.upaiyun.com/img/zhWe01.png"/>
+							<img src="http://kuliao.b0.upaiyun.com/img/zhWe02.png"/>
+						</div>
+					</div>
+					<div class="payCode">
+						<img src="http://kuliao.b0.upaiyun.com/img/alipay.png"/>
+						<img src="http://kuliao.b0.upaiyun.com/img/WeChat.png"/>
+						<label>使用手机支付宝扫码完成支付</label>
+						<label>使用手机微信扫码完成支付</label>
+					</div>
+				</div>
+		</div>
+
+		<script type="text/javascript" src="${basePath}/commons/js/jquery.min.js"></script>
+		<script type="text/javascript" src="${commonsJsPath}/wxLogin.js"></script>
+		<script type="text/javascript" src="${commonsJsPath}/moment.min.js"></script>
+        <script type="text/javascript" src="${commonsJsPath}/js.js"></script>
+        <script type="text/javascript" src="${commonsJsPath}/courseDetail.js"></script>
+	</body>
+</html>

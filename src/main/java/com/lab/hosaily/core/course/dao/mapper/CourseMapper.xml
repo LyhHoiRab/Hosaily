@@ -501,6 +501,40 @@
           ) AS a
     </select>
 
+    <select id="findChapterByParams" resultMap="chapter">
+        SELECT c.*,
+               se.id           AS se_id,
+               se.title        AS se_title,
+               se.summary      AS se_summary,
+               se.introduction AS se_introduction,
+               se.cover        AS se_cover,
+               se.likes        AS se_likes,
+               se.view         AS se_view,
+               se.weight       AS se_weight,
+               se.comments     AS se_comments,
+               m.id            AS m_id,
+               m.url           AS m_url,
+               m.type          AS m_type,
+               m.suffix        AS m_suffix
+          FROM course c
+     LEFT JOIN course se
+            ON se.parent_id = c.id
+     LEFT JOIN course_media cm
+            ON cm.course_id = se.id
+     LEFT JOIN media m
+            ON cm.media_id = m.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+        </if>
+    </select>
+
     <select id="getPostByParams" resultMap="post">
         SELECT c.*,
                a.id            AS a_id,

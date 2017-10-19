@@ -78,7 +78,7 @@ public class CourseDao{
     /**
      * 分页查询课程记录
      */
-    public Page<Course> pageByCourse(PageRequest pageRequest){
+    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -86,6 +86,10 @@ public class CourseDao{
             criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
             criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+
+            if(!StringUtils.isBlank(tagName)){
+                criteria.and(Restrictions.eq("t.name", tagName));
+            }
 
             List<Course> list = mapper.findCourseByParams(criteria);
             Long count = mapper.countCourseByParams(criteria);
@@ -113,6 +117,25 @@ public class CourseDao{
             Long count = mapper.countPostByParams(criteria);
 
             return new Page<Course>(list, pageRequest, count);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据课程ID查询章节记录
+     */
+    public List<Course> findChapterByCourseId(String courseId){
+        try{
+            Assert.hasText(courseId, "课程ID不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("c.parentId", courseId));
+            criteria.sort(Restrictions.desc("c.weight"));
+            criteria.sort(Restrictions.desc("se.weight"));
+
+            return mapper.findChapterByParams(criteria);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

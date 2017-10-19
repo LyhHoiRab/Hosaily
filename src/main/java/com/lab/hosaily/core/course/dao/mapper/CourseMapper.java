@@ -41,6 +41,11 @@ public interface CourseMapper{
     Long countPostByParams(@Param("params") Criteria criteria);
 
     /**
+     * 根据条件查询章节记录
+     */
+    List<Course> findChapterByParams(@Param("params") Criteria criteria);
+
+    /**
      * 根据条件查询帖子
      */
     Course getPostByParams(@Param("params") Criteria criteria);

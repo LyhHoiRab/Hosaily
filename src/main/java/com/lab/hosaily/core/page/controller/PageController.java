@@ -6,13 +6,16 @@ import com.lab.hosaily.core.account.service.AttentionService;
 import com.lab.hosaily.core.account.service.UserService;
 import com.lab.hosaily.core.course.entity.Comment;
 import com.lab.hosaily.core.course.entity.Course;
+import com.lab.hosaily.core.course.entity.Level;
 import com.lab.hosaily.core.course.entity.Tag;
 import com.lab.hosaily.core.course.service.CommentService;
 import com.lab.hosaily.core.course.service.CourseService;
+import com.lab.hosaily.core.course.service.LevelService;
 import com.lab.hosaily.core.course.service.TagService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.core.account.entity.User;
 import com.rab.babylon.core.consts.entity.UsingState;
+import org.bouncycastle.ocsp.Req;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +46,10 @@ public class PageController{
     private CourseService courseService;
 
     @Autowired
-    private CommentService commentService;
+    private TagService tagService;
 
     @Autowired
-    private TagService tagService;
+    private LevelService levelService;
 
     /**
      * 首页
@@ -81,10 +84,8 @@ public class PageController{
     public ModelAndView discoverDetail(@PathVariable("id") String id, ModelMap content){
         try{
             Course course = courseService.getPostById(id);
-            Long commentCount = commentService.countByCourseId(id);
 
             content.put("course", course);
-            content.put("commentCount", commentCount);
 
             return new ModelAndView("web/discoverDetail", content);
         }catch(Exception e){
@@ -104,6 +105,44 @@ public class PageController{
             content.put("tags", tags);
 
             return new ModelAndView("web/course", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 课程详情页
+     */
+    @RequestMapping(value = "/course/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView courseDetail(@PathVariable("id") String id, ModelMap content){
+        try{
+            Course course = courseService.getCourseById(id);
+            List<Level> levels = levelService.findLazyLoadingByState(UsingState.NORMAL);
+            List<Course> chapters = courseService.findChapterByCourseId(id);
+
+            content.put("course", course);
+            content.put("chapters", chapters);
+            content.put("levels", levels);
+
+            return new ModelAndView("web/courseDetail", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 章节详情页
+     */
+    @RequestMapping(value = "/chapter/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView chapterDetail(@PathVariable("id") String id, ModelMap content){
+        try{
+            Course course = courseService.getPostById(id);
+
+            content.put("course", course);
+
+            return new ModelAndView("web/chapterDetail", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

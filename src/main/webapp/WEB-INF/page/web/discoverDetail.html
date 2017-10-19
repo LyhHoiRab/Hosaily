@@ -110,7 +110,7 @@
 				<!--评论开始-->
 				<div class="comment">
 					<div class="conPadding">
-						<div class="conTitle">评论（$!{commentCount}）</div>
+						<div class="conTitle"></div>
 						#if(${account_id})
 						<textarea placeholder="我要发表心得..."></textarea>
 						<div class="commitBtn">发表</div>
@@ -133,7 +133,7 @@
 						<div class="commentStart"></div>
 						<div class="clear"></div>
 					</div>
-					<div class="loadMore">点击加载更多</div>
+					<div class="loadMore" onclick="discoverDetail.getComments('$!{course.id}');">点击加载更多</div>
 				</div>
 				<!--评论结束-->
 			</div>

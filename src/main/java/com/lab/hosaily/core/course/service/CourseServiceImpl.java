@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 public class CourseServiceImpl implements CourseService{
@@ -63,11 +65,11 @@ public class CourseServiceImpl implements CourseService{
      * 分页查询课程记录
      */
     @Override
-    public Page<Course> pageByCourse(PageRequest pageRequest){
+    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return courseDao.pageByCourse(pageRequest);
+            return courseDao.pageByCourse(pageRequest, tagName);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
@@ -86,6 +88,21 @@ public class CourseServiceImpl implements CourseService{
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据课程ID查询章节记录
+     */
+    @Override
+    public List<Course> findChapterByCourseId(String courseId){
+        try{
+            Assert.hasText(courseId, "课程ID不能为空");
+
+            return courseDao.findChapterByCourseId(courseId);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 

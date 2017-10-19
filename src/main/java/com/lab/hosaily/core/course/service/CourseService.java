@@ -5,6 +5,8 @@ import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.List;
+
 public interface CourseService{
 
     /**
@@ -20,12 +22,17 @@ public interface CourseService{
     /**
      * 分页查询课程记录
      */
-    Page<Course> pageByCourse(PageRequest pageRequest);
+    Page<Course> pageByCourse(PageRequest pageRequest, String tagName);
 
     /**
      * 分页查询帖子记录
      */
     Page<Course> pageByPost(PageRequest pageRequest);
+
+    /**
+     * 根据课程ID查询章节记录
+     */
+    List<Course> findChapterByCourseId(String courseId);
 
     /**
      * 根据ID查询帖子

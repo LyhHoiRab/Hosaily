@@ -135,7 +135,7 @@ public class CourseRestController{
     public Response<Page<Course>> pageByCourse(Long pageNum, Long pageSize){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Course> page = courseService.pageByCourse(pageRequest);
+            Page<Course> page = courseService.pageByCourse(pageRequest, null);
 
             return new Response<Page<Course>>("查询成功", page);
         }catch(Exception e){
@@ -148,10 +148,10 @@ public class CourseRestController{
      * H5分页查询课程记录
      */
     @RequestMapping(value = "/page/h5/course", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Course>> pageByH5AndCourse(Long pageNum, Long pageSize){
+    public Response<Page<Course>> pageByH5AndCourse(Long pageNum, Long pageSize, String tagName){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Course> page = courseService.pageByCourse(pageRequest);
+            Page<Course> page = courseService.pageByCourse(pageRequest, tagName);
 
             return new Response<Page<Course>>("查询成功", page);
         }catch(Exception e){
