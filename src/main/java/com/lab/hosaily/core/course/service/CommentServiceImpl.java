@@ -136,4 +136,19 @@ public class CommentServiceImpl implements CommentService{
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
+    /**
+     * 根据课程ID查询数量
+     */
+    @Override
+    public Long countByCourseId(String courseId){
+        try{
+            Assert.hasText(courseId, "课程ID不能为空");
+
+            return commentDao.countByCourseId(courseId);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 }

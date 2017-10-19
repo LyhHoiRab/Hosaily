@@ -54,7 +54,7 @@ public class CommentRestController{
     /**
      * 根据课程ID分页查询
      */
-    @RequestMapping(value = "/page/course/{courseId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/page/h5/course/{courseId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Page<Comment>> pageByCourseId(@PathVariable("courseId") String courseId, Long pageNum, Long pageSize){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);

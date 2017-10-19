@@ -42,4 +42,9 @@ public interface CommentService{
      * 根据课程ID分页查询
      */
     Page<Comment> pageByCourseId(PageRequest pageRequest, String courseId);
+
+    /**
+     * 根据课程ID查询数量
+     */
+    Long countByCourseId(String courseId);
 }

@@ -1,19 +1,19 @@
 <div class="head">
 	<div class="headContent">
-		<a class="logo" href="${basePath}/page/h5/index"><img src="${commonsImgPath}/kuliaologod.png"/></a>
+		<a class="logo" href="${basePath}/page/h5/index"><img src="http://kuliao.b0.upaiyun.com/img/kuliaologod.png"/></a>
 
 		<ul>
 			<li><a href="${basePath}/page/h5/discover">发现</a><div></div></li>
-			<li><a href="memberCourse.html">会员课程</a><div></div></li>
-			<li><a href="${basePath}/page/h5/skillTest.html">撩妹技巧测试</a><div></div></li>
-			<li><a href="${basePath}/page/h5/teamIntroduce.html">导师团队介绍</a><div></div></li>
+			<li><a href="${basePath}/page/h5/course">会员课程</a><div></div></li>
+			<li><a href="${basePath}/page/h5/skillTest">撩妹技巧测试</a><div></div></li>
+			<li><a href="${basePath}/page/h5/teamIntroduce">导师团队介绍</a><div></div></li>
 			<li><a href="${basePath}/page/h5/clubIntroduce">俱乐部介绍</a><div></div></li>
 		</ul>
 
         #if(${account_id})
 		<a class="login" href="${basePath}/page/h5/personalCenter"><img src="$!{user_head_img_url}"/>$!{user_nickname}</a>
 		#else
-		<a class="login" href="javascript:;" id="qrDialog"><img src="${commonsImgPath}/my01.png"/>登录</a>
+		<a class="login" href="javascript:;" id="qrDialog"><img src="http://kuliao.b0.upaiyun.com/img/my01.png"/>登录</a>
         #end
 	</div>
 
@@ -22,7 +22,7 @@
 		<div class="popup_dioag popup_login">
 			<div class="popupTitle">
 				<span class="popupText">登录-酷撩俱乐部 情感学堂</span>
-				<img class="closeIcon" src="${commonsImgPath}/Close.png"/>
+				<img class="closeIcon" src="http://kuliao.b0.upaiyun.com/img/Close.png"/>
 			</div>
 			<div class="popupLoginContent">
 				<!--<img src="${commonsImgPath}/WeChat.png"/><br/>-->

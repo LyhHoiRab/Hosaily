@@ -12,7 +12,6 @@ import java.util.List;
 public class LoginInterceptor extends HandlerInterceptorAdapter{
 
     private static final AntPathMatcher matcher = new AntPathMatcher();
-    private static String redirectUrl;
     private List<String> excludes;
 
     public static AntPathMatcher getMatcher(){

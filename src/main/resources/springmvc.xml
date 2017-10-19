@@ -99,8 +99,11 @@
           <list>
             <value>/page/h5/index</value>
             <value>/page/h5/discover</value>
+            <value>/page/h5/discover/{id}</value>
             <value>/page/h5/skillTest</value>
             <value>/page/h5/teamIntroduce</value>
+            <value>/page/h5/clubIntroduce</value>
+            <value>/page/h5/course</value>
           </list>
         </property>
       </bean>

@@ -62,7 +62,7 @@ public class CommentDao{
             Assert.hasText(id, "评论ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("id", id));
+            criteria.and(Restrictions.eq("c.id", id));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -79,8 +79,8 @@ public class CommentDao{
             Assert.hasText(senderId, "评论用户ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("senderId", senderId));
-            criteria.sort(Restrictions.desc("createTime"));
+            criteria.and(Restrictions.eq("c.senderId", senderId));
+            criteria.sort(Restrictions.desc("c.createTime"));
 
             return mapper.findByParams(criteria);
         }catch(Exception e){
@@ -98,8 +98,8 @@ public class CommentDao{
             Assert.hasText(senderId, "评论用户ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("senderId", senderId));
-            criteria.sort(Restrictions.desc("createTime"));
+            criteria.and(Restrictions.eq("c.senderId", senderId));
+            criteria.sort(Restrictions.desc("c.createTime"));
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             Long count = mapper.countByParams(criteria);
@@ -120,8 +120,8 @@ public class CommentDao{
             Assert.hasText(courseId, "课程ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("courseId", courseId));
-            criteria.sort(Restrictions.desc("createTime"));
+            criteria.and(Restrictions.eq("c.courseId", courseId));
+            criteria.sort(Restrictions.desc("c.createTime"));
 
             return mapper.findByParams(criteria);
         }catch(Exception e){
@@ -139,14 +139,31 @@ public class CommentDao{
             Assert.hasText(courseId, "课程ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("courseId", courseId));
-            criteria.sort(Restrictions.desc("createTime"));
+            criteria.and(Restrictions.eq("c.courseId", courseId));
+            criteria.sort(Restrictions.desc("c.createTime"));
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             Long count = mapper.countByParams(criteria);
             List<Comment> list = mapper.findByParams(criteria);
 
             return new Page<Comment>(list, pageRequest, count);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据课程ID查询数量
+     */
+    public Long countByCourseId(String courseId){
+        try{
+            Assert.hasText(courseId, "课程ID不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("c.courseId", courseId));
+
+            return mapper.countByParams(criteria);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

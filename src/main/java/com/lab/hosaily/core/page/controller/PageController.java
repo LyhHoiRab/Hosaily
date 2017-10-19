@@ -4,14 +4,22 @@ import com.lab.hosaily.commons.consts.SessionConsts;
 import com.lab.hosaily.core.account.entity.Attention;
 import com.lab.hosaily.core.account.service.AttentionService;
 import com.lab.hosaily.core.account.service.UserService;
+import com.lab.hosaily.core.course.entity.Comment;
+import com.lab.hosaily.core.course.entity.Course;
+import com.lab.hosaily.core.course.entity.Tag;
+import com.lab.hosaily.core.course.service.CommentService;
+import com.lab.hosaily.core.course.service.CourseService;
+import com.lab.hosaily.core.course.service.TagService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.core.account.entity.User;
+import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,6 +38,15 @@ public class PageController{
 
     @Autowired
     private AttentionService attentionService;
+
+    @Autowired
+    private CourseService courseService;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private TagService tagService;
 
     /**
      * 首页
@@ -51,6 +68,42 @@ public class PageController{
     public ModelAndView discover(ModelMap content){
         try{
             return new ModelAndView("web/discover", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 发现详情页
+     */
+    @RequestMapping(value = "/discover/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView discoverDetail(@PathVariable("id") String id, ModelMap content){
+        try{
+            Course course = courseService.getPostById(id);
+            Long commentCount = commentService.countByCourseId(id);
+
+            content.put("course", course);
+            content.put("commentCount", commentCount);
+
+            return new ModelAndView("web/discoverDetail", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 课程页面
+     */
+    @RequestMapping(value = "/course", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView course(ModelMap content){
+        try{
+            List<Tag> tags = tagService.findByState(UsingState.NORMAL);
+
+            content.put("tags", tags);
+
+            return new ModelAndView("web/course", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

@@ -85,6 +85,7 @@ public class CourseDao{
             Criteria criteria = new Criteria();
             criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
             criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
+            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             List<Course> list = mapper.findCourseByParams(criteria);
             Long count = mapper.countCourseByParams(criteria);
@@ -106,6 +107,7 @@ public class CourseDao{
             Criteria criteria = new Criteria();
             criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
             criteria.and(Restrictions.eq("c.kind", CourseKind.POST.getId()));
+            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             List<Course> list = mapper.findPostByParams(criteria);
             Long count = mapper.countPostByParams(criteria);
