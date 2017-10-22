@@ -1,6 +1,5 @@
 package com.lab.hosaily.core.account.service;
 
-import com.rab.babylon.core.account.entity.Account;
 import com.rab.babylon.core.account.entity.User;
 
 public interface AccountService{

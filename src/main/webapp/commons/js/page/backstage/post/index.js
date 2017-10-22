@@ -1,4 +1,13 @@
 app.controller('postController', function($scope){
+   //枚举常量
+    $scope.state = {
+        0: '正常',
+        1: '未激活',
+        2: '锁定',
+        3: '冻结',
+        4: '不可用'
+    };
+
     $scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
@@ -8,23 +17,46 @@ app.controller('postController', function($scope){
         currentPage: 1
     };
 
-    //枚举常量
-    $scope.state = {
-        0: '正常',
-        1: '未激活',
-        2: '锁定',
-        3: '冻结',
-        4: '不可用'
+    $scope.reset = function(){
+        $('#advisor').val('');
+        $('#state').val('');
+        $('#createTime').val('');
+        $('#minCreateTime').val('');
+        $('#maxCreateTime').val('');
     };
 
-    $scope.getData = function(pageNum, pageSize){
+    $scope.search = function(){
+        $scope.pagingOptions.currentPage = 1;
+        $scope.getData();
+    };
+
+    $scope.refresh = function(){
+        $scope.pagingOptions.currentPage = $scope.pagingOptions.currentPage;
+        $scope.getData();
+    };
+
+    $scope.getData = function(){
+        //查询参数
+        var pageNum       = $scope.pagingOptions.currentPage, 
+            pageSize      = $scope.pagingOptions.pageSize,
+            advisor       = $('#advisor').val(), 
+            state         = $('#state').val(), 
+            createTime    = $('#createTime').val(), 
+            minCreateTime = $('#minCreateTime').val(), 
+            maxCreateTime = $('#maxCreateTime').val();
+
         $.ajax({
-            url: '/api/1.0/course/page/post',
+            url: '/api/1.0/post/page',
             type: 'POST',
             dataType: 'JSON',
             data: {
-                'pageNum': pageNum,
-                'pageSize': pageSize
+                'pageNum'       : pageNum,
+                'pageSize'      : pageSize,
+                'advisor'       : advisor,
+                'state'         : state,
+                'createTime'    : createTime,
+                'minCreateTime' : minCreateTime,
+                'maxCreateTime' : maxCreateTime
             },
             success: function(res){
                 if(res.success){
@@ -39,11 +71,8 @@ app.controller('postController', function($scope){
     };
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
-        if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
-            var pageNum = newVal.currentPage;
-            var pageSize = newVal.pageSize;
-
-            $scope.getData(pageNum, pageSize);
+        if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){   
+            $scope.getData();
         }
     }, true);
 
@@ -78,10 +107,10 @@ app.controller('postController', function($scope){
             displayName: '点赞量'
         },{
             field: 'comments',
-            displayName: '回复量'
+            displayName: '评论量'
         },{
-            field: 'weight',
-            displayName: '权重'
+            field: 'sort',
+            displayName: '排序'
         },{
             field: 'state',
             displayName: '状态',
@@ -101,5 +130,5 @@ app.controller('postController', function($scope){
     };
 
     //初始化数据
-    $scope.getData($scope.pagingOptions.currentPage, $scope.pagingOptions.pageSize);
+    $scope.getData();
 });

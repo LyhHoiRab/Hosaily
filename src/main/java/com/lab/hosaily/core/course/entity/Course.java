@@ -33,10 +33,8 @@ public class Course implements Create, Update{
     private Integer view;
     //评论量
     private Integer comments;
-    //权重
-    private Integer weight;
-    //父课程ID
-    private String parentId;
+    //排序
+    private Integer sort;
     //子课程
     private List<Course> children;
     //媒体资源
@@ -122,20 +120,12 @@ public class Course implements Create, Update{
         this.view = view;
     }
 
-    public Integer getWeight(){
-        return weight;
+    public Integer getSort(){
+        return sort;
     }
 
-    public void setWeight(Integer weight){
-        this.weight = weight;
-    }
-
-    public String getParentId(){
-        return parentId;
-    }
-
-    public void setParentId(String parentId){
-        this.parentId = parentId;
+    public void setSort(Integer sort){
+        this.sort = sort;
     }
 
     public List<Course> getChildren(){

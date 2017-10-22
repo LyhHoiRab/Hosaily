@@ -2,9 +2,7 @@ package com.lab.hosaily.core.course.controller;
 
 
 import com.lab.hosaily.core.course.entity.Advisor;
-import com.lab.hosaily.core.course.entity.Tag;
 import com.lab.hosaily.core.course.service.AdvisorService;
-import com.lab.hosaily.core.course.service.TagService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
@@ -30,9 +28,6 @@ public class PostController{
     @Autowired
     private AdvisorService advisorService;
 
-    @Autowired
-    private TagService tagService;
-
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView index(ModelMap content){
         try{
@@ -52,11 +47,9 @@ public class PostController{
         try{
             List<UsingState> states = Arrays.asList(UsingState.values());
             List<Advisor> advisors = advisorService.findByState(UsingState.NORMAL);
-            List<Tag> tags = tagService.findByState(UsingState.NORMAL);
 
             content.put("states", states);
             content.put("advisors", advisors);
-            content.put("tags", tags);
 
             return new ModelAndView("backstage/post/edit", content);
         }catch(Exception e){
@@ -70,11 +63,9 @@ public class PostController{
         try{
             List<UsingState> states = Arrays.asList(UsingState.values());
             List<Advisor> advisors = advisorService.findByState(UsingState.NORMAL);
-            List<Tag> tags = tagService.findByState(UsingState.NORMAL);
 
             content.put("states", states);
             content.put("advisors", advisors);
-            content.put("tags", tags);
             content.put("id", id);
 
             return new ModelAndView("backstage/post/edit", content);

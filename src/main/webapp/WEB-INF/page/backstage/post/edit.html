@@ -58,8 +58,8 @@
 
     <div class="row-group">
       <div class="input-group">
-        <span class="input-group-addon">权重</span>
-        <input type="number" class="form-control" placeholder="权重" ng-model="post.weight" value="{{post.weight}}">
+        <span class="input-group-addon">排序</span>
+        <input type="number" class="form-control" placeholder="排序" ng-model="post.sort" value="{{post.sort}}">
       </div>
     </div><!-- item -->
 
@@ -69,18 +69,7 @@
         <select class="form-control" ng-model="post.advisor.id" value="{{post.advisor.id}}">
           <option value="">请选择</option>
           #foreach($advisor in $advisors)
-            <option value="${advisor.id}">${advisor.nickname}</option>
-          #end
-        </select>
-      </div>
-    </div><!-- item -->
-
-    <div class="row-group">
-      <div class="input-group">
-        <span class="input-group-addon">标签</span>
-        <select class="selectpicker form-control" multiple id="tags">
-          #foreach($tag in $tags)
-            <option value="${tag.id}">${tag.name}</option>
+            <option value="${advisor.id}">${advisor.name}</option>
           #end
         </select>
       </div>
@@ -115,7 +104,7 @@
     <div class="row-group">
       <div class="editor-group">
         <script id="editor" type="text/plain">
-
+          
         </script>
       </div>
     </div><!-- item -->

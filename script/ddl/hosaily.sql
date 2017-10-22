@@ -54,21 +54,22 @@ CREATE TABLE `media` (
   UNIQUE KEY `md5_UNIQUE` (`md5`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='媒体资源表';
 
-CREATE TABLE `advisor` (
+SELECT * FROM hosaily.advisor;CREATE TABLE `advisor` (
   `id` varchar(32) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   `nickname` varchar(45) DEFAULT NULL,
   `sex` tinyint(1) DEFAULT NULL,
   `wechat` varchar(60) DEFAULT NULL,
   `age` int(1) DEFAULT NULL,
-  `introduction` varchar(255) DEFAULT NULL,
+  `introduction` mediumtext,
   `head_img_url` varchar(255) DEFAULT NULL,
   `state` tinyint(1) NOT NULL,
-  `weight` int(1) DEFAULT NULL,
+  `sort` int(1) DEFAULT '0',
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='导师表';
+
 
 CREATE TABLE `tag` (
   `id` varchar(32) NOT NULL,
@@ -101,18 +102,23 @@ CREATE TABLE `course` (
   `introduction` mediumtext,
   `summary` varchar(255) DEFAULT NULL,
   `cover` varchar(255) DEFAULT NULL,
-  `price` double NOT NULL DEFAULT '0',
-  `likes` int(1) NOT NULL DEFAULT '0',
-  `view` int(1) NOT NULL DEFAULT '0',
-  `weight` int(1) NOT NULL DEFAULT '0',
-  `comments` int(1) NOT NULL DEFAULT '0',
+  `price` double DEFAULT '0',
+  `likes` int(1) DEFAULT '0',
+  `view` int(1) DEFAULT '0',
+  `sort` int(1) DEFAULT '0',
+  `comments` int(1) DEFAULT '0',
   `advisor_id` varchar(32) DEFAULT NULL,
-  `parent_id` varchar(32) DEFAULT NULL,
   `state` tinyint(1) NOT NULL,
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程表';
+
+CREATE TABLE `course_course` (
+  `parent_id` varchar(32) NOT NULL,
+  `children_id` varchar(32) NOT NULL,
+  PRIMARY KEY (`parent_id`,`children_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程层级表';
 
 CREATE TABLE `course_tag` (
   `course_id` varchar(32) NOT NULL,

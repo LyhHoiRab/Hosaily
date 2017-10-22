@@ -27,8 +27,8 @@ public class Advisor implements Create, Update{
     private String introduction;
     //头像
     private String headImgUrl;
-    //权重
-    private Integer weight;
+    //排序
+    private Integer sort;
     //状态
     private UsingState state;
     //扩展信息
@@ -122,12 +122,12 @@ public class Advisor implements Create, Update{
         this.expand = expand;
     }
 
-    public Integer getWeight(){
-        return weight;
+    public Integer getSort(){
+        return sort;
     }
 
-    public void setWeight(Integer weight){
-        this.weight = weight;
+    public void setSort(Integer sort){
+        this.sort = sort;
     }
 
     @Override

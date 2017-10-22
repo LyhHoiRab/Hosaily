@@ -35,8 +35,9 @@ public class AdvisorDao{
             Assert.notNull(advisor, "导师信息不能为空");
 
             if(StringUtils.isBlank(advisor.getId())){
+                Assert.notNull(advisor.getState(), "导师状态不能为空");
+
                 advisor.setId(UUIDGenerator.by32());
-                advisor.setState(UsingState.NORMAL);
                 advisor.setCreateTime(new Date());
                 mapper.save(advisor);
             }else{
@@ -86,34 +87,29 @@ public class AdvisorDao{
     /**
      * 分页查询
      */
-    public Page<Advisor> page(PageRequest pageRequest){
+    public Page<Advisor> page(PageRequest pageRequest, String nickname, String name, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+            criteria.sort(Restrictions.asc("sort"));
 
-            Long count = mapper.countByParams(criteria);
-            List<Advisor> list = mapper.findByParams(criteria);
-
-            return new Page<Advisor>(list, pageRequest, count);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * H5分页查询
-     */
-    public Page<Advisor> pageByH5(PageRequest pageRequest){
-        try{
-            Assert.notNull(pageRequest, "分页信息不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("state", UsingState.NORMAL.getId()));
-            criteria.sort(Restrictions.asc("weight"));
-            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+            if(!StringUtils.isBlank(nickname)){
+                criteria.and(Restrictions.like("nickname", nickname));
+            }
+            if(!StringUtils.isBlank(name)){
+                criteria.and(Restrictions.like("name", name));
+            }
+            if(state != null){
+                criteria.and(Restrictions.eq("state", state.getId()));
+            }
+            if(createTime != null){
+                criteria.and(Restrictions.eq("createTime", createTime));
+            }
+            if(minCreateTime != null && maxCreateTime != null){
+                criteria.and(Restrictions.between("createTime", minCreateTime, maxCreateTime));
+            }
 
             Long count = mapper.countByParams(criteria);
             List<Advisor> list = mapper.findByParams(criteria);

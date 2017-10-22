@@ -1,20 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lab.hosaily.core.course.dao.mapper.AdvisorMapper">
+<mapper namespace="com.lab.hosaily.core.course.dao.mapper.PostMapper">
+	<!-- 帖子 -->
+    <resultMap id="post" type="com.lab.hosaily.core.course.entity.Course">
+    	<id     column="id"           property="id"           javaType="java.lang.String"/>
+        <result column="type"         property="type"         typeHandler="courseTypeHandler"/>
+        <result column="kind"         property="kind"         typeHandler="courseKindHandler"/>
+        <result column="title"        property="title"        javaType="java.lang.String"/>
+        <result column="introduction" property="introduction" javaType="java.lang.String"/>
+        <result column="summary"      property="summary"      javaType="java.lang.String"/>
+        <result column="cover"        property="cover"        javaType="java.lang.String"/>
+        <result column="price"        property="price"        javaType="java.lang.Double"/>
+        <result column="likes"        property="likes"        javaType="java.lang.Integer"/>
+        <result column="view"         property="view"         javaType="java.lang.Integer"/>
+        <result column="sort"         property="sort"         javaType="java.lang.Integer"/>
+        <result column="comments"     property="comments"     javaType="java.lang.Integer"/>
+        <result column="state"        property="state"        typeHandler="usingStateHandler"/>
+        <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
+        <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
+        <association property="advisor"  resultMap="advisor"   columnPrefix="a_"/>
+     	<collection property="children" resultMap="children" columnPrefix="ch_"/>
+    </resultMap>
+
     <resultMap id="advisor" type="com.lab.hosaily.core.course.entity.Advisor">
         <id     column="id"           property="id"           javaType="java.lang.String"/>
         <result column="name"         property="name"         javaType="java.lang.String"/>
         <result column="nickname"     property="nickname"     javaType="java.lang.String"/>
-        <result column="sex"          property="sex"          typeHandler="sexHandler"/>
         <result column="wechat"       property="wechat"       javaType="java.lang.String"/>
-        <result column="age"          property="age"          javaType="java.lang.Integer"/>
-        <result column="introduction" property="introduction" javaType="java.lang.String"/>
         <result column="head_img_url" property="headImgUrl"   javaType="java.lang.String"/>
-        <result column="sort"         property="sort"         javaType="java.lang.Integer"/>
-        <result column="state"        property="state"        typeHandler="usingStateHandler"/>
-        <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
-        <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
+    </resultMap>
+
+    <resultMap id="children" type="com.lab.hosaily.core.course.entity.Course">
+        <id     column="id"           property="id"           javaType="java.lang.String"/>
+        <result column="cover"        property="cover"        javaType="java.lang.String"/>
+        <result column="title"        property="title"        javaType="java.lang.String"/>
+        <result column="summary"      property="summary"      javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -116,84 +137,162 @@
     </sql>
 
     <insert id="save">
-        INSERT
-          INTO advisor (
-              id,
-              name,
-              nickname,
-              sex,
-              wechat,
-              age,
-              head_img_url,
-              introduction,
-              state,
-              sort,
-              create_time
-          ) VALUE (
-              #{id,           jdbcType=VARCHAR},
-              #{name,         jdbcType=VARCHAR},
-              #{nickname,     jdbcType=VARCHAR},
-              #{sex,          typeHandler=sexHandler},
-              #{wechat,       jdbcType=VARCHAR},
-              #{age,          jdbcType=INTEGER},
-              #{headImgUrl,   jdbcType=VARCHAR},
-              #{introduction, jdbcType=VARCHAR},
-              #{state,        typeHandler=usingStateHandler},
-              #{sort,         jdbcType=INTEGER},
-              #{createTime,   jdbcType=TIMESTAMP}
-          )
+    	INSERT
+    	  INTO course (
+               id,
+               type,
+               kind,
+               title,
+               introduction,
+               summary,
+               cover,
+               price,
+               likes,
+               view,
+               sort,
+               comments,
+               state,
+               advisor_id,
+               create_time
+	  	) VALUE (
+               #{id,           jdbcType=VARCHAR},
+               #{type,         typeHandler=courseTypeHandler},
+               #{kind,         typeHandler=courseKindHandler},
+               #{title,        jdbcType=VARCHAR},
+               #{introduction, jdbcType=VARCHAR},
+               #{summary,      jdbcType=VARCHAR},
+               #{cover,        jdbcType=VARCHAR},
+               #{price,        jdbcType=DOUBLE},
+               #{likes,        jdbcType=INTEGER},
+               #{view,         jdbcType=INTEGER},
+               #{sort,         jdbcType=INTEGER},
+               #{comments,     jdbcType=INTEGER},
+               #{state,        typeHandler=usingStateHandler},
+               #{advisor.id,   jdbcType=VARCHAR},
+               #{createTime,   jdbcType=TIMESTAMP}
+        )
     </insert>
 
     <update id="update">
-        UPDATE advisor
+        UPDATE course
          <set>
-             <if test="name != null and name != ''">
-                 name = #{name, jdbcType=VARCHAR},
-             </if>
-             <if test="nickname != null and nickname != ''">
-                 nickname = #{nickname, jdbcType=VARCHAR},
-             </if>
-             <if test="sex != null">
-                 sex = #{sex, typeHandler=sexHandler},
-             </if>
-             <if test="wechat != null and wechat != ''">
-                 wechat = #{wechat, jdbcType=VARCHAR},
-             </if>
-             <if test="age != null and age > 0">
-                 age = #{age, jdbcType=INTEGER},
+             <if test="title != null and title != ''">
+                 title = #{title, jdbcType=VARCHAR},
              </if>
              <if test="introduction != null and introduction != ''">
                  introduction = #{introduction, jdbcType=VARCHAR},
              </if>
-             <if test="headImgUrl != null and headImgUrl != ''">
-                 head_img_url = #{headImgUrl, jdbcType=VARCHAR},
+             <if test="summary != null and summary != ''">
+                 summary = #{summary, jdbcType=VARCHAR},
+             </if>
+             <if test="cover != null and cover != ''">
+                 cover = #{cover, jdbcType=VARCHAR},
+             </if>
+             <if test="price != null and price >= 0">
+                 price = #{price, jdbcType=BOOLEAN},
+             </if>
+             <if test="likes != null and likes >= 0">
+                 likes = #{likes, jdbcType=INTEGER},
+             </if>
+             <if test="view != null and view >= 0">
+                 view = #{view, jdbcType=INTEGER},
+             </if>
+             <if test="sort != null and sort >= 0">
+                 sort = #{sort, jdbcType=INTEGER},
+             </if>
+             <if test="comments != null and comments >= 0">
+                 comments = #{comments, jdbcType=INTEGER},
              </if>
              <if test="state != null">
                  state = #{state, typeHandler=usingStateHandler},
              </if>
              <if test="updateTime != null">
-                 update_time = #{updateTime, jdbcType=TIMESTAMP},
-             </if>
-             <if test="sort != null and sort >= 0">
-                 sort = #{sort, jdbcType=INTEGER},
+                 update_time = #{updateTime, jdbcType=VARCHAR},
              </if>
          </set>
           WHERE id = #{id}
     </update>
 
-    <select id="getByParams" resultMap="advisor">
-        SELECT *
-          FROM advisor
+    <select id="getByParams" resultMap="post">
+        SELECT c.*,
+               a.id            AS a_id,
+               a.nickname      AS a_nickname,
+               a.wechat        AS a_wechat,
+               a.head_img_url  AS a_head_img_url,
+               ch.id           AS ch_id,
+               ch.title        AS co_title,
+               ch.summary      AS co_summary,
+               ch.cover        AS co_cover
+          FROM course c
+     LEFT JOIN advisor a
+            ON c.advisor_id = a.id
+     LEFT JOIN course_course cc
+            ON cc.parent_id = c.id
+     LEFT JOIN course ch
+            ON ch.id = cc.children_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
     </select>
 
-    <select id="findByParams" resultMap="advisor">
-        SELECT *
-          FROM advisor
+    <select id="findIdByParams" resultType="String">
+        SELECT c.id
+          FROM course c
+     LEFT JOIN advisor a
+            ON c.advisor_id = a.id
+     LEFT JOIN course_course cc
+            ON cc.parent_id = c.id
+     LEFT JOIN course ch
+            ON ch.id = cc.children_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
+
+            <if test="params.groups != null and params.groups.size > 0">
+                GROUP BY
+                <foreach collection="params.groups" item="group" separator=",">
+                    ${group.property}
+                </foreach>
+            </if>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+    <select id="findByParams" resultMap="post">
+        SELECT c.*,
+               a.id            AS a_id,
+               a.nickname      AS a_nickname,
+               a.wechat        AS a_wechat,
+               a.head_img_url  AS a_head_img_url,
+               ch.id           AS ch_id,
+               ch.title        AS co_title,
+               ch.summary      AS co_summary,
+               ch.cover        AS co_cover
+          FROM course c
+     LEFT JOIN advisor a
+            ON c.advisor_id = a.id
+     LEFT JOIN course_course cc
+            ON cc.parent_id = c.id
+     LEFT JOIN course ch
+            ON ch.id = cc.children_id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.groups != null and params.groups.size > 0">
+                GROUP BY
+                <foreach collection="params.groups" item="group" separator=",">
+                    ${group.property}
+                </foreach>
+            </if>
 
             <if test="params.sorts != null and params.sorts.size > 0">
                 ORDER BY
@@ -210,9 +309,25 @@
 
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
-          FROM advisor
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
-        </if>
+          FROM (
+                  SELECT c.id
+                    FROM course c
+               LEFT JOIN advisor a
+                      ON c.advisor_id = a.id
+               LEFT JOIN course_course cc
+                      ON cc.parent_id = c.id
+               LEFT JOIN course ch
+                      ON ch.id = cc.children_id
+                <if test="params != null">
+                    <include refid="WHERE_COLUMN"/>
+
+                    <if test="params.groups != null and params.groups.size > 0">
+                        GROUP BY
+                        <foreach collection="params.groups" item="group" separator=",">
+                            ${group.property}
+                        </foreach>
+                    </if>
+                </if>
+        ) AS course
     </select>
 </mapper>

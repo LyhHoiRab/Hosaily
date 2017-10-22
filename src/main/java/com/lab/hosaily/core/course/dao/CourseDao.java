@@ -42,7 +42,7 @@ public class CourseDao{
                 Assert.notNull(course.getKind(), "课程类型不能为空");
 
                 if(CourseType.CHAPTER.equals(course.getType()) || CourseType.SECTION.equals(course.getType())){
-                    Assert.hasText(course.getParentId(), "课程父级ID不能为空");
+//                    Assert.hasText(course.getParentId(), "课程父级ID不能为空");
                 }
 
                 course.setId(UUIDGenerator.by32());

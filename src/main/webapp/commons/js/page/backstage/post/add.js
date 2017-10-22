@@ -1,6 +1,6 @@
 app.controller('postAddController', function($scope, $state, FileUploader){
     var uploader = $scope.uploader = new FileUploader({
-        url: '/api/1.0/course/upload',
+        url: '/api/1.0/post/upload',
         queueLimit: 1,
         method: 'POST',
         removeAfterUpload: true
@@ -26,6 +26,7 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         title: '请选择'
     });
 
+    editorInit();
     var ue = UE.getEditor('editor', {
         initialFrameHeight: 450,
         serverUrl: ''
@@ -42,12 +43,8 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         price        : 0,
         likes        : 0,
         view         : 0,
-        weight       : 0,
-        comments     : 0,
-        advisor      : {
-            id : ''
-        },
-        tag          : []
+        sort         : 0,
+        advisor      : {id : ''}
     };
 
     $scope.reset = function(){
@@ -58,27 +55,18 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         $scope.post.price         = 0;
         $scope.post.likes         = 0;
         $scope.post.view          = 0;
-        $scope.post.weight        = 0;
-        $scope.post.comments      = 0;
+        $scope.post.sort          = 0;
         $scope.post.advisor.id    = '';
-        $scope.post.tag           = [];
 
         $('.selectpicker').selectpicker('deselectAll');
+        ue.setContent('');
     };
 
     $scope.submit = function(){
-        var tags = $('#tags').val();
-        var advisor = $('#advisor').val();
-
-        if(tags !== null && tags.length > 0){
-            angular.forEach(tags, function(data){
-                $scope.post.tag.push({id:data});
-            });
-        };
         $scope.post.introduction = ue.getContent();
 
         $.ajax({
-            url: '/api/1.0/course',
+            url: '/api/1.0/post',
             type: 'POST',
             data: JSON.stringify($scope.post),
             dataType: 'JSON',

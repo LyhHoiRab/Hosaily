@@ -1,7 +1,7 @@
 package com.lab.hosaily.core.course.webservice;
 
-import com.lab.hosaily.core.course.entity.Advisor;
-import com.lab.hosaily.core.course.service.AdvisorService;
+import com.lab.hosaily.core.course.entity.Course;
+import com.lab.hosaily.core.course.service.PostService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
@@ -10,7 +10,6 @@ import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -18,22 +17,23 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.util.Date;
 
 @RestController
-@RequestMapping(value = "/api/1.0/advisor")
-public class AdvisorRestController{
+@RequestMapping(value = "/api/1.0/post")
+public class PostRestController{
 
-    private static Logger logger = LoggerFactory.getLogger(AdvisorRestController.class);
+    private static Logger logger = LoggerFactory.getLogger(PostRestController.class);
 
     @Autowired
-    private AdvisorService advisorService;
+    private PostService postService;
 
     /**
-     * 添加导师
+     * 添加
      */
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Advisor> save(@RequestBody Advisor advisor){
+    public Response<Course> save(@RequestBody Course post){
         try{
-            advisorService.save(advisor);
-            return new Response<Advisor>("添加成功", advisor);
+            postService.save(post);
+
+            return new Response<Course>("添加成功", post);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -41,13 +41,14 @@ public class AdvisorRestController{
     }
 
     /**
-     * 修改导师
+     * 修改
      */
     @RequestMapping(value = "", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Advisor> update(@RequestBody Advisor advisor){
+    public Response<Course> update(@RequestBody Course post){
         try{
-            advisorService.update(advisor);
-            return new Response<Advisor>("修改成功", advisor);
+            postService.update(post);
+
+            return new Response<Course>("更新成功", post);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -55,13 +56,14 @@ public class AdvisorRestController{
     }
 
     /**
-     * 根据ID查询导师
+     * 根据ID查询
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Advisor> getById(@PathVariable("id") String id){
+    public Response<Course> getById(@PathVariable("id") String id){
         try{
-            Advisor advisor = advisorService.getById(id);
-            return new Response<Advisor>("查询成功", advisor);
+            Course post = postService.getById(id);
+
+            return new Response<Course>("查询成功", post);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -72,12 +74,12 @@ public class AdvisorRestController{
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Advisor>> page(Long pageNum, Long pageSize, String nickname, String name, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Response<Page<Course>> page(Long pageNum, Long pageSize, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Advisor> page = advisorService.page(pageRequest, nickname, name, state, createTime, minCreateTime, maxCreateTime);
+            Page<Course> page = postService.page(pageRequest, advisor, state, createTime, minCreateTime, maxCreateTime);
 
-            return new Response<Page<Advisor>>("查询成功", page);
+            return new Response<Page<Course>>("查询成功", page);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -90,7 +92,8 @@ public class AdvisorRestController{
     @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<String> upload(@RequestParam("file") CommonsMultipartFile file){
         try{
-            String url = advisorService.upload(file);
+            String url = postService.upload(file);
+
             return new Response<String>("上传成功", url);
         }catch(Exception e){
             logger.error(e.getMessage(), e);

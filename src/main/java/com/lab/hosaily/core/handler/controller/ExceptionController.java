@@ -1,4 +1,4 @@
-package com.lab.hosaily.core.exception.handler;
+package com.lab.hosaily.core.handler.controller;
 
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Response;

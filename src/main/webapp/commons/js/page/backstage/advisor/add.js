@@ -10,7 +10,7 @@ app.controller('advisorAddController', function($scope, $state, FileUploader){
         name: 'imageFilter',
         fn: function(item){
             var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-            return 'jpeg|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            return 'jpeg|jpg|png|bmp|gif|'.indexOf(type) !== -1;
         }
     });
 
@@ -22,6 +22,14 @@ app.controller('advisorAddController', function($scope, $state, FileUploader){
         }
     };
 
+
+    //初始化富文本框
+    editorInit();
+    var ue = UE.getEditor('editor', {
+        initialFrameHeight: 450,
+        serverUrl: ''
+    });
+
     $scope.advisor = {
         name         : '',
         nickname     : '',
@@ -30,6 +38,7 @@ app.controller('advisorAddController', function($scope, $state, FileUploader){
         wechat       : '',
         introduction : '',
         state        : '',
+        sort         : '',
         headImgUrl   : '/commons/img/level_default.jpg'
     };
 
@@ -41,9 +50,14 @@ app.controller('advisorAddController', function($scope, $state, FileUploader){
         $scope.advisor.wechat       = '';
         $scope.advisor.introduction = '';
         $scope.advisor.state        = '';
+        $scope.advisor.sort         = '';
+
+        ue.setContent('');
     };
 
     $scope.submit = function(){
+        $scope.advisor.introduction = ue.getContent();
+
         $.ajax({
             url: '/api/1.0/advisor',
             type: 'POST',

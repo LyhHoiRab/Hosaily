@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping(value = "/page/backstage")
 public class BackstageController{
@@ -19,9 +21,6 @@ public class BackstageController{
     @RequestMapping(value = "/index", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView index(ModelMap content){
         try{
-            content.put("nickname", "LyhHoiRab");
-            content.put("name", "黎海桦");
-
             return new ModelAndView("backstage/index", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);

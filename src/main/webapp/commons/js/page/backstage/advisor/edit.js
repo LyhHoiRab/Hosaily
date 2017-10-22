@@ -10,7 +10,7 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         name: 'imageFilter',
         fn: function(item){
             var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-            return 'jpeg|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            return 'jpeg|jpg|png|bmp|gif|'.indexOf(type) !== -1;
         }
     });
 
@@ -22,8 +22,16 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         }
     };
 
+    //初始化富文本框
+    editorInit();
+    var ue = UE.getEditor('editor', {
+        initialFrameHeight: 450,
+        serverUrl: ''
+    });
+
     $scope.id = $stateParams.id;
     $scope.advisor = {
+        id           : $scope.id,
         name         : '',
         nickname     : '',
         age          : '',
@@ -31,7 +39,8 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         wechat       : '',
         introduction : '',
         state        : '',
-        headImgUrl   : '/commons/img/level_default.jpg'
+        sort         : '',
+        headImgUrl   : ''
     };
 
     $scope.reset = function(){
@@ -42,6 +51,9 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         $scope.advisor.wechat       = '';
         $scope.advisor.introduction = '';
         $scope.advisor.state        = '';
+        $scope.advisor.sort         = '';
+
+        ue.setContent('');
     };
 
     $scope.submit = function(){
@@ -67,7 +79,6 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
             dataType: 'JSON',
             success: function(res){
                 if(res.success){
-                    //$scope.advisor = res.result;
                     utils.copyOf(res.result, $scope.advisor);
                 }
 
@@ -79,4 +90,8 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
     };
 
     $scope.getById();
+
+    ue.addListener('ready', function(){
+        ue.setContent($scope.advisor.introduction);
+    });
 });

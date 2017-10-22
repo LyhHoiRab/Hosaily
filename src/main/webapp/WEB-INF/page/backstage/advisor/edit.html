@@ -72,8 +72,8 @@
 
     <div class="row-group">
       <div class="input-group">
-        <span class="input-group-addon">简介</span>
-        <input type="text" class="form-control" placeholder="简介" ng-model="advisor.introduction" value="{{advisor.introduction}}">
+        <span class="input-group-addon">排序</span>
+        <input type="number" class="form-control" placeholder="排序" ng-model="advisor.sort" value="{{advisor.sort}}">
       </div>
     </div><!-- item -->
 
@@ -98,6 +98,12 @@
             <option value="${state.id}">${state.description}</option>
           #end
         </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="editor-group">
+        <script id="editor" type="text/plain"></script>
       </div>
     </div><!-- item -->
 

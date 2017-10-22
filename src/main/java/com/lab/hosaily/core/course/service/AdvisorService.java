@@ -6,6 +6,7 @@ import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.core.consts.entity.UsingState;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 public interface AdvisorService{
@@ -33,15 +34,10 @@ public interface AdvisorService{
     /**
      * 分页查询
      */
-    Page<Advisor> page(PageRequest pageRequest);
+    Page<Advisor> page(PageRequest pageRequest, String nickname, String name, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime);
 
     /**
      * 上传图片
      */
     String upload(CommonsMultipartFile file);
-
-    /**
-     * H5分页查询
-     */
-    Page<Advisor> pageByH5(PageRequest pageRequest);
 }

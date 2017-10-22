@@ -1,6 +1,6 @@
 app.controller('postEditController', function($scope, $state, $stateParams, FileUploader){
     var uploader = $scope.uploader = new FileUploader({
-        url: '/api/1.0/course/upload',
+        url: '/api/1.0/post/upload',
         queueLimit: 1,
         method: 'POST',
         removeAfterUpload: true
@@ -26,13 +26,13 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         title: '请选择'
     });
 
+    editorInit();
     var ue = UE.getEditor('editor', {
         initialFrameHeight: 450,
         serverUrl: ''
     });
 
     $scope.id = $stateParams.id;
-
     $scope.post = {
         id           : $scope.id,
         title        : '',
@@ -45,10 +45,8 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         price        : 0,
         likes        : 0,
         view         : 0,
-        weight       : 0,
-        comments     : 0,
-        advisor      : {},
-        tag          : []
+        sort         : 0,
+        advisor      : {id : ''},
     };
 
     $scope.reset = function(){
@@ -59,30 +57,21 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         $scope.post.price         = 0;
         $scope.post.likes         = 0;
         $scope.post.view          = 0;
-        $scope.post.weight        = 0;
-        $scope.post.comments      = 0;
-        $scope.post.advisor       = {};
-        $scope.post.tag           = [];
+        $scope.post.sort          = 0;
+        $scope.post.advisor.id    = '';
 
         $('.selectpicker').selectpicker('deselectAll');
         ue.setContent('');
     };
 
-    $scope.getPostById = function(){
+    $scope.getById = function(){
         $.ajax({
-            url: '/api/1.0/course/post/' + $scope.id,
+            url: '/api/1.0/post/' + $scope.id,
             dataType: 'JSON',
             type: 'GET',
             success: function(res){
                 if(res.success){
                     utils.copyOf(res.result, $scope.post);
-
-                    var tags = [];
-                    angular.forEach($scope.post.tag, function(data){
-                        tags.push(data.id);
-                    });
-
-                    $('#tags').selectpicker('val', tags);
                 }
 
                 if(!$scope.$$phase){
@@ -93,18 +82,10 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
     };
 
     $scope.submit = function(){
-        var tags = $('#tags').val();
-        var advisor = $('#advisor').val();
-
-        if(tags !== null && tags.length > 0){
-            angular.forEach(tags, function(data){
-                $scope.post.tag.push({id:data});
-            });
-        };
         $scope.post.introduction = ue.getContent();
 
         $.ajax({
-            url: '/api/1.0/course',
+            url: '/api/1.0/post',
             type: 'PUT',
             data: JSON.stringify($scope.post),
             dataType: 'JSON',
@@ -118,9 +99,9 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         });
     };
 
-    $scope.getPostById();
+    $scope.getById();
 
-    ue.addListener('ready', function(){
-        ue.setContent($scope.post.introduction);
-    });
+    // ue.addListener('ready', function(){
+    //     ue.setContent($scope.post.introduction);
+    // });
 });
