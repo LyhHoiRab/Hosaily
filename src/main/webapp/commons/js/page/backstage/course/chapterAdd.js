@@ -26,13 +26,13 @@ app.controller('chapterAddController', function($scope, $state, $stateParams, Fi
         title: '请选择'
     });
 
+    editorInit();
     var ue = UE.getEditor('editor', {
         initialFrameHeight: 450,
         serverUrl: ''
     });
 
     $scope.parentId = $stateParams.parentId;
-
     $scope.course = {
         parentId     : $scope.parentId,
         title        : '',
@@ -44,8 +44,7 @@ app.controller('chapterAddController', function($scope, $state, $stateParams, Fi
         cover        : '/commons/img/level_default.jpg',
         likes        : 0,
         view         : 0,
-        weight       : 0,
-        comments     : 0,
+        sort         : 0,
         price        : 0
     };
 
@@ -56,10 +55,11 @@ app.controller('chapterAddController', function($scope, $state, $stateParams, Fi
         $scope.course.state         = '';
         $scope.course.likes         = 0;
         $scope.course.view          = 0;
-        $scope.course.weight        = 0;
-        $scope.course.comments      = 0;
+        $scope.course.sort          = 0;
+        $scope.course.price         = 0;
 
         $('.selectpicker').selectpicker('deselectAll');
+        ue.setContent('');
     };
 
     $scope.submit = function(){

@@ -26,13 +26,13 @@ app.controller('sectionEditController', function($scope, $state, $stateParams, F
         title: '请选择'
     });
 
+    editorInit();
     var ue = UE.getEditor('editor', {
         initialFrameHeight: 450,
         serverUrl: ''
     });
 
     $scope.id = $stateParams.id;
-
     $scope.course = {
         id           : $scope.id,
         parentId     : '',
@@ -45,14 +45,9 @@ app.controller('sectionEditController', function($scope, $state, $stateParams, F
         cover        : '/commons/img/level_default.jpg',
         likes        : 0,
         view         : 0,
-        weight       : 0,
-        comments     : 0,
+        sort         : 0,
         price        : 0,
         media        : []
-    };
-
-    $scope.sectionAdd = function(){
-        $state.go('sectionAdd', {parentId : $scope.id});
     };
 
     $scope.reset = function(){
@@ -62,14 +57,23 @@ app.controller('sectionEditController', function($scope, $state, $stateParams, F
         $scope.course.state         = '';
         $scope.course.likes         = 0;
         $scope.course.view          = 0;
-        $scope.course.weight        = 0;
-        $scope.course.comments      = 0;
+        $scope.course.sort          = 0;
         $scope.course.media         = [];
 
         $('.selectpicker').selectpicker('deselectAll');
+        ue.setContent('');
     };
 
     $scope.submit = function(){
+        var medias = $('#medias').val();
+
+        $scope.course.media = [];
+        if(medias !== null && medias.length > 0){
+            angular.forEach(medias, function(data){
+                $scope.course.media.push({id:data});
+            });
+        };
+
         $scope.course.introduction = ue.getContent();
 
         $.ajax({

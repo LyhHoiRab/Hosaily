@@ -26,13 +26,13 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         title: '请选择'
     });
 
+    editorInit();
     var ue = UE.getEditor('editor', {
         initialFrameHeight: 450,
         serverUrl: ''
     });
 
     $scope.id = $stateParams.id;
-
     $scope.course = {
         id           : $scope.id,
         title        : '',
@@ -45,9 +45,8 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         price        : 0,
         likes        : 0,
         view         : 0,
-        weight       : 0,
-        comments     : 0,
-        advisor      : {},
+        sort         : 0,
+        advisor      : {id: ''},
         tag          : [],
         level        : [],
         children     : [],
@@ -65,11 +64,9 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         $scope.course.price         = 0;
         $scope.course.likes         = 0;
         $scope.course.view          = 0;
-        $scope.course.weight        = 0;
-        $scope.course.comments      = 0;
-        $scope.course.advisor       = {};
+        $scope.course.sort          = 0;
+        $scope.course.advisor.id    = '';
         $scope.course.tag           = [];
-        $scope.course.level         = [];
 
         $('.selectpicker').selectpicker('deselectAll');
         ue.setContent('');
@@ -77,7 +74,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
 
     $scope.getCourseById = function(){
         $.ajax({
-            url: '/api/1.0/course/course/' + $scope.id,
+            url: '/api/1.0/course/' + $scope.id,
             dataType: 'JSON',
             type: 'GET',
             success: function(res){
@@ -108,20 +105,20 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         var tags = $('#tags').val();
         var levels = $('#levels').val();
 
+        $scope.course.tag = [];
         if(tags !== null && tags.length > 0){
-            $scope.course.tag = [];
-
             angular.forEach(tags, function(data){
                 $scope.course.tag.push({id:data});
             });
         };
-        if(levels !== null && levels.length > 0){
-            $scope.course.level = [];
 
+        $scope.course.level = [];
+        if(levels !== null && levels.length > 0){
             angular.forEach(levels, function(data){
                 $scope.course.level.push({id:data});
             });
         };
+
         $scope.course.introduction = ue.getContent();
 
         $.ajax({

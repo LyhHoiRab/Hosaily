@@ -35,6 +35,8 @@ public class Course implements Create, Update{
     private Integer comments;
     //排序
     private Integer sort;
+    //父级ID
+    private String parentId;
     //子课程
     private List<Course> children;
     //媒体资源
@@ -126,6 +128,14 @@ public class Course implements Create, Update{
 
     public void setSort(Integer sort){
         this.sort = sort;
+    }
+
+    public String getParentId(){
+        return parentId;
+    }
+
+    public void setParentId(String parentId){
+        this.parentId = parentId;
     }
 
     public List<Course> getChildren(){

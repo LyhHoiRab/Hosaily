@@ -8,10 +8,7 @@ import com.lab.hosaily.core.course.entity.Comment;
 import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.course.entity.Level;
 import com.lab.hosaily.core.course.entity.Tag;
-import com.lab.hosaily.core.course.service.CommentService;
-import com.lab.hosaily.core.course.service.CourseService;
-import com.lab.hosaily.core.course.service.LevelService;
-import com.lab.hosaily.core.course.service.TagService;
+import com.lab.hosaily.core.course.service.*;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.core.account.entity.User;
 import com.rab.babylon.core.consts.entity.UsingState;
@@ -41,6 +38,9 @@ public class PageController{
 
     @Autowired
     private AttentionService attentionService;
+
+    @Autowired
+    private PostService postService;
 
     @Autowired
     private CourseService courseService;
@@ -83,7 +83,7 @@ public class PageController{
     @RequestMapping(value = "/discover/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView discoverDetail(@PathVariable("id") String id, ModelMap content){
         try{
-            Course course = courseService.getPostById(id);
+            Course course = postService.getById(id);
 
             content.put("course", course);
 
@@ -117,13 +117,11 @@ public class PageController{
     @RequestMapping(value = "/course/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView courseDetail(@PathVariable("id") String id, ModelMap content){
         try{
-            Course course = courseService.getCourseById(id);
             List<Level> levels = levelService.findLazyLoadingByState(UsingState.NORMAL);
-            List<Course> chapters = courseService.findChapterByCourseId(id);
+            Course course = courseService.getCourseById(id);
 
-            content.put("course", course);
-            content.put("chapters", chapters);
             content.put("levels", levels);
+            content.put("course", course);
 
             return new ModelAndView("web/courseDetail", content);
         }catch(Exception e){
@@ -138,11 +136,26 @@ public class PageController{
     @RequestMapping(value = "/chapter/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView chapterDetail(@PathVariable("id") String id, ModelMap content){
         try{
-            Course course = courseService.getPostById(id);
-
-            content.put("course", course);
-
             return new ModelAndView("web/chapterDetail", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 课时详情页
+     */
+    @RequestMapping(value = "/section/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView sectionDetail(@PathVariable("id") String id, String chapterId, ModelMap content){
+        try{
+            Course section = courseService.getSectionById(id);
+            Course chapter = courseService.getChapterById(chapterId);
+
+            content.put("section", section);
+            content.put("chapter", chapter);
+
+            return new ModelAndView("web/section", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -204,16 +217,6 @@ public class PageController{
             content.put("collects", collects);
 
             return new ModelAndView("web/personalCenter", content);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ApplicationException(e.getMessage(), e);
-        }
-    }
-
-    @RequestMapping(value = "/qr", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView qr(ModelMap content){
-        try{
-            return new ModelAndView("web/qr", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

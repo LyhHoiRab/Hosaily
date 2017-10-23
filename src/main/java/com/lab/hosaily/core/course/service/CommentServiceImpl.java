@@ -76,76 +76,14 @@ public class CommentServiceImpl implements CommentService{
     }
 
     /**
-     * 根据用户ID查询
+     * 分页查询
      */
     @Override
-    public List<Comment> findBySenderId(String senderId){
-        try{
-            Assert.hasText(senderId, "评论用户ID不能为空");
-
-            return commentDao.findBySenderId(senderId);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据用户ID分页查询
-     */
-    @Override
-    public Page<Comment> pageBySenderId(PageRequest pageRequest, String senderId){
+    public Page<Comment> page(PageRequest pageRequest, String senderId, String courseId){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
-            Assert.hasText(senderId, "评论用户ID不能为空");
 
-            return commentDao.pageBySenderId(pageRequest, senderId);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据课程ID查询
-     */
-    @Override
-    public List<Comment> findByCourseId(String courseId){
-        try{
-            Assert.hasText(courseId, "课程ID不能为空");
-
-            return commentDao.findByCourseId(courseId);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据课程ID分页查询
-     */
-    @Override
-    public Page<Comment> pageByCourseId(PageRequest pageRequest, String courseId){
-        try{
-            Assert.notNull(pageRequest, "分页信息不能为空");
-            Assert.hasText(courseId, "课程ID不能为空");
-
-            return commentDao.pageByCourseId(pageRequest, courseId);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据课程ID查询数量
-     */
-    @Override
-    public Long countByCourseId(String courseId){
-        try{
-            Assert.hasText(courseId, "课程ID不能为空");
-
-            return commentDao.countByCourseId(courseId);
+            return commentDao.pageBySenderId(pageRequest, senderId, courseId);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

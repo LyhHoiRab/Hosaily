@@ -54,27 +54,11 @@ public class CommentRestController{
     /**
      * 根据课程ID分页查询
      */
-    @RequestMapping(value = "/page/h5/course/{courseId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Comment>> pageByCourseId(@PathVariable("courseId") String courseId, Long pageNum, Long pageSize){
+    @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Page<Comment>> pageByCourseId(Long pageNum, Long pageSize, String senderId, String courseId){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Comment> page = commentService.pageByCourseId(pageRequest, courseId);
-
-            return new Response<Page<Comment>>("查询成功", page);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ApplicationException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据用户ID分页查询
-     */
-    @RequestMapping(value = "/page/sender/{senderId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Comment>> pageBySenderId(@PathVariable("senderId") String senderId, Long pageNum, Long pageSize){
-        try{
-            PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Comment> page = commentService.pageByCourseId(pageRequest, senderId);
+            Page<Comment> page = commentService.page(pageRequest, senderId, courseId);
 
             return new Response<Page<Comment>>("查询成功", page);
         }catch(Exception e){

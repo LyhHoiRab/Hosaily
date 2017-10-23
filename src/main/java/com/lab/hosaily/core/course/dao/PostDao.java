@@ -1,5 +1,7 @@
 package com.lab.hosaily.core.course.dao;
 
+import com.lab.hosaily.core.course.consts.CourseKind;
+import com.lab.hosaily.core.course.consts.CourseType;
 import com.lab.hosaily.core.course.dao.mapper.PostMapper;
 import com.lab.hosaily.core.course.entity.Course;
 import com.rab.babylon.commons.security.exception.DataAccessException;
@@ -45,6 +47,12 @@ public class PostDao{
                 post.setUpdateTime(new Date());
                 mapper.update(post);
             }
+
+            //更新子课程
+            if(post.getChildren() != null && !post.getChildren().isEmpty()){
+                mapper.deleteCourse(post.getId());
+                mapper.addCourse(post.getId(), post.getChildren());
+            }
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
@@ -76,6 +84,8 @@ public class PostDao{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
+            criteria.and(Restrictions.eq("c.kind", CourseKind.POST.getId()));
             criteria.groupBy(Restrictions.groupBy("c.id"));
             criteria.sort(Restrictions.asc("c.sort"));
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));

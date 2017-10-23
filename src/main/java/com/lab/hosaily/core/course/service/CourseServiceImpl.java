@@ -4,11 +4,11 @@ import com.lab.hosaily.commons.utils.FileNameUtils;
 import com.lab.hosaily.commons.utils.UpyunUtils;
 import com.lab.hosaily.core.course.dao.CourseDao;
 import com.lab.hosaily.core.course.entity.Course;
-import com.rab.babylon.commons.security.exception.DataAccessException;
 import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.utils.FileUtils;
+import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,6 +37,8 @@ public class CourseServiceImpl implements CourseService{
     public void save(Course course){
         try{
             Assert.notNull(course, "课程信息不能为空");
+            Assert.notNull(course.getType(), "课程层级类型不能为空");
+            Assert.notNull(course.getKind(), "课程类型不能为空");
 
             courseDao.saveOrUpdate(course);
         }catch(Exception e){
@@ -62,44 +65,14 @@ public class CourseServiceImpl implements CourseService{
     }
 
     /**
-     * 分页查询课程记录
+     * 分页查询课程
      */
     @Override
-    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName){
+    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return courseDao.pageByCourse(pageRequest, tagName);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 分页查询帖子记录
-     */
-    @Override
-    public Page<Course> pageByPost(PageRequest pageRequest){
-        try{
-            Assert.notNull(pageRequest, "分页信息不能为空");
-
-            return courseDao.pageByPost(pageRequest);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据课程ID查询章节记录
-     */
-    @Override
-    public List<Course> findChapterByCourseId(String courseId){
-        try{
-            Assert.hasText(courseId, "课程ID不能为空");
-
-            return courseDao.findChapterByCourseId(courseId);
+            return courseDao.pageByCourse(pageRequest, tagName, advisor, state, createTime, minCreateTime, maxCreateTime);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -107,14 +80,29 @@ public class CourseServiceImpl implements CourseService{
     }
 
     /**
-     * 根据ID查询帖子
+     * 分页查询章节
      */
     @Override
-    public Course getPostById(String id){
+    public Page<Course> pageByChapter(PageRequest pageRequest, String parentId, UsingState state){
         try{
-            Assert.hasText(id, "帖子ID不能为空");
+            Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return courseDao.getPostById(id);
+            return courseDao.pageByChapter(pageRequest, parentId, state);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据状态查询课程
+     */
+    @Override
+    public List<Course> findCourseByState(UsingState state){
+        try{
+            Assert.notNull(state, "课程状态不能为空");
+
+            return courseDao.findCourseByState(UsingState.NORMAL);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

@@ -24,27 +24,7 @@ public interface CommentService{
     Comment getById(String id);
 
     /**
-     * 根据用户ID查询
+     * 分页查询
      */
-    List<Comment> findBySenderId(String senderId);
-
-    /**
-     * 根据用户ID分页查询
-     */
-    Page<Comment> pageBySenderId(PageRequest pageRequest, String senderId);
-
-    /**
-     * 根据课程ID查询
-     */
-    List<Comment> findByCourseId(String courseId);
-
-    /**
-     * 根据课程ID分页查询
-     */
-    Page<Comment> pageByCourseId(PageRequest pageRequest, String courseId);
-
-    /**
-     * 根据课程ID查询数量
-     */
-    Long countByCourseId(String courseId);
+    Page<Comment> page(PageRequest pageRequest, String senderId, String courseId);
 }

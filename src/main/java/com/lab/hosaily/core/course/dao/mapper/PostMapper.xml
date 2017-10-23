@@ -213,6 +213,26 @@
           WHERE id = #{id}
     </update>
 
+    <insert id="addCourse">
+        INSERT
+          INTO course_course (
+               parent_id,
+               children_id
+        ) VALUES
+          <foreach collection="children" item="child" separator=",">
+            (
+              #{parentId, jdbcType=VARCHAR},
+              #{child.id, jdbcType=VARCHAR}
+            )
+          </foreach>
+    </insert>
+
+    <delete id="deleteCourse">
+        DELETE
+          FROM course_course
+         WHERE parent_id = #{parentId}
+    </delete>
+
     <select id="getByParams" resultMap="post">
         SELECT c.*,
                a.id            AS a_id,
@@ -220,9 +240,9 @@
                a.wechat        AS a_wechat,
                a.head_img_url  AS a_head_img_url,
                ch.id           AS ch_id,
-               ch.title        AS co_title,
-               ch.summary      AS co_summary,
-               ch.cover        AS co_cover
+               ch.title        AS ch_title,
+               ch.summary      AS ch_summary,
+               ch.cover        AS ch_cover
           FROM course c
      LEFT JOIN advisor a
             ON c.advisor_id = a.id
@@ -274,9 +294,9 @@
                a.wechat        AS a_wechat,
                a.head_img_url  AS a_head_img_url,
                ch.id           AS ch_id,
-               ch.title        AS co_title,
-               ch.summary      AS co_summary,
-               ch.cover        AS co_cover
+               ch.title        AS ch_title,
+               ch.summary      AS ch_summary,
+               ch.cover        AS ch_cover
           FROM course c
      LEFT JOIN advisor a
             ON c.advisor_id = a.id

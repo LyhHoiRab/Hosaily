@@ -6,12 +6,15 @@ import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
+import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping(value = "/api/1.0/course")
@@ -23,7 +26,7 @@ public class CourseRestController{
     private CourseService courseService;
 
     /**
-     * 添加记录
+     * 保存
      */
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Course> save(@RequestBody Course course){
@@ -38,7 +41,7 @@ public class CourseRestController{
     }
 
     /**
-     * 更新记录
+     * 修改
      */
     @RequestMapping(value = "", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Course> update(@RequestBody Course course){
@@ -53,14 +56,31 @@ public class CourseRestController{
     }
 
     /**
-     * 根据ID查询帖子
+     * 分页查询课程
      */
-    @RequestMapping(value = "/post/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Course> getPostById(@PathVariable("id") String id){
+    @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Page<Course>> page(Long pageNum, Long pageSize, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
         try{
-            Course course = courseService.getPostById(id);
+            PageRequest pageRequest = new PageRequest(pageNum, pageSize);
+            Page<Course> page = courseService.pageByCourse(pageRequest, tagName, advisor, state, createTime, minCreateTime, maxCreateTime);
 
-            return new Response<Course>("查询成功", course);
+            return new Response<Page<Course>>("查询成功", page);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 分页查询章节
+     */
+    @RequestMapping(value = "/page/chapter", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Page<Course>> pageByChapter(Long pageNum, Long pageSize, String parentId, UsingState state){
+        try{
+            PageRequest pageRequest = new PageRequest(pageNum, pageSize);
+            Page<Course> page = courseService.pageByChapter(pageRequest, parentId, state);
+
+            return new Response<Page<Course>>("查询成功", page);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -70,7 +90,7 @@ public class CourseRestController{
     /**
      * 根据ID查询课程
      */
-    @RequestMapping(value = "/course/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Course> getCourseById(@PathVariable("id") String id){
         try{
             Course course = courseService.getCourseById(id);
@@ -113,76 +133,13 @@ public class CourseRestController{
     }
 
     /**
-     * 分页查询帖子记录
-     */
-    @RequestMapping(value = "/page/post", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Course>> pageByPost(Long pageNum, Long pageSize){
-        try{
-            PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Course> page = courseService.pageByPost(pageRequest);
-
-            return new Response<Page<Course>>("查询成功", page);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ApplicationException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 分页查询课程记录
-     */
-    @RequestMapping(value = "/page/course", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Course>> pageByCourse(Long pageNum, Long pageSize){
-        try{
-            PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Course> page = courseService.pageByCourse(pageRequest, null);
-
-            return new Response<Page<Course>>("查询成功", page);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ApplicationException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * H5分页查询课程记录
-     */
-    @RequestMapping(value = "/page/h5/course", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Course>> pageByH5AndCourse(Long pageNum, Long pageSize, String tagName){
-        try{
-            PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Course> page = courseService.pageByCourse(pageRequest, tagName);
-
-            return new Response<Page<Course>>("查询成功", page);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ApplicationException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * H5分页查询帖子记录
-     */
-    @RequestMapping(value = "/page/h5/post", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Course>> pageByH5AndPost(Long pageNum, Long pageSize, String advisor, String tag){
-        try{
-            PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Course> page = courseService.pageByPost(pageRequest);
-
-            return new Response<Page<Course>>("查询成功", page);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ApplicationException(e.getMessage(), e);
-        }
-    }
-
-    /**
      * 上传图片
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<String> upload(@RequestParam("file") CommonsMultipartFile file){
         try{
             String url = courseService.upload(file);
+
             return new Response<String>("上传成功", url);
         }catch(Exception e){
             logger.error(e.getMessage(), e);

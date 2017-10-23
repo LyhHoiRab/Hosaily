@@ -26,6 +26,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         title: '请选择'
     });
 
+    editorInit();
     var ue = UE.getEditor('editor', {
         initialFrameHeight: 450,
         serverUrl: ''
@@ -42,11 +43,8 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         price        : 0,
         likes        : 0,
         view         : 0,
-        weight       : 0,
-        comments     : 0,
-        advisor      : {
-            id : ''
-        },
+        sort         : 0,
+        advisor      : {id : ''},
         tag          : [],
         level        : []
     };
@@ -59,14 +57,15 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         $scope.course.price         = 0;
         $scope.course.likes         = 0;
         $scope.course.view          = 0;
-        $scope.course.weight        = 0;
-        $scope.course.comments      = 0;
+        $scope.course.sort          = 0;
         $scope.course.advisor.id    = '';
         $scope.course.tag           = [];
         $scope.course.level         = [];
 
         $('.selectpicker').selectpicker('deselectAll');
+        ue.setContent('');
     };
+
 
     $scope.submit = function(){
         var tags = $('#tags').val();

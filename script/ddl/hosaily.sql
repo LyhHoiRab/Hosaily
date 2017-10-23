@@ -54,7 +54,7 @@ CREATE TABLE `media` (
   UNIQUE KEY `md5_UNIQUE` (`md5`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='媒体资源表';
 
-SELECT * FROM hosaily.advisor;CREATE TABLE `advisor` (
+CREATE TABLE `advisor` (
   `id` varchar(32) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   `nickname` varchar(45) DEFAULT NULL,
@@ -108,6 +108,7 @@ CREATE TABLE `course` (
   `sort` int(1) DEFAULT '0',
   `comments` int(1) DEFAULT '0',
   `advisor_id` varchar(32) DEFAULT NULL,
+  `parent_id` varchar(32) DEFAULT NULL,
   `state` tinyint(1) NOT NULL,
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,

@@ -4,7 +4,6 @@ import com.lab.hosaily.core.course.consts.CourseKind;
 import com.lab.hosaily.core.course.consts.CourseType;
 import com.lab.hosaily.core.course.dao.mapper.CourseMapper;
 import com.lab.hosaily.core.course.entity.Course;
-import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.exception.DataAccessException;
 import com.rab.babylon.commons.security.mybatis.Criteria;
 import com.rab.babylon.commons.security.mybatis.Restrictions;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,12 +41,7 @@ public class CourseDao{
                 Assert.notNull(course.getType(), "课程层级类型不能为空");
                 Assert.notNull(course.getKind(), "课程类型不能为空");
 
-                if(CourseType.CHAPTER.equals(course.getType()) || CourseType.SECTION.equals(course.getType())){
-//                    Assert.hasText(course.getParentId(), "课程父级ID不能为空");
-                }
-
                 course.setId(UUIDGenerator.by32());
-                course.setState(UsingState.NORMAL);
                 course.setCreateTime(new Date());
                 mapper.save(course);
             }else{
@@ -76,92 +71,6 @@ public class CourseDao{
     }
 
     /**
-     * 分页查询课程记录
-     */
-    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName){
-        try{
-            Assert.notNull(pageRequest, "分页信息不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
-            criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
-            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
-
-            if(!StringUtils.isBlank(tagName)){
-                criteria.and(Restrictions.eq("t.name", tagName));
-            }
-
-            List<Course> list = mapper.findCourseByParams(criteria);
-            Long count = mapper.countCourseByParams(criteria);
-
-            return new Page<Course>(list, pageRequest, count);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 分页查询帖子记录
-     */
-    public Page<Course> pageByPost(PageRequest pageRequest){
-        try{
-            Assert.notNull(pageRequest, "分页信息不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
-            criteria.and(Restrictions.eq("c.kind", CourseKind.POST.getId()));
-            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
-
-            List<Course> list = mapper.findPostByParams(criteria);
-            Long count = mapper.countPostByParams(criteria);
-
-            return new Page<Course>(list, pageRequest, count);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据课程ID查询章节记录
-     */
-    public List<Course> findChapterByCourseId(String courseId){
-        try{
-            Assert.hasText(courseId, "课程ID不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("c.parentId", courseId));
-            criteria.sort(Restrictions.desc("c.weight"));
-            criteria.sort(Restrictions.desc("se.weight"));
-
-            return mapper.findChapterByParams(criteria);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据ID查询帖子
-     */
-    public Course getPostById(String id){
-        try{
-            Assert.hasText(id, "帖子ID不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
-            criteria.and(Restrictions.eq("c.kind", CourseKind.POST.getId()));
-            criteria.and(Restrictions.eq("c.id", id));
-
-            return mapper.getPostByParams(criteria);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
      * 根据ID查询课程
      */
     public Course getCourseById(String id){
@@ -169,14 +78,15 @@ public class CourseDao{
             Assert.hasText(id, "课程ID不能为空");
 
             Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("c.id", id));
             criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
             criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
-            criteria.and(Restrictions.eq("c.id", id));
+            criteria.sort(Restrictions.asc("ch.sort"));
 
             return mapper.getCourseByParams(criteria);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
-            throw new ApplicationException(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
         }
     }
 
@@ -188,14 +98,15 @@ public class CourseDao{
             Assert.hasText(id, "章节ID不能为空");
 
             Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("c.id", id));
             criteria.and(Restrictions.eq("c.type", CourseType.CHAPTER.getId()));
             criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
-            criteria.and(Restrictions.eq("c.id", id));
+            criteria.sort(Restrictions.asc("ch.sort"));
 
             return mapper.getChapterByParams(criteria);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
-            throw new ApplicationException(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
         }
     }
 
@@ -207,14 +118,129 @@ public class CourseDao{
             Assert.hasText(id, "课时ID不能为空");
 
             Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("c.id", id));
             criteria.and(Restrictions.eq("c.type", CourseType.SECTION.getId()));
             criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
-            criteria.and(Restrictions.eq("c.id", id));
 
             return mapper.getSectionByParams(criteria);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
-            throw new ApplicationException(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据状态查询课程
+     */
+    public List<Course> findCourseByState(UsingState state){
+        try{
+            Assert.notNull(state, "课程状态不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
+            criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
+            criteria.and(Restrictions.eq("c.state", state.getId()));
+
+            return mapper.findCourseByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 分页查询课程
+     */
+    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+        try{
+            Assert.notNull(pageRequest, "分页信息不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
+            criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
+            criteria.groupBy(Restrictions.groupBy("c.id"));
+            criteria.sort(Restrictions.asc("c.sort"));
+            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+
+            if(!StringUtils.isBlank(tagName)){
+                criteria.and(Restrictions.like("t.name", tagName));
+            }
+            if(!StringUtils.isBlank(advisor)){
+                criteria.and(Restrictions.like("a.name", advisor));
+            }
+            if(state != null){
+                criteria.and(Restrictions.eq("c.state", state.getId()));
+            }
+            if(createTime != null){
+                criteria.and(Restrictions.eq("c.createTime", createTime));
+            }
+            if(minCreateTime != null && maxCreateTime != null){
+                criteria.and(Restrictions.between("c.createTime", minCreateTime, maxCreateTime));
+            }
+
+            //分页查询ID
+            List<String> ids = mapper.findIdByParams(criteria);
+            //查询记录数
+            Long count = mapper.countByParams(criteria);
+
+            List<Course> list = new ArrayList<Course>();
+
+            if(!ids.isEmpty()){
+                criteria.clear();
+                criteria.and(Restrictions.in("c.id", ids));
+                criteria.sort(Restrictions.asc("c.sort"));
+
+                list.addAll(mapper.findCourseByParams(criteria));
+            }
+
+            return new Page<Course>(list, pageRequest, count);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 分页查询章节
+     */
+    public Page<Course> pageByChapter(PageRequest pageRequest, String parentId, UsingState state){
+        try{
+            Assert.notNull(pageRequest, "分页信息不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("c.type", CourseType.CHAPTER.getId()));
+            criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
+            criteria.groupBy(Restrictions.groupBy("c.id"));
+            criteria.sort(Restrictions.asc("c.sort"));
+            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+
+            if(!StringUtils.isBlank(parentId)){
+                criteria.and(Restrictions.eq("c.parentId", parentId));
+            }
+            if(state != null){
+                criteria.and(Restrictions.eq("c.state", state.getId()));
+            }
+
+            //分页查询ID
+            List<String> ids = mapper.findIdByParams(criteria);
+            //查询记录数
+            Long count = mapper.countByParams(criteria);
+
+            List<Course> list = new ArrayList<Course>();
+
+            if(!ids.isEmpty()){
+                criteria.clear();
+                criteria.and(Restrictions.in("c.id", ids));
+                criteria.sort(Restrictions.asc("c.sort"));
+                criteria.sort(Restrictions.asc("ch.sort"));
+
+                list.addAll(mapper.findChapterByParams(criteria));
+            }
+
+            return new Page<Course>(list, pageRequest, count);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
         }
     }
 }

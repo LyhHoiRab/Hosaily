@@ -47,6 +47,7 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         view         : 0,
         sort         : 0,
         advisor      : {id : ''},
+        children     : []
     };
 
     $scope.reset = function(){
@@ -59,6 +60,7 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         $scope.post.view          = 0;
         $scope.post.sort          = 0;
         $scope.post.advisor.id    = '';
+        $scope.post.children      = [];
 
         $('.selectpicker').selectpicker('deselectAll');
         ue.setContent('');
@@ -82,6 +84,14 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
     };
 
     $scope.submit = function(){
+        var children = $('#courses').val();
+        //推荐课程
+        $scope.post.children = [];
+        if(children !== null && children.length > 0){
+            angular.forEach(children, function(data){
+                $scope.post.children.push({id:data});
+            });
+        }
         $scope.post.introduction = ue.getContent();
 
         $.ajax({
@@ -101,7 +111,7 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
 
     $scope.getById();
 
-    // ue.addListener('ready', function(){
-    //     ue.setContent($scope.post.introduction);
-    // });
+     ue.addListener('ready', function(){
+         ue.setContent($scope.post.introduction);
+     });
 });

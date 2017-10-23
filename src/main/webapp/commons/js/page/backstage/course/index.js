@@ -1,13 +1,4 @@
 app.controller('courseController', function($scope){
-    $scope.list = [];
-    $scope.selected = [];
-    $scope.total = 0;
-    $scope.pagingOptions = {
-        pageSizes: [20, 50, 100, 200],
-        pageSize: 20,
-        currentPage: 1
-    };
-
     //枚举常量
     $scope.state = {
         0: '正常',
@@ -17,14 +8,58 @@ app.controller('courseController', function($scope){
         4: '不可用'
     };
 
-    $scope.getData = function(pageNum, pageSize){
+    $scope.list = [];
+    $scope.selected = [];
+    $scope.total = 0;
+    $scope.pagingOptions = {
+        pageSizes: [20, 50, 100, 200],
+        pageSize: 20,
+        currentPage: 1
+    };
+
+    $scope.reset = function(){
+        $('#advisor').val('');
+        $('#tag').val('');
+        $('#state').val('');
+        $('#createTime').val('');
+        $('#minCreateTime').val('');
+        $('#maxCreateTime').val('');
+    };
+
+    $scope.search = function(){
+        $scope.pagingOptions.currentPage = 1;
+        $scope.getData();
+    };
+
+    $scope.refresh = function(){
+        $scope.pagingOptions.currentPage = $scope.pagingOptions.currentPage;
+        $scope.getData();
+    };
+
+    $scope.getData = function(){
+        var pageNum       = $scope.pagingOptions.currentPage, 
+            pageSize      = $scope.pagingOptions.pageSize,
+            advisor       = $('#advisor').val(), 
+            tag           = $('#tag').val(),
+            state         = $('#state').val(), 
+            createTime    = $('#createTime').val(), 
+            minCreateTime = $('#minCreateTime').val(), 
+            maxCreateTime = $('#maxCreateTime').val();
+
         $.ajax({
-            url: '/api/1.0/course/page/course',
+            url: '/api/1.0/course/page',
             type: 'POST',
             dataType: 'JSON',
             data: {
-                'pageNum': pageNum,
-                'pageSize': pageSize
+                'pageNum'       : pageNum,
+                'pageSize'      : pageSize,
+                'advisor'       : advisor,
+                'tag'           : tag,
+                'state'         : state,
+                'createTime'    : createTime,
+                'minCreateTime' : minCreateTime,
+                'maxCreateTime' : maxCreateTime
+
             },
             success: function(res){
                 if(res.success){
@@ -40,10 +75,7 @@ app.controller('courseController', function($scope){
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
-            var pageNum = newVal.currentPage;
-            var pageSize = newVal.pageSize;
-
-            $scope.getData(pageNum, pageSize);
+            $scope.getData();
         }
     }, true);
 
@@ -78,10 +110,10 @@ app.controller('courseController', function($scope){
             displayName: '点赞量'
         },{
             field: 'comments',
-            displayName: '回复量'
+            displayName: '评论量'
         },{
-            field: 'weight',
-            displayName: '权重'
+            field: 'sort',
+            displayName: '排序'
         },{
             field: 'state',
             displayName: '状态',
@@ -101,5 +133,5 @@ app.controller('courseController', function($scope){
     };
 
     //初始化数据
-    $scope.getData($scope.pagingOptions.currentPage, $scope.pagingOptions.pageSize);
+    $scope.getData();
 });

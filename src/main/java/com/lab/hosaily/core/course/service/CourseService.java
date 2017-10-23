@@ -3,8 +3,10 @@ package com.lab.hosaily.core.course.service;
 import com.lab.hosaily.core.course.entity.Course;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
+import com.rab.babylon.core.consts.entity.UsingState;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 public interface CourseService{
@@ -20,24 +22,19 @@ public interface CourseService{
     void update(Course course);
 
     /**
-     * 分页查询课程记录
+     * 分页查询课程
      */
-    Page<Course> pageByCourse(PageRequest pageRequest, String tagName);
+    Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime);
 
     /**
-     * 分页查询帖子记录
+     * 分页查询章节
      */
-    Page<Course> pageByPost(PageRequest pageRequest);
+    Page<Course> pageByChapter(PageRequest pageRequest, String parentId, UsingState state);
 
     /**
-     * 根据课程ID查询章节记录
+     * 根据状态查询课程
      */
-    List<Course> findChapterByCourseId(String courseId);
-
-    /**
-     * 根据ID查询帖子
-     */
-    Course getPostById(String id);
+    List<Course> findCourseByState(UsingState state);
 
     /**
      * 根据ID查询课程

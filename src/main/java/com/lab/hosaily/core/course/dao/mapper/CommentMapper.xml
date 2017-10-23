@@ -206,15 +206,7 @@
                r.nickname     AS r_nickname,
                r.account_id   AS r_account_id,
                r.head_img_url AS r_head_img_url
-          FROM (
-                  SELECT *
-                    FROM comment
-                  <if test="params != null">
-                    <if test="params.limit != null">
-                      ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
-                    </if>
-                  </if>
-          ) c
+          FROM comment c
      LEFT JOIN user s
             ON s.id = c.sender
      LEFT JOIN user r
@@ -227,6 +219,10 @@
                 <foreach collection="params.sorts" item="sort" separator=",">
                     ${sort.property} ${sort.operator}
                 </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
             </if>
         </if>
     </select>

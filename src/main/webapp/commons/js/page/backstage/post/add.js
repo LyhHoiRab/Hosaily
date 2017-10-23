@@ -44,7 +44,8 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         likes        : 0,
         view         : 0,
         sort         : 0,
-        advisor      : {id : ''}
+        advisor      : {id : ''},
+        children     : []
     };
 
     $scope.reset = function(){
@@ -57,12 +58,20 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         $scope.post.view          = 0;
         $scope.post.sort          = 0;
         $scope.post.advisor.id    = '';
+        $scope.post.children      = [];
 
         $('.selectpicker').selectpicker('deselectAll');
         ue.setContent('');
     };
 
     $scope.submit = function(){
+        var children = $('#courses').val();
+
+        if(children !== null && children.length > 0){
+            angular.forEach(children, function(data){
+                $scope.post.children.push({id:data});
+            });
+        }
         $scope.post.introduction = ue.getContent();
 
         $.ajax({

@@ -107,6 +107,7 @@
             <value>/page/h5/course</value>
             <value>/page/h5/course/{id}</value>
             <value>/page/h5/chapter/{id}</value>
+            <value>/page/h5/section/{id}</value>
           </list>
         </property>
       </bean>

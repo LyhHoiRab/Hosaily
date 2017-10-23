@@ -40,58 +40,14 @@
 				<div class="mdTabH">
 					<!--课程简介开始-->
 					<div class="classJieShao mdTab">
-						#foreach($chapter in $chapters)
-						<div class="classZhang">
-							<h4>$!{chapter.title}</h4>
+						<div class="detailStart"></div>
 
-							#foreach($children in $chapter.children)
-							<div class="mdClassLine" onclick="courseDetail.toDetail('$!{children.id}');">
-								#if($!velocityCount == 1)
-								<span class="tip tipFree">
-									免费
-								</span>
-								#else
-								<span class="tip">&nbsp;</span>
-								#end
-								<img class="progressImg" style="" src="http://kuliao.b0.upaiyun.com/img/Classhour01.png"/>
-								<span>$!{children.title}</span>
-								<div class="timeLong">
-									<!-- <span>30'25''</span> -->
-									#foreach($media in $children.media)
-										#if($media.type.id == 1)
-											<img src="http://kuliao.b0.upaiyun.com/img/coursea.png"/>
-										#elseif($media.type.id == 2)
-											<img src="http://kuliao.b0.upaiyun.com/img/coursec.png"/>
-										#end
-									#end
-								</div>
-							</div>
-							#end
-						</div><!-- item -->
-						#end
+						<div class="loadMore" id="chapterDetailLoadMore" onclick="courseDetail.getChapterDetail('$!{course.id}')"></div>
 
-						<!-- <div class="loadMore">加载更多章节</div> -->
 						<div class="classGai">
 							<h4 class="mGaiTitle">课程概述</h4>
-							<!-- <div class="classWen">
-								<h4>第一章节</h4>
-								<img src="img/suggest_img.jpg"/>
-								<div class="question">
-									<h4>问：什么是情绪聊天？</h4>
-									<p>答：90%的男生不懂怎么跟异性聊微信，情绪聊天解决这个问题。答：90%的男生不懂怎么跟异性聊微信，情绪聊天解决这个问题。答：90%的男生不懂怎么跟异性聊微信，情绪聊天解决这个问题。答：90%的男生不懂怎么跟异性聊微信，情绪聊天解决这个问题。</p>
-								</div>
-							</div> -->
-							#foreach($children in $course.children)
-								<div class="classWen">
-									<h4>$!{children.title}</h4>
-									<img src="$!{children.cover}"/>
-									<div class="question">
-										$!{children.summary}
-									</div>
-								</div>
-							#end
 						</div>
-						<!-- <div class="loadMore">加载更多章节</div> -->
+						<div class="loadMore" id="chapterLoadMore" onclick="courseDetail.getChapters('$!{course.id}')">加载更多章节</div>
 					</div>
 					<!--课程简介结束-->
 					<!--评论开始-->
@@ -105,18 +61,7 @@
 							<div class="clear"></div>
 							
 							<div class="commentStart"></div><!-- comment content -->
-							<!-- <div class="aComment">
-								<img class="aHeadImg" src="img/head.jpg"/>
-								<div class="aRight">
-									<label class="aUser">Sasan</label><span class="aTime">2017/05/13</span>
-									<p class="aText">
-										也有校内知情者透露:“活动不是北交举办的，是某app的宣传活动。女生不是北交的学生，是外面找的。男生是花钱雇来的。场地不在主校区教学区内，在校外的宿舍区院内。”
-									</p>
-									<p>
-										<img class="aZanImg" src="img/Give01.png"/><span class="aZan">（898）</span>
-									</p>
-								</div>
-							</div> -->
+
 							<div class="clear"></div>
 						</div>
 						<div class="loadMore" id="commentLoadMore" onclick="courseDetail.getComments('$!{course.id}')">加载更多评论</div>
@@ -186,16 +131,6 @@
 						    </tr>
 						  </thead>
 						  <tbody>
-						    <!-- <tr class="trDefault trActive">
-							    <td class="tdPosition">
-							    	幼稚园
-							    	<div><img src="img/Navigation05.png"/></div>
-							    </td>
-							    <td>免费课时、评论</td>
-							    <td>无</td>
-							    <td>终生</td>
-							    <td>免费</td>
-							</tr> -->
 							#foreach($level in $levels)
 								#foreach($price in $level.price)
 									<tr class="trDefault trActive">

@@ -21,6 +21,16 @@ public interface PostMapper{
     void update(Course course);
 
     /**
+     * 添加子课程
+     */
+    void addCourse(@Param("parentId") String parentId, @Param("children") List<Course> children);
+
+    /**
+     * 删除子课程
+     */
+    void deleteCourse(@Param("parentId") String parentId);
+
+    /**
      * 根据条件查询记录
      */
     Course getByParams(@Param("params") Criteria criteria);

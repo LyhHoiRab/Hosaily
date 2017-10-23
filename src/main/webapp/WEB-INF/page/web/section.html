@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>会员课程-学习</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="${commonsCssPath}/style.css"/>
+	<link rel="stylesheet" type="text/css" href="${commonsCssPath}/memberCourseStudy.css"/>
+	<body>
+		#parse("web/head.html")
+		<div class="fixH"></div>
+
+		<div class="studyContent">
+			<div class="studyVideo">
+				<div class="studyH"></div>
+				<div class="mediaTop">
+					#if($!section.media[0].type.id == 2)
+					<div class="mediaVideo">
+						<video controls="controls">
+							<source src="$!{section.media[0].url}"></source>
+							您的浏览器不支持 video 标签。
+						</video>
+					</div>
+					#elseif($section.media[0].type.id == 1)
+					<div class="mediaAudio">
+						<audio controls="controls">
+							<source src="$!{section.media[0].url}"></source>
+							您的浏览器不支持 audio 标签。
+						</audio>
+					</div>
+					#end
+					<div class="studyContentRight">
+						<div class="studyContentTitle">
+							如何追女神
+						</div>
+						<div class="classStudy">
+							<div class="classStudyTitle">${chapter.title}</div>
+							#foreach($child in $chapter.children)
+								#if($velocityCount == 1)
+									<span
+									#if($section.id == $child.id)
+									class="classActive"
+									#end
+									onclick="section.changeTo('$!{child.id}','$!{chapter.id}');">
+									$child.title
+										<div class="classFree">免</div>
+									</span>
+								#else
+									<span
+									#if($section.id == $child.id)
+									class="classActive"
+									#end
+									onclick="section.changeTo('$!{child.id}','$!{chapter.id}');">
+									$child.title
+									</span>
+								#end
+							#end
+						</div>
+						<div class="mdTeacher">
+							<div class="mdTeacherH">
+								<span>授课老师</span>
+								<span class="moreClass"><img src="img/Navigation02.png"/></span>
+							</div>
+							<div class="mdTeaDetails">
+								<img src="img/head.jpg"/>
+								<div class="mdTeaDetailsRight">
+									<label>Sasan</label><br />
+									<span>酷撩特级指导导师</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="studyBottom">
+					<div class="studyBottomText">
+						如何追女神>第一章>第一节
+					</div>
+					<div class="studyNum">
+						<img src="http://kuliao.b0.upaiyun.com/img/DAB08.png"/>
+						$!{section.view}人学习
+					</div>
+					<ul class="zan">
+						<li><a><img src="http://kuliao.b0.upaiyun.com/img/chat01a.png"/></a><span>$!{section.view}</span></li>
+						<li><a><img src="http://kuliao.b0.upaiyun.com/img/chat03.png"/></a><span>$!{section.likes}</span></li>
+						<li><a><img src="http://kuliao.b0.upaiyun.com/img/chat08.png"/></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<!--内容开始-->
+		<div class="content">
+			<!--左边内容开始-->
+			<div class="contentLeft">
+				
+				<div class="mHead">
+					<div class="mTabL">
+						<span class="mtab mtabAtive">课时介绍</span>
+						<span class="mtab">评论</span>
+					</div>
+				</div>
+				
+				<div class="mdTabH">
+					<!--课程简介开始-->
+					<div class="classJieShao mdTab">
+						<div class="classGai">
+							<h4 class="mGaiTitle">课程概述</h4>
+							<div class="classWen">
+								<h4>$!{section.title}</h4>
+								<img src="!{section.cover}"/>
+								<div class="question">
+									$!{section.introduction}
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--课程简介结束-->
+					<!--评论开始-->
+					<div class="comment mdTab" style="display: none;">
+						<div class="conPadding">
+							<div class="conTitle">课间广场&nbsp;&nbsp;&nbsp;&nbsp;8650条评论</div>
+							#if(${account_id})
+							<textarea placeholder="我要发表心得..."></textarea>
+							<div class="commitBtn">发表</div>
+							<div class="clear"></div>
+							#end
+							
+							<div class="commentStart"></div>
+							<div class="clear"></div>
+							<div class="loadMore" onclick="section.getComments('$!{section.id}');">加载更多</div>
+						</div>
+					</div>
+					<!--评论结束-->
+				</div>
+			</div>
+			<!--左边内容结束-->
+			<!--右边内容开始-->
+			<div class="contentRight">
+				<div class="rightText">
+					人气发现
+					<img src="http://kuliao.b0.upaiyun.com/img/Navigation02.png"/>
+				</div>
+				<div class="peoDis">
+					<img src="http://kuliao.b0.upaiyun.com/img/head.jpg"/>
+					<div>要么个子矮，要么高潮了</div>
+				</div>
+			</div>
+			<!--右边内容结束-->
+		</div>
+		<!--内容结束-->
+		#parse("web/foot.html")
+
+		<!--购买会员弹出框-->
+		<div class="popup popupVip">
+				<div class="popup_dioag">
+					<div class="popupTitle">
+						<span class="popupText">酷撩俱乐部会员权限</span>
+						<img class="closeIcon" src="img/Close.png"/>
+					</div>
+					<div class="tableContent">
+						<table>
+						  <thead>
+						    <tr>
+						     	<th>级别</th>
+							    <th>权限</th>
+							    <th>老师一对一服务</th>
+							    <th>时间</th>
+							    <th>费用</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr class="trDefault trActive">
+							    <td class="tdPosition">幼稚园
+							    	<div><img src="img/Navigation05.png"/></div>
+							    </td>
+							    <td>免费课时、评论</td>
+							    <td>无</td>
+							    <td>终生</td>
+							    <td>免费</td>
+							  </tr>
+							  <tr class="trDefault">
+							    <td class="tdPosition">高级班
+							    	<div><img src="img/Navigation04.png"/></div>
+							    </td>
+							    <td>所有课时、评论</td>
+							    <td>有</td>
+							    <td>半年</td>
+							    <td>￥5600</td>
+							  </tr>
+							  <tr class="trDefault">
+							    <td class="tdPosition">贵族班
+							    	<div><img src="img/Navigation04.png"/></div>
+							    </td>
+							    <td>所有课时、评论</td>
+							    <td>有</td>
+							    <td>2年</td>
+							    <td>￥8800</td>
+							 </tr>
+						  </tbody>
+						</table>
+					</div>
+					<div class="goPay">立即升级</div>
+				</div>
+		</div>
+		<!--支付二维码弹出框-->
+		<div class="popup popupPay">
+				<div class="popup_dioag popup_pay">
+					<div class="popupTitle">
+						<span class="popupText">在线支付</span>
+						<img class="closeIcon" src="img/Close.png"/>
+					</div>
+					<div class="payTypeH">
+						<div class="payType typeOn">
+							<img src="img/zhWe04.png"/>
+							<img src="img/zhWe03.png"/>
+						</div>
+						<span class="midLine"></span>
+						<div class="payType">
+							<img src="img/zhWe01.png"/>
+							<img src="img/zhWe02.png"/>
+						</div>
+					</div>
+					<div class="payCode">
+						<img src="img/alipay.png"/>
+						<img src="img/WeChat.png"/>
+						<label>使用手机支付宝扫码完成支付</label>
+						<label>使用手机微信扫码完成支付</label>
+					</div>
+				</div>
+		</div>
+
+		<script type="text/javascript" src="${basePath}/commons/js/jquery.min.js"></script>
+		<script type="text/javascript" src="${commonsJsPath}/wxLogin.js"></script>
+		<script type="text/javascript" src="${commonsJsPath}/moment.min.js"></script>
+        <script type="text/javascript" src="${commonsJsPath}/js.js"></script>
+        <script type="text/javascript" src="${commonsJsPath}/section.js"></script>
+	</body>
+</html>
