@@ -85,8 +85,8 @@ public class TagRestController{
     /**
      * 查询可用的标签列表
      */
-    @RequestMapping(value = "/list/normal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<Tag>> normal(){
+    @RequestMapping(value = "/find", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<Tag>> find(){
         try{
             List<Tag> list = tagService.findByState(UsingState.NORMAL);
             return new Response<List<Tag>>("查询成功", list);

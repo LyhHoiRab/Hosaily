@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -85,10 +86,10 @@ public class LevelRestController{
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Level>> page(Long pageNum, Long pageSize){
+    public Response<Page<Level>> page(Long pageNum, Long pageSize, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Level> page = levelService.page(pageRequest);
+            Page<Level> page = levelService.page(pageRequest, state, createTime, minCreateTime, maxCreateTime);
 
             return new Response<Page<Level>>("查询成功", page);
         }catch(Exception e){
@@ -100,10 +101,10 @@ public class LevelRestController{
     /**
      * 查询所有可购买的等级记录
      */
-    @RequestMapping(value = "/find/normal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<Level>> normal(){
+    @RequestMapping(value = "/find", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<Level>> find(){
         try{
-            List<Level> list = levelService.findLazyLoadingByState(UsingState.NORMAL);
+            List<Level> list = levelService.findByState(UsingState.NORMAL);
             return new Response<List<Level>>("查询成功", list);
         }catch(Exception e){
             logger.error(e.getMessage(), e);

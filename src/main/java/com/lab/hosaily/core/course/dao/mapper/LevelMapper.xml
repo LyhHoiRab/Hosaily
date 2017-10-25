@@ -170,7 +170,35 @@
           WHERE id = #{id}
     </update>
 
-    <select id="getByParams" resultMap="level">
+    <select id="findIdByParams" resultMap="level">
+        SELECT l.id
+          FROM level l
+     LEFT JOIN level_price p
+            ON p.level_id = l.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.groups != null and params.groups.size > 0">
+                GROUP BY
+                <foreach collection="params.groups" item="group" separator=",">
+                    ${group.property}
+                </foreach>
+            </if>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+    <select id="findByParams" resultMap="level">
         SELECT l.*,
                p.id        AS p_id,
                p.price     AS p_price,
@@ -181,14 +209,13 @@
             ON p.level_id = l.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
-        </if>
-    </select>
 
-    <select id="findByParams" resultMap="level">
-        SELECT *
-          FROM level
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
+            <if test="params.groups != null and params.groups.size > 0">
+                GROUP BY
+                <foreach collection="params.groups" item="group" separator=",">
+                    ${group.property}
+                </foreach>
+            </if>
 
             <if test="params.sorts != null and params.sorts.size > 0">
                 ORDER BY
@@ -205,13 +232,25 @@
 
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
-          FROM level
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
-        </if>
+          FROM (
+                  SELECT l.id
+                    FROM level l
+               LEFT JOIN level_price p
+                      ON p.level_id = l.id
+                <if test="params != null">
+                    <include refid="WHERE_COLUMN"/>
+
+                    <if test="params.groups != null and params.groups.size > 0">
+                        GROUP BY
+                        <foreach collection="params.groups" item="group" separator=",">
+                            ${group.property}
+                        </foreach>
+                    </if>
+                </if>
+        ) AS level
     </select>
 
-    <select id="findLazyLoadingByParams" resultMap="level">
+    <select id="getByParams" resultMap="level">
         SELECT l.*,
                p.id        AS p_id,
                p.price     AS p_price,
@@ -222,13 +261,6 @@
             ON p.level_id = l.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
-
-            <if test="params.sorts != null and params.sorts.size > 0">
-                ORDER BY
-                <foreach collection="params.sorts" item="sort" separator=",">
-                    ${sort.property} ${sort.operator}
-                </foreach>
-            </if>
         </if>
     </select>
 </mapper>

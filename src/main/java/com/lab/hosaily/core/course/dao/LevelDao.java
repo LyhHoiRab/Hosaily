@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -76,7 +77,8 @@ public class LevelDao{
             Assert.notNull(state, "等级状态不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("state", state.getId()));
+            criteria.and(Restrictions.eq("l.state", state.getId()));
+            criteria.and(Restrictions.eq("l.isDelete", false));
 
             return mapper.findByParams(criteria);
         }catch(Exception e){
@@ -88,36 +90,41 @@ public class LevelDao{
     /**
      * 分页查询
      */
-    public Page<Level> page(PageRequest pageRequest){
+    public Page<Level> page(PageRequest pageRequest, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("isDelete", false));
+            criteria.and(Restrictions.eq("l.isDelete", false));
+            criteria.groupBy(Restrictions.groupBy("l.id"));
+            criteria.sort(Restrictions.desc("p.price"));
             criteria.setLimit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
-            Long total = mapper.countByParams(criteria);
-            List<Level> list = mapper.findByParams(criteria);
+            if(state != null){
+                criteria.and(Restrictions.eq("l.state", state.getId()));
+            }
+            if(createTime != null){
+                criteria.and(Restrictions.eq("l.createTime", createTime));
+            }
+            if(minCreateTime != null && maxCreateTime != null){
+                criteria.and(Restrictions.between("l.createTime", minCreateTime, maxCreateTime));
+            }
 
-            return new Page<Level>(list, pageRequest, total);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
+            //分页查询ID
+            List<String> ids = mapper.findIdByParams(criteria);
+            //查询记录数
+            Long count = mapper.countByParams(criteria);
 
-    /**
-     * 懒加载查询
-     */
-    public List<Level> findLazyLoadingByState(UsingState state){
-        try{
-            Assert.notNull(state, "等级状态不能为空");
+            List<Level> list = new ArrayList<Level>();
 
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("l.state", state.getId()));
-            criteria.and(Restrictions.eq("p.state", state.getId()));
+            if(!ids.isEmpty()){
+                criteria.clear();
+                criteria.sort(Restrictions.desc("p.price"));
 
-            return mapper.findLazyLoadingByParams(criteria);
+                list.addAll(mapper.findByParams(criteria));
+            }
+
+            return new Page<Level>(list, pageRequest, count);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

@@ -3,6 +3,7 @@ package com.lab.hosaily.core.application.service;
 import com.lab.hosaily.commons.consts.AuthorizationConsts;
 import com.lab.hosaily.core.application.dao.ApplicationDao;
 import com.lab.hosaily.core.application.entity.Application;
+import com.lab.hosaily.core.page.consts.CommonsPathConsts;
 import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
@@ -73,7 +74,7 @@ public class ApplicationServiceImpl implements ApplicationService{
             Assert.hasText(token, "应用Token不能为空");
 
             if(StringUtils.isBlank(redirectUrl)){
-                redirectUrl = AuthorizationConsts.DEFAULT_REDIRECT;
+                redirectUrl = CommonsPathConsts.H5_INDEX;
             }
 
             Application application = applicationDao.getByToken(token);
@@ -82,8 +83,8 @@ public class ApplicationServiceImpl implements ApplicationService{
                 throw new ServiceException(String.format("无效的应用Token[%s]", token));
             }
 
-            String state = AESUtils.encryptBy128(redirectUrl + "_" + token, AuthorizationConsts.KEY);
-//            String state = redirectUrl + "&" + token;
+//            String state = AESUtils.encryptBy128(redirectUrl + "_" + token, AuthorizationConsts.KEY);
+            String state = redirectUrl + "_" + token;
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(AuthorizationConsts.NODE_APPID, application.getAppId());

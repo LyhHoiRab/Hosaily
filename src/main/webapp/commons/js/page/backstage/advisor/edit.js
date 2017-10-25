@@ -10,7 +10,7 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         name: 'imageFilter',
         fn: function(item){
             var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-            return 'jpeg|jpg|png|bmp|gif|'.indexOf(type) !== -1;
+            return 'jpg|jpeg|png|bmp|gif|'.indexOf(type) !== -1;
         }
     });
 
@@ -57,6 +57,8 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
     };
 
     $scope.submit = function(){
+        $scope.advisor.introduction = ue.getContent();
+
         $.ajax({
             url: '/api/1.0/advisor',
             type: 'PUT',

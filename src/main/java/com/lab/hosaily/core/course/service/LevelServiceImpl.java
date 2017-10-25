@@ -21,6 +21,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -164,26 +165,11 @@ public class LevelServiceImpl implements LevelService{
      * 分页查询
      */
     @Override
-    public Page<Level> page(PageRequest pageRequest){
+    public Page<Level> page(PageRequest pageRequest, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return levelDao.page(pageRequest);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据状态查询
-     */
-    @Override
-    public List<Level> findLazyLoadingByState(UsingState state){
-        try{
-            Assert.notNull(state, "等级状态不能为空");
-
-            return levelDao.findLazyLoadingByState(state);
+            return levelDao.page(pageRequest, state, createTime, minCreateTime, maxCreateTime);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

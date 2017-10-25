@@ -10,6 +10,7 @@ public class CommonsPathConsts{
     public static String JS_PATH;
     public static String CSS_PATH;
     public static String IMG_PATH;
+    public static String H5_INDEX;
 
     @Value(value = "${url.commons.js}")
     public void setJsPath(String jsPath){
@@ -42,5 +43,16 @@ public class CommonsPathConsts{
 
     public String getImgPath(){
         return IMG_PATH;
+    }
+
+    @Value(value = "${url.h5.index}")
+    public void setH5Index(String index){
+        if(StringUtils.isBlank(H5_INDEX)){
+            CommonsPathConsts.H5_INDEX = index;
+        }
+    }
+
+    public String getH5Index(){
+        return H5_INDEX;
     }
 }

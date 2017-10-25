@@ -10,7 +10,7 @@ app.controller('advisorAddController', function($scope, $state, FileUploader){
         name: 'imageFilter',
         fn: function(item){
             var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-            return 'jpeg|jpg|png|bmp|gif|'.indexOf(type) !== -1;
+            return 'jpg|jpeg|png|bmp|gif|'.indexOf(type) !== -1;
         }
     });
 
@@ -21,7 +21,6 @@ app.controller('advisorAddController', function($scope, $state, FileUploader){
             $scope.$apply();
         }
     };
-
 
     //初始化富文本框
     editorInit();

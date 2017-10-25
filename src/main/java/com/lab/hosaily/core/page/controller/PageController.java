@@ -117,7 +117,7 @@ public class PageController{
     @RequestMapping(value = "/course/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView courseDetail(@PathVariable("id") String id, ModelMap content){
         try{
-            List<Level> levels = levelService.findLazyLoadingByState(UsingState.NORMAL);
+            List<Level> levels = levelService.findByState(UsingState.NORMAL);
             Course course = courseService.getCourseById(id);
 
             content.put("levels", levels);
@@ -151,9 +151,11 @@ public class PageController{
         try{
             Course section = courseService.getSectionById(id);
             Course chapter = courseService.getChapterById(chapterId);
+            Course course = courseService.getCourseById(chapter.getParentId());
 
             content.put("section", section);
             content.put("chapter", chapter);
+            content.put("course", course);
 
             return new ModelAndView("web/section", content);
         }catch(Exception e){

@@ -31,6 +31,11 @@ public interface LevelMapper{
      */
     Level getByParams(@Param("params") Criteria criteria);
 
+    /*
+     * 根据条件查询ID
+     */
+    List<String> findIdByParams(@Param("params") Criteria criteria);
+
     /**
      * 查询多条记录
      */
@@ -40,9 +45,4 @@ public interface LevelMapper{
      * 查询记录数量
      */
     Long countByParams(@Param("params") Criteria criteria);
-
-    /**
-     * 懒加载查询
-     */
-    List<Level> findLazyLoadingByParams(@Param("params") Criteria criteria);
 }

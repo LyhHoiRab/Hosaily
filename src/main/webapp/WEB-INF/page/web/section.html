@@ -23,6 +23,10 @@
 					</div>
 					#elseif($section.media[0].type.id == 1)
 					<div class="mediaAudio">
+						<div class="mediaVideo">
+							<img src="$!{section.cover}" width="765" height="435"/>
+						</div>
+
 						<audio controls="controls">
 							<source src="$!{section.media[0].url}"></source>
 							您的浏览器不支持 audio 标签。
@@ -31,7 +35,7 @@
 					#end
 					<div class="studyContentRight">
 						<div class="studyContentTitle">
-							如何追女神
+							$!{course.title}
 						</div>
 						<div class="classStudy">
 							<div class="classStudyTitle">${chapter.title}</div>
@@ -59,13 +63,12 @@
 						<div class="mdTeacher">
 							<div class="mdTeacherH">
 								<span>授课老师</span>
-								<span class="moreClass"><img src="img/Navigation02.png"/></span>
+								<span class="moreClass"><img src="http://kuliao.b0.upaiyun.com/img/Navigation02.png"/></span>
 							</div>
 							<div class="mdTeaDetails">
-								<img src="img/head.jpg"/>
+								<img src="$!{course.advisor.headImgUrl}"/>
 								<div class="mdTeaDetailsRight">
-									<label>Sasan</label><br />
-									<span>酷撩特级指导导师</span>
+									<label>$!{course.advisor.nickname}</label><br/>
 								</div>
 							</div>
 						</div>
@@ -73,7 +76,7 @@
 				</div>
 				<div class="studyBottom">
 					<div class="studyBottomText">
-						如何追女神>第一章>第一节
+						$!{course.title} > $!{chapter.title} > $!{section.title}
 					</div>
 					<div class="studyNum">
 						<img src="http://kuliao.b0.upaiyun.com/img/DAB08.png"/>
@@ -109,7 +112,7 @@
 							<h4 class="mGaiTitle">课程概述</h4>
 							<div class="classWen">
 								<h4>$!{section.title}</h4>
-								<img src="!{section.cover}"/>
+								<img src="$!{section.cover}"/>
 								<div class="question">
 									$!{section.introduction}
 								</div>
@@ -120,7 +123,7 @@
 					<!--评论开始-->
 					<div class="comment mdTab" style="display: none;">
 						<div class="conPadding">
-							<div class="conTitle">课间广场&nbsp;&nbsp;&nbsp;&nbsp;8650条评论</div>
+							<div class="conTitle"></div>
 							#if(${account_id})
 							<textarea placeholder="我要发表心得..."></textarea>
 							<div class="commitBtn">发表</div>
@@ -129,8 +132,8 @@
 							
 							<div class="commentStart"></div>
 							<div class="clear"></div>
-							<div class="loadMore" onclick="section.getComments('$!{section.id}');">加载更多</div>
 						</div>
+						<div class="loadMore" onclick="section.getComments('$!{section.id}');">加载更多</div>
 					</div>
 					<!--评论结束-->
 				</div>
