@@ -51,7 +51,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
 
     $scope.reset = function(){
         $scope.course.title         = '';
-        $scope.course.summary       = '',
+        $scope.course.summary       = '';
         $scope.course.introduction  = '';
         $scope.course.state         = '';
         $scope.course.price         = 0;

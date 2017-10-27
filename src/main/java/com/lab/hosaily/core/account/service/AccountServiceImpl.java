@@ -54,7 +54,7 @@ public class AccountServiceImpl implements AccountService{
      */
     @Override
     @Transactional(readOnly = false)
-    public void registerByXcx(String token, String code, String signature, String rawData, String encryptedData, String iv){
+    public User registerByXcx(String token, String code, String signature, String rawData, String encryptedData, String iv){
         try{
             Assert.hasText(code, "code值不能为空");
             Assert.hasText(token, "小程序Token不能为空");
@@ -76,21 +76,20 @@ public class AccountServiceImpl implements AccountService{
             String sessionKey = response.getSessionKey();
             //openId
             String openId = response.getOpenId();
-            //unionId
-            String unionId = response.getUnionId();
 
             //验签
             String sign = SHAUtils.bySHA1(rawData + sessionKey);
             //验签成功
-            if(sign.equals(signature)){
+            if(sign.equalsIgnoreCase(signature)){
                 //解密用户信息
                 XcxAccount decrypt = XcxUtils.decrypt(encryptedData, sessionKey, iv);
                 //校验水印
-                if(decrypt.getWatermark().get("openid").equals(appId)){
+                if(decrypt.getWatermark().get("appid").equals(appId) && decrypt.getOpenId().equals(openId)){
                     XcxAccount xcxAccount = xcxAccountDao.getByOpenId(decrypt.getOpenId());
                     if(xcxAccount == null){
                         //未注册
                         xcxAccount = decrypt;
+                        xcxAccount.setAppId(appId);
                         xcxAccountDao.saveOrUpdate(xcxAccount);
                     }
                     //更新unionId
@@ -119,8 +118,14 @@ public class AccountServiceImpl implements AccountService{
                         user.setAccountId(account.getId());
                         userDao.saveOrUpdate(user);
                     }
+
+                    return user;
                 }
+
+                throw new ServiceException("用户信息水印认证失败");
             }
+
+            throw new ServiceException("小程序注册签名认证失败");
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -156,6 +161,11 @@ public class AccountServiceImpl implements AccountService{
                 UserInfoResponse userInfo = WeChatUtils.getUserInfo(accessToken.getAccessToken(), appId);
                 weChatAccount = userInfo.changeToWeChatAccount();
                 weChatAccount.setAppId(appId);
+                weChatAccountDao.saveOrUpdate(weChatAccount);
+            }
+            //更新unionId
+            if(!StringUtils.isBlank(accessToken.getUnionId()) && !accessToken.getUnionId().equals(weChatAccount.getUnionId())){
+                weChatAccount.setUnionId(accessToken.getUnionId());
                 weChatAccountDao.saveOrUpdate(weChatAccount);
             }
 

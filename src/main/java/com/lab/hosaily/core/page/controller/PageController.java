@@ -4,10 +4,7 @@ import com.lab.hosaily.commons.consts.SessionConsts;
 import com.lab.hosaily.core.account.entity.Attention;
 import com.lab.hosaily.core.account.service.AttentionService;
 import com.lab.hosaily.core.account.service.UserService;
-import com.lab.hosaily.core.course.entity.Comment;
-import com.lab.hosaily.core.course.entity.Course;
-import com.lab.hosaily.core.course.entity.Level;
-import com.lab.hosaily.core.course.entity.Tag;
+import com.lab.hosaily.core.course.entity.*;
 import com.lab.hosaily.core.course.service.*;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.core.account.entity.User;
@@ -50,6 +47,9 @@ public class PageController{
 
     @Autowired
     private LevelService levelService;
+
+    @Autowired
+    private CustomizationService customizationService;
 
     /**
      * 首页
@@ -219,6 +219,36 @@ public class PageController{
             content.put("collects", collects);
 
             return new ModelAndView("web/personalCenter", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 定制服务页
+     */
+    @RequestMapping(value = "/customization", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView customization(ModelMap content){
+        try{
+            return new ModelAndView("web/customization", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 定制服务详情页
+     */
+    @RequestMapping(value = "/customization/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView customizationDetail(@PathVariable("id") String id, ModelMap content){
+        try{
+            Customization customization = customizationService.getById(id);
+
+            content.put("customization", customization);
+
+            return new ModelAndView("web/customizationDetail", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

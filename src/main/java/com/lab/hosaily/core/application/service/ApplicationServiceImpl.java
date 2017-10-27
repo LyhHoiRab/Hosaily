@@ -83,8 +83,7 @@ public class ApplicationServiceImpl implements ApplicationService{
                 throw new ServiceException(String.format("无效的应用Token[%s]", token));
             }
 
-//            String state = AESUtils.encryptBy128(redirectUrl + "_" + token, AuthorizationConsts.KEY);
-            String state = redirectUrl + "_" + token;
+            String state = AESUtils.encryptBy128(redirectUrl + "_" + token, AuthorizationConsts.KEY);
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(AuthorizationConsts.NODE_APPID, application.getAppId());

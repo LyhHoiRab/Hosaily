@@ -1,0 +1,105 @@
+<ol class="breadcrumb">
+    <li>
+        <span>系统设置</span>
+    </li><!-- item -->
+    <li>
+        <a ui-sref="customization">定制服务</a>
+    </li><!-- item -->
+    <li>
+    <span>
+      #if($id)
+        修改定制服务
+      #else
+        添加定制服务
+      #end
+    </span>
+    </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+    <div class="container-fluid">
+        <div class="row-group">
+            <div class="img-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="{{customization.cover}}" ng-model="customization.cover">
+                    </div><!-- item -->
+
+                    <div class="col-md-6">
+                        <input type="file" nv-file-select uploader="uploader">
+                        <div class="button-group">
+                            <button type="button" class="btn" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                                <i class="fa fa-upload"></i>
+                                上传
+                            </button>
+                            <button type="button" class="btn" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                                <i class="fa fa-trash-o"></i>
+                                移除
+                            </button>
+                        </div><!-- button group -->
+                    </div><!-- item -->
+                </div>
+            </div><!-- img group -->
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">定制人数</span>
+                <input type="number" class="form-control" placeholder="定制人数" ng-model="customization.subscribe" value="{{customization.subscribe}}">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">排序</span>
+                <input type="number" class="form-control" placeholder="排序" ng-model="customization.sort" value="{{customization.sort}}">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">状态</span>
+                <select class="form-control" ng-model="customization.state" value="{{customization.state}}">
+                    <option value="">请选择</option>
+                    #foreach($state in $states)
+                    <option value="${state.id}">${state.description}</option>
+                    #end
+                </select>
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">标题</span>
+                <input type="text" class="form-control" placeholder="标题" ng-model="customization.title" value="{{customization.title}}">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">概要</span>
+                <input type="text" class="form-control" placeholder="概要" ng-model="customization.summary" value="{{customization.summary}}">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="editor-group">
+                <script id="editor" type="text/plain"></script>
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="button-group">
+                <button type="button" class="btn" ng-click="submit()">
+                    <i class="fa fa-check"></i>
+                    提交
+                </button>
+                <button type="button" class="btn" ng-click="reset()">
+                    <i class="fa fa-close"></i>
+                    重置
+                </button>
+            </div>
+        </div><!-- item -->
+    </div><!-- container -->
+</div><!-- table info -->
+

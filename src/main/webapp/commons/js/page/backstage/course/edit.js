@@ -58,7 +58,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
 
     $scope.reset = function(){
         $scope.course.title         = '';
-        $scope.course.summary       = '',
+        $scope.course.summary       = '';
         $scope.course.introduction  = '';
         $scope.course.state         = '';
         $scope.course.price         = 0;

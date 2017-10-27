@@ -50,7 +50,7 @@ app.controller('postAddController', function($scope, $state, FileUploader){
 
     $scope.reset = function(){
         $scope.post.title         = '';
-        $scope.post.summary       = '',
+        $scope.post.summary       = '';
         $scope.post.introduction  = '';
         $scope.post.state         = '';
         $scope.post.price         = 0;

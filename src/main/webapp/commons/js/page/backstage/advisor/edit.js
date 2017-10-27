@@ -22,11 +22,8 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         }
     };
 
-    //初始化富文本框
-    editorInit();
-    var ue = UE.getEditor('editor', {
-        initialFrameHeight: 450,
-        serverUrl: ''
+    var editor = CKEDITOR.replace('editor', {
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
     });
 
     $scope.id = $stateParams.id;
@@ -53,11 +50,29 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         $scope.advisor.state        = '';
         $scope.advisor.sort         = '';
 
-        ue.setContent('');
+        editor.setData('');
+    };
+
+    $scope.getById = function(){
+        $.ajax({
+            url: '/api/1.0/customization/' + $scope.id,
+            dataType: 'JSON',
+            type: 'GET',
+            success: function(res){
+                if(res.success){
+                    utils.copyOf(res.result, $scope.advisor);
+                    editor.setData($scope.advisor.introduction);
+                }
+
+                if(!$scope.$$phase){
+                    $scope.$apply();
+                }
+            }
+        });
     };
 
     $scope.submit = function(){
-        $scope.advisor.introduction = ue.getContent();
+        $scope.advisor.introduction = editor.getData();
 
         $.ajax({
             url: '/api/1.0/advisor',
@@ -82,6 +97,7 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
             success: function(res){
                 if(res.success){
                     utils.copyOf(res.result, $scope.advisor);
+                    editor.setData($scope.advisor.introduction);
                 }
 
                 if(!$scope.$$phase){
@@ -92,8 +108,4 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
     };
 
     $scope.getById();
-
-    ue.addListener('ready', function(){
-        ue.setContent($scope.advisor.introduction);
-    });
 });

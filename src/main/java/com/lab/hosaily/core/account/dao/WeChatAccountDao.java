@@ -41,12 +41,8 @@ public class WeChatAccountDao{
                 account.setId(UUIDGenerator.by32());
                 account.setState(UsingState.NORMAL);
                 account.setCreateTime(new Date());
-                account.setNickname(URLEncoder.encode(account.getNickname(), "UTF-8"));
                 mapper.save(account);
             }else{
-                if(StringUtils.isBlank(account.getNickname())){
-                    account.setNickname(URLEncoder.encode(account.getNickname(), "UTF-8"));
-                }
                 account.setUpdateTime(new Date());
                 mapper.update(account);
             }

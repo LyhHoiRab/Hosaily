@@ -56,7 +56,7 @@ app.controller('chapterEditController', function($scope, $state, $stateParams, F
 
     $scope.reset = function(){
         $scope.course.title         = '';
-        $scope.course.summary       = '',
+        $scope.course.summary       = '';
         $scope.course.introduction  = '';
         $scope.course.state         = '';
         $scope.course.likes         = 0;

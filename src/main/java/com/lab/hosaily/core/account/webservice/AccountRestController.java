@@ -4,6 +4,7 @@ import com.lab.hosaily.commons.consts.AuthorizationConsts;
 import com.lab.hosaily.commons.consts.SessionConsts;
 import com.lab.hosaily.core.account.service.AccountService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
+import com.rab.babylon.commons.security.response.Response;
 import com.rab.babylon.commons.utils.AESUtils;
 import com.rab.babylon.core.account.entity.Account;
 import com.rab.babylon.core.account.entity.User;
@@ -28,13 +29,27 @@ public class AccountRestController{
     private AccountService accountService;
 
     /**
+     * 小程序应用注册
+     */
+    @RequestMapping(value = "/register/xcx", method = RequestMethod.GET)
+    public Response<User> registerByXcx(String token, String code, String signature, String rawData, String encryptedData, String iv){
+        try{
+            User user = accountService.registerByXcx(token, code, signature, rawData, encryptedData, iv);
+
+            return new Response<User>("登录成功", user);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 网站应用注册
      */
     @RequestMapping(value = "/register/web", method = RequestMethod.GET)
     public void registerByWeb(HttpServletRequest request, HttpServletResponse response, String code, String state){
         try{
-//            String decrypt = AESUtils.decryptBy128(state, AuthorizationConsts.KEY);
-            String decrypt = state;
+            String decrypt = AESUtils.decryptBy128(state, AuthorizationConsts.KEY);
             String[] info = decrypt.split("_");
             String redirectUrl = info[0];
             String token = info[1];

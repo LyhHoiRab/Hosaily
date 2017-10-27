@@ -1,5 +1,5 @@
 app.controller('postController', function($scope){
-   //枚举常量
+    //枚举常量
     $scope.state = {
         0: '正常',
         1: '未激活',

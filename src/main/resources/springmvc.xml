@@ -47,18 +47,20 @@
   </bean>
 
   <!-- 静态资源 -->
-  <mvc:resources mapping="/commons/css/**/*.css"      location="/commons/css/"/>
-  <mvc:resources mapping="/commons/js/**/*.js"        location="/commons/js/"/>
-  <mvc:resources mapping="/commons/img/**/*.png"      location="/commons/img/"/>
-  <mvc:resources mapping="/commons/img/**/*.jpg"      location="/commons/img/"/>
-  <mvc:resources mapping="/commons/img/**/*.gif"      location="/commons/img/"/>
-  <mvc:resources mapping="/commons/img/**/*.ico"      location="/commons/img/"/>
-  <mvc:resources mapping="/commons/fonts/**/*.otf"    location="/commons/fonts/"/>
-  <mvc:resources mapping="/commons/fonts/**/*.eot"    location="/commons/fonts/"/>
-  <mvc:resources mapping="/commons/fonts/**/*.svg"    location="/commons/fonts/"/>
-  <mvc:resources mapping="/commons/fonts/**/*.ttf"    location="/commons/fonts/"/>
-  <mvc:resources mapping="/commons/fonts/**/*.woff"   location="/commons/fonts/"/>
-  <mvc:resources mapping="/commons/fonts/**/*.woff2"  location="/commons/fonts/"/>
+  <mvc:resources mapping="/commons/**/*.css"       location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.js"        location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.png"       location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.jpg"       location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.gif"       location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.ico"       location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.otf"       location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.eot"       location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.svg"       location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.ttf"       location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.woff"      location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.woff2"     location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*.jsp"       location="/commons/"/>
+  <mvc:resources mapping="/commons/**/*json"       location="/commons/"/>
 
   <!-- 视图 -->
   <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
@@ -108,6 +110,8 @@
             <value>/page/h5/course/{id}</value>
             <value>/page/h5/chapter/{id}</value>
             <value>/page/h5/section/{id}</value>
+            <value>/page/h5/customization</value>
+            <value>/page/h5/customization/{id}</value>
           </list>
         </property>
       </bean>

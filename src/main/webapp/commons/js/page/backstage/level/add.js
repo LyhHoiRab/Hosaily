@@ -10,7 +10,7 @@ app.controller('levelAddController', function($scope, $state, FileUploader){
         name: 'imageFilter',
         fn: function(item){
             var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-            return 'jpeg|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            return 'jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
         }
     });
 

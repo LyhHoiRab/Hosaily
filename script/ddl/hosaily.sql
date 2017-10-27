@@ -241,4 +241,17 @@ CREATE TABLE `attention` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程关注表';
 
+CREATE TABLE `customization` (
+  `id` varchar(32) NOT NULL,
+  `cover` varchar(255) DEFAULT NULL,
+  `title` varchar(60) DEFAULT NULL,
+  `summary` varchar(255) DEFAULT NULL,
+  `introduction` mediumtext,
+  `subscribe` int(1) DEFAULT NULL,
+  `sort` int(1) DEFAULT NULL,
+  `state` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='定制服务表';
 
