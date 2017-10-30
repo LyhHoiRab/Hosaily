@@ -23,10 +23,8 @@ app.controller('advisorAddController', function($scope, $state, FileUploader){
     };
 
     //初始化富文本框
-    editorInit();
-    var ue = UE.getEditor('editor', {
-        initialFrameHeight: 450,
-        serverUrl: ''
+    var editor = CKEDITOR.replace('editor', {
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
     });
 
     $scope.advisor = {
@@ -51,11 +49,11 @@ app.controller('advisorAddController', function($scope, $state, FileUploader){
         $scope.advisor.state        = '';
         $scope.advisor.sort         = '';
 
-        ue.setContent('');
+        editor.setData('');
     };
 
     $scope.submit = function(){
-        $scope.advisor.introduction = ue.getContent();
+        $scope.advisor.introduction = editor.getData();
 
         $.ajax({
             url: '/api/1.0/advisor',

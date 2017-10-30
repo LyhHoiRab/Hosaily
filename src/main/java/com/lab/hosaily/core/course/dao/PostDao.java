@@ -53,6 +53,11 @@ public class PostDao{
                 mapper.deleteCourse(post.getId());
                 mapper.addCourse(post.getId(), post.getChildren());
             }
+            //更新媒体
+            if(post.getMedia() != null && !post.getMedia().isEmpty()){
+                mapper.deleteMedia(post.getId());
+                mapper.addMedia(post.getId(), post.getMedia());
+            }
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

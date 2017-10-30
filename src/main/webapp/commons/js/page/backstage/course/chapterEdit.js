@@ -26,10 +26,8 @@ app.controller('chapterEditController', function($scope, $state, $stateParams, F
         title: '请选择'
     });
 
-    editorInit();
-    var ue = UE.getEditor('editor', {
-        initialFrameHeight: 450,
-        serverUrl: ''
+    var editor = CKEDITOR.replace('editor', {
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
     });
 
     $scope.id = $stateParams.id;
@@ -65,11 +63,11 @@ app.controller('chapterEditController', function($scope, $state, $stateParams, F
         $scope.course.price         = 0;
 
         $('.selectpicker').selectpicker('deselectAll');
-        ue.setContent('');
+        editor.setData('');
     };
 
     $scope.submit = function(){
-        $scope.course.introduction = ue.getContent();
+        $scope.course.introduction = editor.getData();
 
         $.ajax({
             url: '/api/1.0/course',
@@ -94,6 +92,7 @@ app.controller('chapterEditController', function($scope, $state, $stateParams, F
             success: function(res){
                 if(res.success){
                     utils.copyOf(res.result, $scope.course);
+                    editor.setData($scope.course.introduction);
                 }
 
                 if(!$scope.$$phase){
@@ -104,8 +103,4 @@ app.controller('chapterEditController', function($scope, $state, $stateParams, F
     };
 
     $scope.getById();
-
-    ue.addListener('ready', function(){
-        ue.setContent($scope.course.introduction);
-    });
 });

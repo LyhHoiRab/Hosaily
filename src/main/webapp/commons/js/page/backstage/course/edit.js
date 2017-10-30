@@ -26,10 +26,8 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         title: '请选择'
     });
 
-    editorInit();
-    var ue = UE.getEditor('editor', {
-        initialFrameHeight: 450,
-        serverUrl: ''
+    var editor = CKEDITOR.replace('editor', {
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
     });
 
     $scope.id = $stateParams.id;
@@ -49,7 +47,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         advisor      : {id: ''},
         tag          : [],
         level        : [],
-        children     : [],
+        children     : []
     };
 
     $scope.chapterAdd = function(){
@@ -69,7 +67,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         $scope.course.tag           = [];
 
         $('.selectpicker').selectpicker('deselectAll');
-        ue.setContent('');
+        editor.setData('');
     };
 
     $scope.getCourseById = function(){
@@ -92,6 +90,8 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
                         levels.push(data.id);
                     });
                     $('#levels').selectpicker('val', levels);
+
+                    editor.setData($scope.course.introduction);
                 }
 
                 if(!$scope.$$phase){
@@ -119,7 +119,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
             });
         };
 
-        $scope.course.introduction = ue.getContent();
+        $scope.course.introduction = editor.getData();
 
         $.ajax({
             url: '/api/1.0/course',
@@ -137,8 +137,4 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
     };
 
     $scope.getCourseById();
-
-    ue.addListener('ready', function(){
-        ue.setContent($scope.course.introduction);
-    });
 });

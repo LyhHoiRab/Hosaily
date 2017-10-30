@@ -96,7 +96,7 @@
   <mvc:interceptors>
     <!-- 登录拦截器 -->
     <mvc:interceptor>
-      <mvc:mapping path="/page/h5/**"/>
+      <mvc:mapping path="/page/**"/>
       <bean class="com.lab.hosaily.commons.interceptor.LoginInterceptor">
         <property name="excludes">
           <list>
@@ -112,6 +112,7 @@
             <value>/page/h5/section/{id}</value>
             <value>/page/h5/customization</value>
             <value>/page/h5/customization/{id}</value>
+            <value>/page/backstage/**</value>
           </list>
         </property>
       </bean>

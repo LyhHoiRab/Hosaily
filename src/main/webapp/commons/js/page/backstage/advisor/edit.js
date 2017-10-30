@@ -53,24 +53,6 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         editor.setData('');
     };
 
-    $scope.getById = function(){
-        $.ajax({
-            url: '/api/1.0/customization/' + $scope.id,
-            dataType: 'JSON',
-            type: 'GET',
-            success: function(res){
-                if(res.success){
-                    utils.copyOf(res.result, $scope.advisor);
-                    editor.setData($scope.advisor.introduction);
-                }
-
-                if(!$scope.$$phase){
-                    $scope.$apply();
-                }
-            }
-        });
-    };
-
     $scope.submit = function(){
         $scope.advisor.introduction = editor.getData();
 

@@ -26,10 +26,8 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         title: '请选择'
     });
 
-    editorInit();
-    var ue = UE.getEditor('editor', {
-        initialFrameHeight: 450,
-        serverUrl: ''
+    var editor = CKEDITOR.replace('editor', {
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
     });
 
     $scope.post = {
@@ -45,7 +43,8 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         view         : 0,
         sort         : 0,
         advisor      : {id : ''},
-        children     : []
+        //children     : [],
+        media        : []
     };
 
     $scope.reset = function(){
@@ -58,21 +57,29 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         $scope.post.view          = 0;
         $scope.post.sort          = 0;
         $scope.post.advisor.id    = '';
-        $scope.post.children      = [];
+        //$scope.post.children      = [];
+        $scope.post.media         = [];
 
         $('.selectpicker').selectpicker('deselectAll');
-        ue.setContent('');
+        editor.setData('');
     };
 
     $scope.submit = function(){
-        var children = $('#courses').val();
+        //var children = $('#courses').val();
+        //if(children !== null && children.length > 0){
+        //    angular.forEach(children, function(data){
+        //        $scope.post.children.push({id:data});
+        //    });
+        //}
 
-        if(children !== null && children.length > 0){
-            angular.forEach(children, function(data){
-                $scope.post.children.push({id:data});
+        var medias = $('#medias').val();
+        if(medias !== null && medias.length > 0){
+            angular.forEach(medias, function(data){
+                $scope.post.media.push({id:data});
             });
         }
-        $scope.post.introduction = ue.getContent();
+
+        $scope.post.introduction = editor.getData();
 
         $.ajax({
             url: '/api/1.0/post',

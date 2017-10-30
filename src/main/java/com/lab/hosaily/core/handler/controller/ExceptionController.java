@@ -20,7 +20,6 @@ public class ExceptionController{
         response.setCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         response.setMsg(e.getMessage());
         response.setSuccess(false);
-        response.setResult(null);
 
         return response;
     }

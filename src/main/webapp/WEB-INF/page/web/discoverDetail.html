@@ -13,48 +13,24 @@
 		<div class="content">
 			<!--左边内容开始-->
 			<div class="contentLeft">
-				<!--单个发现开始-->
-				<!-- <div class="discover">
-					<div class="headLine">
-						<img class="headImg" src="img/head.jpg"/>
-						<div class="userName">Sasan</div>
-						<div class="time">今天</div>
-					</div>
-					<div class="details">
-						<p class="detailsText">
-							也有校内知情者透露:“活动不是北交举办的，是某app的宣传活动。女生不是北交的学生，是外面找的。男生是花钱雇来的。场地不在主校区教学区内，在校外的宿舍区院内。”也有校内知情者透露:“活动不是北交举办的，是某app的宣传活动。女生不是北交的学生，是外面找的。男生是花钱雇来的。场地不在主校区教学区内，在校外的宿舍区院内。”也有校内知情者透露:“活动不是北交举办的，是某app的宣传活动。女生不是北交的学生，是外面找的。男生是花钱雇来的。场地不在主校区教学区内，在校外的宿舍区院内。”也有校内知情者透露:“活动不是北交举办的，是某app的宣传活动。女生不是北交的学生，是外面找的。男生是花钱雇来的。场地不在主校区教学区内，在校外的宿舍区院内。”
-						</p>
-						<p class="detailsImg">
-							<img src="img/img_0.jpg"/>
-						</p>
-					</div>
-					<div class="wasRead">阅读&nbsp;88888</div>
-					<div class="detailsBottom">
-						<ul class="zan">
-							<li><a><img src="img/chat01a.png"/></a><span>36920</span></li>
-							<li><a><img src="img/chat03.png"/></a><span>36920</span></li>
-							<li><a><img src="img/chat02a.png"/></a></li>
-						</ul>
-						<ul class="share">
-							<li><a><img src="img/chat04.png"/></a></li>
-							<li><a><img src="img/chat05.png"/></a></li>
-							<li><a><img src="img/chat06.png"/></a></li>
-							<li><a><img src="img/chat07.png"/></a></li>
-						</ul>
-					</div>
-				</div> -->
-				<!--单个发现结束-->
-
 				<div class="discover">
 					<div class="headLine">
 						<img class="headImg" src="$!{course.advisor.headImgUrl}"/>
 						<div class="userName">$!{course.advisor.nickname}</div>
 						<div class="time">$!DateTool.format('yyyy-MM-dd', $!{course.createTime})</div>
 					</div>
-					<div class="details">
-						<p class="detailsText">
+					<div class="details" style="text-align:center;padding:20px 0;">
+						#if(${course.media})
+							#if($course.media[0].type.id == 1)
+								<audio src="$!{course.media[0].url}" controls width="400"></audio>
+							#elseif($course.media[0].type.id == 2)
+								<video src="$!{course.media[0].url}" controls width="400"></video>
+							#end
+						#end
+
+						<div class="introduction" style="padding:25px 0;">
 							$!{course.introduction}
-						</p>
+						</div>
 					</div>
 					<div class="wasRead">阅读&nbsp;$!{course.view}</div>
 					<div class="detailsBottom">
@@ -74,38 +50,20 @@
 
 
 				<!--推荐课程开始-->
-				<div class="suggestClass">
-					<div class="conPadding">
-						<div class="conTitle">推荐课程</div>
-						<!-- <div class="sClass">
-							<img src="img/suggest_img.jpg"/>
-							<div class="sText">
-								《如何追女神》
-							</div>
-						</div>
-						<div class="sClass">
-							<img src="img/suggest_img.jpg"/>
-							<div class="sText">
-								《如何追女神》
-							</div>
-						</div>
-						<div class="sClass">
-							<img src="img/suggest_img.jpg"/>
-							<div class="sText">
-								《如何追女神》
-							</div>
-						</div> -->
+				<!--<div class="suggestClass">-->
+					<!--<div class="conPadding">-->
+						<!--<div class="conTitle">推荐课程</div>-->
+						<!--#foreach($child in $course.children)-->
+						<!--<div class="sClass">-->
+							<!--<img src="$child.cover"/>-->
+							<!--<div class="sText">-->
+								<!--$!{child.title}-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--#end-->
+					<!--</div>-->
+				<!--</div>-->
 
-						#foreach($child in $course.children)
-						<div class="sClass">
-							<img src="$child.cover"/>
-							<div class="sText">
-								$!{child.title}
-							</div>
-						</div><!-- item -->
-						#end
-					</div>
-				</div>
 				<!--推荐课程结束-->
 				<!--评论开始-->
 				<div class="comment">
@@ -116,20 +74,6 @@
 						<div class="commitBtn">发表</div>
 						<div class="clear"></div>
 						#end
-						
-<!-- 						<div class="aComment">
-							<img class="aHeadImg" src="http://kuliao.b0.upaiyun.com/img/head.jpg"/>
-							<div class="aRight">
-								<label class="aUser">Sasan</label><span class="aTime">2017/05/13</span>
-								<p class="aText">
-									也有校内知情者透露:“活动不是北交举办的，是某app的宣传活动。女生不是北交的学生，是外面找的。男生是花钱雇来的。场地不在主校区教学区内，在校外的宿舍区院内。”
-								</p>
-								<p>
-									<img class="aZanImg" src="http://kuliao.b0.upaiyun.com/img/Give01.png"/><span class="aZan">（898）</span>
-								</p>
-							</div>
-						</div> -->
-
 						<div class="commentStart"></div>
 						<div class="clear"></div>
 					</div>

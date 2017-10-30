@@ -42,6 +42,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 
         //没有登录信息
         if(StringUtils.isBlank(accountId)){
+            //管理后台
+            if(matcher.match("/page/backstage/**", url)){
+                response.sendRedirect("/page/backstage/login");
+                return false;
+            }
+
             //重定向到首页
             response.sendRedirect("/page/h5/index");
             return false;

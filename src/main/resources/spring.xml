@@ -54,10 +54,13 @@
       <property name="username"                      value="${jdbc.username}"/>
       <property name="password"                      value="${jdbc.password}"/>
       <property name="initialSize"                   value="${druid.initialSize}"/>
+      <property name="minIdle"                       value="${druid.minIdle}"/>
       <property name="maxActive"                     value="${druid.maxActive}"/>
       <property name="maxWait"                       value="${druid.maxWait}"/>
-      <property name="testOnBorrow"                  value="${druid.testOnBorrow}"/>
-      <property name="testOnReturn"                  value="${druid.testOnReturn}"/>
+      <property name="testOnBorrow"                  value="false"/>
+      <property name="testOnReturn"                  value="false"/>
+      <property name="testWhileIdle"                 value="true"/>
+      <property name="defaultAutoCommit"             value="false"/>
       <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}"/>
       <property name="minEvictableIdleTimeMillis"    value="${druid.minEvictableIdleTimeMillis}"/>
     </bean>

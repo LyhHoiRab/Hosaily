@@ -27,4 +27,14 @@ public class BackstageController{
             throw new ApplicationException(e.getMessage(), e);
         }
     }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView login(ModelMap content){
+        try{
+            return new ModelAndView("backstage/login", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 }

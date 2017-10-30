@@ -159,6 +159,9 @@
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
              </if>
+             <if test="introduction != null and introduction != ''">
+                 introduction = #{introduction, jdbcType=VARCHAR},
+             </if>
          </set>
           WHERE id = #{id}
     </update>

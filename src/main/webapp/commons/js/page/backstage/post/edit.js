@@ -26,10 +26,8 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         title: '请选择'
     });
 
-    editorInit();
-    var ue = UE.getEditor('editor', {
-        initialFrameHeight: 450,
-        serverUrl: ''
+    var editor = CKEDITOR.replace('editor', {
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
     });
 
     $scope.id = $stateParams.id;
@@ -47,7 +45,8 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         view         : 0,
         sort         : 0,
         advisor      : {id : ''},
-        children     : []
+        //children     : [],
+        media        : []
     };
 
     $scope.reset = function(){
@@ -60,10 +59,11 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         $scope.post.view          = 0;
         $scope.post.sort          = 0;
         $scope.post.advisor.id    = '';
-        $scope.post.children      = [];
+        //$scope.post.children      = [];
+        $scope.post.media         = [];
 
         $('.selectpicker').selectpicker('deselectAll');
-        ue.setContent('');
+        editor.setData('');
     };
 
     $scope.getById = function(){
@@ -74,6 +74,13 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
             success: function(res){
                 if(res.success){
                     utils.copyOf(res.result, $scope.post);
+                    editor.setData($scope.post.introduction);
+
+                    var medias = [];
+                    angular.forEach($scope.post.media, function(data){
+                        medias.push(data.id);
+                    });
+                    $('#medias').selectpicker('val', medias);
                 }
 
                 if(!$scope.$$phase){
@@ -84,15 +91,24 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
     };
 
     $scope.submit = function(){
-        var children = $('#courses').val();
         //推荐课程
-        $scope.post.children = [];
-        if(children !== null && children.length > 0){
-            angular.forEach(children, function(data){
-                $scope.post.children.push({id:data});
+        //var children = $('#courses').val();
+        //$scope.post.children = [];
+        //if(children !== null && children.length > 0){
+        //    angular.forEach(children, function(data){
+        //        $scope.post.children.push({id:data});
+        //    });
+        //}
+
+        var medias = $('#medias').val();
+        $scope.post.media = [];
+        if(medias !== null && medias.length > 0){
+            angular.forEach(medias, function(data){
+                $scope.post.media.push({id:data});
             });
-        }
-        $scope.post.introduction = ue.getContent();
+        };
+
+        $scope.post.introduction = editor.getData();
 
         $.ajax({
             url: '/api/1.0/post',
@@ -110,8 +126,4 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
     };
 
     $scope.getById();
-
-     ue.addListener('ready', function(){
-         ue.setContent($scope.post.introduction);
-     });
 });

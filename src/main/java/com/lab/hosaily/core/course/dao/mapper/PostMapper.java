@@ -1,6 +1,7 @@
 package com.lab.hosaily.core.course.dao.mapper;
 
 import com.lab.hosaily.core.course.entity.Course;
+import com.lab.hosaily.core.course.entity.Media;
 import com.rab.babylon.commons.security.mybatis.Criteria;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,16 @@ public interface PostMapper{
      * 更新
      */
     void update(Course course);
+
+    /**
+     * 添加媒体
+     */
+    void addMedia(@Param("courseId") String courseId, @Param("medias") List<Media> medias);
+
+    /**
+     * 删除媒体
+     */
+    void deleteMedia(@Param("courseId") String courseId);
 
     /**
      * 添加子课程

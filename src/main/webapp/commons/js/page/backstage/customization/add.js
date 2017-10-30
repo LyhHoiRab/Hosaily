@@ -22,10 +22,8 @@ app.controller('customizationAddController', function($scope, $state, FileUpload
         }
     };
 
-    editorInit();
-    var ue = UE.getEditor('editor', {
-        initialFrameHeight: 450,
-        serverUrl: ''
+    var editor = CKEDITOR.replace('editor', {
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
     });
 
     $scope.customization = {
@@ -40,17 +38,17 @@ app.controller('customizationAddController', function($scope, $state, FileUpload
 
     $scope.reset = function(){
         $scope.customization.title         = '';
-        $scope.customization.summary       = '',
+        $scope.customization.summary       = '';
         $scope.customization.introduction  = '';
         $scope.customization.state         = '';
         $scope.customization.sort          = 0;
         $scope.customization.subscribe     = 0;
 
-        ue.setContent('');
+        editor.setData('');
     };
 
     $scope.submit = function(){
-        $scope.customization.introduction = ue.getContent();
+        $scope.customization.introduction = editor.getData();
 
         $.ajax({
             url: '/api/1.0/customization',

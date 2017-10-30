@@ -26,10 +26,8 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         title: '请选择'
     });
 
-    editorInit();
-    var ue = UE.getEditor('editor', {
-        initialFrameHeight: 450,
-        serverUrl: ''
+    var editor = CKEDITOR.replace('editor', {
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
     });
 
     $scope.course = {
@@ -63,7 +61,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
         $scope.course.level         = [];
 
         $('.selectpicker').selectpicker('deselectAll');
-        ue.setContent('');
+        editor.setData('');
     };
 
 
@@ -81,7 +79,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader){
                 $scope.course.level.push({id:data});
             });
         };
-        $scope.course.introduction = ue.getContent();
+        $scope.course.introduction = editor.getData();
 
         $.ajax({
             url: '/api/1.0/course',

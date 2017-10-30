@@ -26,10 +26,8 @@ app.controller('chapterAddController', function($scope, $state, $stateParams, Fi
         title: '请选择'
     });
 
-    editorInit();
-    var ue = UE.getEditor('editor', {
-        initialFrameHeight: 450,
-        serverUrl: ''
+    var editor = CKEDITOR.replace('editor', {
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
     });
 
     $scope.parentId = $stateParams.parentId;
@@ -59,11 +57,11 @@ app.controller('chapterAddController', function($scope, $state, $stateParams, Fi
         $scope.course.price         = 0;
 
         $('.selectpicker').selectpicker('deselectAll');
-        ue.setContent('');
+        editor.setData('');
     };
 
     $scope.submit = function(){
-        $scope.course.introduction = ue.getContent();
+        $scope.course.introduction = editor.getData();
 
         $.ajax({
             url: '/api/1.0/course',

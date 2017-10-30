@@ -20,7 +20,8 @@
         <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
         <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
         <association property="advisor"  resultMap="advisor"   columnPrefix="a_"/>
-     	<collection property="children" resultMap="children" columnPrefix="ch_"/>
+     	<collection  property="children" resultMap="children"  columnPrefix="ch_"/>
+        <collection  property="media"    resultMap="media"     columnPrefix="m_"/>
     </resultMap>
 
     <resultMap id="advisor" type="com.lab.hosaily.core.course.entity.Advisor">
@@ -36,6 +37,14 @@
         <result column="cover"        property="cover"        javaType="java.lang.String"/>
         <result column="title"        property="title"        javaType="java.lang.String"/>
         <result column="summary"      property="summary"      javaType="java.lang.String"/>
+    </resultMap>
+
+    <resultMap id="media" type="com.lab.hosaily.core.course.entity.Media">
+        <id     column="id"          property="id"         javaType="java.lang.String"/>
+        <result column="suffix"      property="suffix"     javaType="java.lang.String"/>
+        <result column="url"         property="url"        javaType="java.lang.String"/>
+        <result column="remark"      property="remark"     javaType="java.lang.String"/>
+        <result column="type"        property="type"       typeHandler="mediaTypeHandler"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -233,6 +242,26 @@
          WHERE parent_id = #{parentId}
     </delete>
 
+    <insert id="addMedia">
+        INSERT
+          INTO course_media (
+               course_id,
+               media_id
+        ) VALUES
+        <foreach collection="medias" item="media" separator=",">
+            (
+              #{courseId, jdbcType=VARCHAR},
+              #{media.id, jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteMedia">
+        DELETE
+          FROM course_media
+         WHERE course_id = #{courseId}
+    </delete>
+
     <select id="getByParams" resultMap="post">
         SELECT c.*,
                a.id            AS a_id,
@@ -242,7 +271,11 @@
                ch.id           AS ch_id,
                ch.title        AS ch_title,
                ch.summary      AS ch_summary,
-               ch.cover        AS ch_cover
+               ch.cover        AS ch_cover,
+               m.id            AS m_id,
+               m.url           AS m_url,
+               m.type          AS m_type,
+               m.suffix        AS m_suffix
           FROM course c
      LEFT JOIN advisor a
             ON c.advisor_id = a.id
@@ -250,6 +283,10 @@
             ON cc.parent_id = c.id
      LEFT JOIN course ch
             ON ch.id = cc.children_id
+     LEFT JOIN course_media cm
+            ON cm.course_id = c.id
+     LEFT JOIN media m
+            ON cm.media_id = m.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
@@ -264,6 +301,10 @@
             ON cc.parent_id = c.id
      LEFT JOIN course ch
             ON ch.id = cc.children_id
+     LEFT JOIN course_media cm
+            ON cm.course_id = c.id
+     LEFT JOIN media m
+            ON cm.media_id = m.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -296,7 +337,11 @@
                ch.id           AS ch_id,
                ch.title        AS ch_title,
                ch.summary      AS ch_summary,
-               ch.cover        AS ch_cover
+               ch.cover        AS ch_cover,
+               m.id            AS m_id,
+               m.url           AS m_url,
+               m.type          AS m_type,
+               m.suffix        AS m_suffix
           FROM course c
      LEFT JOIN advisor a
             ON c.advisor_id = a.id
@@ -304,6 +349,10 @@
             ON cc.parent_id = c.id
      LEFT JOIN course ch
             ON ch.id = cc.children_id
+     LEFT JOIN course_media cm
+            ON cm.course_id = c.id
+     LEFT JOIN media m
+            ON cm.media_id = m.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -338,6 +387,10 @@
                       ON cc.parent_id = c.id
                LEFT JOIN course ch
                       ON ch.id = cc.children_id
+               LEFT JOIN course_media cm
+                      ON cm.course_id = c.id
+               LEFT JOIN media m
+                      ON cm.media_id = m.id
                 <if test="params != null">
                     <include refid="WHERE_COLUMN"/>
 

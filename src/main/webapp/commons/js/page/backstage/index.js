@@ -168,9 +168,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.all.js',
+                    basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/advisor/add.js'
@@ -261,9 +259,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.all.js',
+                    basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
@@ -282,10 +278,8 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
                     basePath + '/commons/js/utils.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.all.js',
+                    basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
@@ -316,9 +310,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.all.js',
+                    basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
@@ -337,10 +329,8 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
                     basePath + '/commons/js/utils.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.all.js',
+                    basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
@@ -359,9 +349,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.all.js',
+                    basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
@@ -380,10 +368,8 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
                     basePath + '/commons/js/utils.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.all.js',
+                    basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
@@ -402,9 +388,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.all.js',
+                    basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
@@ -423,10 +407,8 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
                     basePath + '/commons/js/utils.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.all.js',
+                    basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
@@ -456,9 +438,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.all.js',
+                    basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/customization/add.js'
@@ -475,10 +455,8 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.min.css',
+                    basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/utils.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.config.js',
-                    basePath + '/commons/js/plugin/ueditor/ueditor.all.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/customization/edit.js'

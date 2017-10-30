@@ -75,16 +75,28 @@
       </div>
     </div><!-- item -->
 
+    <!--<div class="row-group">-->
+      <!--<div class="input-group">-->
+        <!--<span class="input-group-addon">推荐课程</span>-->
+        <!--<select class="selectpicker form-control" multiple id="courses">-->
+          <!--#foreach($course in $courses)-->
+            <!--<option value="${course.id}">${course.title}</option>-->
+          <!--#end-->
+        <!--</select>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!-- item -->
+
     <div class="row-group">
       <div class="input-group">
-        <span class="input-group-addon">推荐课程</span>
-        <select class="selectpicker form-control" multiple id="courses">
-          #foreach($course in $courses)
-            <option value="${course.id}">${course.title}</option>
+        <span class="input-group-addon">多媒体</span>
+        <select class="selectpicker form-control" multiple id="medias">
+          #foreach($media in $medias)
+          <option value="${media.id}">${media.remark}</option>
           #end
         </select>
       </div>
-    </div><!-- item -->
+    </div>
 
     <div class="row-group">
       <div class="input-group">
@@ -114,9 +126,7 @@
 
     <div class="row-group">
       <div class="editor-group">
-        <script id="editor" type="text/plain">
-          
-        </script>
+        <textarea id="editor"></textarea>
       </div>
     </div><!-- item -->
 
