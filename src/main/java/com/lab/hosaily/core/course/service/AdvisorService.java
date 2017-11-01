@@ -37,6 +37,11 @@ public interface AdvisorService{
     Page<Advisor> page(PageRequest pageRequest, String nickname, String name, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime);
 
     /**
+     * 查询列表
+     */
+    List<Advisor> list(String nickname, String name, UsingState state, Date createTime);
+
+    /**
      * 上传图片
      */
     String upload(CommonsMultipartFile file);

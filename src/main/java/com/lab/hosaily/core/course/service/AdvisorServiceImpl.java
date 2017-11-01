@@ -108,6 +108,19 @@ public class AdvisorServiceImpl implements AdvisorService{
     }
 
     /**
+     * 查询列表
+     */
+    @Override
+    public List<Advisor> list(String nickname, String name, UsingState state, Date createTime){
+        try{
+            return advisorDao.list(nickname, name, state, createTime);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 上传图片
      */
     @Override

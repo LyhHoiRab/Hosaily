@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.router', 'oc.lazyLoad', 'ngGrid']);
+var app = angular.module('app', ['ui.router', 'oc.lazyLoad', 'ngGrid', 'ckeditor']);
 
 app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', function($controllerProvider, $compileProvider, $filterProvider, $provide){
     app.controller = $controllerProvider.register;
@@ -156,6 +156,8 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                     basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
                     basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/page/backstage/advisor/index.js'
                 ]);
             }]
@@ -246,6 +248,8 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                     basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
                     basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/page/backstage/post/index.js'
                 ]);
             }]

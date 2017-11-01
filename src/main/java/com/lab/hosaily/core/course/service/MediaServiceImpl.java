@@ -111,6 +111,19 @@ public class MediaServiceImpl implements MediaService{
     }
 
     /**
+     * 查询列表
+     */
+    @Override
+    public List<Media> list(UsingState state){
+        try{
+            return mediaDao.list(state);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 根据状态查询记录
      */
     public List<Media> findByState(UsingState state){

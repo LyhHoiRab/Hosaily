@@ -1,4 +1,4 @@
-app.controller('advisorAddController', function($scope, $state, FileUploader){
+app.controller('advisorAddController', function($scope, $state, FileUploader, $http){
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/advisor/upload',
         queueLimit: 1,
@@ -16,16 +16,13 @@ app.controller('advisorAddController', function($scope, $state, FileUploader){
 
     uploader.onSuccessItem = function(item, response, status, headers){
         $scope.advisor.headImgUrl = response.result;
-
-        if(!$scope.$$phase){
-            $scope.$apply();
-        }
     };
 
-    //初始化富文本框
-    var editor = CKEDITOR.replace('editor', {
+    $scope.editor = {
+        allowedContent: true,
+        entitles: false,
         customConfig: '/commons/js/plugin/ckeditor/config.js'
-    });
+    };
 
     $scope.advisor = {
         name         : '',
@@ -48,25 +45,25 @@ app.controller('advisorAddController', function($scope, $state, FileUploader){
         $scope.advisor.introduction = '';
         $scope.advisor.state        = '';
         $scope.advisor.sort         = '';
-
-        editor.setData('');
     };
 
     $scope.submit = function(){
-        $scope.advisor.introduction = editor.getData();
-
-        $.ajax({
+        $http({
             url: '/api/1.0/advisor',
-            type: 'POST',
+            method: 'POST',
             data: JSON.stringify($scope.advisor),
-            dataType: 'JSON',
-            contentType: 'application/json',
-            success: function(res){
-                if(res.success){
-                    alert(res.msg);
-                    $state.go('advisor');
-                }
+            headers: {
+                'Content-Type': 'application/json'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+                $state.go('advisor');
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+
         });
     };
 });

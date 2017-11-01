@@ -9,6 +9,8 @@ import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
 import com.rab.babylon.commons.utils.HttpDownloadUtils;
+import com.rab.babylon.core.consts.entity.UsingState;
+import org.bouncycastle.ocsp.Req;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.MessageFormat;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/1.0/media")
@@ -53,6 +56,21 @@ public class MediaRestController{
             Page<Media> page = mediaService.page(pageRequest);
 
             return new Response<Page<Media>>("查询成功", page);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 查询列表
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<Media>> list(UsingState state){
+        try{
+            List<Media> list = mediaService.list(state);
+
+            return new Response<List<Media>>("查询成功", list);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

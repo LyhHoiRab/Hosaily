@@ -119,6 +119,9 @@ public class AccountServiceImpl implements AccountService{
                         userDao.saveOrUpdate(user);
                     }
 
+                    //缓存用户信息
+                    userDao.cache(user);
+
                     return user;
                 }
 

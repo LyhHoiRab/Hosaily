@@ -1,4 +1,4 @@
-app.controller('advisorEditController', function($scope, $state, $stateParams, FileUploader){
+app.controller('advisorEditController', function($scope, $state, $stateParams, FileUploader, $http){
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/advisor/upload',
         queueLimit: 1,
@@ -17,18 +17,16 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
     uploader.onSuccessItem = function(item, response, status, headers){
         $scope.advisor.headImgUrl = response.result;
 
-        if(!$scope.$$phase){
-            $scope.$apply();
-        }
     };
 
-    var editor = CKEDITOR.replace('editor', {
+    $scope.editor = {
+        allowedContent: true,
+        entitles: false,
         customConfig: '/commons/js/plugin/ckeditor/config.js'
-    });
+    };
 
-    $scope.id = $stateParams.id;
     $scope.advisor = {
-        id           : $scope.id,
+        id           : $stateParams.id,
         name         : '',
         nickname     : '',
         age          : '',
@@ -49,43 +47,40 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         $scope.advisor.introduction = '';
         $scope.advisor.state        = '';
         $scope.advisor.sort         = '';
-
-        editor.setData('');
     };
 
     $scope.submit = function(){
-        $scope.advisor.introduction = editor.getData();
-
-        $.ajax({
+        $http({
             url: '/api/1.0/advisor',
-            type: 'PUT',
+            method: 'PUT',
             data: JSON.stringify($scope.advisor),
-            dataType: 'JSON',
-            contentType: 'application/json',
-            success: function(res){
-                if(res.success){
-                    alert(res.msg);
-                    $state.go('advisor');
-                }
+            headers: {
+                'Content-Type': 'application/json'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+                $state.go('advisor');
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+
         });
     };
 
     $scope.getById = function(){
-        $.ajax({
-            url: '/api/1.0/advisor/' + $scope.id,
-            type: 'GET',
-            dataType: 'JSON',
-            success: function(res){
-                if(res.success){
-                    utils.copyOf(res.result, $scope.advisor);
-                    editor.setData($scope.advisor.introduction);
-                }
-
-                if(!$scope.$$phase){
-                    $scope.$apply();
-                }
+        $http({
+            url: '/api/1.0/advisor/' + $scope.advisor.id,
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                utils.copyOf(res.result, $scope.advisor);
+            }else{
+                alert(res.msg);
             }
+        }).error(function(response){
+
         });
     };
 

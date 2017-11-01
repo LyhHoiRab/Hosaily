@@ -48,8 +48,11 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
                 return false;
             }
 
-            //重定向到首页
-            response.sendRedirect("/page/h5/index");
+            if(matcher.match("/page/h5/**", url)){
+                response.sendRedirect("/page/h5/index");
+                return false;
+            }
+
             return false;
         }
 

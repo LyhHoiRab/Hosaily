@@ -32,9 +32,18 @@ public class AccountRestController{
      * 小程序应用注册
      */
     @RequestMapping(value = "/register/xcx", method = RequestMethod.GET)
-    public Response<User> registerByXcx(String token, String code, String signature, String rawData, String encryptedData, String iv){
+    public Response<User> registerByXcx(HttpServletRequest request, String token, String code, String signature, String rawData, String encryptedData, String iv){
         try{
             User user = accountService.registerByXcx(token, code, signature, rawData, encryptedData, iv);
+
+            HttpSession session = request.getSession();
+            //用户信息
+            session.setAttribute(SessionConsts.ACCOUNT_ID, user.getAccountId());
+            session.setAttribute(SessionConsts.USER_NICKNAME, user.getNickname());
+            session.setAttribute(SessionConsts.USER_NAME, user.getName());
+            session.setAttribute(SessionConsts.USER_HEAD_IMG_URL, user.getHeadImgUrl());
+            //有效时长
+            session.setMaxInactiveInterval(SessionConsts.EFFECTIVE_SECOND);
 
             return new Response<User>("登录成功", user);
         }catch(Exception e){

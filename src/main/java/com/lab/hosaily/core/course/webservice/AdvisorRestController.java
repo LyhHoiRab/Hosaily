@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.course.webservice;
 
+import com.lab.hosaily.core.application.entity.Application;
 import com.lab.hosaily.core.course.entity.Advisor;
 import com.lab.hosaily.core.course.service.AdvisorService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/1.0/advisor")
@@ -78,6 +80,21 @@ public class AdvisorRestController{
             Page<Advisor> page = advisorService.page(pageRequest, nickname, name, state, createTime, minCreateTime, maxCreateTime);
 
             return new Response<Page<Advisor>>("查询成功", page);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 查询列表
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<Advisor>> list(String nickname, String name, UsingState state, Date createTime){
+        try{
+            List<Advisor> list = advisorService.list(nickname, name, state, createTime);
+
+            return new Response<List<Advisor>>("查询成功", null);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

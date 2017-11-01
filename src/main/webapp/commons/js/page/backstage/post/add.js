@@ -1,4 +1,9 @@
-app.controller('postAddController', function($scope, $state, FileUploader){
+app.controller('postAddController', function($scope, $state, FileUploader, $http){
+    //下拉
+    $scope.states = [];
+    $scope.advisors = [];
+    $scope.medias = [];
+
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/post/upload',
         queueLimit: 1,
@@ -16,19 +21,13 @@ app.controller('postAddController', function($scope, $state, FileUploader){
 
     uploader.onSuccessItem = function(item, response, status, headers){
         $scope.post.cover = response.result;
-
-        if(!$scope.$$phase){
-            $scope.$apply();
-        }
     };
 
-    $('.selectpicker').selectpicker({
-        title: '请选择'
-    });
-
-    var editor = CKEDITOR.replace('editor', {
+    $scope.editor = {
+        allowedContent: true,
+        entitles: false,
         customConfig: '/commons/js/plugin/ckeditor/config.js'
-    });
+    };
 
     $scope.post = {
         title        : '',
@@ -42,7 +41,7 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         likes        : 0,
         view         : 0,
         sort         : 0,
-        advisor      : {id : ''},
+        advisor      : {},
         //children     : [],
         media        : []
     };
@@ -59,40 +58,95 @@ app.controller('postAddController', function($scope, $state, FileUploader){
         $scope.post.advisor.id    = '';
         //$scope.post.children      = [];
         $scope.post.media         = [];
-
-        $('.selectpicker').selectpicker('deselectAll');
-        editor.setData('');
     };
 
     $scope.submit = function(){
-        //var children = $('#courses').val();
-        //if(children !== null && children.length > 0){
-        //    angular.forEach(children, function(data){
-        //        $scope.post.children.push({id:data});
-        //    });
-        //}
+       $http({
+           url: '/api/1.0/post',
+           type: 'POST',
+           data: JSON.stringify($scope.post),
+           headers: {
+               'Content-Type': 'application/json'
+           }
+       }).success(function(res, status, headers, config){
+           if(res.success){
+               alert(res.msg);
+               $state.go('post');
+           }else{
+               alert(res.msg);
+           }
+       }).error(function(response){
 
-        var medias = $('#medias').val();
-        if(medias !== null && medias.length > 0){
-            angular.forEach(medias, function(data){
-                $scope.post.media.push({id:data});
-            });
-        }
+       });
 
-        $scope.post.introduction = editor.getData();
+        //$.ajax({
+        //    url: '/api/1.0/post',
+        //    type: 'POST',
+        //    data: JSON.stringify($scope.post),
+        //    dataType: 'JSON',
+        //    contentType: 'application/json',
+        //    success: function(res){
+        //        if(res.success){
+        //            alert(res.msg);
+        //            $state.go('post');
+        //        }
+        //    }
+        //});
+    };
 
-        $.ajax({
-            url: '/api/1.0/post',
-            type: 'POST',
-            data: JSON.stringify($scope.post),
-            dataType: 'JSON',
-            contentType: 'application/json',
-            success: function(res){
-                if(res.success){
-                    alert(res.msg);
-                    $state.go('post');
-                }
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
             }
+        }).error(function(response){
+            $scope.states = [];
         });
     };
+
+    $scope.getAdvisor = function(){
+        $http({
+            url: '/api/1.0/advisor/list',
+            method: 'POST',
+            data: $.param({
+                'state': 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.advisors = res.result;
+            }
+        }).error(function(response){
+            $scope.advisors = [];
+        });
+    };
+
+    $scope.getMedia = function(){
+        $http({
+            url: '/api/1.0/media/list',
+            method: 'POST',
+            data: $.param({
+                'state': 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.medias = res.result;
+            }
+        }).error(function(response){
+            $scope.medias = [];
+        });
+    };
+
+    //初始化数据
+    $scope.getState();
+    $scope.getAdvisor();
+    $scope.getMedia();
 });

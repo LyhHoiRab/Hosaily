@@ -41,9 +41,9 @@ public class PostController{
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView index(ModelMap content){
         try{
-            List<UsingState> states = Arrays.asList(UsingState.values());
-
-            content.put("states", states);
+//            List<UsingState> states = Arrays.asList(UsingState.values());
+//
+//            content.put("states", states);
 
             return new ModelAndView("backstage/post/index", content);
         }catch(Exception e){
@@ -55,14 +55,14 @@ public class PostController{
     @RequestMapping(value = "/add", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView add(ModelMap content){
         try{
-            List<UsingState> states = Arrays.asList(UsingState.values());
-            List<Advisor> advisors = advisorService.findByState(UsingState.NORMAL);
+//            List<UsingState> states = Arrays.asList(UsingState.values());
+//            List<Advisor> advisors = advisorService.findByState(UsingState.NORMAL);
 //            List<Course> courses = courseService.findCourseByState(UsingState.NORMAL);
-            List<Media> medias = mediaService.findByState(UsingState.NORMAL);
+//            List<Media> medias = mediaService.findByState(UsingState.NORMAL);
 
-            content.put("states", states);
-            content.put("advisors", advisors);
-            content.put("medias", medias);
+//            content.put("states", states);
+//            content.put("advisors", advisors);
+//            content.put("medias", medias);
 //            content.put("courses", courses);
 
             return new ModelAndView("backstage/post/edit", content);
@@ -75,14 +75,14 @@ public class PostController{
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView edit(@PathVariable("id") String id, ModelMap content){
         try{
-            List<UsingState> states = Arrays.asList(UsingState.values());
-            List<Advisor> advisors = advisorService.findByState(UsingState.NORMAL);
-            List<Media> medias = mediaService.findByState(UsingState.NORMAL);
+//            List<UsingState> states = Arrays.asList(UsingState.values());
+//            List<Advisor> advisors = advisorService.findByState(UsingState.NORMAL);
+//            List<Media> medias = mediaService.findByState(UsingState.NORMAL);
 //            List<Course> courses = courseService.findCourseByState(UsingState.NORMAL);
 
-            content.put("states", states);
-            content.put("advisors", advisors);
-            content.put("medias", medias);
+//            content.put("states", states);
+//            content.put("advisors", advisors);
+//            content.put("medias", medias);
 //            content.put("courses", courses);
             content.put("id", id);
 

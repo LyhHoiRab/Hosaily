@@ -1,13 +1,12 @@
-app.controller('postController', function($scope){
-    //枚举常量
-    $scope.state = {
-        0: '正常',
-        1: '未激活',
-        2: '锁定',
-        3: '冻结',
-        4: '不可用'
-    };
-
+app.controller('postController', function($scope, $http){
+    //查询列表
+    $scope.state;
+    $scope.advisor;
+    $scope.minCreateTime;
+    $scope.maxCreateTime;
+    $scope.createTime;
+    $scope.states = [];
+    //列表参数
     $scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
@@ -18,11 +17,11 @@ app.controller('postController', function($scope){
     };
 
     $scope.reset = function(){
-        $('#advisor').val('');
-        $('#state').val('');
-        $('#createTime').val('');
-        $('#minCreateTime').val('');
-        $('#maxCreateTime').val('');
+        $scope.state         = '';
+        $scope.advisor       = '';
+        $scope.minCreateTime = '';
+        $scope.maxCreateTime = '';
+        $scope.createTime    = '';
     };
 
     $scope.search = function(){
@@ -39,17 +38,16 @@ app.controller('postController', function($scope){
         //查询参数
         var pageNum       = $scope.pagingOptions.currentPage, 
             pageSize      = $scope.pagingOptions.pageSize,
-            advisor       = $('#advisor').val(), 
-            state         = $('#state').val(), 
-            createTime    = $('#createTime').val(), 
-            minCreateTime = $('#minCreateTime').val(), 
-            maxCreateTime = $('#maxCreateTime').val();
+            advisor       = $scope.advisor,
+            state         = $scope.state,
+            createTime    = $scope.createTime,
+            minCreateTime = $scope.minCreateTime,
+            maxCreateTime = $scope.maxCreateTime;
 
-        $.ajax({
+        $http({
             url: '/api/1.0/post/page',
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
+            method: 'POST',
+            data: $.param({
                 'pageNum'       : pageNum,
                 'pageSize'      : pageSize,
                 'advisor'       : advisor,
@@ -57,18 +55,37 @@ app.controller('postController', function($scope){
                 'createTime'    : createTime,
                 'minCreateTime' : minCreateTime,
                 'maxCreateTime' : maxCreateTime
-            },
-            success: function(res){
-                if(res.success){
-                    $scope.list = res.result.content;
-                    $scope.total = res.result.total;
-                }
-                if(!$scope.$$phase){
-                    $scope.$apply();
-                }
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.list = res.result.content;
+                $scope.total = res.result.total;
+            }
+        }).error(function(response){
+            $scope.list = [];
+            $scope.total = 0;
         });
     };
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
+        });
+    };
+
+    //初始化数据
+    $scope.getData();
+    $scope.getState();
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){   
@@ -114,7 +131,7 @@ app.controller('postController', function($scope){
         },{
             field: 'state',
             displayName: '状态',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{state[COL_FIELD]}}</span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{states[COL_FIELD]}}</span></div>'
         },{
             field: 'createTime',
             displayName: '创建时间',
@@ -128,7 +145,4 @@ app.controller('postController', function($scope){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="postEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
         }]
     };
-
-    //初始化数据
-    $scope.getData();
 });

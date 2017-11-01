@@ -41,6 +41,11 @@ public interface MediaService{
     Page<Media> page(PageRequest pageRequest);
 
     /**
+     * 查询列表
+     */
+    List<Media> list(UsingState state);
+
+    /**
      * 上传媒体文件
      */
     Media upload(String path, String url, CommonsMultipartFile file);

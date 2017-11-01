@@ -120,4 +120,32 @@ public class AdvisorDao{
             throw new DataAccessException(e.getMessage(), e);
         }
     }
+
+    /**
+     * 查询列表
+     */
+    public List<Advisor> list(String nickname, String name, UsingState state, Date createTime){
+        try{
+            Criteria criteria = new Criteria();
+            criteria.sort(Restrictions.asc("sort"));
+
+            if(!StringUtils.isBlank(nickname)){
+                criteria.and(Restrictions.like("nickname", nickname));
+            }
+            if(!StringUtils.isBlank(name)){
+                criteria.and(Restrictions.like("name", name));
+            }
+            if(state != null){
+                criteria.and(Restrictions.eq("state", state.getId()));
+            }
+            if(createTime != null){
+                criteria.and(Restrictions.eq("createTime", createTime));
+            }
+
+            return mapper.findByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
 }

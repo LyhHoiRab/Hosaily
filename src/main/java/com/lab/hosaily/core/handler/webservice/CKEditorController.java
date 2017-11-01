@@ -26,12 +26,12 @@ public class CKEditorController{
     private static Logger logger = LoggerFactory.getLogger(CKEditorController.class);
 
     @Autowired
-    private CKEditorService uEditorService;
+    private CKEditorService ckEditorService;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public void uploadFile(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "upload") CommonsMultipartFile file){
         try{
-            String url = uEditorService.upload(file);
+            String url = ckEditorService.upload(file);
             String callback = request.getParameter("CKEditorFuncNum");
 
             PrintWriter writer = response.getWriter();

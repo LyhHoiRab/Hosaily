@@ -10,9 +10,6 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-  <mvc:default-servlet-handler/>
-  <!--<mvc:annotation-driven/>-->
-
   <!-- 注解扫描 -->            
   <context:component-scan base-package="com.lab" use-default-filters="false">
     <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -47,20 +44,20 @@
   </bean>
 
   <!-- 静态资源 -->
-  <mvc:resources mapping="/commons/**/*.css"       location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.js"        location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.png"       location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.jpg"       location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.gif"       location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.ico"       location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.otf"       location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.eot"       location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.svg"       location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.ttf"       location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.woff"      location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.woff2"     location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*.jsp"       location="/commons/"/>
-  <mvc:resources mapping="/commons/**/*json"       location="/commons/"/>
+  <!--<mvc:resources mapping="/commons/**/*.css"       location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.js"        location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.png"       location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.jpg"       location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.gif"       location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.ico"       location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.otf"       location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.eot"       location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.svg"       location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.ttf"       location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.woff"      location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.woff2"     location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*.jsp"       location="/commons/"/>-->
+  <!--<mvc:resources mapping="/commons/**/*json"       location="/commons/"/>-->
 
   <!-- 视图 -->
   <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
@@ -96,7 +93,7 @@
   <mvc:interceptors>
     <!-- 登录拦截器 -->
     <mvc:interceptor>
-      <mvc:mapping path="/page/**"/>
+      <mvc:mapping path="/**"/>
       <bean class="com.lab.hosaily.commons.interceptor.LoginInterceptor">
         <property name="excludes">
           <list>
@@ -113,6 +110,9 @@
             <value>/page/h5/customization</value>
             <value>/page/h5/customization/{id}</value>
             <value>/page/backstage/**</value>
+            <value>/api/1.0/account/register/xcx</value>
+            <value>/api/1.0/account/register/web</value>
+            <value>/**</value>
           </list>
         </property>
       </bean>
@@ -120,7 +120,7 @@
 
     <!-- h5资源拦截器 -->
     <mvc:interceptor>
-      <mvc:mapping path="/page/h5/**"/>
+      <mvc:mapping path="/page/**"/>
       <bean class="com.lab.hosaily.commons.interceptor.CommonsInterceptor"/>
     </mvc:interceptor>
   </mvc:interceptors>

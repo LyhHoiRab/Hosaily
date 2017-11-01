@@ -22,13 +22,11 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         }
     };
 
-    $('.selectpicker').selectpicker({
-        title: '请选择'
-    });
-
-    var editor = CKEDITOR.replace('editor', {
+    $scope.editor = {
+        allowedContent: true,
+        entitles: false,
         customConfig: '/commons/js/plugin/ckeditor/config.js'
-    });
+    };
 
     $scope.id = $stateParams.id;
     $scope.post = {

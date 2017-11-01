@@ -1,21 +1,14 @@
-app.controller('advisorController', function($scope){
-    //枚举常量
-    $scope.state = {
-        0: '正常',
-        1: '未激活',
-        2: '锁定',
-        3: '冻结',
-        4: '不可用'
-    };
-    $scope.sex = {
-        0: '女性',
-        1: '男性',
-        2: '未知',
-        3: '中性',
-        4: '偏男性',
-        5: '偏女性'
-    };
-
+app.controller('advisorController', function($scope, $http){
+    //查询列表
+    $scope.state;
+    $scope.name;
+    $scope.nickname;
+    $scope.minCreateTime;
+    $scope.maxCreateTime;
+    $scope.createTime;
+    $scope.sexs = [];
+    $scope.states = [];
+    //列表参数
     $scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
@@ -26,12 +19,12 @@ app.controller('advisorController', function($scope){
     };
 
     $scope.reset = function(){
-        $('#name').val('');
-        $('#nickname').val('');
-        $('#state').val('');
-        $('#createTime').val('');
-        $('#minCreateTime').val('');
-        $('#maxCreateTime').val('');
+        $scope.state         = '';
+        $scope.name          = '';
+        $scope.nickname      = '';
+        $scope.minCreateTime = '';
+        $scope.maxCreateTime = '';
+        $scope.createTime    = '';
     };
 
     $scope.search = function(){
@@ -48,18 +41,17 @@ app.controller('advisorController', function($scope){
         //查询参数
         var pageNum       = $scope.pagingOptions.currentPage, 
             pageSize      = $scope.pagingOptions.pageSize,
-            name          = $('#name').val(), 
-            nickname      = $('#nickname').val(), 
-            state         = $('#state').val(), 
-            createTime    = $('#createTime').val(), 
-            minCreateTime = $('#minCreateTime').val(), 
-            maxCreateTime = $('#maxCreateTime').val();
+            name          = $scope.name,
+            nickname      = $scope.nickname,
+            state         = $scope.state,
+            createTime    = $scope.createTime,
+            minCreateTime = $scope.minCreateTime,
+            maxCreateTime = $scope.maxCreateTime;
 
-        $.ajax({
+        $http({
             url: '/api/1.0/advisor/page',
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
+            method: 'POST',
+            data: $.param({
                 'pageNum'       : pageNum,
                 'pageSize'      : pageSize,
                 'nickname'      : nickname,
@@ -68,16 +60,44 @@ app.controller('advisorController', function($scope){
                 'createTime'    : createTime,
                 'minCreateTime' : minCreateTime,
                 'maxCreateTime' : maxCreateTime
-            },
-            success: function(res){
-                if(res.success){
-                    $scope.list = res.result.content;
-                    $scope.total = res.result.total;
-                }
-                if(!$scope.$$phase){
-                    $scope.$apply();
-                }
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.list = res.result.content;
+                $scope.total = res.result.total;
+            }
+        }).error(function(response){
+                $scope.list = [];
+                $scope.total = 0;
+        });
+    };
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
+        });
+    };
+
+    $scope.getSex = function(){
+        $http({
+            url: '/api/1.0/sex/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.sexs = res.result;
+            }
+        }).error(function(response){
+            $scope.sexs = [];
         });
     };
 
@@ -86,6 +106,11 @@ app.controller('advisorController', function($scope){
             $scope.getData();
         }
     }, true);
+
+    //初始化数据
+    $scope.getData();
+    $scope.getState();
+    $scope.getSex();
 
     $scope.gridOptions = {
         data                   : 'list',
@@ -121,7 +146,7 @@ app.controller('advisorController', function($scope){
         },{
             field: 'sex',
             displayName: '性别',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{sex[COL_FIELD]}}</span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{sexs[COL_FIELD]}}</span></div>'
         },{
             field: 'age',
             displayName: '年龄'
@@ -134,7 +159,7 @@ app.controller('advisorController', function($scope){
         },{
             field: 'state',
             displayName: '状态',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{state[COL_FIELD]}}</span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{states[COL_FIELD]}}</span></div>'
         },{
             field: 'createTime',
             displayName: '创建时间',
@@ -148,7 +173,4 @@ app.controller('advisorController', function($scope){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="advisorEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
         }]
     };
-
-    //初始化数据
-    $scope.getData();
 });

@@ -19,8 +19,8 @@
 						<div class="userName">$!{course.advisor.nickname}</div>
 						<div class="time">$!DateTool.format('yyyy-MM-dd', $!{course.createTime})</div>
 					</div>
-					<div class="details" style="text-align:center;padding:20px 0;">
-						#if(${course.media})
+					<div class="details">
+						#if($course.media.length > 0)
 							#if($course.media[0].type.id == 1)
 								<audio src="$!{course.media[0].url}" controls width="400"></audio>
 							#elseif($course.media[0].type.id == 2)
@@ -28,7 +28,7 @@
 							#end
 						#end
 
-						<div class="introduction" style="padding:25px 0;">
+						<div class="introduction">
 							$!{course.introduction}
 						</div>
 					</div>

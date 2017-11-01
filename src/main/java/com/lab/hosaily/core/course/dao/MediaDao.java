@@ -121,4 +121,22 @@ public class MediaDao{
             throw new DataAccessException(e.getMessage(), e);
         }
     }
+
+    /**
+     * 查询列表
+     */
+    public List<Media> list(UsingState state){
+        try{
+            Criteria criteria = new Criteria();
+
+            if(state != null){
+                criteria.and(Restrictions.eq("state", state.getId()));
+            }
+
+            return mapper.findByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
 }

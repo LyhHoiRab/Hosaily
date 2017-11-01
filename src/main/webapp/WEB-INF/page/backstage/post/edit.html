@@ -66,11 +66,14 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">导师</span>
-        <select class="form-control" ng-model="post.advisor.id" value="{{post.advisor.id}}">
+        <!--<select class="form-control" ng-model="post.advisor.id" value="{{post.advisor.id}}">-->
+          <!--<option value="">请选择</option>-->
+          <!--#foreach($advisor in $advisors)-->
+            <!--<option value="${advisor.id}">${advisor.name}</option>-->
+          <!--#end-->
+        <!--</select>-->
+        <select class="form-control" ng-model="post.advisor" ng-options="advisor.id as advisor.name for advisor in advisors">
           <option value="">请选择</option>
-          #foreach($advisor in $advisors)
-            <option value="${advisor.id}">${advisor.name}</option>
-          #end
         </select>
       </div>
     </div><!-- item -->
@@ -90,10 +93,13 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">多媒体</span>
-        <select class="selectpicker form-control" multiple id="medias">
-          #foreach($media in $medias)
-          <option value="${media.id}">${media.remark}</option>
-          #end
+        <!--<select class="selectpicker form-control" multiple id="medias">-->
+          <!--#foreach($media in $medias)-->
+          <!--<option value="${media.id}">${media.remark}</option>-->
+          <!--#end-->
+        <!--</select>-->
+        <select class="form-control" ng-model="post.media" ng-options="media.id as media.remark for media in media" multiple>
+          <option value="">请选择</option>
         </select>
       </div>
     </div>
@@ -101,11 +107,14 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">状态</span>
-        <select class="form-control" ng-model="post.state" value="{{post.state}}">
+        <!--<select class="form-control" ng-model="post.state" value="{{post.state}}">-->
+          <!--<option value="">请选择</option>-->
+          <!--#foreach($state in $states)-->
+            <!--<option value="${state.id}">${state.description}</option>-->
+          <!--#end-->
+        <!--</select>-->
+        <select class="form-control" ng-model="post.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>
-          #foreach($state in $states)
-            <option value="${state.id}">${state.description}</option>
-          #end
         </select>
       </div>
     </div><!-- item -->
