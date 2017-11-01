@@ -94,7 +94,7 @@ public class AdvisorRestController{
         try{
             List<Advisor> list = advisorService.list(nickname, name, state, createTime);
 
-            return new Response<List<Advisor>>("查询成功", null);
+            return new Response<List<Advisor>>("查询成功", list);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

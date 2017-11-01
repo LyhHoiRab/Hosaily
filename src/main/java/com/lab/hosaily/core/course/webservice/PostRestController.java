@@ -56,6 +56,21 @@ public class PostRestController{
     }
 
     /**
+     * 删除
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response delete(@PathVariable("id") String id){
+        try{
+            postService.delete(id);
+
+            return new Response("删除成功", null);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 根据ID查询
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

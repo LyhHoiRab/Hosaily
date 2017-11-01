@@ -65,6 +65,25 @@ public class PostDao{
     }
 
     /**
+     * 删除
+     */
+    public void delete(String id){
+        try{
+            Assert.hasText(id, "帖子ID不能为空");
+
+            //删除帖子
+            mapper.delete(id);
+            //删除关联媒体
+            mapper.deleteMedia(id);
+            //删除子课程
+            mapper.deleteCourse(id);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 根据ID查询
      */
     public Course getById(String id){

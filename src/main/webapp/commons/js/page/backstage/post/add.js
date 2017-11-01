@@ -55,7 +55,7 @@ app.controller('postAddController', function($scope, $state, FileUploader, $http
         $scope.post.likes         = 0;
         $scope.post.view          = 0;
         $scope.post.sort          = 0;
-        $scope.post.advisor.id    = '';
+        $scope.post.advisor       = {};
         //$scope.post.children      = [];
         $scope.post.media         = [];
     };
@@ -63,7 +63,7 @@ app.controller('postAddController', function($scope, $state, FileUploader, $http
     $scope.submit = function(){
        $http({
            url: '/api/1.0/post',
-           type: 'POST',
+           method: 'POST',
            data: JSON.stringify($scope.post),
            headers: {
                'Content-Type': 'application/json'

@@ -200,6 +200,9 @@
              <if test="price != null and price >= 0">
                  price = #{price, jdbcType=BOOLEAN},
              </if>
+             <if test="advisor != null and advisor.id != null and advisor.id != ''">
+                 advisor_id = #{advisor.id, jdbcType=VARCHAR},
+             </if>
              <if test="likes != null and likes >= 0">
                  likes = #{likes, jdbcType=INTEGER},
              </if>
@@ -221,6 +224,12 @@
          </set>
           WHERE id = #{id}
     </update>
+
+    <delete id="delete">
+        DELETE
+          FROM course
+         WHERE id = #{id}
+    </delete>
 
     <insert id="addCourse">
         INSERT
@@ -329,30 +338,22 @@
     </select>
 
     <select id="findByParams" resultMap="post">
-        SELECT c.*,
+        SELECT c.id,
+               c.title,
+               c.summary,
+               c.state,
+               c.create_time,
+               c.likes,
+               c.view,
+               c.cover,
+               c.sort,
                a.id            AS a_id,
                a.nickname      AS a_nickname,
                a.wechat        AS a_wechat,
-               a.head_img_url  AS a_head_img_url,
-               ch.id           AS ch_id,
-               ch.title        AS ch_title,
-               ch.summary      AS ch_summary,
-               ch.cover        AS ch_cover,
-               m.id            AS m_id,
-               m.url           AS m_url,
-               m.type          AS m_type,
-               m.suffix        AS m_suffix
+               a.head_img_url  AS a_head_img_url
           FROM course c
      LEFT JOIN advisor a
             ON c.advisor_id = a.id
-     LEFT JOIN course_course cc
-            ON cc.parent_id = c.id
-     LEFT JOIN course ch
-            ON ch.id = cc.children_id
-     LEFT JOIN course_media cm
-            ON cm.course_id = c.id
-     LEFT JOIN media m
-            ON cm.media_id = m.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 

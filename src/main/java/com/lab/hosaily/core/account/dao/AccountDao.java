@@ -66,23 +66,6 @@ public class AccountDao{
     }
 
     /**
-     * 根据微信账号查询
-     */
-    public Account getByWeChat(String weChat){
-        try{
-            Assert.hasText(weChat, "微信账号不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("weChat", weChat));
-
-            return mapper.getByParams(criteria);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
      * 根据openId或者unionId查询
      */
     public Account getByOpenIdOrUnionId(String openId, String unionId){

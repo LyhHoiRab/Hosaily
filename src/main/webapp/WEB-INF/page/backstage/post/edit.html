@@ -72,7 +72,7 @@
             <!--<option value="${advisor.id}">${advisor.name}</option>-->
           <!--#end-->
         <!--</select>-->
-        <select class="form-control" ng-model="post.advisor" ng-options="advisor.id as advisor.name for advisor in advisors">
+        <select class="form-control" ng-model="post.advisor" ng-options="advisor as advisor.name for advisor in advisors">
           <option value="">请选择</option>
         </select>
       </div>
@@ -98,7 +98,7 @@
           <!--<option value="${media.id}">${media.remark}</option>-->
           <!--#end-->
         <!--</select>-->
-        <select class="form-control" ng-model="post.media" ng-options="media.id as media.remark for media in media" multiple>
+        <select class="form-control" ng-model="post.media" ng-options="media as media.remark for media in medias">
           <option value="">请选择</option>
         </select>
       </div>
@@ -135,7 +135,7 @@
 
     <div class="row-group">
       <div class="editor-group">
-        <textarea id="editor"></textarea>
+        <div ckeditor="editor" ng-model="post.introduction"></div>
       </div>
     </div><!-- item -->
 

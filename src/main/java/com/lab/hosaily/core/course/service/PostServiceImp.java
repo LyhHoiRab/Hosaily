@@ -63,6 +63,22 @@ public class PostServiceImp implements PostService{
     }
 
     /**
+     * 删除
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void delete(String id){
+        try{
+            Assert.hasText(id, "帖子ID不能为空");
+
+            postDao.delete(id);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 根据ID查询
      */
     @Override

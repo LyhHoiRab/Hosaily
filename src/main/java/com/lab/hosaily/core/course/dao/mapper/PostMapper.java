@@ -22,6 +22,11 @@ public interface PostMapper{
     void update(Course course);
 
     /**
+     * 删除
+     */
+    void delete(String id);
+
+    /**
      * 添加媒体
      */
     void addMedia(@Param("courseId") String courseId, @Param("medias") List<Media> medias);

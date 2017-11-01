@@ -21,6 +21,11 @@ public interface PostService{
     void update(Course post);
 
     /**
+     * 删除
+     */
+    void delete(String id);
+
+    /**
      * 根据ID查询
      */
     Course getById(String id);

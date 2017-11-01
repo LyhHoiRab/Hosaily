@@ -30,7 +30,6 @@ app.controller('postController', function($scope, $http){
     };
 
     $scope.refresh = function(){
-        $scope.pagingOptions.currentPage = $scope.pagingOptions.currentPage;
         $scope.getData();
     };
 
@@ -67,6 +66,23 @@ app.controller('postController', function($scope, $http){
         }).error(function(response){
             $scope.list = [];
             $scope.total = 0;
+        });
+    };
+
+    $scope.delete = function(id){
+        $http({
+            url: '/api/1.0/post/' + id,
+            method: 'DELETE'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+                $scope.pagingOptions.currentPage = 1;
+                $scope.getData();
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+
         });
     };
 
@@ -142,7 +158,7 @@ app.controller('postController', function($scope, $http){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="postEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="postEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a><a href="javascript:;" ng-click="delete(row.getProperty(\'id\'))">[删除]</a></span></div>'
         }]
     };
 });
