@@ -101,10 +101,10 @@ public class LevelRestController{
     /**
      * 查询所有可购买的等级记录
      */
-    @RequestMapping(value = "/find", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<Level>> find(){
+    @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<Level>> list(UsingState state){
         try{
-            List<Level> list = levelService.findByState(UsingState.NORMAL);
+            List<Level> list = levelService.list(state);
             return new Response<List<Level>>("查询成功", list);
         }catch(Exception e){
             logger.error(e.getMessage(), e);

@@ -1,4 +1,7 @@
-app.controller('chapterEditController', function($scope, $state, $stateParams, FileUploader){
+app.controller('chapterEditController', function($scope, $state, $stateParams, FileUploader, $http){
+    //下拉
+    $scope.states   = [];
+
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/course/upload',
         queueLimit: 1,
@@ -16,23 +19,16 @@ app.controller('chapterEditController', function($scope, $state, $stateParams, F
 
     uploader.onSuccessItem = function(item, response, status, headers){
         $scope.course.cover = response.result;
-
-        if(!$scope.$$phase){
-            $scope.$apply();
-        }
     };
 
-    $('.selectpicker').selectpicker({
-        title: '请选择'
-    });
-
-    var editor = CKEDITOR.replace('editor', {
+    $scope.editor = {
+        allowedContent: true,
+        entitles: false,
         customConfig: '/commons/js/plugin/ckeditor/config.js'
-    });
+    };
 
-    $scope.id = $stateParams.id;
     $scope.course = {
-        id           : $scope.id,
+        id           : $stateParams.id,
         parentId     : '',
         title        : '',
         type         : 1,
@@ -49,7 +45,7 @@ app.controller('chapterEditController', function($scope, $state, $stateParams, F
     };
 
     $scope.sectionAdd = function(){
-        $state.go('sectionAdd', {parentId : $scope.id});
+        $state.go('sectionAdd', {parentId : $scope.course.id});
     };
 
     $scope.reset = function(){
@@ -61,46 +57,87 @@ app.controller('chapterEditController', function($scope, $state, $stateParams, F
         $scope.course.view          = 0;
         $scope.course.sort          = 0;
         $scope.course.price         = 0;
-
-        $('.selectpicker').selectpicker('deselectAll');
-        editor.setData('');
     };
 
     $scope.submit = function(){
-        $scope.course.introduction = editor.getData();
-
-        $.ajax({
+        $http({
             url: '/api/1.0/course',
-            type: 'PUT',
+            method: 'PUT',
             data: JSON.stringify($scope.course),
-            dataType: 'JSON',
-            contentType: 'application/json',
-            success: function(res){
-                if(res.success){
-                    alert(res.msg);
-                    $state.go('courseEdit', {id : $scope.course.parentId});
-                }
+            headers: {
+                'Content-Type': 'application/json'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+                $state.go('courseEdit', {id : $scope.course.parentId});
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+
         });
+
+        //$.ajax({
+        //    url: '/api/1.0/course',
+        //    type: 'PUT',
+        //    data: JSON.stringify($scope.course),
+        //    dataType: 'JSON',
+        //    contentType: 'application/json',
+        //    success: function(res){
+        //        if(res.success){
+        //            alert(res.msg);
+        //            $state.go('courseEdit', {id : $scope.course.parentId});
+        //        }
+        //    }
+        //});
     };
 
     $scope.getById = function(){
-        $.ajax({
-            url: '/api/1.0/course/chapter/' + $scope.id,
-            dataType: 'JSON',
-            type: 'GET',
-            success: function(res){
-                if(res.success){
-                    utils.copyOf(res.result, $scope.course);
-                    editor.setData($scope.course.introduction);
-                }
-
-                if(!$scope.$$phase){
-                    $scope.$apply();
-                }
+        $http({
+            url: '/api/1.0/course/chapter/' + $scope.course.id,
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                utils.copyOf(res.result, $scope.course);
+            }else{
+                alert(res.msg);
             }
+        }).error(function(response){
+
+        });
+
+        //$.ajax({
+        //    url: '/api/1.0/course/chapter/' + $scope.id,
+        //    dataType: 'JSON',
+        //    type: 'GET',
+        //    success: function(res){
+        //        if(res.success){
+        //            utils.copyOf(res.result, $scope.course);
+        //            editor.setData($scope.course.introduction);
+        //        }
+        //
+        //        if(!$scope.$$phase){
+        //            $scope.$apply();
+        //        }
+        //    }
+        //});
+    };
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
         });
     };
 
+    //初始化数据
     $scope.getById();
+    $scope.getState();
 });

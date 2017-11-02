@@ -1,4 +1,8 @@
-app.controller('sectionAddController', function($scope, $state, $stateParams, FileUploader){
+app.controller('sectionAddController', function($scope, $state, $stateParams, FileUploader, $http){
+    //下拉
+    $scope.states = [];
+    $scope.medias = [];
+
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/course/upload',
         queueLimit: 1,
@@ -16,23 +20,16 @@ app.controller('sectionAddController', function($scope, $state, $stateParams, Fi
 
     uploader.onSuccessItem = function(item, response, status, headers){
         $scope.course.cover = response.result;
-
-        if(!$scope.$$phase){
-            $scope.$apply();
-        }
     };
 
-    $('.selectpicker').selectpicker({
-        title: '请选择'
-    });
-
-    var editor = CKEDITOR.replace('editor', {
+    $scope.editor = {
+        allowedContent: true,
+        entitles: false,
         customConfig: '/commons/js/plugin/ckeditor/config.js'
-    });
+    };
 
-    $scope.parentId = $stateParams.parentId;
     $scope.course = {
-        parentId     : $scope.parentId,
+        parentId     : $stateParams.parentId,
         title        : '',
         type         : 2,
         kind         : 0,
@@ -56,33 +53,86 @@ app.controller('sectionAddController', function($scope, $state, $stateParams, Fi
         $scope.course.view          = 0;
         $scope.course.sort          = 0;
         $scope.course.media         = [];
-
-        $('.selectpicker').selectpicker('deselectAll');
-        editor.setData('');
     };
 
     $scope.submit = function(){
-        $scope.course.introduction = editor.getData();
+        console.log($scope.course);
 
-        var medias = $('#medias').val();
-        if(medias !== null && medias.length > 0){
-            angular.forEach(medias, function(data){
-                $scope.course.media.push({id:data});
-            });
-        }
-
-        $.ajax({
+        $http({
             url: '/api/1.0/course',
-            type: 'POST',
+            method: 'POST',
             data: JSON.stringify($scope.course),
-            dataType: 'JSON',
-            contentType: 'application/json',
-            success: function(res){
-                if(res.success){
-                    alert(res.msg);
-                    $state.go('chapterEdit', {id : $scope.parentId});
-                }
+            headers: {
+                'Content-Type': 'application/json'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+                $state.go('chapterEdit', {id : $scope.course.parentId});
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+
+        });
+
+        //$scope.course.introduction = editor.getData();
+        //
+        //var medias = $('#medias').val();
+        //if(medias !== null && medias.length > 0){
+        //    angular.forEach(medias, function(data){
+        //        $scope.course.media.push({id:data});
+        //    });
+        //}
+        //
+        //$.ajax({
+        //    url: '/api/1.0/course',
+        //    type: 'POST',
+        //    data: JSON.stringify($scope.course),
+        //    dataType: 'JSON',
+        //    contentType: 'application/json',
+        //    success: function(res){
+        //        if(res.success){
+        //            alert(res.msg);
+        //            $state.go('chapterEdit', {id : $scope.parentId});
+        //        }
+        //    }
+        //});
+    };
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
         });
     };
+
+    $scope.getMedia = function(){
+        $http({
+            url: '/api/1.0/media/list',
+            method: 'POST',
+            data: $.param({
+                'state': 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.medias = res.result;
+            }
+        }).error(function(response){
+            $scope.medias = [];
+        });
+    };
+
+    //初始化数据
+    $scope.getState();
+    $scope.getMedia();
 });

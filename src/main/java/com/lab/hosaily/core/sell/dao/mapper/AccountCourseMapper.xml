@@ -7,6 +7,8 @@
         <result column="account_id"  property="accountId"  javaType="java.lang.String"/>
         <result column="course_id"   property="course_id"  javaType="java.lang.String"/>
         <result column="effective"   property="effective"  javaType="java.lang.Integer"/>
+        <result column="force_time"  property="forceTime"  javaType="java.util.Date"/>
+        <result column="deadline"    property="deadline"   javaType="java.util.Date"/>
         <result column="state"       property="state"      typeHandler="usingStateHandler"/>
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
@@ -118,14 +120,18 @@
                course_id,
                effective,
                state,
-               create_time
+               create_time,
+               force_time,
+               deadline
         ) VALUE (
                #{id,         jdbcType=VARCHAR},
                #{accountId,  jdbcType=VARCHAR},
                #{courseId,   jdbcType=VARCHAR},
                #{effective,  jdbcType=INTEGER},
                #{state,      typeHandler=usingStateHandler},
-               #{createTime, jdbcType=TIMESTAMP}
+               #{createTime, jdbcType=TIMESTAMP},
+               #{forceTime,  jdbcType=TIMESTAMP},
+               #{deadline,   jdbcType=TIMESTAMP}
         )
     </insert>
 
@@ -137,7 +143,9 @@
                course_id,
                effective,
                state,
-               create_time
+               create_time,
+               force_time,
+               deadline
         ) VALUES
         <foreach collection="list" item="accountCourse" separator=",">
             (
@@ -146,7 +154,9 @@
                 #{accountCourse.courseId,   jdbcType=VARCHAR},
                 #{accountCourse.effective,  jdbcType=INTEGER},
                 #{accountCourse.state,      typeHandler=usingStateHandler},
-                #{accountCourse.createTime, jdbcType=TIMESTAMP}
+                #{accountCourse.createTime, jdbcType=TIMESTAMP},
+                #{accountCourse.forceTime,  jdbcType=TIMESTAMP},
+                #{accountCourse.deadline,   jdbcType=TIMESTAMP}
             )
         </foreach>
     </insert>
@@ -162,6 +172,12 @@
              </if>
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+             <if test="forceTime != null">
+                 force_time = #{forceTime, jdbcType=TIMESTAMP},
+             </if>
+             <if test="deadline != null">
+                 deadline = #{deadline, jdbcType=TIMESTAMP},
              </if>
          </set>
           WHERE id = #{id}

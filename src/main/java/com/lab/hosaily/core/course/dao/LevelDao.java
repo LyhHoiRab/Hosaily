@@ -88,6 +88,25 @@ public class LevelDao{
     }
 
     /**
+     * 查询列表
+     */
+    public List<Level> list(UsingState state){
+        try{
+            Criteria criteria = new Criteria();
+
+            if(state != null){
+                criteria.and(Restrictions.eq("l.state", state.getId()));
+            }
+
+            criteria.and(Restrictions.eq("l.isDelete", false));
+            return mapper.findByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 分页查询
      */
     public Page<Level> page(PageRequest pageRequest, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){

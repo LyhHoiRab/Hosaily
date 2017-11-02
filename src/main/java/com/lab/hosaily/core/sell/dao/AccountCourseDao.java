@@ -1,10 +1,12 @@
 package com.lab.hosaily.core.sell.dao;
 
+import com.lab.hosaily.core.sell.consts.CourseConsts;
 import com.lab.hosaily.core.sell.dao.mapper.AccountCourseMapper;
 import com.lab.hosaily.core.sell.entity.AccountCourse;
 import com.rab.babylon.commons.security.exception.DataAccessException;
 import com.rab.babylon.commons.security.mybatis.Criteria;
 import com.rab.babylon.commons.security.mybatis.Restrictions;
+import com.rab.babylon.commons.utils.DateUtils;
 import com.rab.babylon.commons.utils.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -35,10 +37,19 @@ public class AccountCourseDao{
                 Assert.hasText(accountCourse.getAccountId(), "账户ID不能为空");
                 Assert.hasText(accountCourse.getCourseId(), "课程ID不能为空");
 
+                if(accountCourse.getEffective() == null || accountCourse.getEffective() < 0){
+                    accountCourse.setEffective(CourseConsts.MAX_EFFECTIVE);
+                }
+
+                accountCourse.setDeadline(DateUtils.addDays(accountCourse.getForceTime(), accountCourse.getEffective()));
                 accountCourse.setId(UUIDGenerator.by32());
                 accountCourse.setCreateTime(new Date());
                 mapper.save(accountCourse);
             }else{
+                if(accountCourse.getEffective() != null && accountCourse.getForceTime() != null){
+                    accountCourse.setDeadline(DateUtils.addDays(accountCourse.getForceTime(), accountCourse.getEffective()));
+                }
+
                 accountCourse.setUpdateTime(new Date());
                 mapper.update(accountCourse);
             }

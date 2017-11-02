@@ -1,4 +1,7 @@
-app.controller('chapterAddController', function($scope, $state, $stateParams, FileUploader){
+app.controller('chapterAddController', function($scope, $state, $stateParams, FileUploader, $http){
+    //下拉
+    $scope.states   = [];
+
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/course/upload',
         queueLimit: 1,
@@ -16,23 +19,16 @@ app.controller('chapterAddController', function($scope, $state, $stateParams, Fi
 
     uploader.onSuccessItem = function(item, response, status, headers){
         $scope.course.cover = response.result;
-
-        if(!$scope.$$phase){
-            $scope.$apply();
-        }
     };
 
-    $('.selectpicker').selectpicker({
-        title: '请选择'
-    });
-
-    var editor = CKEDITOR.replace('editor', {
+    $scope.editor = {
+        allowedContent: true,
+        entitles: false,
         customConfig: '/commons/js/plugin/ckeditor/config.js'
-    });
+    };
 
-    $scope.parentId = $stateParams.parentId;
     $scope.course = {
-        parentId     : $scope.parentId,
+        parentId     : $stateParams.parentId,
         title        : '',
         type         : 1,
         kind         : 0,
@@ -55,26 +51,55 @@ app.controller('chapterAddController', function($scope, $state, $stateParams, Fi
         $scope.course.view          = 0;
         $scope.course.sort          = 0;
         $scope.course.price         = 0;
-
-        $('.selectpicker').selectpicker('deselectAll');
-        editor.setData('');
     };
 
     $scope.submit = function(){
-        $scope.course.introduction = editor.getData();
-
-        $.ajax({
+        $http({
             url: '/api/1.0/course',
-            type: 'POST',
+            method: 'POST',
             data: JSON.stringify($scope.course),
-            dataType: 'JSON',
-            contentType: 'application/json',
-            success: function(res){
-                if(res.success){
-                    alert(res.msg);
-                    $state.go('courseEdit', {id : $scope.parentId});
-                }
+            headers: {
+                'Content-Type': 'application/json'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+                $state.go('courseEdit', {id : $scope.course.parentId});
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+
+        });
+        //
+        //$.ajax({
+        //    url: '/api/1.0/course',
+        //    type: 'POST',
+        //    data: JSON.stringify($scope.course),
+        //    dataType: 'JSON',
+        //    contentType: 'application/json',
+        //    success: function(res){
+        //        if(res.success){
+        //            alert(res.msg);
+        //            $state.go('courseEdit', {id : $scope.parentId});
+        //        }
+        //    }
+        //});
+    };
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
         });
     };
+
+    //初始化数据
+    $scope.getState();
 });

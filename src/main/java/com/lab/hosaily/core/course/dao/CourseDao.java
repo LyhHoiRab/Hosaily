@@ -151,7 +151,7 @@ public class CourseDao{
     /**
      * 分页查询课程
      */
-    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime, String accountId){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -176,6 +176,9 @@ public class CourseDao{
             }
             if(minCreateTime != null && maxCreateTime != null){
                 criteria.and(Restrictions.between("c.createTime", minCreateTime, maxCreateTime));
+            }
+            if(!StringUtils.isBlank(accountId)){
+                criteria.and(Restrictions.eq("ac.accountId", accountId));
             }
 
             //分页查询ID

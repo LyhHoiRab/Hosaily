@@ -88,6 +88,19 @@ public class TagServiceImpl implements TagService{
     }
 
     /**
+     * 查询列表
+     */
+    @Override
+    public List<Tag> list(UsingState state){
+        try{
+            return tagDao.findByState(state);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 分页查询
      */
     @Override

@@ -351,6 +351,8 @@
             ON cc.parent_id = c.id
      LEFT JOIN course ch
             ON cc.children_id = ch.id
+     LEFT JOIN account_course ac
+            ON ac.course_id = c.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -397,6 +399,8 @@
                       ON cc.parent_id = c.id
                LEFT JOIN course ch
                       ON cc.children_id = ch.id
+               LEFT JOIN account_course ac
+                      ON ac.course_id = c.id
                 <if test="params != null">
                     <include refid="WHERE_COLUMN"/>
 

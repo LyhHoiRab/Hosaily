@@ -15,8 +15,12 @@ public class AccountCourse{
     private String accountId;
     //课程ID
     private String courseId;
-    //有效期
+    //有效天数
     private Integer effective;
+    //生效时间
+    private Date forceTime;
+    //有效期
+    private Date deadline;
     //状态
     private UsingState state;
     //创建时间
@@ -58,6 +62,22 @@ public class AccountCourse{
 
     public void setEffective(Integer effective){
         this.effective = effective;
+    }
+
+    public Date getForceTime(){
+        return forceTime;
+    }
+
+    public void setForceTime(Date forceTime){
+        this.forceTime = forceTime;
+    }
+
+    public Date getDeadline(){
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline){
+        this.deadline = deadline;
     }
 
     public UsingState getState(){

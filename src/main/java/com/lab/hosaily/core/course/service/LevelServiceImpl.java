@@ -162,6 +162,19 @@ public class LevelServiceImpl implements LevelService{
     }
 
     /**
+     * 查询列表
+     */
+    @Override
+    public List<Level> list(UsingState state){
+        try{
+            return levelDao.list(state);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 分页查询
      */
     @Override

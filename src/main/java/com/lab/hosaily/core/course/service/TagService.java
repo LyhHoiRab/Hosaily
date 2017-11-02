@@ -30,6 +30,11 @@ public interface TagService{
     List<Tag> findByState(UsingState state);
 
     /**
+     * 查询列表
+     */
+    List<Tag> list(UsingState state);
+
+    /**
      * 分页查询
      */
     Page<Tag> page(PageRequest pageRequest);

@@ -48,32 +48,35 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">点赞量</span>
-        <input type="number" class="form-control" placeholder="点赞量" ng-model="course.likes" value="{{course.likes}}">
+        <input type="number" class="form-control" placeholder="点赞量" ng-model="course.likes">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">浏览量</span>
-        <input type="number" class="form-control" placeholder="浏览量" ng-model="course.view" value="{{course.view}}">
+        <input type="number" class="form-control" placeholder="浏览量" ng-model="course.view">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">排序</span>
-        <input type="number" class="form-control" placeholder="排序" ng-model="course.sort" value="{{course.sort}}">
+        <input type="number" class="form-control" placeholder="排序" ng-model="course.sort">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">状态</span>
-        <select class="form-control" ng-model="course.state" value="{{course.state}}">
+        <!--<select class="form-control" ng-model="course.state" value="{{course.state}}">-->
+          <!--<option value="">请选择</option>-->
+          <!--#foreach($state in $states)-->
+            <!--<option value="${state.id}">${state.description}</option>-->
+          <!--#end-->
+        <!--</select>-->
+        <select class="form-control" ng-model="course.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>
-          #foreach($state in $states)
-            <option value="${state.id}">${state.description}</option>
-          #end
         </select>
       </div>
     </div><!-- item -->
@@ -81,10 +84,13 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">媒体</span>
-        <select class="selectpicker form-control" multiple id="medias">
-          #foreach($media in $medias)
-            <option value="${media.id}">${media.remark}</option>
-          #end
+        <!--<select class="selectpicker form-control" multiple id="medias">-->
+          <!--#foreach($media in $medias)-->
+            <!--<option value="${media.id}">${media.remark}</option>-->
+          <!--#end-->
+        <!--</select>-->
+        <select class="form-control" ng-model="course.media" ng-options="media as media.remark for media in medias" ng-multiple="true" multiple>
+          <option value="">请选择</option>
         </select>
       </div>
     </div><!-- item -->
@@ -92,20 +98,20 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">标题</span>
-        <input type="text" class="form-control" placeholder="标题" ng-model="course.title" value="{{course.title}}">
+        <input type="text" class="form-control" placeholder="标题" ng-model="course.title">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">概要</span>
-        <input type="text" class="form-control" placeholder="概要" ng-model="course.summary" value="{{course.summary}}">
+        <input type="text" class="form-control" placeholder="概要" ng-model="course.summary">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="editor-group">
-        <textarea id="editor"></textarea>
+        <div ckeditor="editor" ng-model="course.introduction"></div>
       </div>
     </div><!-- item -->
 

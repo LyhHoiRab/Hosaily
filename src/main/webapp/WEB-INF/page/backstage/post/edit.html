@@ -98,7 +98,7 @@
           <!--<option value="${media.id}">${media.remark}</option>-->
           <!--#end-->
         <!--</select>-->
-        <select class="form-control" ng-model="post.media" ng-options="media as media.remark for media in medias">
+        <select class="form-control" ng-model="post.media" ng-options="media as media.remark for media in medias" multiple ng-multipe="true">
           <option value="">请选择</option>
         </select>
       </div>

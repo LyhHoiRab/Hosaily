@@ -59,10 +59,10 @@ public class CourseRestController{
      * 分页查询课程
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Course>> page(Long pageNum, Long pageSize, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Response<Page<Course>> page(Long pageNum, Long pageSize, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime, String accountId){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Course> page = courseService.pageByCourse(pageRequest, tagName, advisor, state, createTime, minCreateTime, maxCreateTime);
+            Page<Course> page = courseService.pageByCourse(pageRequest, tagName, advisor, state, createTime, minCreateTime, maxCreateTime, accountId);
 
             return new Response<Page<Course>>("查询成功", page);
         }catch(Exception e){

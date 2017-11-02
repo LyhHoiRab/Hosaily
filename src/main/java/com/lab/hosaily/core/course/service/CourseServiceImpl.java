@@ -68,11 +68,11 @@ public class CourseServiceImpl implements CourseService{
      * 分页查询课程
      */
     @Override
-    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime, String accountId){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return courseDao.pageByCourse(pageRequest, tagName, advisor, state, createTime, minCreateTime, maxCreateTime);
+            return courseDao.pageByCourse(pageRequest, tagName, advisor, state, createTime, minCreateTime, maxCreateTime, accountId);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
