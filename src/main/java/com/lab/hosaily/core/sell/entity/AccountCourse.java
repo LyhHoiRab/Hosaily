@@ -18,7 +18,7 @@ public class AccountCourse{
     //有效期
     private Integer effective;
     //状态
-    private UsingState usingState;
+    private UsingState state;
     //创建时间
     private Date createTime;
     //更新时间
@@ -60,12 +60,12 @@ public class AccountCourse{
         this.effective = effective;
     }
 
-    public UsingState getUsingState(){
-        return usingState;
+    public UsingState getState(){
+        return state;
     }
 
-    public void setUsingState(UsingState usingState){
-        this.usingState = usingState;
+    public void setState(UsingState state){
+        this.state = state;
     }
 
     public Date getCreateTime(){

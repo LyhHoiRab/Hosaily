@@ -5,6 +5,8 @@ import com.lab.hosaily.core.account.dao.mapper.UserMapper;
 import com.rab.babylon.commons.security.exception.DataAccessException;
 import com.rab.babylon.commons.security.mybatis.Criteria;
 import com.rab.babylon.commons.security.mybatis.Restrictions;
+import com.rab.babylon.commons.security.response.Page;
+import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.utils.RedisUtils;
 import com.rab.babylon.commons.utils.UUIDGenerator;
 import com.rab.babylon.core.account.entity.User;
@@ -18,7 +20,9 @@ import org.springframework.util.Assert;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public class UserDao{
@@ -45,6 +49,7 @@ public class UserDao{
                 user.setIsDelete(false);
                 user.setState(UsingState.NORMAL);
                 user.setCreateTime(new Date());
+                user.setHasRole(false);
                 mapper.save(user);
             }else{
                 user.setUpdateTime(new Date());
@@ -124,6 +129,48 @@ public class UserDao{
             }
 
             return user;
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据条件分页查询
+     */
+    public Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, String code){
+        try{
+            Criteria criteria = new Criteria();
+            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+
+            if(!StringUtils.isBlank(accountId)){
+                criteria.and(Restrictions.eq("u.accountId", accountId));
+            }
+            if(state != null){
+                criteria.and(Restrictions.eq("u.state", state.getId()));
+            }
+            if(!StringUtils.isBlank(wechat)){
+                criteria.and(Restrictions.eq("a.wechat", wechat));
+            }
+            if(!StringUtils.isBlank(nickname)){
+                criteria.and(Restrictions.eq("u.nickname", nickname));
+            }
+
+            //分页查询ID
+            List<String> ids = mapper.findIdByParams(criteria);
+            //查询记录数
+            Long count = mapper.countByParams(criteria);
+
+            List<User> list = new ArrayList<User>();
+
+            if(!ids.isEmpty()){
+                criteria.clear();
+                criteria.and(Restrictions.in("u.id", ids));
+                criteria.sort(Restrictions.desc("u.createTime"));
+
+                list.addAll(mapper.findByParams(criteria));
+            }
+            return new Page<User>(null, pageRequest, count);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

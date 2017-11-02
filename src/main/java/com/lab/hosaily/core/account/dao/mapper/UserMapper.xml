@@ -18,6 +18,7 @@
         <result column="create_time"  property="createTime" javaType="java.util.Date"/>
         <result column="update_time"  property="updateTime" javaType="java.util.Date"/>
         <result column="delete_time"  property="deleteTime" javaType="java.util.Date"/>
+        <result column="has_role"     property="hasRole"    javaType="java.lang.Boolean"/>
         <collection property="expands" resultMap="userExpand" columnPrefix="e_"/>
     </resultMap>
 
@@ -141,7 +142,8 @@
               position,
               state,
               is_delete,
-              create_time
+              create_time,
+              has_role
           ) VALUE (
               #{id,         jdbcType=VARCHAR},
               #{accountId,  jdbcType=VARCHAR},
@@ -155,7 +157,8 @@
               #{position,   jdbcType=VARCHAR},
               #{state,      typeHandler=usingStateHandler},
               #{isDelete,   jdbcType=BOOLEAN},
-              #{createTime, jdbcType=TIMESTAMP}
+              #{createTime, jdbcType=TIMESTAMP},
+              #{hasRole,    jdbcType=BOOLEAN}
           )
     </insert>
 
@@ -198,6 +201,9 @@
              <if test="position != null and position != ''">
                  position = #{position, jdbcType=VARCHAR},
              </if>
+             <if test="hasRole != null">
+                 has_role = #{hasRole, jdbcType=BOOLEAN},
+             </if>
          </set>
           WHERE id = #{id}
     </update>
@@ -212,8 +218,38 @@
           FROM user u
      LEFT JOIN user_expand e
             ON e.user_id = u.id
+     LEFT JOIN account a
+            ON a.id = u.account_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+    <select id="findIdByParams" resultType="java.lang.String">
+        SELECT u.id
+          FROM user u
+     LEFT JOIN account a
+            ON a.id = u.account_id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.groups != null and params.groups.size > 0">
+                GROUP BY
+                <foreach collection="params.groups" item="group" separator=",">
+                    ${group.property}
+                </foreach>
+            </if>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
         </if>
     </select>
 
@@ -227,6 +263,8 @@
           FROM user u
      LEFT JOIN user_expand e
             ON e.user_id = u.id
+     LEFT JOIN account a
+            ON a.id = u.account_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -241,9 +279,21 @@
 
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
-          FROM user
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
-        </if>
+          FROM (
+                    SELECT u.id
+                      FROM user u
+                 LEFT JOIN account a
+                        ON a.id = u.account_id
+                    <if test="params != null">
+                        <include refid="WHERE_COLUMN"/>
+
+                        <if test="params.groups != null and params.groups.size > 0">
+                            GROUP BY
+                            <foreach collection="params.groups" item="group" separator=",">
+                                ${group.property}
+                            </foreach>
+                        </if>
+                    </if>
+        ) AS user
     </select>
 </mapper>

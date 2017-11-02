@@ -26,6 +26,11 @@ public interface UserMapper{
     User getByParams(@Param("params") Criteria criteria);
 
     /**
+     * 根据条件查询用户ID
+     */
+    List<String> findIdByParams(@Param("params") Criteria criteria);
+
+    /**
      * 根据条件查询多条记录
      */
     List<User> findByParams(@Param("params") Criteria criteria);
