@@ -10,9 +10,16 @@ public class CommonsPathConsts{
     public static String JS_PATH;
     public static String CSS_PATH;
     public static String IMG_PATH;
+    public static String MOBILE_JS_PATH;
+    public static String MOBILE_CSS_PATH;
+    public static String MOBILE_IMG_PATH;
     public static String H5_INDEX;
     public static String DEFAULT_REDIRECT;
     public static String AUTHORIZE_API;
+    //WEB端目录
+    public static final String WEB_DIR = "web/";
+    //移动端目录
+    public static final String MOBILE_DIR = "mobile/";
 
     @Value(value = "${url.commons.js}")
     public void setJsPath(String jsPath){
@@ -78,5 +85,32 @@ public class CommonsPathConsts{
 
     public String getAuthorizeApi(){
         return AUTHORIZE_API;
+    }
+
+    public String getMobileJsPath(){
+        return MOBILE_JS_PATH;
+    }
+
+    @Value(value = "${url.commons.mobile.js}")
+    public void setMobileJsPath(String mobileJsPath){
+        MOBILE_JS_PATH = mobileJsPath;
+    }
+
+    public String getMobileCssPath(){
+        return MOBILE_CSS_PATH;
+    }
+
+    @Value(value = "${url.commons.mobile.css}")
+    public void setMobileCssPath(String mobileCssPath){
+        MOBILE_CSS_PATH = mobileCssPath;
+    }
+
+    public String getMobileImgPath(){
+        return MOBILE_IMG_PATH;
+    }
+
+    @Value(value = "${url.commons.mobile.img}")
+    public void setMobileImgPath(String mobileImgPath){
+        MOBILE_IMG_PATH = mobileImgPath;
     }
 }

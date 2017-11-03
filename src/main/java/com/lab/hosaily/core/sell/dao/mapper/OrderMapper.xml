@@ -148,7 +148,7 @@
                #{clientAccount, jdbcType=VARCHAR},
                #{clientUser.id, jdbcType=VARCHAR},
                #{price,         jdbcType=DOUBLE},
-               #{pay,           jdbcType=DOUBEL},
+               #{pay,           jdbcType=DOUBLE},
                #{remark,        jdbcType=VARCHAR},
                #{state,         typeHandler=usingStateHandler},
                #{isDelete,      jdbcType=BOOLEAN},

@@ -57,7 +57,7 @@ public class PageController{
     @RequestMapping(value = "/index", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView index(ModelMap content){
         try{
-            return new ModelAndView("web/index", content);
+            return new ModelAndView("index", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -70,7 +70,7 @@ public class PageController{
     @RequestMapping(value = "/discover", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView discover(ModelMap content){
         try{
-            return new ModelAndView("web/discover", content);
+            return new ModelAndView("discover", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -87,7 +87,7 @@ public class PageController{
 
             content.put("course", course);
 
-            return new ModelAndView("web/discoverDetail", content);
+            return new ModelAndView("discoverDetail", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -104,7 +104,7 @@ public class PageController{
 
             content.put("tags", tags);
 
-            return new ModelAndView("web/course", content);
+            return new ModelAndView("course", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -123,7 +123,7 @@ public class PageController{
             content.put("levels", levels);
             content.put("course", course);
 
-            return new ModelAndView("web/courseDetail", content);
+            return new ModelAndView("courseDetail", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -136,7 +136,7 @@ public class PageController{
     @RequestMapping(value = "/chapter/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView chapterDetail(@PathVariable("id") String id, ModelMap content){
         try{
-            return new ModelAndView("web/chapterDetail", content);
+            return new ModelAndView("chapterDetail", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -157,7 +157,7 @@ public class PageController{
             content.put("chapter", chapter);
             content.put("course", course);
 
-            return new ModelAndView("web/section", content);
+            return new ModelAndView("section", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -170,7 +170,7 @@ public class PageController{
     @RequestMapping(value = "/skillTest", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView skillTest(ModelMap content){
         try{
-            return new ModelAndView("web/skillTest", content);
+            return new ModelAndView("skillTest", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -183,7 +183,7 @@ public class PageController{
     @RequestMapping(value = "/teamIntroduce", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView teamIntroduce(ModelMap content){
         try{
-            return new ModelAndView("web/teamIntroduce", content);
+            return new ModelAndView("teamIntroduce", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -196,7 +196,7 @@ public class PageController{
     @RequestMapping(value = "/clubIntroduce", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView clubIntroduce(ModelMap content){
         try{
-            return new ModelAndView("web/clubIntroduce", content);
+            return new ModelAndView("clubIntroduce", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -218,7 +218,7 @@ public class PageController{
             content.put("tracks", tracks);
             content.put("collects", collects);
 
-            return new ModelAndView("web/personalCenter", content);
+            return new ModelAndView("personalCenter", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -231,7 +231,7 @@ public class PageController{
     @RequestMapping(value = "/customization", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView customization(ModelMap content){
         try{
-            return new ModelAndView("web/customization", content);
+            return new ModelAndView("customization", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -248,7 +248,7 @@ public class PageController{
 
             content.put("customization", customization);
 
-            return new ModelAndView("web/customizationDetail", content);
+            return new ModelAndView("customizationDetail", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
