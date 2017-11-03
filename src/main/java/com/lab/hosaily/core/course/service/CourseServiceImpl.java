@@ -65,6 +65,19 @@ public class CourseServiceImpl implements CourseService{
     }
 
     /**
+     * 查询课程列表
+     */
+    @Override
+    public List<Course> listByCourse(UsingState state){
+        try{
+            return courseDao.listByCourse(state);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 分页查询课程
      */
     @Override

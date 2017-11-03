@@ -1,5 +1,9 @@
 package com.lab.hosaily.core.sell.entity;
 
+import com.lab.hosaily.core.course.entity.Course;
+import com.rab.babylon.core.account.entity.User;
+import com.rab.babylon.core.base.entity.Create;
+import com.rab.babylon.core.base.entity.Update;
 import com.rab.babylon.core.consts.entity.UsingState;
 
 import java.util.Date;
@@ -7,14 +11,16 @@ import java.util.Date;
 /**
  * 账户课程权限表
  */
-public class AccountCourse{
+public class AccountCourse implements Create, Update{
 
     //ID
     private String id;
     //账户ID
     private String accountId;
+    //用户信息
+    private User user;
     //课程ID
-    private String courseId;
+    private Course course;
     //有效天数
     private Integer effective;
     //生效时间
@@ -48,12 +54,20 @@ public class AccountCourse{
         this.accountId = accountId;
     }
 
-    public String getCourseId(){
-        return courseId;
+    public User getUser(){
+        return user;
     }
 
-    public void setCourseId(String courseId){
-        this.courseId = courseId;
+    public void setUser(User user){
+        this.user = user;
+    }
+
+    public Course getCourse(){
+        return course;
+    }
+
+    public void setCourse(Course course){
+        this.course = course;
     }
 
     public Integer getEffective(){
@@ -88,18 +102,22 @@ public class AccountCourse{
         this.state = state;
     }
 
+    @Override
     public Date getCreateTime(){
         return createTime;
     }
 
+    @Override
     public void setCreateTime(Date createTime){
         this.createTime = createTime;
     }
 
+    @Override
     public Date getUpdateTime(){
         return updateTime;
     }
 
+    @Override
     public void setUpdateTime(Date updateTime){
         this.updateTime = updateTime;
     }

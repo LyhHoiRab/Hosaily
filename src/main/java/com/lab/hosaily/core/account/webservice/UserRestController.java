@@ -3,8 +3,11 @@ package com.lab.hosaily.core.account.webservice;
 import com.lab.hosaily.commons.consts.SessionConsts;
 import com.lab.hosaily.core.account.service.UserService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
+import com.rab.babylon.commons.security.response.Page;
+import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
 import com.rab.babylon.core.account.entity.User;
+import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +94,22 @@ public class UserRestController{
         try{
             String url = userService.upload(file);
             return new Response<String>("上传成功", url);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 分页查询
+     */
+    @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Page<User>> page(Long pageNum, Long pageSize, String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
+        try{
+            PageRequest pageRequest = new PageRequest(pageNum, pageSize);
+            Page<User> page = userService.page(pageRequest, accountId, state, wechat, nickname, name, code);
+
+            return new Response<Page<User>>("查询成功", page);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

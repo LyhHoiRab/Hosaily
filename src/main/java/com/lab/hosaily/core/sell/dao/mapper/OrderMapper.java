@@ -1,6 +1,6 @@
 package com.lab.hosaily.core.sell.dao.mapper;
 
-import com.lab.hosaily.core.sell.entity.AccountCourse;
+import com.lab.hosaily.core.sell.entity.Order;
 import com.rab.babylon.commons.security.mybatis.Criteria;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -8,37 +8,38 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AccountCourseMapper{
+public interface OrderMapper{
 
     /**
      * 保存
      */
-    void save(AccountCourse accountCourse);
-
-    /**
-     * 批量保存
-     */
-    void saveBatch(@Param("list") List<AccountCourse> accountCourses);
+    void save(Order order);
 
     /**
      * 更新
      */
-    void update(AccountCourse accountCourse);
+    void update(Order order);
 
     /**
      * 删除
+     * 逻辑删除
      */
     void delete(String id);
+
+    /**
+     * 根据条件查询
+     */
+    Order getByParams(@Param("params") Criteria criteria);
+
+    /**
+     * 根据条件查询
+     */
+    List<Order> findByParams(@Param("params") Criteria criteria);
 
     /**
      * 根据条件查询ID
      */
     List<String> findIdByParams(@Param("params") Criteria criteria);
-
-    /**
-     * 根据条件查询
-     */
-    List<AccountCourse> findByParams(@Param("params") Criteria criteria);
 
     /**
      * 根据条件查询数量

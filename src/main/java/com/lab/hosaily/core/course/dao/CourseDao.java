@@ -149,6 +149,28 @@ public class CourseDao{
     }
 
     /**
+     * 查询课程列表
+     */
+    public List<Course> listByCourse(UsingState state){
+        try{
+            Assert.notNull(state, "课程状态不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
+            criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
+
+            if(state != null){
+                criteria.and(Restrictions.eq("c.state", state.getId()));
+            }
+
+            return mapper.findCourseByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 分页查询课程
      */
     public Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime, String accountId){

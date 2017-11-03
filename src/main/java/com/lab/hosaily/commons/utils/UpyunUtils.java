@@ -23,6 +23,8 @@ public class UpyunUtils{
     public final static String ADVISOR_HEAD_DIR = "/advisor/head/";
     //会员等级图片目录
     public final static String LEVEL_COVER_DIR = "/level/cover/";
+    //支付方式图片目录
+    public final static String PAYMENT_TYPE_COVER_DIR = "/paymentType/cover/";
     //富文本资源目录
     public final static String UEDITOR_RESOURCE_DIR = "/ueditor/resource/";
     //访问外链

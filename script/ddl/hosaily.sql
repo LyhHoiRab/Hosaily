@@ -255,3 +255,25 @@ CREATE TABLE `customization` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='定制服务表';
 
+CREATE TABLE `payment_type` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `img_url` varchar(255) DEFAULT NULL,
+  `state` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付方式表';
+
+CREATE TABLE `account_course` (
+  `id` varchar(32) NOT NULL,
+  `account_id` varchar(32) NOT NULL,
+  `course_id` varchar(32) NOT NULL,
+  `effective` int(1) NOT NULL DEFAULT '0',
+  `force_time` datetime NOT NULL,
+  `deadline` datetime NOT NULL,
+  `state` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账户 - 课程关联表';

@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lab.hosaily.core.account.dao.mapper.UserMapper">
+<mapper namespace="com.lab.hosaily.core.sell.dao.mapper.OrderMapper">
+    <resultMap id="order" type="com.lab.hosaily.core.sell.entity.Order">
+        <id     column="id"             property="id"            javaType="java.lang.String"/>
+        <result column="order_id"       property="orderId"       javaType="java.lang.String"/>
+        <result column="sales_account"  property="salesAccount"  javaType="java.lang.String"/>
+        <result column="client_account" property="clientAccount" javaType="java.lang.String"/>
+        <result column="price"          property="price"         javaType="java.lang.Double"/>
+        <result column="pay"            property="pay"           javaType="java.lang.Double"/>
+        <result column="remark"         property="remark"        javaType="java.lang.String"/>
+        <result column="state"          property="state"         typeHandler="usingStateHandler"/>
+        <result column="is_delete"      property="isDelete"      javaType="java.lang.Boolean"/>
+        <result column="create_time"    property="createTime"    javaType="java.util.Date"/>
+        <result column="update_time"    property="updateTime"    javaType="java.util.Date"/>
+        <result column="delete_time"    property="deleteTime"    javaType="java.util.Date"/>
+        <association property="salesUser"  resultMap="user" columnPrefix="su_"/>
+        <association property="clientUser" resultMap="user" column="cu_"/>
+    </resultMap>
+
     <resultMap id="user" type="com.rab.babylon.core.account.entity.User">
         <id     column="id"           property="id"         javaType="java.lang.String"/>
         <result column="account_id"   property="accountId"  javaType="java.lang.String"/>
         <result column="nickname"     property="nickname"   javaType="java.lang.String"/>
         <result column="name"         property="name"       javaType="java.lang.String"/>
-        <result column="id_card"      property="idCard"     javaType="java.lang.String"/>
         <result column="code"         property="code"       javaType="java.lang.Integer"/>
-        <result column="sex"          property="sex"        typeHandler="sexHandler"/>
-        <result column="birthday"     property="birthday"   javaType="java.util.Date"/>
-        <result column="phone"        property="phone"      javaType="java.lang.String"/>
-        <result column="position"     property="position"   javaType="java.lang.String"/>
-        <result column="head_img_url" property="headImgUrl" javaType="java.lang.String"/>
-        <result column="state"        property="state"      typeHandler="usingStateHandler"/>
-        <result column="is_delete"    property="isDelete"   javaType="java.lang.Boolean"/>
-        <result column="create_time"  property="createTime" javaType="java.util.Date"/>
-        <result column="update_time"  property="updateTime" javaType="java.util.Date"/>
-        <result column="delete_time"  property="deleteTime" javaType="java.util.Date"/>
-        <result column="has_role"     property="hasRole"    javaType="java.lang.Boolean"/>
-        <collection property="expands" resultMap="userExpand" columnPrefix="e_"/>
-    </resultMap>
-
-    <resultMap id="userExpand" type="com.rab.babylon.core.account.entity.UserExpand">
-        <id     column="id"           property="id"         javaType="java.lang.String"/>
-        <result column="user_id"      property="userId"     javaType="java.lang.String"/>
-        <result column="name"         property="name"       javaType="java.lang.String"/>
-        <result column="value"        property="value"      javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -130,107 +127,89 @@
 
     <insert id="save">
         INSERT
-          INTO user (
-              id,
-              account_id,
-              nickname,
-              name,
-              id_card,
-              sex,
-              birthday,
-              head_img_url,
-              phone,
-              position,
-              state,
-              is_delete,
-              create_time,
-              has_role
-          ) VALUE (
-              #{id,         jdbcType=VARCHAR},
-              #{accountId,  jdbcType=VARCHAR},
-              #{nickname,   jdbcType=VARCHAR},
-              #{name,       jdbcType=VARCHAR},
-              #{idCard,     jdbcType=VARCHAR},
-              #{sex,        typeHandler=sexHandler},
-              #{birthday,   jdbcType=TIMESTAMP},
-              #{headImgUrl, jdbcType=VARCHAR},
-              #{phone,      jdbcType=VARCHAR},
-              #{position,   jdbcType=VARCHAR},
-              #{state,      typeHandler=usingStateHandler},
-              #{isDelete,   jdbcType=BOOLEAN},
-              #{createTime, jdbcType=TIMESTAMP},
-              #{hasRole,    jdbcType=BOOLEAN}
-          )
+          INTO order (
+               id,
+               order_id,
+               sales_account,
+               sales_user,
+               client_account,
+               client_user,
+               price,
+               pay,
+               remark,
+               state,
+               is_delete,
+               create_time
+        ) VALUE(
+               #{id,            jdbcType=VARCHAR},
+               #{orderId,       jdbcType=VARCHAR},
+               #{salesAccount,  jdbcType=VARCHAR},
+               #{salesUser.id,  jdbcType=VARCHAR},
+               #{clientAccount, jdbcType=VARCHAR},
+               #{clientUser.id, jdbcType=VARCHAR},
+               #{price,         jdbcType=DOUBLE},
+               #{pay,           jdbcType=DOUBEL},
+               #{remark,        jdbcType=VARCHAR},
+               #{state,         typeHandler=usingStateHandler},
+               #{isDelete,      jdbcType=BOOLEAN},
+               #{createTime,    jdbcType=TIMESTAMP}
+        )
     </insert>
 
     <update id="update">
-        UPDATE user
+        UPDATE order
          <set>
-             <if test="nickname != null and nickname != ''">
-                 nickname = #{nickname, jdbcType=VARCHAR},
+             <if test="price != null and price >= 0">
+                 price = #{price, jdbcType=DOUBLE},
              </if>
-             <if test="name != null and name != ''">
-                 name = #{name, jdbcType=VARCHAR},
+             <if test="pay != null and pay >= 0">
+                 pay = #{pay, jdbcType=DOUBLE},
              </if>
-             <if test="idCard != null and idCard != ''">
-                 id_card = #{idCard, jdbcType=VARCHAR},
-             </if>
-             <if test="sex != null">
-                 sex = #{sex, typeHandler=sexHandler},
-             </if>
-             <if test="birthday != null">
-                 birthday = #{birthday, jdbcType=TIMESTAMP},
+             <if test="remark != null and remark != ''">
+                 remark = #{remark, jdbcType=VARCHAR},
              </if>
              <if test="state != null">
-                 state = #{state, typeHandler=usingStateHandler},
-             </if>
-             <if test="headImgUrl != null and headImgUrl != ''">
-                 head_img_url = #{headImgUrl, jdbcType=VARCHAR},
-             </if>
-             <if test="isDelete != null">
-                 is_delete = #{isDelete, jdbcType=BOOLEAN},
+                 state = #{state, typeHandler=usingState},
              </if>
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
-             </if>
-             <if test="deleteTime != null">
-                 delete_time = #{deleteTime, jdbcType=TIMESTAMP},
-             </if>
-             <if test="phone != null and phone != ''">
-                 phone = #{phone, jdbcType=VARCHAR},
-             </if>
-             <if test="position != null and position != ''">
-                 position = #{position, jdbcType=VARCHAR},
-             </if>
-             <if test="hasRole != null">
-                 has_role = #{hasRole, jdbcType=BOOLEAN},
              </if>
          </set>
           WHERE id = #{id}
     </update>
 
-    <select id="getByParams" resultMap="user">
-        SELECT u.*,
-               e.id          AS e_id,
-               e.user_id     AS e_user_id,
-               e.name        AS e_name,
-               e.value       AS e_value,
-               e.description AS e_description
-          FROM user u
-     LEFT JOIN user_expand e
-            ON e.user_id = u.id
-     LEFT JOIN account a
-            ON a.id = u.account_id
+    <update id="delete">
+        UPDATE order
+           SET is_delete = TRUE,
+               delete_time = NOW()
+         WHERE id = #{id}
+    </update>
+
+    <select id="getByParams" resultMap="order">
+        SELECT o.*,
+               su.id       AS su_id,
+               su.name     AS su_name,
+               su.nickname AS su_nickname,
+               su.code     AS su_code,
+               cu.id       AS cu_id,
+               cu.name     AS cu_name,
+               cu.nickname AS cu_nickname,
+               cu.code     AS cu_code
+     LEFT JOIN user su
+            ON su.account_id = o.sales_account
+     LEFT JOIN user cu
+            ON cu.account_id = o.client_account
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
     </select>
 
     <select id="findIdByParams" resultType="java.lang.String">
-        SELECT u.id
-          FROM user u
-     LEFT JOIN account a
-            ON a.id = u.account_id
+        SELECT o.id,
+     LEFT JOIN user su
+            ON su.account_id = o.sales_account
+     LEFT JOIN user cu
+            ON cu.account_id = o.client_account
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -254,18 +233,20 @@
         </if>
     </select>
 
-    <select id="findByParams" resultMap="user">
-        SELECT u.*,
-               e.id          AS e_id,
-               e.user_id     AS e_user_id,
-               e.name        AS e_name,
-               e.value       AS e_value,
-               e.description AS e_description
-          FROM user u
-     LEFT JOIN user_expand e
-            ON e.user_id = u.id
-     LEFT JOIN account a
-            ON a.id = u.account_id
+    <select id="findByParams" resultMap="order">
+        SELECT o.*,
+               su.id       AS su_id,
+               su.name     AS su_name,
+               su.nickname AS su_nickname,
+               su.code     AS su_code,
+               cu.id       AS cu_id,
+               cu.name     AS cu_name,
+               cu.nickname AS cu_nickname,
+               cu.code     AS cu_code
+     LEFT JOIN user su
+            ON su.account_id = o.sales_account
+     LEFT JOIN user cu
+            ON cu.account_id = o.client_account
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -275,26 +256,42 @@
                     ${sort.property} ${sort.operator}
                 </foreach>
             </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
         </if>
     </select>
 
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
           FROM (
-                    SELECT u.id
-                      FROM user u
-                 LEFT JOIN account a
-                        ON a.id = u.account_id
-                    <if test="params != null">
-                        <include refid="WHERE_COLUMN"/>
+                  SELECT o.id,
+             LEFT JOIN user su
+                    ON su.account_id = o.sales_account
+             LEFT JOIN user cu
+                    ON cu.account_id = o.client_account
+                <if test="params != null">
+                    <include refid="WHERE_COLUMN"/>
 
-                        <if test="params.groups != null and params.groups.size > 0">
-                            GROUP BY
-                            <foreach collection="params.groups" item="group" separator=",">
-                                ${group.property}
-                            </foreach>
-                        </if>
+                    <if test="params.groups != null and params.groups.size > 0">
+                        GROUP BY
+                        <foreach collection="params.groups" item="group" separator=",">
+                            ${group.property}
+                        </foreach>
                     </if>
-        ) AS user
+
+                    <if test="params.sorts != null and params.sorts.size > 0">
+                        ORDER BY
+                        <foreach collection="params.sorts" item="sort" separator=",">
+                            ${sort.property} ${sort.operator}
+                        </foreach>
+                    </if>
+
+                    <if test="params.limit != null">
+                        ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+                    </if>
+                </if>
+        ) AS order
     </select>
 </mapper>

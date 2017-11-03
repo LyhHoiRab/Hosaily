@@ -1,6 +1,9 @@
 package com.lab.hosaily.core.account.service;
 
+import com.rab.babylon.commons.security.response.Page;
+import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.core.account.entity.User;
+import com.rab.babylon.core.consts.entity.UsingState;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 public interface UserService{
@@ -34,4 +37,9 @@ public interface UserService{
      * 根据accountId查询用户缓存信息
      */
     User getCacheByAccountId(String accountId);
+
+    /**
+     * 分页查询
+     */
+    Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code);
 }

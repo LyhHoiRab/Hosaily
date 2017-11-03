@@ -457,5 +457,97 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 ]);
             }]
         }
+    }).state('user', {
+        url: '/user',
+        templateUrl: '/page/backstage/user',
+        controller: 'userController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/user/index.js'
+                ]);
+            }]
+        }
+    }).state('accountCourse', {
+        url: '/accountCourse/:accountId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/accountCourse/' + $stateParams.accountId;
+        },
+        controller: 'accountCourseController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/user/accountCourse.js'
+                ]);
+            }]
+        }
+    }).state('accountCourseAdd', {
+        url: '/accountCourse/add/:accountId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/accountCourse/add/' + $stateParams.accountId;
+        },
+        controller: 'accountCourseAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/user/add.js'
+                ]);
+            }]
+        }
+    }).state('paymentType', {
+        url: '/paymentType',
+        templateUrl: '/page/backstage/paymentType',
+        controller: 'paymentTypeController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/paymentType/index.js'
+                ]);
+            }]
+        }
+    }).state('paymentTypeAdd', {
+        url: '/paymentTypeAdd/add',
+        templateUrl: '/page/backstage/paymentType/add',
+        controller: 'paymentTypeAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/paymentType/add.js'
+                ]);
+            }]
+        }
+    }).state('paymentTypeEdit', {
+        url: '/paymentType/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/paymentType/edit/' + $stateParams.id;
+        },
+        controller: 'paymentTypeEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/paymentType/edit.js'
+                ]);
+            }]
+        }
     });
 }]);

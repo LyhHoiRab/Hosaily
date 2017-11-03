@@ -5,13 +5,32 @@
     <resultMap id="accountCourse" type="com.lab.hosaily.core.sell.entity.AccountCourse">
         <id     column="id"          property="id"         javaType="java.lang.String"/>
         <result column="account_id"  property="accountId"  javaType="java.lang.String"/>
-        <result column="course_id"   property="course_id"  javaType="java.lang.String"/>
         <result column="effective"   property="effective"  javaType="java.lang.Integer"/>
         <result column="force_time"  property="forceTime"  javaType="java.util.Date"/>
         <result column="deadline"    property="deadline"   javaType="java.util.Date"/>
         <result column="state"       property="state"      typeHandler="usingStateHandler"/>
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+        <association property="course"  resultMap="course"  columnPrefix="c_"/>
+        <association property="user"    resultMap="user"    columnPrefix="u_"/>
+    </resultMap>
+
+    <resultMap id="course" type="com.lab.hosaily.core.course.entity.Course">
+        <id     column="id"           property="id"           javaType="java.lang.String"/>
+        <result column="type"         property="type"         typeHandler="courseTypeHandler"/>
+        <result column="kind"         property="kind"         typeHandler="courseKindHandler"/>
+        <result column="title"        property="title"        javaType="java.lang.String"/>
+    </resultMap>
+
+    <resultMap id="user" type="com.rab.babylon.core.account.entity.User">
+        <id     column="id"           property="id"         javaType="java.lang.String"/>
+        <result column="account_id"   property="accountId"  javaType="java.lang.String"/>
+        <result column="nickname"     property="nickname"   javaType="java.lang.String"/>
+        <result column="name"         property="name"       javaType="java.lang.String"/>
+        <result column="code"         property="code"       javaType="java.lang.Integer"/>
+        <result column="sex"          property="sex"        typeHandler="sexHandler"/>
+        <result column="phone"        property="phone"      javaType="java.lang.String"/>
+        <result column="head_img_url" property="headImgUrl" javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -126,7 +145,7 @@
         ) VALUE (
                #{id,         jdbcType=VARCHAR},
                #{accountId,  jdbcType=VARCHAR},
-               #{courseId,   jdbcType=VARCHAR},
+               #{course.id,  jdbcType=VARCHAR},
                #{effective,  jdbcType=INTEGER},
                #{state,      typeHandler=usingStateHandler},
                #{createTime, jdbcType=TIMESTAMP},
@@ -151,7 +170,7 @@
             (
                 #{accountCourse.id,         jdbcType=VARCHAR},
                 #{accountCourse.accountId,  jdbcType=VARCHAR},
-                #{accountCourse.courseId,   jdbcType=VARCHAR},
+                #{accountCourse.course.id,  jdbcType=VARCHAR},
                 #{accountCourse.effective,  jdbcType=INTEGER},
                 #{accountCourse.state,      typeHandler=usingStateHandler},
                 #{accountCourse.createTime, jdbcType=TIMESTAMP},
@@ -182,4 +201,108 @@
          </set>
           WHERE id = #{id}
     </update>
+
+    <delete id="delete">
+        DELETE
+          FROM account_course
+         WHERE id = #{id}
+    </delete>
+
+    <select id="findIdByParams" resultType="java.lang.String">
+        SELECT ac.id
+          FROM account_course ac
+     LEFT JOIN account a
+            ON a.id = ac.account_id
+     LEFT JOIN course c
+            ON c.id = ac.course_id
+     LEFT JOIN user u
+            ON u.account_id = ac.account_id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.groups != null and params.groups.size > 0">
+                GROUP BY
+                <foreach collection="params.groups" item="group" separator=",">
+                    ${group.property}
+                </foreach>
+            </if>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+    <select id="findByParams" resultMap="accountCourse">
+        SELECT ac.*,
+               u.id           AS u_id,
+               u.account_id   AS u_account_id,
+               u.name         AS u_name,
+               u.nickname     AS u_nickname,
+               u.code         AS u_code,
+               u.sex          AS u_sex,
+               u.phone        AS u_phone,
+               u.head_img_url AS u_head_img_url,
+               c.id           AS c_id,
+               c.title        AS c_title
+          FROM account_course ac
+     LEFT JOIN account a
+            ON a.id = ac.account_id
+     LEFT JOIN course c
+            ON c.id = ac.course_id
+     LEFT JOIN user u
+            ON u.account_id = ac.account_id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.groups != null and params.groups.size > 0">
+                GROUP BY
+                <foreach collection="params.groups" item="group" separator=",">
+                    ${group.property}
+                </foreach>
+            </if>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+    <select id="countByParams" resultType="java.lang.Long">
+        SELECT COUNT(*)
+          FROM (
+                  SELECT ac.id
+                    FROM account_course ac
+               LEFT JOIN account a
+                      ON a.id = ac.account_id
+               LEFT JOIN course c
+                      ON c.id = ac.course_id
+               LEFT JOIN user u
+                      ON u.account_id = ac.account_id
+                <if test="params != null">
+                    <include refid="WHERE_COLUMN"/>
+
+                    <if test="params.groups != null and params.groups.size > 0">
+                        GROUP BY
+                        <foreach collection="params.groups" item="group" separator=",">
+                            ${group.property}
+                        </foreach>
+                    </if>
+                </if>
+        ) AS account_course
+    </select>
 </mapper>

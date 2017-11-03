@@ -22,6 +22,11 @@ public interface CourseService{
     void update(Course course);
 
     /**
+     * 查询课程列表
+     */
+    List<Course> listByCourse(UsingState state);
+
+    /**
      * 分页查询课程
      */
     Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime, String accountId);

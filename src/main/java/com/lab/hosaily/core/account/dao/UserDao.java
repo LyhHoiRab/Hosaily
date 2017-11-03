@@ -138,8 +138,10 @@ public class UserDao{
     /**
      * 根据条件分页查询
      */
-    public Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, String code){
+    public Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
         try{
+            Assert.notNull(pageRequest, "分页信息不能为空");
+
             Criteria criteria = new Criteria();
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
@@ -153,7 +155,13 @@ public class UserDao{
                 criteria.and(Restrictions.eq("a.wechat", wechat));
             }
             if(!StringUtils.isBlank(nickname)){
-                criteria.and(Restrictions.eq("u.nickname", nickname));
+                criteria.and(Restrictions.like("u.nickname", nickname));
+            }
+            if(!StringUtils.isBlank(name)){
+                criteria.and(Restrictions.like("u.name", name));
+            }
+            if(code != null){
+                criteria.and(Restrictions.eq("u.code", code));
             }
 
             //分页查询ID
@@ -166,11 +174,11 @@ public class UserDao{
             if(!ids.isEmpty()){
                 criteria.clear();
                 criteria.and(Restrictions.in("u.id", ids));
-                criteria.sort(Restrictions.desc("u.createTime"));
+                criteria.sort(Restrictions.asc("u.code"));
 
                 list.addAll(mapper.findByParams(criteria));
             }
-            return new Page<User>(null, pageRequest, count);
+            return new Page<User>(list, pageRequest, count);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

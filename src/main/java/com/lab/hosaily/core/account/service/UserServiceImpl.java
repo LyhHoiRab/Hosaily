@@ -4,8 +4,11 @@ import com.lab.hosaily.commons.utils.FileNameUtils;
 import com.lab.hosaily.commons.utils.UpyunUtils;
 import com.lab.hosaily.core.account.dao.UserDao;
 import com.rab.babylon.commons.security.exception.ServiceException;
+import com.rab.babylon.commons.security.response.Page;
+import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.utils.FileUtils;
 import com.rab.babylon.core.account.entity.User;
+import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,4 +138,20 @@ public class UserServiceImpl implements UserService{
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
+    /**
+     * 分页查询
+     */
+    @Override
+    public Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
+        try{
+            Assert.notNull(pageRequest, "分页信息不能为空");
+
+            return userDao.page(pageRequest, accountId, state, wechat, nickname, name, code);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/1.0/course")
@@ -49,6 +50,21 @@ public class CourseRestController{
             courseService.update(course);
 
             return new Response<Course>("修改成功", course);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 查询课程列表
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<Course>> list(UsingState state){
+        try{
+            List<Course> list = courseService.listByCourse(state);
+
+            return new Response<List<Course>>("查询成功", list);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

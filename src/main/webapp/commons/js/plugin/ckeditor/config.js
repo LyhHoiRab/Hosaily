@@ -4,8 +4,10 @@
  */
 
 CKEDITOR.editorConfig = function(config){
-    config.enterMode = CKEDITOR.ENTER_BR;
-    config.shiftEnterMode = CKEDITOR.ENTER_BR;
+    //config.enterMode = CKEDITOR.ENTER_BR;
+    //config.shiftEnterMode = CKEDITOR.ENTER_BR;
+    config.shiftEnterMode = CKEDITOR.ENTER_DIV;
+    config.enterMode = CKEDITOR.ENTER_DIV;
     //图片上传
     config.filebrowserImageUploadUrl = '/api/1.0/ckEditor/upload';
     config.filebrowserImageBrowseUrl = '/api/1.0/ckEditor/upload';
