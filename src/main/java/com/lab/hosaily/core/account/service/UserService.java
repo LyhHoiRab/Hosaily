@@ -6,6 +6,8 @@ import com.rab.babylon.core.account.entity.User;
 import com.rab.babylon.core.consts.entity.UsingState;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.List;
+
 public interface UserService{
 
     /**
@@ -42,4 +44,9 @@ public interface UserService{
      * 分页查询
      */
     Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code);
+
+    /**
+     * 查询列表
+     */
+    List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code);
 }

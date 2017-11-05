@@ -49,7 +49,7 @@ public class UserDao{
                 user.setIsDelete(false);
                 user.setState(UsingState.NORMAL);
                 user.setCreateTime(new Date());
-                user.setHasRole(false);
+                user.setHasRole(true);
                 mapper.save(user);
             }else{
                 user.setUpdateTime(new Date());
@@ -144,6 +144,7 @@ public class UserDao{
 
             Criteria criteria = new Criteria();
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+            criteria.groupBy(Restrictions.groupBy("u.id"));
 
             if(!StringUtils.isBlank(accountId)){
                 criteria.and(Restrictions.eq("u.accountId", accountId));
@@ -179,6 +180,52 @@ public class UserDao{
                 list.addAll(mapper.findByParams(criteria));
             }
             return new Page<User>(list, pageRequest, count);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 查询列表
+     */
+    public List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
+        try{
+            Criteria criteria = new Criteria();
+            criteria.groupBy(Restrictions.groupBy("u.id"));
+
+            if(!StringUtils.isBlank(accountId)){
+                criteria.and(Restrictions.eq("u.accountId", accountId));
+            }
+            if(state != null){
+                criteria.and(Restrictions.eq("u.state", state.getId()));
+            }
+            if(!StringUtils.isBlank(wechat)){
+                criteria.and(Restrictions.eq("a.wechat", wechat));
+            }
+            if(!StringUtils.isBlank(nickname)){
+                criteria.and(Restrictions.like("u.nickname", nickname));
+            }
+            if(!StringUtils.isBlank(name)){
+                criteria.and(Restrictions.like("u.name", name));
+            }
+            if(code != null){
+                criteria.and(Restrictions.eq("u.code", code));
+            }
+
+            List<String> ids = mapper.findIdByParams(criteria);
+
+            List<User> list = new ArrayList<User>();
+
+            if(!ids.isEmpty()){
+                criteria.clear();
+                criteria.and(Restrictions.in("u.id", ids));
+                criteria.sort(Restrictions.asc("u.code"));
+
+                list.addAll(mapper.findByParams(criteria));
+            }
+
+            return list;
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

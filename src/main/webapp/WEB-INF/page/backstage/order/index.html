@@ -1,9 +1,9 @@
 <ol class="breadcrumb">
   <li>
-    <span>系统设置</span>
+    <span>销售管理</span>
   </li><!-- item -->
   <li>
-    <span>导师管理</span>
+    <span>订单管理</span>
   </li><!-- item -->
 </ol><!-- 面包屑 -->
 
@@ -12,15 +12,29 @@
     <div class="row">
       <div class="col-xs-12 col-md-3">
         <div class="input-group">
-          <span class="input-group-addon">名称</span>
-          <input type="text" class="form-control" placeholder="名称" ng-model="name">
+          <span class="input-group-addon">昵称</span>
+          <input type="text" class="form-control" placeholder="昵称" ng-model="nickname">
         </div>
       </div><!-- item -->
 
       <div class="col-xs-12 col-md-3">
         <div class="input-group">
-          <span class="input-group-addon">昵称</span>
-          <input type="text" class="form-control" placeholder="昵称" ng-model="nickname">
+          <span class="input-group-addon">姓名</span>
+          <input type="text" class="form-control" placeholder="姓名" ng-model="name">
+        </div>
+      </div><!-- item -->
+
+      <div class="col-xs-12 col-md-3">
+        <div class="input-group">
+          <span class="input-group-addon">编码</span>
+          <input type="text" class="form-control" placeholder="编码" ng-model="code">
+        </div>
+      </div><!-- item -->
+
+      <div class="col-xs-12 col-md-3">
+        <div class="input-group">
+          <span class="input-group-addon">UNIONID</span>
+          <input type="text" class="form-control" placeholder="UNIONID" ng-model="unionId">
         </div>
       </div><!-- item -->
 
@@ -33,7 +47,6 @@
               <!--<option value="$!{state.id}">$!{state.description}</option>-->
             <!--#end-->
           <!--</select>-->
-
           <select class="form-control" ng-model="state" ng-options="key as value for (key, value) in states">
             <option value="">请选择</option>
           </select>
@@ -44,14 +57,6 @@
         <div class="input-group">
           <span class="input-group-addon">创建时间</span>
           <input type="date" class="form-control" placeholder="创建时间" ng-model="createTime">
-        </div>
-      </div><!-- item -->
-
-      <div class="col-xs-12 col-md-3">
-        <div class="input-group">
-          <span class="input-group-addon">创建时间</span>
-          <input type="date" class="form-control double" placeholder="不早于" ng-model="minCreateTime">
-          <input type="date" class="form-control double" placeholder="不晚于" ng-model="maxCreateTime">
         </div>
       </div><!-- item -->
     </div>
@@ -71,11 +76,6 @@
     <button type="button" class="btn" ng-click="refresh()">
       <i class="fa fa-refresh"></i>
       刷新
-    </button><!-- item -->
-
-    <button type="button" class="btn" ui-sref="advisorAdd">
-      <i class="fa fa-plus"></i>
-      添加
     </button><!-- item -->
   </div><!-- container -->
 </div><!-- search bar -->

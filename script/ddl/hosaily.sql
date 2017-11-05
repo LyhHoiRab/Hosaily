@@ -277,3 +277,30 @@ CREATE TABLE `account_course` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账户 - 课程关联表';
+
+CREATE TABLE `pay_logs` (
+  `id` varchar(32) NOT NULL,
+  `order_id` varchar(32) NOT NULL,
+  `pay` double NOT NULL DEFAULT '0',
+  `payment` varchar(32) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付记录表';
+
+CREATE TABLE `orders` (
+  `id` varchar(32) NOT NULL,
+  `order_id` varchar(45) NOT NULL,
+  `sales_user` varchar(32) NOT NULL,
+  `sales_account` varchar(32) NOT NULL,
+  `client_user` varchar(32) NOT NULL,
+  `client_account` varchar(32) NOT NULL,
+  `price` double NOT NULL DEFAULT '0',
+  `pay` double NOT NULL DEFAULT '0',
+  `remark` varchar(255) DEFAULT NULL,
+  `state` tinyint(1) NOT NULL,
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0',
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `delete_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';

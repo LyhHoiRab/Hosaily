@@ -7,6 +7,7 @@ import com.rab.babylon.core.base.entity.Update;
 import com.rab.babylon.core.consts.entity.UsingState;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单表
@@ -31,6 +32,10 @@ public class Order implements Create, Update, Delete{
     private Double pay;
     //备注
     private String remark;
+    //支付记录
+    private List<PayLogs> payLogs;
+    //授权记录
+    private List<AccreditLogs> accreditLogs;
     //状态
     private UsingState state;
     //是否删除
@@ -116,6 +121,22 @@ public class Order implements Create, Update, Delete{
 
     public void setRemark(String remark){
         this.remark = remark;
+    }
+
+    public List<PayLogs> getPayLogs(){
+        return payLogs;
+    }
+
+    public void setPayLogs(List<PayLogs> payLogs){
+        this.payLogs = payLogs;
+    }
+
+    public List<AccreditLogs> getAccreditLogs(){
+        return accreditLogs;
+    }
+
+    public void setAccreditLogs(List<AccreditLogs> accreditLogs){
+        this.accreditLogs = accreditLogs;
     }
 
     public UsingState getState(){

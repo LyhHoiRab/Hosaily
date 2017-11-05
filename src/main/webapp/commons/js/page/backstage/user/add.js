@@ -1,9 +1,9 @@
 app.controller('accountCourseAddController', function($scope, $state, $stateParams, $http){
     $scope.courses = [];
+    $scope.selected = [];
     $scope.accountCourse = {
         accountId : $stateParams.accountId,
-        course    : [],
-        //forceTime : ''
+        course    : {}
     };
 
     $scope.getCourse = function(){

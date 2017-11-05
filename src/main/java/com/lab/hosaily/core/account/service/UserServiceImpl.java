@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService{
@@ -154,4 +156,16 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    /**
+     * 查询列表
+     */
+    @Override
+    public List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
+        try{
+            return userDao.list(accountId, state, wechat, nickname, name, code);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 }

@@ -69,6 +69,38 @@ public class AccountCourseDao{
     }
 
     /**
+     * 批量保存
+     */
+    public void saveBatch(List<AccountCourse> list){
+        try{
+            Assert.notEmpty(list, "授权课程不能为空");
+
+            for(AccountCourse accountCourse : list){
+                Assert.hasText(accountCourse.getAccountId(), "账户ID不能为空");
+                Assert.notNull(accountCourse.getCourse(), "课程信息不能为空");
+                Assert.hasText(accountCourse.getCourse().getId(), "课程ID不能为空");
+
+                if(accountCourse.getForceTime() == null){
+                    accountCourse.setForceTime(new Date());
+                }
+                if(accountCourse.getEffective() == null || accountCourse.getEffective() < 0){
+                    accountCourse.setEffective(CourseConsts.MAX_EFFECTIVE);
+                }
+
+                accountCourse.setDeadline(DateUtils.addDays(accountCourse.getForceTime(), accountCourse.getEffective()));
+                accountCourse.setId(UUIDGenerator.by32());
+                accountCourse.setState(UsingState.NORMAL);
+                accountCourse.setCreateTime(new Date());
+            }
+
+            mapper.saveBatch(list);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 删除
      */
     public void delete(String id){
@@ -90,7 +122,7 @@ public class AccountCourseDao{
             Assert.hasText(accountId, "账户ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("accountId", accountId));
+            criteria.and(Restrictions.eq("ac.accountId", accountId));
 
             return mapper.findByParams(criteria);
         }catch(Exception e){

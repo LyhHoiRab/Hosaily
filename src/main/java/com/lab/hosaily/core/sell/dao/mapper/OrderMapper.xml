@@ -16,7 +16,8 @@
         <result column="update_time"    property="updateTime"    javaType="java.util.Date"/>
         <result column="delete_time"    property="deleteTime"    javaType="java.util.Date"/>
         <association property="salesUser"  resultMap="user" columnPrefix="su_"/>
-        <association property="clientUser" resultMap="user" column="cu_"/>
+        <association property="clientUser" resultMap="user" columnPrefix="cu_"/>
+        <collection  property="payLogs"    resultMap="logs" columnPrefix="pl_"/>
     </resultMap>
 
     <resultMap id="user" type="com.rab.babylon.core.account.entity.User">
@@ -25,6 +26,18 @@
         <result column="nickname"     property="nickname"   javaType="java.lang.String"/>
         <result column="name"         property="name"       javaType="java.lang.String"/>
         <result column="code"         property="code"       javaType="java.lang.Integer"/>
+    </resultMap>
+
+    <resultMap id="logs" type="com.lab.hosaily.core.sell.entity.PayLogs">
+        <id     column="id"          property="id"         javaType="java.lang.String"/>
+        <result column="pay"         property="pay"        javaType="java.lang.Double"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <association property="payment" resultMap="payment" columnPrefix="p_"/>
+    </resultMap>
+
+    <resultMap id="payment" type="com.lab.hosaily.core.sell.entity.PaymentType">
+        <id     column="id"          property="id"         javaType="java.lang.String"/>
+        <result column="name"        property="name"       javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -127,7 +140,7 @@
 
     <insert id="save">
         INSERT
-          INTO order (
+          INTO orders (
                id,
                order_id,
                sales_account,
@@ -157,7 +170,7 @@
     </insert>
 
     <update id="update">
-        UPDATE order
+        UPDATE orders
          <set>
              <if test="price != null and price >= 0">
                  price = #{price, jdbcType=DOUBLE},
@@ -179,7 +192,7 @@
     </update>
 
     <update id="delete">
-        UPDATE order
+        UPDATE orders
            SET is_delete = TRUE,
                delete_time = NOW()
          WHERE id = #{id}
@@ -187,18 +200,28 @@
 
     <select id="getByParams" resultMap="order">
         SELECT o.*,
-               su.id       AS su_id,
-               su.name     AS su_name,
-               su.nickname AS su_nickname,
-               su.code     AS su_code,
-               cu.id       AS cu_id,
-               cu.name     AS cu_name,
-               cu.nickname AS cu_nickname,
-               cu.code     AS cu_code
+               su.id          AS su_id,
+               su.name        AS su_name,
+               su.nickname    AS su_nickname,
+               su.code        AS su_code,
+               cu.id          AS cu_id,
+               cu.name        AS cu_name,
+               cu.nickname    AS cu_nickname,
+               cu.code        AS cu_code,
+               pl.id          AS pl_id,
+               pl.pay         AS pl_pay,
+               pl.create_time AS pl_create_time,
+               p.id           AS p_id,
+               p.name         AS p_name
+          FROM orders o
      LEFT JOIN user su
-            ON su.account_id = o.sales_account
+            ON su.account_id = o.sales_user
      LEFT JOIN user cu
-            ON cu.account_id = o.client_account
+            ON cu.account_id = o.client_user
+     LEFT JOIN pay_logs pl
+            ON pl.order_id = o.id
+     LEFT JOIN payment p
+            ON p.id = pl.payment
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
@@ -206,10 +229,15 @@
 
     <select id="findIdByParams" resultType="java.lang.String">
         SELECT o.id,
+          FROM orders o
      LEFT JOIN user su
-            ON su.account_id = o.sales_account
+            ON su.account_id = o.sales_user
      LEFT JOIN user cu
-            ON cu.account_id = o.client_account
+            ON cu.account_id = o.client_user
+     LEFT JOIN pay_logs pl
+            ON pl.order_id = o.id
+     LEFT JOIN payment p
+            ON p.id = pl.payment
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -235,18 +263,28 @@
 
     <select id="findByParams" resultMap="order">
         SELECT o.*,
-               su.id       AS su_id,
-               su.name     AS su_name,
-               su.nickname AS su_nickname,
-               su.code     AS su_code,
-               cu.id       AS cu_id,
-               cu.name     AS cu_name,
-               cu.nickname AS cu_nickname,
-               cu.code     AS cu_code
+               su.id          AS su_id,
+               su.name        AS su_name,
+               su.nickname    AS su_nickname,
+               su.code        AS su_code,
+               cu.id          AS cu_id,
+               cu.name        AS cu_name,
+               cu.nickname    AS cu_nickname,
+               cu.code        AS cu_code,
+               pl.id          AS pl_id,
+               pl.pay         AS pl_pay,
+               pl.create_time AS pl_create_time,
+               p.id           AS p_id,
+               p.name         AS p_name
+          FROM orders o
      LEFT JOIN user su
-            ON su.account_id = o.sales_account
+            ON su.account_id = o.sales_user
      LEFT JOIN user cu
-            ON cu.account_id = o.client_account
+            ON cu.account_id = o.client_user
+     LEFT JOIN pay_logs pl
+            ON pl.order_id = o.id
+     LEFT JOIN payment p
+            ON p.id = pl.payment
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -266,11 +304,16 @@
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
           FROM (
-                  SELECT o.id,
+                SELECT o.id
+                  FROM orders o
              LEFT JOIN user su
-                    ON su.account_id = o.sales_account
+                    ON su.account_id = o.sales_user
              LEFT JOIN user cu
-                    ON cu.account_id = o.client_account
+                    ON cu.account_id = o.client_user
+             LEFT JOIN pay_logs pl
+                    ON pl.order_id = o.id
+             LEFT JOIN payment p
+                    ON p.id = pl.payment
                 <if test="params != null">
                     <include refid="WHERE_COLUMN"/>
 

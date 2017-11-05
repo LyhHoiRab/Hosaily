@@ -1,4 +1,4 @@
-app.controller('userController', function($scope, $http){
+app.controller('orderController', function($scope, $http){
     //查询列表
     $scope.state;
     $scope.name;
@@ -151,7 +151,7 @@ app.controller('userController', function($scope, $http){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="accountCourse({accountId:\'{{row.getProperty(\'accountId\')}}\'})">[课程]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="orderAdd({accountId:\'{{row.getProperty(\'accountId\')}}\'})">[下单]</a></span></div>'
         }]
     };
 

@@ -3,7 +3,7 @@
     <span>销售管理</span>
   </li><!-- item -->
   <li>
-    <a ui-sref="user">下单管理</a>
+    <a ui-sref="user">授权管理</a>
   </li><!-- item -->
   <li>
     <a ui-sref="accountCourse({accountId:accountCourse.accountId})">已授权课程</a>
@@ -27,6 +27,13 @@
         <select class="form-control" ng-model="accountCourse.course" ng-options="course as course.title for course in courses">
           <option value="">请选择</option>
         </select>
+
+        <!--<ui-select class="form-control" multiple ng-model="selected" theme="bootstrap">-->
+          <!--<ui-select-match placeholder="请选择">{{$item.title}}</ui-select-match>-->
+          <!--<ui-select-choices repeat="course in courses">-->
+            <!--<small>{{course.title}}</small>-->
+          <!--</ui-select-choices>-->
+        <!--</ui-select>-->
       </div>
     </div><!-- item -->
 

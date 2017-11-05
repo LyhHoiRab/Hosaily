@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/1.0/user")
@@ -110,6 +111,21 @@ public class UserRestController{
             Page<User> page = userService.page(pageRequest, accountId, state, wechat, nickname, name, code);
 
             return new Response<Page<User>>("查询成功", page);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 查询列表
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<User>> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
+        try{
+            List<User> list = userService.list(accountId, state, wechat, nickname, name, code);
+
+            return new Response<List<User>>("查询成功", list);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
