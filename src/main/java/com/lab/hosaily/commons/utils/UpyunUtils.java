@@ -27,8 +27,10 @@ public class UpyunUtils{
     public final static String PAYMENT_TYPE_COVER_DIR = "/paymentType/cover/";
     //富文本资源目录
     public final static String UEDITOR_RESOURCE_DIR = "/ueditor/resource/";
+    //课程视频目录
+    public final static String COURSE_MEDIA_DIR = "/course/media/";
     //访问外链
-    public final static String URL = "http://kuliao.b0.upaiyun.com/";
+    public final static String URL = "http://kuliao.b0.upaiyun.com";
 
     //UpYun
     private static UpYun upyun;

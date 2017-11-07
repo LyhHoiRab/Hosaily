@@ -13,4 +13,9 @@ public interface AccountService{
      * 网站应用注册
      */
     User registerByWeb(String token, String code);
+
+    /**
+     * 小程序获取用户电话
+     */
+    String phoneByXcx(String token, String accountId, String sessionKey, String encryptedData, String iv);
 }

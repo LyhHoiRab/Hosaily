@@ -58,7 +58,7 @@ public class AdvisorDao{
             Assert.hasText(id, "导师ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("id", id));
+            criteria.and(Restrictions.eq("a.id", id));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -75,7 +75,7 @@ public class AdvisorDao{
             Assert.notNull(state, "导师状态不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("state", state.getId()));
+            criteria.and(Restrictions.eq("a.state", state.getId()));
 
             return mapper.findByParams(criteria);
         }catch(Exception e){
@@ -93,22 +93,22 @@ public class AdvisorDao{
 
             Criteria criteria = new Criteria();
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
-            criteria.sort(Restrictions.asc("sort"));
+            criteria.sort(Restrictions.asc("a.sort"));
 
             if(!StringUtils.isBlank(nickname)){
-                criteria.and(Restrictions.like("nickname", nickname));
+                criteria.and(Restrictions.like("a.nickname", nickname));
             }
             if(!StringUtils.isBlank(name)){
-                criteria.and(Restrictions.like("name", name));
+                criteria.and(Restrictions.like("a.name", name));
             }
             if(state != null){
-                criteria.and(Restrictions.eq("state", state.getId()));
+                criteria.and(Restrictions.eq("a.state", state.getId()));
             }
             if(createTime != null){
-                criteria.and(Restrictions.eq("createTime", createTime));
+                criteria.and(Restrictions.eq("a.createTime", createTime));
             }
             if(minCreateTime != null && maxCreateTime != null){
-                criteria.and(Restrictions.between("createTime", minCreateTime, maxCreateTime));
+                criteria.and(Restrictions.between("a.createTime", minCreateTime, maxCreateTime));
             }
 
             Long count = mapper.countByParams(criteria);
@@ -127,22 +127,39 @@ public class AdvisorDao{
     public List<Advisor> list(String nickname, String name, UsingState state, Date createTime){
         try{
             Criteria criteria = new Criteria();
-            criteria.sort(Restrictions.asc("sort"));
+            criteria.sort(Restrictions.asc("a.sort"));
 
             if(!StringUtils.isBlank(nickname)){
-                criteria.and(Restrictions.like("nickname", nickname));
+                criteria.and(Restrictions.like("a.nickname", nickname));
             }
             if(!StringUtils.isBlank(name)){
-                criteria.and(Restrictions.like("name", name));
+                criteria.and(Restrictions.like("a.name", name));
             }
             if(state != null){
-                criteria.and(Restrictions.eq("state", state.getId()));
+                criteria.and(Restrictions.eq("a.state", state.getId()));
             }
             if(createTime != null){
-                criteria.and(Restrictions.eq("createTime", createTime));
+                criteria.and(Restrictions.eq("a.createTime", createTime));
             }
 
             return mapper.findByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据销售微信号查询导师
+     */
+    public Advisor getBySalesWechat(String wechat){
+        try{
+            Assert.hasText(wechat, "销售微信不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("u.wechat", wechat));
+
+            return mapper.getByParams(criteria);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

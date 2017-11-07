@@ -22,6 +22,12 @@ public class XcxAccount implements Create, Update{
     //昵称
     @SerializedName(value = "nickname", alternate = {"nickName"})
     private String nickname;
+    //手机号码
+    private String phoneNumber;
+    //带区号
+    private String purePhoneNumber;
+    //区号
+    private String countryCode;
     //性别
     private Gender gender;
     //使用语言
@@ -141,6 +147,30 @@ public class XcxAccount implements Create, Update{
 
     public void setState(UsingState state){
         this.state = state;
+    }
+
+    public String getPhoneNumber(){
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber){
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPurePhoneNumber(){
+        return purePhoneNumber;
+    }
+
+    public void setPurePhoneNumber(String purePhoneNumber){
+        this.purePhoneNumber = purePhoneNumber;
+    }
+
+    public String getCountryCode(){
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode){
+        this.countryCode = countryCode;
     }
 
     @Override

@@ -10,4 +10,7 @@ public class RedisConsts{
 
     //用户等级缓存
     public static final String USER_LEVEL = "user:level:";
+
+    //AccessToken
+    public static final String WECHAT_ACCESS_TOKEN = "wechat:accessToken:";
 }

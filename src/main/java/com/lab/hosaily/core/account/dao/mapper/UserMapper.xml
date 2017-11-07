@@ -5,6 +5,8 @@
     <resultMap id="user" type="com.rab.babylon.core.account.entity.User">
         <id     column="id"           property="id"         javaType="java.lang.String"/>
         <result column="account_id"   property="accountId"  javaType="java.lang.String"/>
+        <result column="advisor_id"   property="advisorId"  javaType="java.lang.String"/>
+        <result column="wechat"       property="wechat"     javaType="java.lang.String"/>
         <result column="nickname"     property="nickname"   javaType="java.lang.String"/>
         <result column="name"         property="name"       javaType="java.lang.String"/>
         <result column="id_card"      property="idCard"     javaType="java.lang.String"/>
@@ -144,7 +146,9 @@
               state,
               is_delete,
               create_time,
-              has_role
+              has_role,
+              advisor_id,
+              wechat
           ) VALUE (
               #{id,         jdbcType=VARCHAR},
               #{accountId,  jdbcType=VARCHAR},
@@ -159,7 +163,9 @@
               #{state,      typeHandler=usingStateHandler},
               #{isDelete,   jdbcType=BOOLEAN},
               #{createTime, jdbcType=TIMESTAMP},
-              #{hasRole,    jdbcType=BOOLEAN}
+              #{hasRole,    jdbcType=BOOLEAN},
+              #{advisorId,  jdbcType=VARCHAR},
+              #{wechat,     jdbcType=VARCHAR}
           )
     </insert>
 
@@ -204,6 +210,12 @@
              </if>
              <if test="hasRole != null">
                  has_role = #{hasRole, jdbcType=BOOLEAN},
+             </if>
+             <if test="advisorId != null and advisorId != ''">
+                 advisor_id = #{advisorId, jdbcType=VARCHAR},
+             </if>
+             <if test="wechat != null and wechat != ''">
+                 wechat = #{wechat, jdbcType=VARCHAR},
              </if>
          </set>
           WHERE id = #{id}

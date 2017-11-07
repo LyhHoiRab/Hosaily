@@ -8,6 +8,8 @@
         <result column="name"         property="name"        javaType="java.lang.String"/>
         <result column="value"        property="value"       javaType="java.lang.String"/>
         <result column="description"  property="description" javaType="java.lang.String"/>
+        <result column="wechat"       property="wechat"      javaType="java.lang.String"/>
+        <result column="advisor_id"   property="advisorId"   javaType="java.lang.String"/>
         <result column="state"        property="state"       typeHandler="usingStateHandler"/>
         <result column="create_time"  property="createTime"  javaType="java.util.Date"/>
         <result column="update_time"  property="updateTime"  javaType="java.util.Date"/>
@@ -120,6 +122,8 @@
                value,
                description.
                state,
+               wechat,
+               advisor_id,
                create_time
           ) VALUE (
                #{id,          jdbcType=VARCHAR},
@@ -128,6 +132,8 @@
                #{value,       jdbcType=VARCHAR},
                #{description, jdbcType=VARCHAR},
                #{state,       typeHandler=usingStateHandler},
+               #{wechat,      jdbcType=VARCHAR},
+               #{advisorId,   jdbcType=VARCHAR},
                #{createTime,  jdbcType=TIMESTAMP}
           )
     </insert>
@@ -152,6 +158,12 @@
              </if>
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+             <if test="wechat != null and wechat != ''">
+                 wechat = #{wechat, jdbcType=VARCHAR},
+             </if>
+             <if test="advisorId != null and advisorId != ''">
+                 advisor_id = #{advisorId, jdbcType=VARCHAR},
              </if>
          </set>
           WHERE id = #{id}

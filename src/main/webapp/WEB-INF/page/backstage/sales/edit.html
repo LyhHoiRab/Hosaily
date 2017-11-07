@@ -1,0 +1,72 @@
+<ol class="breadcrumb">
+  <li>
+    <span>销售管理</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="sales">销售管理</a>
+  </li><!-- item -->
+  <li>
+    <span>
+      #if($id)
+        修改销售
+      #else
+        
+      #end
+    </span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+    <!--<div class="row-group">-->
+      <!--<div class="input-group">-->
+        <!--<span class="input-group-addon">生效时间</span>-->
+        <!--<input type="date" class="form-control" placeholder="生效时间" ng-model="accountCourse.forceTime">-->
+      <!--</div>-->
+    <!--</div>-->
+    <!-- item -->
+
+    <!-- <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">有效天数</span>
+        <input type="number" class="form-control" placeholder="有效天数" ng-model="accountCourse.effective">
+      </div>
+    </div> -->
+    <!-- item -->
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">销售名称</span>
+        <input type="text" class="form-control" placeholder="销售名称" ng-model="sales.name">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">微信号</span>
+        <input type="text" class="form-control" placeholder="微信号" ng-model="sales.wechat">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">关联导师</span>
+        <select class="form-control" ng-model="sales.advisorId" ng-options="advisor.id as advisor.name for advisor in advisors">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div><!-- container -->
+</div><!-- table info -->

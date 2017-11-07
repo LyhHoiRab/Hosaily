@@ -2,6 +2,7 @@ package com.lab.hosaily.core.course.service;
 
 import com.lab.hosaily.commons.utils.FileNameUtils;
 import com.lab.hosaily.commons.utils.MediaUtils;
+import com.lab.hosaily.commons.utils.UpyunUtils;
 import com.lab.hosaily.core.course.consts.SuffixType;
 import com.lab.hosaily.core.course.dao.MediaDao;
 import com.lab.hosaily.core.course.entity.Media;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.File;
 import java.util.List;
 
 @Service
@@ -144,9 +144,9 @@ public class MediaServiceImpl implements MediaService{
     @Transactional(readOnly = false)
     public Media upload(String path, String url, CommonsMultipartFile file){
         try{
-            Assert.hasText(path, "上传路径不能为空");
+//            Assert.hasText(path, "上传路径不能为空");
             Assert.notNull(file, "上传文件不能为空");
-            Assert.notNull(url, "资源外链不能为空");
+//            Assert.notNull(url, "资源外链不能为空");
 
             //文件原名称
             String originalName = file.getOriginalFilename();
@@ -161,45 +161,70 @@ public class MediaServiceImpl implements MediaService{
             //上传目录
             String dir = MediaUtils.getDir(suffixType.getType());
             //上传路径
-            String uploadPath = path + dir;
+            String uploadPath = UpyunUtils.COURSE_MEDIA_DIR + md5 + suffixType.getId();
 
-            //创建目录
-            File root = new File(uploadPath);
-            if(!root.exists() || !root.isDirectory()){
-                root.mkdir();
-            }
+            //上传到upyun
+            boolean result = UpyunUtils.upload(uploadPath, file);
 
-            //查询文件是否已上传
-            Media media = mediaDao.getByMd5(md5);
-            if(media != null){
-                //删除原文件
-                String name = media.getFileName() + media.getSuffix();
-                File source = new File(path + MediaUtils.getDir(media.getType()) + name);
-                if(source.exists()){
-                    source.delete();
+            if(result){
+                //查询文件是否已上传
+                Media media = mediaDao.getByMd5(md5);
+                if(media == null){
+                    media = new Media();
+                    media.setFileName(md5);
                 }
-            }else{
-                //创建记录
-                media = new Media();
-                media.setFileName(UUIDGenerator.by32());
+
+                //设置媒体信息
+                media.setSize(size);
+                media.setMd5(md5);
+                media.setSuffix(suffix);
+                media.setType(suffixType.getType());
+                media.setUrl(UpyunUtils.URL + uploadPath);
+                //保存信息
+                mediaDao.saveOrUpdate(media);
+
+                return media;
             }
 
-            //设置媒体信息
-            media.setSize(size);
-            media.setMd5(md5);
-            media.setSuffix(suffix);
-            media.setType(suffixType.getType());
-            media.setUrl(url + MediaUtils.DOWNLOAD_API + media.getMd5());
+            return null;
 
-            //上传文件
-            file.transferTo(new File(uploadPath + media.getFileName() + media.getSuffix()));
-            //保存信息
-            mediaDao.saveOrUpdate(media);
-
-            return media;
+            //上传路径
+//            String uploadPath = path + dir;
+//            //创建目录
+//            File root = new File(uploadPath);
+//            if(!root.exists() || !root.isDirectory()){
+//                root.mkdir();
+//            }
+//
+//            //查询文件是否已上传
+//            Media media = mediaDao.getByMd5(md5);
+//            if(media != null){
+//                //删除原文件
+//                String name = media.getFileName() + media.getSuffix();
+//                File source = new File(path + MediaUtils.getDir(media.getType()) + name);
+//                if(source.exists()){
+//                    source.delete();
+//                }
+//            }else{
+//                //创建记录
+//                media = new Media();
+//                media.setFileName(UUIDGenerator.by32());
+//            }
+//
+//            //设置媒体信息
+//            media.setSize(size);
+//            media.setMd5(md5);
+//            media.setSuffix(suffix);
+//            media.setType(suffixType.getType());
+//            media.setUrl(url + MediaUtils.DOWNLOAD_API + media.getMd5());
+//
+//            //上传文件
+//            file.transferTo(new File(uploadPath + media.getFileName() + media.getSuffix()));
+//            //保存信息
+//            mediaDao.saveOrUpdate(media);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
-}
+    }
 }

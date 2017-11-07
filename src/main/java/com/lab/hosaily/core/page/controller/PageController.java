@@ -254,4 +254,17 @@ public class PageController{
             throw new ApplicationException(e.getMessage(), e);
         }
     }
+
+    /**
+     * 验证老师
+     */
+    @RequestMapping(value = "/advisor/verify", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView verifyAdvisor(ModelMap content){
+        try{
+            return new ModelAndView("verifyAdvisor", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 }

@@ -519,7 +519,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
             }]
         }
     }).state('paymentTypeAdd', {
-        url: '/paymentTypeAdd/add',
+        url: '/paymentType/add',
         templateUrl: '/page/backstage/paymentType/add',
         controller: 'paymentTypeAddController',
         resolve: {
@@ -577,6 +577,38 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                     basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/order/add.js'
+                ]);
+            }]
+        }
+    }).state('sales', {
+        url: '/sales',
+        templateUrl: '/page/backstage/sales',
+        controller: 'salesController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/sales/index.js'
+                ]);
+            }]
+        }
+    }).state('salesEdit', {
+        url: '/sales/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/sales/edit/' + $stateParams.id;
+        },
+        controller: 'salesEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/sales/edit.js'
                 ]);
             }]
         }

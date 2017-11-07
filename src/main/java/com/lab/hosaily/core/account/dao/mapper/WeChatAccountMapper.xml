@@ -166,7 +166,7 @@
                  open_id = #{openId, jdbcType=VARCHAR},
              </if>
              <if test="appId != null and appId != ''">
-                 app_id #{appId, jdbcType=VARCHAR},
+                 app_id = #{appId, jdbcType=VARCHAR},
              </if>
              <if test="unionId != null and unionId !=''">
                  union_id = #{unionId, jdbcType=VARCHAR},

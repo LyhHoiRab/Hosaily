@@ -24,15 +24,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+import redis.clients.jedis.ShardedJedisPool;
 
 @Service
 @Transactional(readOnly = true)
 public class AccountServiceImpl implements AccountService{
 
     private static Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
+
+    @Autowired
+    private ShardedJedisPool shardedJedisPool;
 
     @Autowired
     private AccountDao accountDao;
@@ -65,6 +66,11 @@ public class AccountServiceImpl implements AccountService{
 
             //查询小程序应用
             Application application = applicationDao.getByToken(token);
+
+            if(application == null){
+                throw new IllegalArgumentException("无效的应用Token");
+            }
+
             //appId
             String appId = application.getAppId();
             //secret
@@ -105,7 +111,8 @@ public class AccountServiceImpl implements AccountService{
                         account = new Account();
                         account.setWeChat(weChat);
                         accountDao.saveOrUpdate(account);
-                    }else if(!account.getWeChat().equals(weChat)){
+                    }
+                    if(!account.getWeChat().equals(weChat)){
                         account.setWeChat(weChat);
                         accountDao.saveOrUpdate(account);
                     }
@@ -120,8 +127,8 @@ public class AccountServiceImpl implements AccountService{
                     }
 
                     //缓存用户信息
+                    user.setSessionKey(sessionKey);
                     userDao.cache(user);
-
                     return user;
                 }
 
@@ -147,6 +154,11 @@ public class AccountServiceImpl implements AccountService{
 
             //查询网站应用
             Application application = applicationDao.getByToken(token);
+
+            if(application == null){
+                throw new IllegalArgumentException("无效的应用Token");
+            }
+
             //appId
             String appId = application.getAppId();
             //secret
@@ -179,7 +191,9 @@ public class AccountServiceImpl implements AccountService{
                 account = new Account();
                 account.setWeChat(weChat);
                 accountDao.saveOrUpdate(account);
-            }else if(!account.getWeChat().equals(weChat)){
+            }
+            //更新unionId
+            if(!account.getWeChat().equals(weChat)){
                 account.setWeChat(weChat);
                 accountDao.saveOrUpdate(account);
             }
@@ -197,6 +211,70 @@ public class AccountServiceImpl implements AccountService{
             userDao.cache(user);
 
             return user;
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 小程序获取用户电话
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public String phoneByXcx(String token, String accountId, String sessionKey, String encryptedData, String iv){
+        try{
+            Assert.hasText(accountId, "账户ID不能为空");
+            Assert.hasText(encryptedData, "用户加密信息不能为空");
+            Assert.hasText(iv, "加密偏移量不能为空");
+
+            //查询小程序应用
+            Application application = applicationDao.getByToken(token);
+            //appId
+            String appId = application.getAppId();
+//            //secret
+//            String secret = application.getSecret();
+
+//            //查询sessionKey
+//            SessionKeyResponse response = XcxUtils.getOpenIdAndSessionKey(appId, secret, code);
+//            //sessionKey
+//            String sessionKey = response.getSessionKey();
+//            //openId
+//            String openId = response.getOpenId();
+//            //unionId
+//            String unionId = response.getUnionId();
+
+            //解密用户信息
+            XcxAccount decrypt = XcxUtils.decrypt(encryptedData, sessionKey, iv);
+
+            //校验水印
+            if(decrypt.getWatermark().get("appid").equals(appId)){
+                Account account = accountDao.getById(accountId);
+                if(account != null){
+                    account.setPhone(decrypt.getPurePhoneNumber());
+                    accountDao.saveOrUpdate(account);
+
+                    //更新小程序用户信息
+                    XcxAccount xcxAccount = xcxAccountDao.getByOpenIdOrUnionId(account.getWeChat(), account.getWeChat());
+                    if(xcxAccount != null){
+                        xcxAccount.setPhoneNumber(decrypt.getPhoneNumber());
+                        xcxAccount.setPurePhoneNumber(decrypt.getPurePhoneNumber());
+                        xcxAccount.setCountryCode(decrypt.getCountryCode());
+                        xcxAccountDao.saveOrUpdate(xcxAccount);
+                    }
+
+                    //更新用户信息
+                    User user = userDao.getByAccountId(account.getId());
+                    if(user != null){
+                        user.setPhone(decrypt.getPurePhoneNumber());
+                        userDao.saveOrUpdate(user);
+                    }
+
+                    return decrypt.getPhoneNumber();
+                }
+            }
+
+            throw new ServiceException("用户信息水印认证失败");
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

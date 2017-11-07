@@ -109,9 +109,11 @@
             <value>/page/h5/section/{id}</value>
             <value>/page/h5/customization</value>
             <value>/page/h5/customization/{id}</value>
+            <value>/page/h5/advisor/verify</value>
             <value>/page/backstage/**</value>
             <value>/api/1.0/account/register/xcx</value>
             <value>/api/1.0/account/register/web</value>
+            <value>/api/1.0/wechat/{token}</value>
             <value>/**</value>
           </list>
         </property>

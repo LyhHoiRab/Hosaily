@@ -112,6 +112,7 @@ public class PostDao{
             criteria.and(Restrictions.eq("c.kind", CourseKind.POST.getId()));
             criteria.groupBy(Restrictions.groupBy("c.id"));
             criteria.sort(Restrictions.asc("c.sort"));
+            criteria.sort(Restrictions.desc("c.createTime"));
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             if(!StringUtils.isBlank(advisor)){
@@ -138,6 +139,7 @@ public class PostDao{
                 criteria.clear();
                 criteria.and(Restrictions.in("c.id", ids));
                 criteria.sort(Restrictions.asc("c.sort"));
+                criteria.sort(Restrictions.desc("c.createTime"));
 
                 list.addAll(mapper.findByParams(criteria));
             }

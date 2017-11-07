@@ -126,10 +126,11 @@ public class MediaRestController{
     @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Media> upload(HttpServletRequest request, @RequestParam("file") CommonsMultipartFile file){
         try{
-            String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-            String path = request.getServletContext().getRealPath("/");
+//            String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+//            String path = request.getServletContext().getRealPath("/");
 
-            Media media = mediaService.upload(path, url, file);
+//            Media media = mediaService.upload(path, url, file);
+            Media media = mediaService.upload(null, null, file);
 
             return new Response<Media>("上传成功", media);
         }catch(Exception e){

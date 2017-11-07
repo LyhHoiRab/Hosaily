@@ -11,6 +11,7 @@ import com.rab.babylon.core.account.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,19 +32,19 @@ public class AccountRestController{
     /**
      * 小程序应用注册
      */
-    @RequestMapping(value = "/register/xcx", method = RequestMethod.GET)
-    public Response<User> registerByXcx(HttpServletRequest request, String token, String code, String signature, String rawData, String encryptedData, String iv){
+    @RequestMapping(value = "/register/xcx", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<User> registerByXcx(String token, String code, String signature, String rawData, String encryptedData, String iv){
         try{
             User user = accountService.registerByXcx(token, code, signature, rawData, encryptedData, iv);
 
-            HttpSession session = request.getSession();
+//            HttpSession session = request.getSession();
             //用户信息
-            session.setAttribute(SessionConsts.ACCOUNT_ID, user.getAccountId());
-            session.setAttribute(SessionConsts.USER_NICKNAME, user.getNickname());
-            session.setAttribute(SessionConsts.USER_NAME, user.getName());
-            session.setAttribute(SessionConsts.USER_HEAD_IMG_URL, user.getHeadImgUrl());
+//            session.setAttribute(SessionConsts.ACCOUNT_ID, user.getAccountId());
+//            session.setAttribute(SessionConsts.USER_NICKNAME, user.getNickname());
+//            session.setAttribute(SessionConsts.USER_NAME, user.getName());
+//            session.setAttribute(SessionConsts.USER_HEAD_IMG_URL, user.getHeadImgUrl());
             //有效时长
-            session.setMaxInactiveInterval(SessionConsts.EFFECTIVE_SECOND);
+//            session.setMaxInactiveInterval(SessionConsts.EFFECTIVE_SECOND);
 
             return new Response<User>("登录成功", user);
         }catch(Exception e){
@@ -55,7 +56,7 @@ public class AccountRestController{
     /**
      * 网站应用注册
      */
-    @RequestMapping(value = "/register/web", method = RequestMethod.GET)
+    @RequestMapping(value = "/register/web", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public void registerByWeb(HttpServletRequest request, HttpServletResponse response, String code, String state){
         try{
             String decrypt = AESUtils.decryptBy128(state, AuthorizationConsts.KEY);
@@ -75,6 +76,21 @@ public class AccountRestController{
             session.setMaxInactiveInterval(SessionConsts.EFFECTIVE_SECOND);
 
             response.sendRedirect(redirectUrl);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 小程序获取用户手机号码
+     */
+    @RequestMapping(value = "/phone/xcx", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<String> phoneByXcx(String token, String accountId, String sessionKey, String encryptedData, String vi){
+        try{
+            String phone = accountService.phoneByXcx(token, accountId, sessionKey, encryptedData, vi);
+
+            return new Response("手机号码获取成功", phone);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

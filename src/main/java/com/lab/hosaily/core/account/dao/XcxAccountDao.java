@@ -81,4 +81,23 @@ public class XcxAccountDao{
             throw new DataAccessException(e.getMessage(), e);
         }
     }
+
+    /**
+     * 根据openId或unionId查询记录
+     */
+    public XcxAccount getByOpenIdOrUnionId(String openId, String unionId){
+        try{
+            Assert.hasText(openId, "openId不能为空");
+            Assert.hasText(unionId, "unionId不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.or(Restrictions.eq("openId", openId));
+            criteria.or(Restrictions.eq("unionId", unionId));
+
+            return mapper.getByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
 }

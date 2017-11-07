@@ -182,6 +182,7 @@ public class CourseDao{
             criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
             criteria.groupBy(Restrictions.groupBy("c.id"));
             criteria.sort(Restrictions.asc("c.sort"));
+            criteria.sort(Restrictions.desc("c.createTime"));
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             if(!StringUtils.isBlank(tagName)){
@@ -214,6 +215,7 @@ public class CourseDao{
                 criteria.clear();
                 criteria.and(Restrictions.in("c.id", ids));
                 criteria.sort(Restrictions.asc("c.sort"));
+                criteria.sort(Restrictions.desc("c.createTime"));
 
                 list.addAll(mapper.findCourseByParams(criteria));
             }
