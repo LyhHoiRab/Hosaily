@@ -211,9 +211,8 @@ public class TestLibraryServiceImpl implements TestLibraryService{
 
             Random random = new Random();
             int lastIndex = -1;
-            boolean skip = false;
 
-            while(!(skip && target.size() == 3)){
+            while(!(target.size() == 3)){
                 int index = random.nextInt(list.size());
 
                 if(lastIndex == index){
