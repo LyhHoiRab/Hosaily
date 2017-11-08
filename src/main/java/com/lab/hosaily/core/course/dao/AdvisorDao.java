@@ -158,6 +158,7 @@ public class AdvisorDao{
 
             Criteria criteria = new Criteria();
             criteria.and(Restrictions.eq("u.wechat", wechat));
+            criteria.and(Restrictions.eq("a.state", UsingState.NORMAL));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){

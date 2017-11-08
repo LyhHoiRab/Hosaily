@@ -17,6 +17,8 @@ public class UpyunUtils{
 
     //课程封面目录
     public final static String COURSE_COVER_DIR = "/course/cover/";
+    //题库图片目录
+    public final static String TEST_LIBRARY_DIR = "/testLibrary/cover/";
     //用户头像目录
     public final static String USER_HEAD_DIR = "/user/head/";
     //导师头像目录

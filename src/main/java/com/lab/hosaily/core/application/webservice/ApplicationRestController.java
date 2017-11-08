@@ -1,6 +1,7 @@
 package com.lab.hosaily.core.application.webservice;
 
 import com.lab.hosaily.commons.utils.URLUtils;
+import com.lab.hosaily.core.account.service.AccountService;
 import com.lab.hosaily.core.application.entity.Application;
 import com.lab.hosaily.core.application.service.ApplicationService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
@@ -24,6 +26,9 @@ public class ApplicationRestController{
 
     @Autowired
     private ApplicationService applicationService;
+
+    @Autowired
+    private AccountService accountService;
 
     /**
      * 添加应用
@@ -94,6 +99,29 @@ public class ApplicationRestController{
         try{
             Application application = applicationService.getById(id);
             return new Response<Application>("查询成功", application);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 公众号授权跳转
+     */
+    @RequestMapping(value = "/wechat/redirect", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void authRedirect(HttpServletRequest request, HttpServletResponse response, String code, String state){
+        try{
+            String[] info = state.split("_");
+            //跳转路径
+            String redirectUrl = info[0];
+            //公众号Token
+            String token = info[1];
+            //参数
+            String params = info[2];
+
+            String accountId = accountService.getAccountIdByAuth(code, token);
+
+            response.sendRedirect(redirectUrl + "?accountId=" + accountId + "&params=" + params);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

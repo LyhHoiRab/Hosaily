@@ -1,0 +1,133 @@
+<ol class="breadcrumb">
+  <li>
+    <span>推广设置</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="testLibrary">题库管理</a>
+  </li><!-- item -->
+  <li>
+    <span>
+      #if($id)
+        修改题库
+      #else
+        添加题库
+      #end
+    </span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+    <div class="row-group">
+      <div class="img-group">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{{testLibrary.imgUrl}}" ng-model="testLibrary.imgUrl">
+          </div><!-- item -->
+
+          <div class="col-md-6">
+            <input type="file" nv-file-select uploader="uploader">
+            <div class="button-group">
+              <button type="button" class="btn" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                <i class="fa fa-upload"></i>
+                上传
+              </button>
+              <button type="button" class="btn" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                <i class="fa fa-trash-o"></i>
+                移除
+              </button>
+            </div><!-- button group -->
+          </div><!-- item -->
+        </div>
+      </div><!-- img group -->
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">标题</span>
+        <input type="text" class="form-control" placeholder="标题" ng-model="testLibrary.title">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">类型</span>
+        <input type="text" class="form-control" placeholder="类型" ng-model="testLibrary.kind">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">题目</span>
+        <input type="text" class="form-control" placeholder="题目" ng-model="testLibrary.topic">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">状态</span>
+        <select class="form-control" ng-model="testLibrary.state" ng-options="key as value for (key, value) in states">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group" ng-show="testLibrary.answers.length > 0">
+      <div class="item-group">
+        <div class="row" ng-repeat="item in testLibrary.answers">
+          <div class="col-md-12">
+            <div class="input-group">
+              <span class="input-group-addon">内容</span>
+              <input type="text" class="form-control" placeholder="内容" ng-model="item.content" value="{{item.content}}">
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="input-group">
+              <span class="input-group-addon">分析</span>
+              <input type="text" class="form-control" placeholder="分析" ng-model="item.analysis">
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="input-group">
+              <span class="input-group-addon">排序</span>
+              <input type="number" class="form-control" placeholder="排序" ng-model="item.sort">
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="input-group">
+              <span class="input-group-addon">是否正确选项</span>
+              <select class="form-control" ng-model="item.isTrue">
+                <option value="true">是</option>
+                <option value="false">否</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <a href="javascript:;" ng-click="delete($index)">[删除]</a>
+          </div>
+        </div><!-- row -->
+      </div><!-- item group -->
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="answer()">
+          <i class="fa fa-plus"></i>
+          添加答案
+        </button>
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lab.hosaily.core.popularize.dao.mapper.TestLogsMapper">
+    <resultMap id="logs" type="com.lab.hosaily.core.popularize.entity.TestLogs">
+        <result column="account_id"  property="accountId"  javaType="java.lang.String"/>
+        <result column="test_id"     property="testId"     javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+    </resultMap>
+
+    <insert id="save">
+        INSERT
+          INTO test_logs (
+               account_id,
+               test_id,
+               create_time
+        ) VALUE (
+               #{accountId,  jdbcType=VARCHAR},
+               #{testId,     jdbcType=VARCHAR},
+               #{createTime, jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="getByParams" resultMap="logs">
+        SELECT *
+          FROM test_logs
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+    <select id="findByParams" resultMap="logs">
+        SELECT *
+          FROM test_logs
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+</mapper>

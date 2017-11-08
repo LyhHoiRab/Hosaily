@@ -50,10 +50,7 @@ public class WechatRestController{
                 Map<String, Object> parse = XMLUtils.parse(xml);
                 //是否加密
                 if(XMLUtils.isEncrypt(xml)){
-                    //提取加密节点和收件人
-                    Map<String, Object> extract = XMLUtils.extract(xml);
-//                    String key = wechatAccountService.getEncodingAESKeyByOriginalId((String) extract.get(WechatXMLConsts.NODE_TO_USER_NAME));
-//                    parse = XMLUtils.decrypt((String) extract.get(WechatXMLConsts.NODE_ENCRYPT), key);
+                    return wechatService.reply(token, parse);
                 }
             }
 

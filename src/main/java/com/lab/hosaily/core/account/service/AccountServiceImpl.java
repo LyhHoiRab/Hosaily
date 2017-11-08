@@ -13,6 +13,7 @@ import com.lab.hosaily.core.account.entity.WeChatAccount;
 import com.lab.hosaily.core.account.entity.XcxAccount;
 import com.lab.hosaily.core.application.dao.ApplicationDao;
 import com.lab.hosaily.core.application.entity.Application;
+import com.lab.hosaily.core.application.utils.WechatUtils;
 import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.commons.utils.SHAUtils;
 import com.rab.babylon.core.account.entity.Account;
@@ -275,6 +276,37 @@ public class AccountServiceImpl implements AccountService{
             }
 
             throw new ServiceException("用户信息水印认证失败");
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 授权查询账户ID
+     */
+    @Override
+    public String getAccountIdByAuth(String code, String token){
+        try{
+            Assert.hasText(code, "授权Code不能为空");
+            Assert.hasText(token, "公众号Token不能为空");
+
+            //查询公众号应用
+            Application application = applicationDao.getByToken(token);
+
+            if(application == null){
+                throw new IllegalArgumentException("无效的应用Token");
+            }
+
+            AccessTokenResponse accessToken = WechatUtils.getAccessTokenByCode(code, application.getAppId(), application.getSecret());
+
+            if(accessToken != null && !StringUtils.isBlank(accessToken.getOpenId()) && !StringUtils.isBlank(accessToken.getUnionId())){
+                Account account = accountDao.getByOpenIdOrUnionId(accessToken.getOpenId(), accessToken.getUnionId());
+
+                return account == null ? null : account.getId();
+            }
+
+            return null;
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

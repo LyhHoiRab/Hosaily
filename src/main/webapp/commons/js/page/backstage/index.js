@@ -612,5 +612,54 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 ]);
             }]
         }
+    }).state('testLibrary', {
+        url: '/testLibrary',
+        templateUrl: '/page/backstage/testLibrary',
+        controller: 'testLibraryController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/testLibrary/index.js'
+                ]);
+            }]
+        }
+    }).state('testLibraryAdd', {
+        url: '/testLibrary/add',
+        templateUrl: '/page/backstage/testLibrary/add',
+        controller: 'testLibraryAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/testLibrary/add.js'
+                ]);
+            }]
+        }
+    }).state('testLibraryEdit', {
+        url: '/testLibrary/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/testLibrary/edit/' + $stateParams.id;
+        },
+        controller: 'testLibraryEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/testLibrary/edit.js'
+                ]);
+            }]
+        }
     });
 }]);

@@ -1,6 +1,5 @@
 package com.lab.hosaily.core.account.entity;
 
-
 import com.google.gson.annotations.SerializedName;
 import com.lab.hosaily.core.account.consts.WeChatSex;
 import com.rab.babylon.core.base.entity.Create;

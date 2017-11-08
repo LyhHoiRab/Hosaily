@@ -18,4 +18,9 @@ public interface AccountService{
      * 小程序获取用户电话
      */
     String phoneByXcx(String token, String accountId, String sessionKey, String encryptedData, String iv);
+
+    /**
+     * 授权查询账户ID
+     */
+    String getAccountIdByAuth(String code, String token);
 }
