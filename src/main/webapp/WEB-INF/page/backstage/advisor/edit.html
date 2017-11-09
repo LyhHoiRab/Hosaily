@@ -80,11 +80,14 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">性别</span>
-        <select class="form-control" ng-model="advisor.sex" value="{{advisor.sex}}">
+        <!--<select class="form-control" ng-model="advisor.sex">-->
+          <!--<option value="">请选择</option>-->
+          <!--#foreach($sex in $sexs)-->
+            <!--<option value="${sex.id}">${sex.description}</option>-->
+          <!--#end-->
+        <!--</select>-->
+        <select class="form-control" ng-model="advisor.sex" ng-options="key as value for (key, value) in sexs">
           <option value="">请选择</option>
-          #foreach($sex in $sexs)
-            <option value="${sex.id}">${sex.description}</option>
-          #end
         </select>
       </div>
     </div><!-- item -->
@@ -92,11 +95,14 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">状态</span>
-        <select class="form-control" ng-model="advisor.state" value="{{advisor.state}}">
+        <!--<select class="form-control" ng-model="advisor.state">-->
+          <!--<option value="">请选择</option>-->
+          <!--#foreach($state in $states)-->
+            <!--<option value="${state.id}">${state.description}</option>-->
+          <!--#end-->
+        <!--</select>-->
+        <select class="form-control" ng-model="advisor.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>
-          #foreach($state in $states)
-            <option value="${state.id}">${state.description}</option>
-          #end
         </select>
       </div>
     </div><!-- item -->

@@ -31,6 +31,12 @@ public class WeChatAccount implements Create, Update{
     private UsingState state;
     private Date createTime;
     private Date updateTime;
+    //纬度
+    private Double latitude;
+    //经度
+    private Double longitude;
+    //精度
+    private Double precision;
 
     public WeChatAccount(){
 
@@ -174,5 +180,29 @@ public class WeChatAccount implements Create, Update{
     @Override
     public void setUpdateTime(Date updateTime){
         this.updateTime = updateTime;
+    }
+
+    public Double getLatitude(){
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude){
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude(){
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude){
+        this.longitude = longitude;
+    }
+
+    public Double getPrecision(){
+        return precision;
+    }
+
+    public void setPrecision(Double precision){
+        this.precision = precision;
     }
 }

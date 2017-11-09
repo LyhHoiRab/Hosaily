@@ -25,4 +25,9 @@ public interface WechatService{
      * 微信关注事件处理
      */
     String subscribe(Map<String, Object> xml, Application application);
+
+    /**
+     * 微信地理位置事件处理
+     */
+    String location(Map<String, Object> xml, Application application);
 }

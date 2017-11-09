@@ -48,4 +48,12 @@ public class WechatXMLConsts{
     public final static String EVENT_TYPE_CLICK = "CLICK";
     //菜单跳转链接事件
     public final static String EVENT_TYPE_VIEW = "VIEW";
+
+    //地理位置上报
+    //纬度
+    public final static String LOCATION_LATITUDE = "Latitude";
+    //经度
+    public final static String LOCATION_LONGITUDE = "Longitude";
+    //精度
+    public final static String LOCATION_PRECISION = "precision";
 }

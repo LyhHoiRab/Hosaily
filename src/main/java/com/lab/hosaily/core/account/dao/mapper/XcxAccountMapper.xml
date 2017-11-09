@@ -45,7 +45,7 @@
                                 </foreach>
                             </when>
                             <when test="criterion.criterionValue">
-                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="OR">
                                     <trim prefix="(" suffix=")">
                                         <choose>
                                             <when test="item.noValue">
@@ -92,7 +92,7 @@
                                 </foreach>
                             </when>
                             <when test="criterion.criterionValue">
-                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="OR">
                                     <trim prefix="(" suffix=")">
                                         <choose>
                                             <when test="item.noValue">

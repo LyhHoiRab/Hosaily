@@ -1,4 +1,7 @@
 app.controller('advisorAddController', function($scope, $state, FileUploader, $http){
+    $scope.sexs = [];
+    $scope.states = [];
+
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/advisor/upload',
         queueLimit: 1,
@@ -66,4 +69,34 @@ app.controller('advisorAddController', function($scope, $state, FileUploader, $h
 
         });
     };
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
+        });
+    };
+
+    $scope.getSex = function(){
+        $http({
+            url: '/api/1.0/sex/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.sexs = res.result;
+            }
+        }).error(function(response){
+            $scope.sexs = [];
+        });
+    };
+
+    //初始化
+    $scope.getState();
+    $scope.getSex();
 });

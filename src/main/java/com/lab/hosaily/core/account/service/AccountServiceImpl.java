@@ -225,6 +225,7 @@ public class AccountServiceImpl implements AccountService{
     @Transactional(readOnly = false)
     public String phoneByXcx(String token, String accountId, String sessionKey, String encryptedData, String iv){
         try{
+            Assert.hasText(token, "小程序Token不能为空");
             Assert.hasText(accountId, "账户ID不能为空");
             Assert.hasText(encryptedData, "用户加密信息不能为空");
             Assert.hasText(iv, "加密偏移量不能为空");
@@ -256,7 +257,7 @@ public class AccountServiceImpl implements AccountService{
                     accountDao.saveOrUpdate(account);
 
                     //更新小程序用户信息
-                    XcxAccount xcxAccount = xcxAccountDao.getByOpenIdOrUnionId(account.getWeChat(), account.getWeChat());
+                    XcxAccount xcxAccount = xcxAccountDao.getByOpenIdOrUnionId(appId, account.getWeChat(), account.getWeChat());
                     if(xcxAccount != null){
                         xcxAccount.setPhoneNumber(decrypt.getPhoneNumber());
                         xcxAccount.setPurePhoneNumber(decrypt.getPurePhoneNumber());
@@ -276,6 +277,40 @@ public class AccountServiceImpl implements AccountService{
             }
 
             throw new ServiceException("用户信息水印认证失败");
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 小程序获取用户地理位置
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void locationByXcx(String token, String accountId, Double latitude, Double longitude){
+        try{
+            Assert.hasText(accountId, "账户ID不能为空");
+            Assert.hasText(token, "小程序Token不能为空");
+
+            //查询小程序应用
+            Application application = applicationDao.getByToken(token);
+            //appId
+            String appId = application.getAppId();
+
+            Account account = accountDao.getById(accountId);
+            XcxAccount xcxAccount = xcxAccountDao.getByOpenIdOrUnionId(appId, account.getWeChat(), account.getWeChat());
+
+            if(xcxAccount != null){
+                if(latitude != null){
+                    xcxAccount.setLatitude(latitude);
+                }
+                if(longitude != null){
+                    xcxAccount.setLongitude(longitude);
+                }
+
+                xcxAccountDao.saveOrUpdate(xcxAccount);
+            }
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

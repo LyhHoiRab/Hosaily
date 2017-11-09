@@ -85,14 +85,15 @@ public class XcxAccountDao{
     /**
      * 根据openId或unionId查询记录
      */
-    public XcxAccount getByOpenIdOrUnionId(String openId, String unionId){
+    public XcxAccount getByOpenIdOrUnionId(String appId, String openId, String unionId){
         try{
+            Assert.hasText(appId, "小程序AppId不能为空");
             Assert.hasText(openId, "openId不能为空");
             Assert.hasText(unionId, "unionId不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.or(Restrictions.eq("openId", openId));
-            criteria.or(Restrictions.eq("unionId", unionId));
+            criteria.and(Restrictions.eq("appId", appId));
+            criteria.and(Restrictions.or(Restrictions.eq("unionId", unionId), Restrictions.eq("openId", openId)));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){

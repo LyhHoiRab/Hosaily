@@ -126,6 +126,9 @@ public class WechatServiceImpl implements WechatService{
             }else if(WechatXMLConsts.MSG_TYPE_VOICE.equalsIgnoreCase(msgType)){
                 //语音消息
                 return "SUCCESS";
+            }else if(WechatXMLConsts.MSG_TYPE_LOCATION.equalsIgnoreCase(msgType)){
+                //地理位置消息
+                return "SUCCESS";
             }
 
             return "SUCCESS";
@@ -151,8 +154,8 @@ public class WechatServiceImpl implements WechatService{
                 //关注事件
                 return subscribe(xml, application);
             }else if(WechatXMLConsts.EVENT_TYP_LOCATION.equalsIgnoreCase(eventType)){
-                //上报地理位置时间
-                return "SUCCESS";
+                //上报地理位置事件
+                return location(xml, application);
             }else if(WechatXMLConsts.EVENT_TYPE_CLICK.equalsIgnoreCase(eventType)){
                 //菜单点击事件
                 return "SUCCESS";
@@ -227,6 +230,49 @@ public class WechatServiceImpl implements WechatService{
                 user = WeChatUtils.changeToUser(weChatAccount);
                 user.setAccountId(account.getId());
                 userDao.saveOrUpdate(user);
+            }
+
+            return "SUCCESS";
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 微信地理位置事件处理
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public String location(Map<String, Object> xml, Application application){
+        try{
+            Assert.notEmpty(xml, "xml报文不能为空");
+            Assert.notNull(application, "公众号应用不能为空");
+
+            //用户openId
+            String openId = (String) xml.get(WechatXMLConsts.NODE_FROM_USER_NAME);
+            //用户信息
+            WeChatAccount account = weChatAccountDao.getByOpenId(openId);
+
+            if(account != null){
+                //纬度
+                String latitude = (String) xml.get(WechatXMLConsts.LOCATION_LATITUDE);
+                //经度
+                String longitude = (String) xml.get(WechatXMLConsts.LOCATION_LONGITUDE);
+                //精度
+                String precision = (String) xml.get(WechatXMLConsts.LOCATION_PRECISION);
+
+                if(!StringUtils.isBlank(latitude)){
+                    account.setLatitude(Double.parseDouble(latitude));
+                }
+                if(!StringUtils.isBlank(longitude)){
+                    account.setLongitude(Double.parseDouble(longitude));
+                }
+                if(!StringUtils.isBlank(precision)){
+                    account.setPrecision(Double.parseDouble(precision));
+                }
+
+                weChatAccountDao.saveOrUpdate(account);
             }
 
             return "SUCCESS";

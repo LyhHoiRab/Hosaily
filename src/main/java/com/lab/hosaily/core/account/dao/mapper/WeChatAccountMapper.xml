@@ -20,6 +20,9 @@
         <result column="state"          property="state"         typeHandler="usingStateHandler"/>
         <result column="create_time"    property="createTime"    javaType="java.util.Date"/>
         <result column="update_time"    property="updateTime"    javaType="java.util.Date"/>
+        <result column="latitude"       property="latitude"      javaType="java.lang.Double"/>
+        <result column="longitude"      property="longitude"     javaType="java.lang.Double"/>
+        <result column="precision"      property="precision"     javaType="java.lang.Double"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -138,7 +141,10 @@
                subscribe_time,
                remark,
                state,
-               create_time
+               create_time,
+               latitude,
+               longitude,
+               `precision`
           ) VALUE (
                 #{id,            jdbcType=VARCHAR},
                 #{appId,         jdbcType=VARCHAR},
@@ -155,7 +161,10 @@
                 #{subscribeTime, jdbcType=TIMESTAMP},
                 #{remark,        jdbcType=VARCHAR},
                 #{state,         typeHandler=usingStateHandler},
-                #{createTime,    jdbcType=TIMESTAMP}
+                #{createTime,    jdbcType=TIMESTAMP},
+                #{latitude,      jdbcType=DOUBLE},
+                #{longitude,     jdbcType=DOUBLE},
+                #{precision,     jdbcType=DOUBLE}
           )
     </insert>
 
@@ -206,6 +215,15 @@
              </if>
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+             <if test="latitude != null">
+                 latitude = #{latitude, jdbcType=DOUBLE},
+             </if>
+             <if test="longitude != null">
+                 longitude = #{longitude, jdbcType=DOUBLE},
+             </if>
+             <if test="precision != null">
+                 `precision` = #{precision, jdbcType=DOUBLE},
              </if>
          </set>
           WHERE id = #{id}

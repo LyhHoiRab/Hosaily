@@ -48,6 +48,10 @@ public class XcxAccount implements Create, Update{
     private Date updateTime;
     //水印
     private Map<String, Object> watermark;
+    //纬度
+    private Double latitude;
+    //经度
+    private Double longitude;
 
     public XcxAccount(){
 
@@ -171,6 +175,22 @@ public class XcxAccount implements Create, Update{
 
     public void setCountryCode(String countryCode){
         this.countryCode = countryCode;
+    }
+
+    public Double getLatitude(){
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude){
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude(){
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude){
+        this.longitude = longitude;
     }
 
     @Override

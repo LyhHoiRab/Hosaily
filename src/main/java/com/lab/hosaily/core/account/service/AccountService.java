@@ -20,6 +20,11 @@ public interface AccountService{
     String phoneByXcx(String token, String accountId, String sessionKey, String encryptedData, String iv);
 
     /**
+     * 小程序获取用户地理位置
+     */
+    void locationByXcx(String token, String accountId, Double latitude, Double longitude);
+
+    /**
      * 授权查询账户ID
      */
     String getAccountIdByAuth(String code, String token);
