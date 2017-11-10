@@ -21,6 +21,8 @@
         <result column="state"             property="state"             typeHandler="usingStateHandler"/>
         <result column="create_time"       property="createTime"        javaType="java.util.Date"/>
         <result column="update_time"       property="updateTime"        javaType="java.util.Date"/>
+        <result column="latitude"          property="latitude"          javaType="java.lang.Double"/>
+        <result column="longitude"         property="longitude"         javaType="java.lang.Double"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -139,7 +141,9 @@
                phone_number,
                pure_phone_number,
                country_code,
-               create_time
+               create_time,
+               latitude,
+               longitude
           ) VALUE (
                 #{id,              jdbcType=VARCHAR},
                 #{appId,           jdbcType=VARCHAR},
@@ -156,7 +160,9 @@
                 #{phoneNumber,     jdbcType=VARCHAR},
                 #{purePhoneNumber, jdbcType=VARCHAR},
                 #{countryCode,     jdbcType=VARCHAR},
-                #{createTime,      jdbcType=TIMESTAMP}
+                #{createTime,      jdbcType=TIMESTAMP},
+                #{latitude,        jdbcType=DOUBLE},
+                #{longitude,       jdbcType=DOUBLE}
           )
     </insert>
 
@@ -207,6 +213,12 @@
              </if>
              <if test="countryCode != null and countryCode != ''">
                  country_code = #{countryCode, jdbcType=VARCHAR},
+             </if>
+             <if test="latitude != null">
+                 latitude = #{latitude, jdbcType=DOUBLE},
+             </if>
+             <if test="longitude != null">
+                 longitude = #{longitude, jdbcType=DOUBLE},
              </if>
          </set>
           WHERE id = #{id}

@@ -89,7 +89,7 @@ public class TestLibraryDao{
     /**
      * 查询列表
      */
-    public List<TestLibrary> list(UsingState state, Date createTime, String kind, String title, List<String> ids){
+    public List<TestLibrary> list(UsingState state, Date createTime, String kind, String title){
         try{
             Criteria criteria = new Criteria();
             criteria.sort(Restrictions.asc("a.sort"));
@@ -105,9 +105,6 @@ public class TestLibraryDao{
             }
             if(!StringUtils.isBlank(title)){
                 criteria.and(Restrictions.like("l.title", title));
-            }
-            if(ids != null && !ids.isEmpty()){
-                criteria.and(Restrictions.in("l.id", ids));
             }
 
             return mapper.findByParams(criteria);

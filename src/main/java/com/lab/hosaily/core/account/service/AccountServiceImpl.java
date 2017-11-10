@@ -97,6 +97,7 @@ public class AccountServiceImpl implements AccountService{
                         //未注册
                         xcxAccount = decrypt;
                         xcxAccount.setAppId(appId);
+
                         xcxAccountDao.saveOrUpdate(xcxAccount);
                     }
                     //更新unionId

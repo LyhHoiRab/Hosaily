@@ -50,4 +50,6 @@ public interface TestLibraryService{
      * 查询用户当天测试记录
      */
     List<TestLibrary> findByAccountIdToday(String accountId);
+
+    List<TestLibrary> list(Long pageSize, UsingState state, Date createTime, String kind, String title);
 }

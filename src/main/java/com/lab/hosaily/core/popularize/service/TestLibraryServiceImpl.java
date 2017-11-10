@@ -203,10 +203,10 @@ public class TestLibraryServiceImpl implements TestLibraryService{
 
             if(logs != null){
                 String[] testIds = logs.getTestId().split(";");
-                return testLibraryDao.list(null, null, null, null, Arrays.asList(testIds));
+                return testLibraryDao.list(null, null, null, null);
             }
 
-            List<TestLibrary> list = testLibraryDao.list(null, null, null, null, null);
+            List<TestLibrary> list = testLibraryDao.list(null, null, null, null);
             List<TestLibrary> target = new ArrayList<TestLibrary>();
 
             Random random = new Random();
@@ -234,6 +234,31 @@ public class TestLibraryServiceImpl implements TestLibraryService{
             logs.setTestId(sb.deleteCharAt(sb.lastIndexOf(",")).toString());
 
             testLogsDao.save(logs);
+
+            return target;
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<TestLibrary> list(Long pageSize, UsingState state, Date createTime, String kind, String title){
+        try{
+            List<TestLibrary> list = testLibraryDao.list(state, createTime, kind, title);
+            List<TestLibrary> target = new ArrayList<TestLibrary>();
+
+            pageSize = pageSize > list.size() ? list.size() : pageSize;
+
+            Random random = new Random();
+
+            while(target.size() < pageSize){
+                int index = random.nextInt(list.size());
+
+                if(!target.contains(list.get(index))){
+                    target.add(list.get(index));
+                }
+            }
 
             return target;
         }catch(Exception e){

@@ -6,6 +6,7 @@ import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
+import com.rab.babylon.commons.utils.DateUtils;
 import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/1.0/testLibrary")
@@ -104,6 +108,29 @@ public class TestLibraryRestController{
             String url = testLibraryService.upload(file);
 
             return new Response<String>("上传成功", url);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<TestLibrary>> list(HttpServletRequest request, Long pageSize, UsingState state, Date createTime, String kind, String title){
+        try{
+            Date now = new Date();
+            Date night = DateUtils.lastTimeOfDay(now);
+            HttpSession session = request.getSession();
+
+            List<TestLibrary> list = (List<TestLibrary>) session.getAttribute("testEveryday");
+
+            if(list == null || list.isEmpty()){
+                list = testLibraryService.list(pageSize, state, createTime, kind, title);
+            }
+
+            session.setMaxInactiveInterval(DateUtils.differenceBySeconds(night, now));
+            session.setAttribute("testEveryday", list);
+
+            return new Response<List<TestLibrary>>("查询成功", list);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

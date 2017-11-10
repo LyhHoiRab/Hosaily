@@ -18,7 +18,7 @@ app.controller('testLibraryEditController', function($scope, $state, $stateParam
     });
 
     uploader.onSuccessItem = function(item, response, status, headers){
-        $scope.testLibrary.icon = response.result;
+        $scope.testLibrary.imgUrl = response.result;
     };
 
     $scope.testLibrary = {
@@ -57,7 +57,7 @@ app.controller('testLibraryEditController', function($scope, $state, $stateParam
     $scope.submit = function(){
         $http({
             url: '/api/1.0/testLibrary',
-            method: 'POST',
+            method: 'PUT',
             data: JSON.stringify($scope.testLibrary),
             headers: {
                 'Content-Type' : 'application/json'
