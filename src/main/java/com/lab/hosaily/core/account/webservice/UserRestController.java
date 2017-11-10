@@ -108,7 +108,7 @@ public class UserRestController{
     public Response<Page<User>> page(Long pageNum, Long pageSize, String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<User> page = userService.page(pageRequest, accountId, state, wechat, nickname, name, code);
+            Page<User> page = userService.page(pageRequest, accountId, state, wechat, nickname, name, code, null);
 
             return new Response<Page<User>>("查询成功", page);
         }catch(Exception e){
@@ -123,7 +123,7 @@ public class UserRestController{
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<List<User>> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
         try{
-            List<User> list = userService.list(accountId, state, wechat, nickname, name, code);
+            List<User> list = userService.list(accountId, state, wechat, nickname, name, code, null);
 
             return new Response<List<User>>("查询成功", list);
         }catch(Exception e){

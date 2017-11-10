@@ -27,10 +27,10 @@ public class SalesController{
         }
     }
 
-    @RequestMapping(value = "/edit/{accountId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView edit(@PathVariable("accountId") String accountId, ModelMap content){
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView edit(@PathVariable("id") String id, ModelMap content){
         try{
-            content.put("accountId", accountId);
+            content.put("id", id);
 
             return new ModelAndView("backstage/sales/edit", content);
         }catch(Exception e){

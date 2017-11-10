@@ -148,22 +148,4 @@ public class AdvisorDao{
             throw new DataAccessException(e.getMessage(), e);
         }
     }
-
-    /**
-     * 根据销售微信号查询导师
-     */
-    public Advisor getBySalesWechat(String wechat){
-        try{
-            Assert.hasText(wechat, "销售微信不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("u.wechat", wechat));
-            criteria.and(Restrictions.eq("a.state", UsingState.NORMAL));
-
-            return mapper.getByParams(criteria);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
 }

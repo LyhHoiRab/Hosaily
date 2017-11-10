@@ -145,11 +145,11 @@ public class UserServiceImpl implements UserService{
      * 分页查询
      */
     @Override
-    public Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
+    public Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return userDao.page(pageRequest, accountId, state, wechat, nickname, name, code);
+            return userDao.page(pageRequest, accountId, state, wechat, nickname, name, code, salesWechat);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -160,9 +160,9 @@ public class UserServiceImpl implements UserService{
      * 查询列表
      */
     @Override
-    public List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
+    public List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat){
         try{
-            return userDao.list(accountId, state, wechat, nickname, name, code);
+            return userDao.list(accountId, state, wechat, nickname, name, code, salesWechat);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

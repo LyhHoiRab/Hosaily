@@ -184,8 +184,6 @@
     <select id="getByParams" resultMap="advisor">
         SELECT a.*
           FROM advisor a
-     LEFT JOIN user u
-            ON u.advisor_id = a.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
@@ -194,8 +192,6 @@
     <select id="findByParams" resultMap="advisor">
         SELECT a.*
           FROM advisor a
-     LEFT JOIN user u
-            ON u.advisor_id = a.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -215,8 +211,6 @@
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
           FROM advisor a
-     LEFT JOIN user u
-            ON u.advisor_id = a.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>

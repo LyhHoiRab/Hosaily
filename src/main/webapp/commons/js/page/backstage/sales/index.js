@@ -1,4 +1,4 @@
-app.controller('salesController', function($scope, $http){
+app.controller('salesController', function($scope, $http, $state){
     //查询列表
     $scope.state;
     $scope.name;
@@ -100,6 +100,10 @@ app.controller('salesController', function($scope, $http){
         });
     };
 
+    $scope.salesEdit = function(id){
+        $state.go('salesEdit', {'id' : id});
+    };
+
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
             $scope.getData();
@@ -150,8 +154,10 @@ app.controller('salesController', function($scope, $http){
             displayName: '创建时间',
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
+            field: '',
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="salesEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            //cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="salesEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="salesEdit(row.getProperty(\'id\'))">[修改]</a></span></div>'
         }]
     };
 

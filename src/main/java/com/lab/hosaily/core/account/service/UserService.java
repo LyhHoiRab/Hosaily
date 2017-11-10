@@ -43,10 +43,10 @@ public interface UserService{
     /**
      * 分页查询
      */
-    Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code);
+    Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat);
 
     /**
      * 查询列表
      */
-    List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code);
+    List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat);
 }

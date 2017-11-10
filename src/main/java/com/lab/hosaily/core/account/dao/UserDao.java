@@ -138,7 +138,7 @@ public class UserDao{
     /**
      * 根据条件分页查询
      */
-    public Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
+    public Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -163,6 +163,9 @@ public class UserDao{
             }
             if(code != null){
                 criteria.and(Restrictions.eq("u.code", code));
+            }
+            if(!StringUtils.isBlank(salesWechat)){
+                criteria.and(Restrictions.eq("u.wechat", salesWechat));
             }
 
             //分页查询ID
@@ -189,7 +192,7 @@ public class UserDao{
     /**
      * 查询列表
      */
-    public List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
+    public List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat){
         try{
             Criteria criteria = new Criteria();
             criteria.groupBy(Restrictions.groupBy("u.id"));
@@ -211,6 +214,9 @@ public class UserDao{
             }
             if(code != null){
                 criteria.and(Restrictions.eq("u.code", code));
+            }
+            if(!StringUtils.isBlank(salesWechat)){
+                criteria.and(Restrictions.eq("u.wechat", salesWechat));
             }
 
             List<String> ids = mapper.findIdByParams(criteria);
