@@ -1,4 +1,4 @@
-app.controller('paymentTypeController', function($scope, $http){
+app.controller('paymentTypeController', function($scope, $http, $state){
     //查询列表
     $scope.state;
     $scope.name;
@@ -74,6 +74,10 @@ app.controller('paymentTypeController', function($scope, $http){
         });
     };
 
+    $scope.edit = function(id){
+        $state.go('paymentTypeEdit', {'id' : id});
+    };
+
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
             $scope.getData();
@@ -119,7 +123,7 @@ app.controller('paymentTypeController', function($scope, $http){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="paymentTypeEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a></span></div>'
         }]
     };
 

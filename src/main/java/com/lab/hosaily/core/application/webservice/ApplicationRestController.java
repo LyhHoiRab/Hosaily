@@ -2,6 +2,7 @@ package com.lab.hosaily.core.application.webservice;
 
 import com.lab.hosaily.commons.utils.URLUtils;
 import com.lab.hosaily.core.account.service.AccountService;
+import com.lab.hosaily.core.application.consts.ApplicationType;
 import com.lab.hosaily.core.application.entity.Application;
 import com.lab.hosaily.core.application.service.ApplicationService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -79,10 +81,10 @@ public class ApplicationRestController{
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Application>> page(Long pageNum, Long pageSize){
+    public Response<Page<Application>> page(Long pageNum, Long pageSize, String name, String token, ApplicationType type, Date createTime, Date minCreateTime, Date maxCreateTime){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Application> page = applicationService.page(pageRequest);
+            Page<Application> page = applicationService.page(pageRequest, name, token, type, createTime, minCreateTime, maxCreateTime);
 
             return new Response<Page<Application>>("查询成功", page);
         }catch(Exception e){

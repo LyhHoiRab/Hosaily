@@ -42,7 +42,6 @@ app.controller('postAddController', function($scope, $state, FileUploader, $http
         view         : 0,
         sort         : 0,
         advisor      : {},
-        //children     : [],
         media        : []
     };
 
@@ -78,20 +77,6 @@ app.controller('postAddController', function($scope, $state, FileUploader, $http
        }).error(function(response){
 
        });
-
-        //$.ajax({
-        //    url: '/api/1.0/post',
-        //    type: 'POST',
-        //    data: JSON.stringify($scope.post),
-        //    dataType: 'JSON',
-        //    contentType: 'application/json',
-        //    success: function(res){
-        //        if(res.success){
-        //            alert(res.msg);
-        //            $state.go('post');
-        //        }
-        //    }
-        //});
     };
 
     $scope.getState = function(){

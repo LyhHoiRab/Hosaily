@@ -1,9 +1,11 @@
 package com.lab.hosaily.core.application.service;
 
+import com.lab.hosaily.core.application.consts.ApplicationType;
 import com.lab.hosaily.core.application.entity.Application;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 
+import java.util.Date;
 import java.util.Map;
 
 public interface ApplicationService{
@@ -26,7 +28,7 @@ public interface ApplicationService{
     /**
      * 分页查询
      */
-    Page<Application> page(PageRequest pageRequest);
+    Page<Application> page(PageRequest pageRequest, String name, String token, ApplicationType type, Date createTime, Date minCreateTime, Date maxCreateTime);
 
     /**
      * 根据ID查询

@@ -1,6 +1,7 @@
 package com.lab.hosaily.core.application.service;
 
 import com.lab.hosaily.commons.consts.AuthorizationConsts;
+import com.lab.hosaily.core.application.consts.ApplicationType;
 import com.lab.hosaily.core.application.dao.ApplicationDao;
 import com.lab.hosaily.core.application.entity.Application;
 import com.lab.hosaily.core.page.consts.CommonsPathConsts;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,11 +103,11 @@ public class ApplicationServiceImpl implements ApplicationService{
      * 分页查询
      */
     @Override
-    public Page<Application> page(PageRequest pageRequest){
+    public Page<Application> page(PageRequest pageRequest, String name, String token, ApplicationType type, Date createTime, Date minCreateTime, Date maxCreateTime){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return applicationDao.page(pageRequest);
+            return applicationDao.page(pageRequest, name, token, type, createTime, minCreateTime, maxCreateTime);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

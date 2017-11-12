@@ -43,7 +43,6 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         view         : 0,
         sort         : 0,
         advisor      : {},
-        //children     : [],
         media        : []
     };
 
@@ -57,7 +56,6 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         $scope.post.view          = 0;
         $scope.post.sort          = 0;
         $scope.post.advisor       = {};
-        //$scope.post.children      = [];
         $scope.post.media         = [];
     };
 
@@ -68,32 +66,11 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         }).success(function(res, status, headers, config){
             if(res.success){
                 utils.copyOf(res.result, $scope.post);
+                console.log($scope.post);
             }
         }).error(function(response){
 
         });
-
-        //$.ajax({
-        //    url: '/api/1.0/post/' + $scope.id,
-        //    dataType: 'JSON',
-        //    type: 'GET',
-        //    success: function(res){
-        //        if(res.success){
-        //            utils.copyOf(res.result, $scope.post);
-        //            editor.setData($scope.post.introduction);
-        //
-        //            var medias = [];
-        //            angular.forEach($scope.post.media, function(data){
-        //                medias.push(data.id);
-        //            });
-        //            $('#medias').selectpicker('val', medias);
-        //        }
-        //
-        //        if(!$scope.$$phase){
-        //            $scope.$apply();
-        //        }
-        //    }
-        //});
     };
 
     $scope.getState = function(){
@@ -165,31 +142,6 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
         }).error(function(response){
 
         });
-
-        //
-        //var medias = $('#medias').val();
-        //$scope.post.media = [];
-        //if(medias !== null && medias.length > 0){
-        //    angular.forEach(medias, function(data){
-        //        $scope.post.media.push({id:data});
-        //    });
-        //};
-        //
-        //$scope.post.introduction = editor.getData();
-        //
-        //$.ajax({
-        //    url: '/api/1.0/post',
-        //    type: 'PUT',
-        //    data: JSON.stringify($scope.post),
-        //    dataType: 'JSON',
-        //    contentType: 'application/json',
-        //    success: function(res){
-        //        if(res.success){
-        //            alert(res.msg);
-        //            $state.go('post');
-        //        }
-        //    }
-        //});
     };
 
     //初始化数据

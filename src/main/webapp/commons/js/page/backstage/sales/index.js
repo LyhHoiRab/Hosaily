@@ -154,9 +154,7 @@ app.controller('salesController', function($scope, $http, $state){
             displayName: '创建时间',
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
-            field: '',
             displayName: '操作',
-            //cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="salesEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="salesEdit(row.getProperty(\'id\'))">[修改]</a></span></div>'
         }]
     };

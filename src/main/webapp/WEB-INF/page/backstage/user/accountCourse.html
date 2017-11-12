@@ -37,12 +37,6 @@
       <div class="col-xs-12 col-md-3">
         <div class="input-group">
           <span class="input-group-addon">状态</span>
-          <!--<select class="form-control" id="state">-->
-            <!--<option value="">请选择</option>-->
-            <!--#foreach($state in $states)-->
-              <!--<option value="$!{state.id}">$!{state.description}</option>-->
-            <!--#end-->
-          <!--</select>-->
           <select class="form-control" ng-model="state" ng-options="key as value for (key, value) in states">
             <option value="">请选择</option>
           </select>

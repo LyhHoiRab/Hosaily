@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.application.dao;
 
+import com.lab.hosaily.core.application.consts.ApplicationType;
 import com.lab.hosaily.core.application.dao.mapper.ApplicationMapper;
 import com.lab.hosaily.core.application.entity.Application;
 import com.rab.babylon.commons.security.exception.DataAccessException;
@@ -93,7 +94,7 @@ public class ApplicationDao{
     /**
      * 分页查询
      */
-    public Page<Application> page(PageRequest pageRequest){
+    public Page<Application> page(PageRequest pageRequest, String name, String token, ApplicationType type, Date createTime, Date minCreateTime, Date maxCreateTime){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -101,10 +102,26 @@ public class ApplicationDao{
             criteria.and(Restrictions.eq("isDelete", false));
             criteria.setLimit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
-            Long total = mapper.countByParams(criteria);
+            if(!StringUtils.isBlank(name)){
+                criteria.and(Restrictions.like("name", name));
+            }
+            if(!StringUtils.isBlank(token)){
+                criteria.and(Restrictions.like("token", token));
+            }
+            if(type != null){
+                criteria.and(Restrictions.eq("type", type.getId()));
+            }
+            if(createTime != null){
+
+            }
+            if(minCreateTime != null && maxCreateTime != null){
+
+            }
+
+            Long count = mapper.countByParams(criteria);
             List<Application> list = mapper.findByParams(criteria);
 
-            return new Page<Application>(list, pageRequest, total);
+            return new Page<Application>(list, pageRequest, count);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

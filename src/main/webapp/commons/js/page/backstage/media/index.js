@@ -1,4 +1,4 @@
-app.controller('mediaController', function($scope){
+app.controller('mediaController', function($scope, $state){
 	$scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
@@ -43,6 +43,10 @@ app.controller('mediaController', function($scope){
                 }
             }
         });
+    };
+
+    $scope.edit = function(id){
+        $state.go('mediaEdit', {'id' : id});
     };
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
@@ -108,7 +112,7 @@ app.controller('mediaController', function($scope){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="mediaEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a></span></div>'
         }]
     };
 

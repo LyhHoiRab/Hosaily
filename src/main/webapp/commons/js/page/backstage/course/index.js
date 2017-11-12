@@ -1,13 +1,4 @@
-app.controller('courseController', function($scope, $http){
-    ////枚举常量
-    //$scope.state = {
-    //    0: '正常',
-    //    1: '未激活',
-    //    2: '锁定',
-    //    3: '冻结',
-    //    4: '不可用'
-    //};
-
+app.controller('courseController', function($scope, $http, $state){
     $scope.states = [];
     $scope.state;
     $scope.advisor;
@@ -39,7 +30,6 @@ app.controller('courseController', function($scope, $http){
     };
 
     $scope.refresh = function(){
-        $scope.pagingOptions.currentPage = $scope.pagingOptions.currentPage;
         $scope.getData();
     };
 
@@ -77,33 +67,7 @@ app.controller('courseController', function($scope, $http){
         }).error(function(response){
             $scope.list = [];
             $scope.total = 0;
-        });;
-
-        //$.ajax({
-        //    url: '/api/1.0/course/page',
-        //    type: 'POST',
-        //    dataType: 'JSON',
-        //    data: {
-        //        'pageNum'       : pageNum,
-        //        'pageSize'      : pageSize,
-        //        'advisor'       : advisor,
-        //        'tag'           : tag,
-        //        'state'         : state,
-        //        'createTime'    : createTime,
-        //        'minCreateTime' : minCreateTime,
-        //        'maxCreateTime' : maxCreateTime
-        //
-        //    },
-        //    success: function(res){
-        //        if(res.success){
-        //            $scope.list = res.result.content;
-        //            $scope.total = res.result.total;
-        //        }
-        //        if(!$scope.$$phase){
-        //            $scope.$apply();
-        //        }
-        //    }
-        //});
+        });
     };
 
     $scope.getState = function(){
@@ -119,9 +83,9 @@ app.controller('courseController', function($scope, $http){
         });
     };
 
-    //初始化数据
-    $scope.getData();
-    $scope.getState();
+    $scope.edit = function(id){
+        $state.go('courseEdit', {'id' : id});
+    };
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
@@ -178,7 +142,11 @@ app.controller('courseController', function($scope, $http){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="courseEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a></span></div>'
         }]
     };
+
+    //初始化数据
+    $scope.getData();
+    $scope.getState();
 });

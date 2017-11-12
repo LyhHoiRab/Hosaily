@@ -1,4 +1,4 @@
-app.controller('testLibraryController', function($scope, $http){
+app.controller('testLibraryController', function($scope, $http, $state){
     //查询列表
     $scope.state;
     $scope.title;
@@ -95,6 +95,10 @@ app.controller('testLibraryController', function($scope, $http){
         });
     };
 
+    $scope.edit = function(id){
+        $state.go('testLibraryEdit', {'id' : id});
+    };
+
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
             $scope.getData();
@@ -134,7 +138,7 @@ app.controller('testLibraryController', function($scope, $http){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="testLibraryEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a><a ng-click="delete(row.getProperty(\'id\'))">[删除]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a><a ng-click="delete(row.getProperty(\'id\'))">[删除]</a></span></div>'
         }]
     };
 

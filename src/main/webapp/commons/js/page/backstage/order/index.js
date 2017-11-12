@@ -1,4 +1,4 @@
-app.controller('orderController', function($scope, $http){
+app.controller('orderController', function($scope, $http, $state){
     //查询列表
     $scope.state;
     $scope.name;
@@ -100,6 +100,10 @@ app.controller('orderController', function($scope, $http){
         });
     };
 
+    $scope.orderAdd = function(accountId){
+        $state.go('orderAdd', {'accountId' : accountId});
+    };
+
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
             $scope.getData();
@@ -151,7 +155,7 @@ app.controller('orderController', function($scope, $http){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="orderAdd({accountId:\'{{row.getProperty(\'accountId\')}}\'})">[下单]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="orderAdd(row.getProperty(\'accountId\'))">[下单]</a></span></div>'
         }]
     };
 

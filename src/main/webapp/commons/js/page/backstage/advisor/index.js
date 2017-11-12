@@ -1,4 +1,4 @@
-app.controller('advisorController', function($scope, $http){
+app.controller('advisorController', function($scope, $http, $state){
     //查询列表
     $scope.state;
     $scope.name;
@@ -33,7 +33,6 @@ app.controller('advisorController', function($scope, $http){
     };
 
     $scope.refresh = function(){
-        $scope.pagingOptions.currentPage = $scope.pagingOptions.currentPage;
         $scope.getData();
     };
 
@@ -101,16 +100,15 @@ app.controller('advisorController', function($scope, $http){
         });
     };
 
+    $scope.edit = function(id){
+        $state.go('advisorEdit', {'id' : id});
+    };
+
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
             $scope.getData();
         }
     }, true);
-
-    //初始化数据
-    $scope.getData();
-    $scope.getState();
-    $scope.getSex();
 
     $scope.gridOptions = {
         data                   : 'list',
@@ -170,7 +168,12 @@ app.controller('advisorController', function($scope, $http){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="advisorEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a></span></div>'
         }]
     };
+
+    //初始化数据
+    $scope.getData();
+    $scope.getState();
+    $scope.getSex();
 });

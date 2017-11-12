@@ -1,4 +1,4 @@
-app.controller('userController', function($scope, $http){
+app.controller('userController', function($scope, $http, $state){
     //查询列表
     $scope.state;
     $scope.name;
@@ -100,6 +100,10 @@ app.controller('userController', function($scope, $http){
         });
     };
 
+    $scope.accountCourse = function(accountId){
+        $state.go('accountCourse', {'accountId' : accountId});
+    };
+
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
             $scope.getData();
@@ -151,7 +155,7 @@ app.controller('userController', function($scope, $http){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="accountCourse({accountId:\'{{row.getProperty(\'accountId\')}}\'})">[课程]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="accountCourse(row.getProperty(\'accountId\'))">[课程]</a></span></div>'
         }]
     };
 

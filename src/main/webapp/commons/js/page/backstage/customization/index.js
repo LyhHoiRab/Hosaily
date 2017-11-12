@@ -1,4 +1,4 @@
-app.controller('customizationController', function($scope){
+app.controller('customizationController', function($scope, $state, $http){
     //枚举常量
     $scope.state = {
         0: '正常',
@@ -30,7 +30,6 @@ app.controller('customizationController', function($scope){
     };
 
     $scope.refresh = function(){
-        $scope.pagingOptions.currentPage = $scope.pagingOptions.currentPage;
         $scope.getData();
     };
 
@@ -65,6 +64,10 @@ app.controller('customizationController', function($scope){
                 }
             }
         });
+    };
+
+    $scope.edit = function(id){
+        $state.go('customizationEdit', {'id' : id});
     };
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
@@ -116,7 +119,7 @@ app.controller('customizationController', function($scope){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="customizationEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a></span></div>'
         }]
     };
 

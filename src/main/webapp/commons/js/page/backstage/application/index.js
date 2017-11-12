@@ -1,4 +1,17 @@
-app.controller('applicationController', function($scope){
+app.controller('applicationController', function($scope, $state, $http){
+    //下拉
+    $scope.types = [];
+    $scope.states = [];
+    //查询列表
+    $scope.type;
+    $scope.state;
+    $scope.createTime;
+    $scope.minCreateTime;
+    $scope.maxCreateTime;
+    $scope.name;
+    $scope.token;
+    $scope.appId;
+
     $scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
@@ -8,47 +21,87 @@ app.controller('applicationController', function($scope){
         currentPage: 1
     };
 
-    //枚举常量
-    $scope.state = {
-        0: '正常',
-        1: '未激活',
-        2: '锁定',
-        3: '冻结',
-        4: '不可用'
-    };
-    $scope.type = {
-    	0: '网站应用',
-    	1: '小程序',
-    	2: '微信公众帐号'
+
+    $scope.getData = function(){
+        $http({
+            url: '/api/1.0/application/page',
+            method: 'POST',
+            data: $.param({
+                'pageSize'      : $scope.pagingOptions.pageSize,
+                'pageNum'       : $scope.pagingOptions.currentPage,
+                'name'          : $scope.name,
+                'state'         : $scope.state,
+                'type'          : $scope.type,
+                'createTime'    : $scope.createTime,
+                'minCreateTime' : $scope.minCreateTime,
+                'maxCreateTime' : $scope.maxCreateTime
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.list = res.result.content;
+                $scope.total = res.result.total;
+            }
+        }).error(function(response){
+            $scope.list = [];
+            $scope.total = 0;
+        });
     };
 
-    $scope.getData = function(pageNum, pageSize){
-        $.ajax({
-            url: '/api/1.0/application/page',
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                'pageNum': pageNum,
-                'pageSize': pageSize
-            },
-            success: function(res){
-                if(res.success){
-                    $scope.list = res.result.content;
-                    $scope.total = res.result.total;
-                }
-                if(!$scope.$$phase){
-                    $scope.$apply();
-                }
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
             }
+        }).error(function(response){
+            $scope.states = [];
         });
+    };
+
+    $scope.getType = function(){
+        $http({
+            url: '/api/1.0/applicationType/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.types = res.result;
+            }
+        }).error(function(response){
+            $scope.types = [];
+        });
+    };
+
+    $scope.edit = function(id){
+        $state.go('applicationEdit', {'id' : id});
+    };
+
+    $scope.reset = function(){
+        $scope.state         = '';
+        $scope.type          = '';
+        $scope.name          = '';
+        $scope.token         = '';
+        $scope.createTime    = '';
+        $scope.minCreateTime = '';
+        $scope.maxCreateTime = '';
+    };
+
+    $scope.search = function(){
+        $scope.pagingOptions.currentPage = 1;
+        $scope.getData();
+    };
+
+    $scope.refresh = function(){
+        $scope.getData();
     };
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
-            var pageNum = newVal.currentPage;
-            var pageSize = newVal.pageSize;
-
-            $scope.getData(pageNum, pageSize);
+            $scope.getData();
         }
     }, true);
 
@@ -81,11 +134,11 @@ app.controller('applicationController', function($scope){
         },{
         	field: 'type',
         	displayName: '类型',
-        	cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{type[COL_FIELD]}}</span></div>'
+        	cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{types[COL_FIELD]}}</span></div>'
         },{
             field: 'state',
             displayName: '状态',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{state[COL_FIELD]}}</span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{states[COL_FIELD]}}</span></div>'
         },{
         	field: 'createTime',
         	displayName: '创建时间',
@@ -96,10 +149,12 @@ app.controller('applicationController', function($scope){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="applicationEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a></span></div>'
         }]
     };
 
     //初始化数据
-    $scope.getData($scope.pagingOptions.currentPage, $scope.pagingOptions.pageSize);
+    $scope.getData();
+    $scope.getState();
+    $scope.getType();
 });

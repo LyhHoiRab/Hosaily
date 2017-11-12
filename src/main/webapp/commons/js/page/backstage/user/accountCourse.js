@@ -1,4 +1,4 @@
-app.controller('accountCourseController', function($scope, $stateParams, $http){
+app.controller('accountCourseController', function($scope, $stateParams, $http, $state){
     //查询列表
     $scope.state;
     $scope.effective;
@@ -100,6 +100,10 @@ app.controller('accountCourseController', function($scope, $stateParams, $http){
         });
     };
 
+    $scope.edit = function(id){
+        $state.go('postEdit', {'id' : id});
+    };
+
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
             $scope.getData();
@@ -151,7 +155,7 @@ app.controller('accountCourseController', function($scope, $stateParams, $http){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="postEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a><a href="javascript:;" ng-click="delete(row.getProperty(\'id\'))">[删除]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a><a href="javascript:;" ng-click="delete(row.getProperty(\'id\'))">[删除]</a></span></div>'
         }]
     };
 

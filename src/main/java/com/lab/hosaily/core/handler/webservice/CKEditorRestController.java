@@ -2,7 +2,6 @@ package com.lab.hosaily.core.handler.webservice;
 
 import com.lab.hosaily.core.handler.service.CKEditorService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
-import com.rab.babylon.commons.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +15,12 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/1.0/ckEditor")
-public class CKEditorController{
+public class CKEditorRestController{
 
-    private static Logger logger = LoggerFactory.getLogger(CKEditorController.class);
+    private static Logger logger = LoggerFactory.getLogger(CKEditorRestController.class);
 
     @Autowired
     private CKEditorService ckEditorService;

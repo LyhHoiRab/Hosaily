@@ -45,60 +45,37 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">点赞量</span>
-        <input type="number" class="form-control" placeholder="点赞量" ng-model="post.likes" value="{{post.likes}}">
+        <input type="number" class="form-control" placeholder="点赞量" ng-model="post.likes">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">浏览量</span>
-        <input type="number" class="form-control" placeholder="浏览量" ng-model="post.view" value="{{post.view}}">
+        <input type="number" class="form-control" placeholder="浏览量" ng-model="post.view">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">排序</span>
-        <input type="number" class="form-control" placeholder="排序" ng-model="post.sort" value="{{post.sort}}">
+        <input type="number" class="form-control" placeholder="排序" ng-model="post.sort">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">导师</span>
-        <!--<select class="form-control" ng-model="post.advisor.id" value="{{post.advisor.id}}">-->
-          <!--<option value="">请选择</option>-->
-          <!--#foreach($advisor in $advisors)-->
-            <!--<option value="${advisor.id}">${advisor.name}</option>-->
-          <!--#end-->
-        <!--</select>-->
         <select class="form-control" ng-model="post.advisor" ng-options="advisor as advisor.name for advisor in advisors">
           <option value="">请选择</option>
         </select>
       </div>
     </div><!-- item -->
 
-    <!--<div class="row-group">-->
-      <!--<div class="input-group">-->
-        <!--<span class="input-group-addon">推荐课程</span>-->
-        <!--<select class="selectpicker form-control" multiple id="courses">-->
-          <!--#foreach($course in $courses)-->
-            <!--<option value="${course.id}">${course.title}</option>-->
-          <!--#end-->
-        <!--</select>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!-- item -->
-
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">多媒体</span>
-        <!--<select class="selectpicker form-control" multiple id="medias">-->
-          <!--#foreach($media in $medias)-->
-          <!--<option value="${media.id}">${media.remark}</option>-->
-          <!--#end-->
-        <!--</select>-->
-        <select class="form-control" ng-model="post.media" ng-options="media as media.remark for media in medias" multiple ng-multipe="true">
+        <select class="form-control" ng-model="post.media" ng-options="media as media.remark for media in medias">
           <option value="">请选择</option>
         </select>
       </div>
@@ -107,12 +84,6 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">状态</span>
-        <!--<select class="form-control" ng-model="post.state" value="{{post.state}}">-->
-          <!--<option value="">请选择</option>-->
-          <!--#foreach($state in $states)-->
-            <!--<option value="${state.id}">${state.description}</option>-->
-          <!--#end-->
-        <!--</select>-->
         <select class="form-control" ng-model="post.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>
         </select>
@@ -122,14 +93,14 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">标题</span>
-        <input type="text" class="form-control" placeholder="标题" ng-model="post.title" value="{{post.title}}">
+        <input type="text" class="form-control" placeholder="标题" ng-model="post.title">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">概要</span>
-        <input type="text" class="form-control" placeholder="概要" ng-model="post.summary" value="{{post.summary}}">
+        <input type="text" class="form-control" placeholder="概要" ng-model="post.summary">
       </div>
     </div><!-- item -->
 
