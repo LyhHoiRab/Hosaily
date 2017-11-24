@@ -1,8 +1,10 @@
 app.controller('postAddController', function($scope, $state, FileUploader, $http){
     //下拉
-    $scope.states = [];
-    $scope.advisors = [];
-    $scope.medias = [];
+    $scope.states        = [];
+    $scope.advisors      = [];
+    $scope.medias        = [];
+    $scope.organizations = [];
+    $scope.tags          = [];
 
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/post/upload',
@@ -30,33 +32,36 @@ app.controller('postAddController', function($scope, $state, FileUploader, $http
     };
 
     $scope.post = {
-        title        : '',
-        type         : 0,
-        kind         : 1,
-        summary      : '',
-        introduction : '',
-        state        : '',
-        cover        : '/commons/img/level_default.jpg',
-        price        : 0,
-        likes        : 0,
-        view         : 0,
-        sort         : 0,
-        advisor      : {},
-        media        : []
+        title          : '',
+        type           : 0,
+        kind           : 1,
+        summary        : '',
+        introduction   : '',
+        state          : '',
+        cover          : '/commons/img/level_default.jpg',
+        price          : 0,
+        likes          : 0,
+        view           : 0,
+        sort           : 0,
+        advisor        : {},
+        media          : [],
+        tag            : [],
+        organizationId : ''
     };
 
     $scope.reset = function(){
-        $scope.post.title         = '';
-        $scope.post.summary       = '';
-        $scope.post.introduction  = '';
-        $scope.post.state         = '';
-        $scope.post.price         = 0;
-        $scope.post.likes         = 0;
-        $scope.post.view          = 0;
-        $scope.post.sort          = 0;
-        $scope.post.advisor       = {};
-        //$scope.post.children      = [];
-        $scope.post.media         = [];
+        $scope.post.title          = '';
+        $scope.post.summary        = '';
+        $scope.post.introduction   = '';
+        $scope.post.state          = '';
+        $scope.post.price          = 0;
+        $scope.post.likes          = 0;
+        $scope.post.view           = 0;
+        $scope.post.sort           = 0;
+        $scope.post.advisor        = {};
+        $scope.post.media          = [];
+        $scope.post.tag            = [];
+        $scope.post.organizationId = '';
     };
 
     $scope.submit = function(){
@@ -75,7 +80,7 @@ app.controller('postAddController', function($scope, $state, FileUploader, $http
                alert(res.msg);
            }
        }).error(function(response){
-
+            console.error(response);
        });
     };
 
@@ -97,7 +102,8 @@ app.controller('postAddController', function($scope, $state, FileUploader, $http
             url: '/api/1.0/advisor/list',
             method: 'POST',
             data: $.param({
-                'state': 0
+                'state'          : 0,
+                'organizationId' : $scope.post.organizationId
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -116,7 +122,8 @@ app.controller('postAddController', function($scope, $state, FileUploader, $http
             url: '/api/1.0/media/list',
             method: 'POST',
             data: $.param({
-                'state': 0
+                'state'          : 0,
+                'organizationId' : $scope.post.organizationId
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -130,8 +137,56 @@ app.controller('postAddController', function($scope, $state, FileUploader, $http
         });
     };
 
+    $scope.getTag = function(){
+        $http({
+            url: '/api/1.0/tag/list',
+            method: 'POST',
+            data: $.param({
+                'state'          : 0,
+                'organizationId' : $scope.post.organizationId
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.tags = res.result;
+            }
+        }).error(function(response){
+            $scope.tags = [];
+        });
+
+    };
+
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
+        });
+    };
+
+    $scope.$watch('post.organizationId', function(newVal, oldVal){
+        if(newVal !== oldVal){
+            $scope.getAdvisor();
+            $scope.getTag();
+        }
+
+    }, true);
+
     //初始化数据
     $scope.getState();
-    $scope.getAdvisor();
+    $scope.getOrganization();
     $scope.getMedia();
 });

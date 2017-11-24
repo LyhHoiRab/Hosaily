@@ -33,7 +33,7 @@ public interface PostService{
     /**
      * 分页查询
      */
-    Page<Course> page(PageRequest pageRequest, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime);
+    Page<Course> page(PageRequest pageRequest, String advisor, UsingState state, String advisorId, String organizationId, String organizationToken, String tagName);
 
     /**
      * 上传图片

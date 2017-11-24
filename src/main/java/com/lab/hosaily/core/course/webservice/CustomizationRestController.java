@@ -74,10 +74,10 @@ public class CustomizationRestController{
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Customization>> page(Long pageNum, Long pageSize, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Response<Page<Customization>> page(Long pageNum, Long pageSize, UsingState state, String tagName, String organizationId, String organizationToken){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Customization> page = customizationService.page(pageRequest, state, createTime, minCreateTime, maxCreateTime);
+            Page<Customization> page = customizationService.page(pageRequest, state, tagName, organizationId, organizationToken);
 
             return new Response<Page<Customization>>("查询成功", page);
         }catch(Exception e){

@@ -1,5 +1,7 @@
 package com.lab.hosaily.core.handler.controller;
 
+import com.lab.hosaily.core.course.consts.MediaType;
+import com.lab.hosaily.core.handler.utils.handler.MediaTypeEditor;
 import com.lab.hosaily.core.handler.utils.handler.UsingStateEditor;
 import com.rab.babylon.core.consts.entity.UsingState;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -23,5 +25,10 @@ public class PropertyController{
     @InitBinder
     public void initUsingStateBinder(WebDataBinder binder){
         binder.registerCustomEditor(UsingState.class, new UsingStateEditor());
+    }
+
+    @InitBinder
+    public void initMediaTypeBinder(WebDataBinder binder){
+        binder.registerCustomEditor(MediaType.class, new MediaTypeEditor());
     }
 }

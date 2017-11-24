@@ -28,7 +28,7 @@ public interface CustomizationService{
     /**
      * 分页查询
      */
-    Page<Customization> page(PageRequest pageRequest, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime);
+    Page<Customization> page(PageRequest pageRequest, UsingState state, String tagName, String organizationId, String organizationToken);
 
     /**
      * 上传图片

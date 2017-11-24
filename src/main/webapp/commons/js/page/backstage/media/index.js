@@ -1,5 +1,17 @@
-app.controller('mediaController', function($scope, $state){
-	$scope.list = [];
+app.controller('mediaController', function($scope, $state, $http){
+	//查询条件
+    $scope.state        = '';
+    $scope.suffixType   = '';
+    $scope.mediaType    = '';
+    $scope.organization = '';
+    $scope.remark       = '';
+	//下拉
+    $scope.states        = [];
+    $scope.suffixTypes   = [];
+    $scope.mediaTypes    = [];
+    $scope.organizations = [];
+    //列表
+    $scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
     $scope.pagingOptions = {
@@ -8,40 +20,121 @@ app.controller('mediaController', function($scope, $state){
         currentPage: 1
     };
 
-    //枚举常量
-    $scope.state = {
-        0: '正常',
-        1: '未激活',
-        2: '锁定',
-        3: '冻结',
-        4: '不可用'
-    };
-    $scope.type = {
-    	0: '未知',
-    	1: '音频',
-    	2: '视频',
-    	3: '图片',
-    	4: '文本'
+    $scope.reset = function(){
+        $scope.state          = '';
+        $scope.name           = '';
+        $scope.nickname       = '';
+        $scope.organizationId = '';
+        $scope.remark         = '';
     };
 
-    $scope.getData = function(pageNum, pageSize){
-        $.ajax({
+    $scope.search = function(){
+        $scope.pagingOptions.currentPage = 1;
+        $scope.getData();
+    };
+
+    $scope.refresh = function(){
+        $scope.getData();
+    };
+
+    $scope.getData = function(){
+        $http({
             url: '/api/1.0/media/page',
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                'pageNum': pageNum,
-                'pageSize': pageSize
-            },
-            success: function(res){
-                if(res.success){
-                    $scope.list = res.result.content;
-                    $scope.total = res.result.total;
-                }
-                if(!$scope.$$phase){
-                    $scope.$apply();
-                }
+            method: 'POST',
+            data: $.param({
+                'pageNum'        : $scope.pagingOptions.currentPage,
+                'pageSize'       : $scope.pagingOptions.pageSize,
+                'suffix'         : $scope.suffixType,
+                'type'           : $scope.mediaType,
+                'state'          : $scope.state,
+                'organizationId' : $scope.organizationId,
+                'remark'         : $scope.remark
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.list = res.result.content;
+                $scope.total = res.result.total;
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+            $scope.list = [];
+            $scope.total = 0;
+
+            console.error(response);
+        });
+    };
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
+        });
+    };
+
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
+        });
+    };
+
+    $scope.getSuffixType = function(){
+        $http({
+            url: '/api/1.0/suffixType/list',
+            method: 'GET',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.suffixTypes = res.result;
+            }
+        }).error(function(response){
+            $scope.suffixTypes = [];
+        });
+    };
+
+    $scope.getMediaType = function(){
+        $http({
+            url: '/api/1.0/mediaType/list',
+            method: 'GET',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.mediaTypes = res.result;
+            }
+        }).error(function(response){
+            $scope.mediaTypes = [];
         });
     };
 
@@ -51,10 +144,7 @@ app.controller('mediaController', function($scope, $state){
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
-            var pageNum = newVal.currentPage;
-            var pageSize = newVal.pageSize;
-
-            $scope.getData(pageNum, pageSize);
+            $scope.getData();
         }
     }, true);
 
@@ -84,13 +174,10 @@ app.controller('mediaController', function($scope, $state){
         },{
             field: 'type',
             displayName: '类型',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{type[COL_FIELD]}}</span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{mediaTypes[COL_FIELD]}}</span></div>'
         },{
             field: 'url',
             displayName: '外链'
-        },{
-            field: 'md5',
-            displayName: 'MD5'
         },{
             field: 'size',
             displayName: '大小(MB)',
@@ -101,7 +188,7 @@ app.controller('mediaController', function($scope, $state){
         },{
             field: 'state',
             displayName: '状态',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{state[COL_FIELD]}}</span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{states[COL_FIELD]}}</span></div>'
         },{
             field: 'createTime',
             displayName: '创建时间',
@@ -117,5 +204,9 @@ app.controller('mediaController', function($scope, $state){
     };
 
     //初始化数据
-    $scope.getData($scope.pagingOptions.currentPage, $scope.pagingOptions.pageSize);
+    $scope.getData();
+    $scope.getState();
+    $scope.getOrganization();
+    $scope.getSuffixType();
+    $scope.getMediaType();
 });

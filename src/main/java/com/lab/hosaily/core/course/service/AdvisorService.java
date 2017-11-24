@@ -27,19 +27,14 @@ public interface AdvisorService{
     Advisor getById(String id);
 
     /**
-     * 根据状态查询
-     */
-    List<Advisor> findByState(UsingState state);
-
-    /**
      * 分页查询
      */
-    Page<Advisor> page(PageRequest pageRequest, String nickname, String name, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime);
+    Page<Advisor> page(PageRequest pageRequest, String nickname, String name, UsingState state, String organizationId, String organizationToken);
 
     /**
      * 查询列表
      */
-    List<Advisor> list(String nickname, String name, UsingState state, Date createTime);
+    List<Advisor> list(String nickname, String name, UsingState state, String organizationId, String organizationToken);
 
     /**
      * 上传图片

@@ -97,11 +97,11 @@ public class PostServiceImp implements PostService{
      * 分页查询
      */
     @Override
-    public Page<Course> page(PageRequest pageRequest, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Page<Course> page(PageRequest pageRequest, String advisor, UsingState state, String advisorId, String organizationId, String organizationToken, String tagName){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return postDao.page(pageRequest, advisor, state, createTime, minCreateTime, maxCreateTime);
+            return postDao.page(pageRequest, advisor, state, advisorId, organizationId, organizationToken, tagName);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
   <li>
-    <span>系统设置</span>
+    <span>课程管理</span>
   </li><!-- item -->
   <li>
     <a ui-sref="media">媒体管理</a>
@@ -28,46 +28,43 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">文件名</span>
-        <input type="text" class="form-control" placeholder="文件名" ng-model="media.fileName" value="{{media.fileName}}" readonly="readonly">
+        <input type="text" class="form-control" placeholder="文件名" ng-model="media.fileName" readonly="readonly">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">备注</span>
-        <input type="text" class="form-control" placeholder="备注" ng-model="media.remark" value="{{media.remark}}">
+        <input type="text" class="form-control" placeholder="备注" ng-model="media.remark">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">外链</span>
-        <input type="text" class="form-control" placeholder="外链" ng-model="media.url" value="{{media.url}}" readonly="readonly">
+        <input type="text" class="form-control" placeholder="外链" ng-model="media.url" readonly="readonly">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">大小(MB)</span>
-        <input type="text" class="form-control" placeholder="大小" ng-model="media.size" value="{{media.size/1024/1024 | number:3}}" readonly="readonly">
+        <input type="text" class="form-control" placeholder="大小" ng-model="media.size" readonly="readonly">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">格式</span>
-        <input type="text" class="form-control" placeholder="格式" ng-model="media.suffix" value="{{media.suffix}}" readonly="readonly">
+        <input type="text" class="form-control" placeholder="格式" ng-model="media.suffix" readonly="readonly">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">类型</span>
-        <select class="form-control" ng-model="media.type" value="{{media.type}}" disabled="disabled">
+        <select class="form-control" ng-model="media.type" disabled="disabled" ng-options="key as value for (key, value) in mediaTypes">
           <option value="">请选择</option>
-          #foreach($type in $types)
-            <option value="${type.id}">${type.description}</option>
-          #end
         </select>
       </div>
     </div><!-- item -->
@@ -75,11 +72,8 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">状态</span>
-        <select class="form-control" ng-model="media.state" value="{{media.state}}">
+        <select class="form-control" ng-model="media.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>
-          #foreach($state in $states)
-            <option value="${state.id}">${state.description}</option>
-          #end
         </select>
       </div>
     </div><!-- item -->
@@ -114,10 +108,6 @@
             <i class="fa fa-trash-o"></i>
             移除
           </button>
-
-          <!--<span class="text-success"><i class="fa fa-check-circle"></i></span>-->
-          <!--<span class="text-warning"><i class="fa fa-times-circle"></i></span>-->
-          <!--<span class="text-danger"><i class="fa fa-exclamation-circle"></i></span>-->
         </div><!-- button group -->
       </div>
     </div><!-- item -->

@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
     <li>
-        <span>系统设置</span>
+        <span>课程管理</span>
     </li><!-- item -->
     <li>
         <a ui-sref="customization">定制服务</a>
@@ -45,46 +45,64 @@
         <div class="row-group">
             <div class="input-group">
                 <span class="input-group-addon">定制人数</span>
-                <input type="number" class="form-control" placeholder="定制人数" ng-model="customization.subscribe" value="{{customization.subscribe}}">
+                <input type="number" class="form-control" placeholder="定制人数" ng-model="customization.subscribe">
             </div>
         </div><!-- item -->
 
         <div class="row-group">
             <div class="input-group">
                 <span class="input-group-addon">排序</span>
-                <input type="number" class="form-control" placeholder="排序" ng-model="customization.sort" value="{{customization.sort}}">
+                <input type="number" class="form-control" placeholder="排序" ng-model="customization.sort">
             </div>
         </div><!-- item -->
 
         <div class="row-group">
             <div class="input-group">
                 <span class="input-group-addon">状态</span>
-                <select class="form-control" ng-model="customization.state" value="{{customization.state}}">
+                <select class="form-control" ng-model="customization.state" ng-options="key as value for (key, value) in states">
                     <option value="">请选择</option>
-                    #foreach($state in $states)
-                    <option value="${state.id}">${state.description}</option>
-                    #end
                 </select>
             </div>
         </div><!-- item -->
 
         <div class="row-group">
             <div class="input-group">
+                <span class="input-group-addon">企业</span>
+                <select class="form-control" ng-model="customization.organizationId" ng-options="organization.id as organization.name for organization in organizations">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">标签</span>
+                <ui-select class="form-control" multiple ng-model="customization.tag" theme="bootstrap">
+                    <ui-select-match placeholder="请选择">{{$item.name}}</ui-select-match>
+                    <ui-select-choices repeat="tag in tags">
+                        <small>{{tag.name}}</small>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
                 <span class="input-group-addon">标题</span>
-                <input type="text" class="form-control" placeholder="标题" ng-model="customization.title" value="{{customization.title}}">
+                <input type="text" class="form-control" placeholder="标题" ng-model="customization.title">
             </div>
         </div><!-- item -->
 
         <div class="row-group">
             <div class="input-group">
                 <span class="input-group-addon">概要</span>
-                <input type="text" class="form-control" placeholder="概要" ng-model="customization.summary" value="{{customization.summary}}">
+                <input type="text" class="form-control" placeholder="概要" ng-model="customization.summary">
             </div>
         </div><!-- item -->
 
         <div class="row-group">
             <div class="editor-group">
-                <textarea id="editor"></textarea>
+                <div ckeditor="editor" ng-model="customization.introduction"></div>
             </div>
         </div><!-- item -->
 

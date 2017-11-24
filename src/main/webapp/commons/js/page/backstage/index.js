@@ -258,9 +258,9 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
-                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
                     basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
-                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/post/add.js'
@@ -277,10 +277,10 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
-                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
                     basePath + '/commons/js/utils.js',
                     basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
-                    basePath + '/commons/js/plugin/bootstrap-select/bootstrap-select.min.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/post/edit.js'
@@ -430,6 +430,8 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
                     basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
@@ -447,6 +449,8 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
                     basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
                     basePath + '/commons/js/plugin/ckeditor/ckeditor.js',
                     basePath + '/commons/js/utils.js',
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
@@ -658,6 +662,53 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                     basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/testLibrary/edit.js'
+                ]);
+            }]
+        }
+    }).state('organization', {
+        url: '/organization',
+        templateUrl: '/page/backstage/organization',
+        controller: 'organizationController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/organization/index.js'
+                ]);
+            }]
+        }
+    }).state('organizationAdd', {
+        url: '/organization/add',
+        templateUrl: '/page/backstage/organization/add',
+        controller: 'organizationAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/organization/add.js'
+                ]);
+            }]
+        }
+    }).state('organizationEdit', {
+        url: '/organization/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/organization/edit/' + $stateParams.id;
+        },
+        controller: 'organizationEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/organization/edit.js'
                 ]);
             }]
         }

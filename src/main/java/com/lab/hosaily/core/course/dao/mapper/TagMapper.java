@@ -21,11 +21,6 @@ public interface TagMapper{
     void update(Tag tag);
 
     /**
-     * 删除记录
-     */
-    void delete(String id);
-
-    /**
      * 根据条件查询单条记录
      */
     Tag getByParams(@Param("params") Criteria criteria);

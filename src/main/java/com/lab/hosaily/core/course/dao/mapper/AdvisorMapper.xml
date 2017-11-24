@@ -3,18 +3,18 @@
 
 <mapper namespace="com.lab.hosaily.core.course.dao.mapper.AdvisorMapper">
     <resultMap id="advisor" type="com.lab.hosaily.core.course.entity.Advisor">
-        <id     column="id"           property="id"           javaType="java.lang.String"/>
-        <result column="name"         property="name"         javaType="java.lang.String"/>
-        <result column="nickname"     property="nickname"     javaType="java.lang.String"/>
-        <result column="sex"          property="sex"          typeHandler="sexHandler"/>
-        <result column="wechat"       property="wechat"       javaType="java.lang.String"/>
-        <result column="age"          property="age"          javaType="java.lang.Integer"/>
-        <result column="introduction" property="introduction" javaType="java.lang.String"/>
-        <result column="head_img_url" property="headImgUrl"   javaType="java.lang.String"/>
-        <result column="sort"         property="sort"         javaType="java.lang.Integer"/>
-        <result column="state"        property="state"        typeHandler="usingStateHandler"/>
-        <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
-        <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
+        <id     column="id"              property="id"             javaType="java.lang.String"/>
+        <result column="name"            property="name"           javaType="java.lang.String"/>
+        <result column="nickname"        property="nickname"       javaType="java.lang.String"/>
+        <result column="sex"             property="sex"            typeHandler="sexHandler"/>
+        <result column="age"             property="age"            javaType="java.lang.Integer"/>
+        <result column="introduction"    property="introduction"   javaType="java.lang.String"/>
+        <result column="head_img_url"    property="headImgUrl"     javaType="java.lang.String"/>
+        <result column="sort"            property="sort"           javaType="java.lang.Integer"/>
+        <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
+        <result column="state"           property="state"          typeHandler="usingStateHandler"/>
+        <result column="create_time"     property="createTime"     javaType="java.util.Date"/>
+        <result column="update_time"     property="updateTime"     javaType="java.util.Date"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -122,25 +122,25 @@
               name,
               nickname,
               sex,
-              wechat,
               age,
               head_img_url,
               introduction,
               state,
               sort,
+              organization_id,
               create_time
           ) VALUE (
-              #{id,           jdbcType=VARCHAR},
-              #{name,         jdbcType=VARCHAR},
-              #{nickname,     jdbcType=VARCHAR},
-              #{sex,          typeHandler=sexHandler},
-              #{wechat,       jdbcType=VARCHAR},
-              #{age,          jdbcType=INTEGER},
-              #{headImgUrl,   jdbcType=VARCHAR},
-              #{introduction, jdbcType=VARCHAR},
-              #{state,        typeHandler=usingStateHandler},
-              #{sort,         jdbcType=INTEGER},
-              #{createTime,   jdbcType=TIMESTAMP}
+              #{id,             jdbcType=VARCHAR},
+              #{name,           jdbcType=VARCHAR},
+              #{nickname,       jdbcType=VARCHAR},
+              #{sex,            typeHandler=sexHandler},
+              #{age,            jdbcType=INTEGER},
+              #{headImgUrl,     jdbcType=VARCHAR},
+              #{introduction,   jdbcType=VARCHAR},
+              #{state,          typeHandler=usingStateHandler},
+              #{sort,           jdbcType=INTEGER},
+              #{organizationId, jdbcType=VARCHAR},
+              #{createTime,     jdbcType=TIMESTAMP}
           )
     </insert>
 
@@ -155,9 +155,6 @@
              </if>
              <if test="sex != null">
                  sex = #{sex, typeHandler=sexHandler},
-             </if>
-             <if test="wechat != null and wechat != ''">
-                 wechat = #{wechat, jdbcType=VARCHAR},
              </if>
              <if test="age != null and age > 0">
                  age = #{age, jdbcType=INTEGER},
@@ -177,6 +174,9 @@
              <if test="sort != null and sort >= 0">
                  sort = #{sort, jdbcType=INTEGER},
              </if>
+             <if test="organizationId != null and organizationId != ''">
+                 organization_id = #{organizationId, jdbcType=VARCHAR},
+             </if>
          </set>
           WHERE id = #{id}
     </update>
@@ -184,6 +184,8 @@
     <select id="getByParams" resultMap="advisor">
         SELECT a.*
           FROM advisor a
+     LEFT JOIN organization o
+            ON o.id = a.organization_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
@@ -192,6 +194,8 @@
     <select id="findByParams" resultMap="advisor">
         SELECT a.*
           FROM advisor a
+     LEFT JOIN organization o
+            ON a.organization_id = o.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -211,6 +215,8 @@
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
           FROM advisor a
+     LEFT JOIN organization o
+            ON a.organization_id = o.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>

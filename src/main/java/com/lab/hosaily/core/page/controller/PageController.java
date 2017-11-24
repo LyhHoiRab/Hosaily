@@ -100,10 +100,6 @@ public class PageController{
     @RequestMapping(value = "/course", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView course(ModelMap content){
         try{
-            List<Tag> tags = tagService.findByState(UsingState.NORMAL);
-
-            content.put("tags", tags);
-
             return new ModelAndView("course", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);

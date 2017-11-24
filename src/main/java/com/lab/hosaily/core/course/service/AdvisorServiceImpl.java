@@ -78,29 +78,14 @@ public class AdvisorServiceImpl implements AdvisorService{
     }
 
     /**
-     * 根据状态查询
-     */
-    @Override
-    public List<Advisor> findByState(UsingState state){
-        try{
-            Assert.notNull(state, "导师状态不能为空");
-
-            return advisorDao.findByState(state);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    /**
      * 分页查询
      */
     @Override
-    public Page<Advisor> page(PageRequest pageRequest, String nickname, String name, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Page<Advisor> page(PageRequest pageRequest, String nickname, String name, UsingState state, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return advisorDao.page(pageRequest, nickname, name, state, createTime, minCreateTime, maxCreateTime);
+            return advisorDao.page(pageRequest, nickname, name, state, organizationId, organizationToken);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -111,9 +96,9 @@ public class AdvisorServiceImpl implements AdvisorService{
      * 查询列表
      */
     @Override
-    public List<Advisor> list(String nickname, String name, UsingState state, Date createTime){
+    public List<Advisor> list(String nickname, String name, UsingState state, String organizationId, String organizationToken){
         try{
-            return advisorDao.list(nickname, name, state, createTime);
+            return advisorDao.list(nickname, name, state, organizationId, organizationToken);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

@@ -38,7 +38,7 @@ public class PostDao{
             Assert.notNull(post, "帖子信息不能为空");
 
             if(StringUtils.isBlank(post.getId())){
-                Assert.notNull(post.getState(), "帖子状态不能为空");
+                Assert.hasText(post.getOrganizationId(), "企业ID不能为空");
 
                 post.setId(UUIDGenerator.by32());
                 post.setCreateTime(new Date());
@@ -48,15 +48,24 @@ public class PostDao{
                 mapper.update(post);
             }
 
+            //删除关联课程
+            mapper.deleteCourse(post.getId());
+            //删除关联媒体
+            mapper.deleteMedia(post.getId());
+            //删除关联标签
+            mapper.deleteTag(post.getId());
+
             //更新子课程
             if(post.getChildren() != null && !post.getChildren().isEmpty()){
-                mapper.deleteCourse(post.getId());
                 mapper.addCourse(post.getId(), post.getChildren());
             }
             //更新媒体
             if(post.getMedia() != null && !post.getMedia().isEmpty()){
-                mapper.deleteMedia(post.getId());
                 mapper.addMedia(post.getId(), post.getMedia());
+            }
+            //更新标签
+            if(post.getTag() != null && !post.getTag().isEmpty()){
+                mapper.addTag(post.getId(), post.getTag());
             }
         }catch(Exception e){
             logger.error(e.getMessage(), e);
@@ -77,6 +86,8 @@ public class PostDao{
             mapper.deleteMedia(id);
             //删除子课程
             mapper.deleteCourse(id);
+            //删除关联标签
+            mapper.deleteTag(id);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
@@ -103,7 +114,7 @@ public class PostDao{
     /**
      * 分页查询
      */
-    public Page<Course> page(PageRequest pageRequest, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Page<Course> page(PageRequest pageRequest, String advisor, UsingState state, String advisorId, String organizationId, String organizationToken, String tagName){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -121,11 +132,17 @@ public class PostDao{
             if(state != null){
                 criteria.and(Restrictions.eq("c.state", state.getId()));
             }
-            if(createTime != null){
-                criteria.and(Restrictions.eq("c.createTime", createTime));
+            if(!StringUtils.isBlank(advisorId)){
+                criteria.and(Restrictions.eq("c.advisorId", advisorId));
             }
-            if(minCreateTime != null && maxCreateTime != null){
-                criteria.and(Restrictions.between("c.createTime", minCreateTime, maxCreateTime));
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("c.organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
+            }
+            if(!StringUtils.isBlank(tagName)){
+                criteria.and(Restrictions.eq("t.name", tagName));
             }
 
             //分页查询ID

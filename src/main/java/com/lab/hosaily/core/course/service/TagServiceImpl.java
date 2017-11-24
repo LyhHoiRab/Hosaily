@@ -73,42 +73,27 @@ public class TagServiceImpl implements TagService{
     }
 
     /**
-     * 根据状态查询记录
-     */
-    @Override
-    public List<Tag> findByState(UsingState state){
-        try{
-            Assert.notNull(state, "标签状态不能为空");
-
-            return tagDao.findByState(state);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 查询列表
-     */
-    @Override
-    public List<Tag> list(UsingState state){
-        try{
-            return tagDao.findByState(state);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    /**
      * 分页查询
      */
     @Override
-    public Page<Tag> page(PageRequest pageRequest){
+    public Page<Tag> page(PageRequest pageRequest, UsingState state, String name, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return tagDao.page(pageRequest);
+            return tagDao.page(pageRequest, state, name, organizationId, organizationToken);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 列表
+     */
+    @Override
+    public List<Tag> list(UsingState state, String name, String organizationId, String organizationToken){
+        try{
+            return tagDao.list(state, name, organizationId, organizationToken);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

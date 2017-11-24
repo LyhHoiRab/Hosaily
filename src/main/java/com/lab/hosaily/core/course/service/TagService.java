@@ -24,18 +24,14 @@ public interface TagService{
      */
     Tag getById(String id);
 
-    /**
-     * 根据状态查询记录
-     */
-    List<Tag> findByState(UsingState state);
-
-    /**
-     * 查询列表
-     */
-    List<Tag> list(UsingState state);
 
     /**
      * 分页查询
      */
-    Page<Tag> page(PageRequest pageRequest);
+    Page<Tag> page(PageRequest pageRequest, UsingState state, String name, String organizationId, String organizationToken);
+
+    /**
+     * 列表
+     */
+    List<Tag> list(UsingState state, String name, String organizationId, String organizationToken);
 }

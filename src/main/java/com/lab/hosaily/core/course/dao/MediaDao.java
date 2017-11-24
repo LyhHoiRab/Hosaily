@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.course.dao;
 
+import com.lab.hosaily.core.course.consts.MediaType;
 import com.lab.hosaily.core.course.dao.mapper.MediaMapper;
 import com.lab.hosaily.core.course.entity.Media;
 import com.rab.babylon.commons.security.exception.DataAccessException;
@@ -38,8 +39,8 @@ public class MediaDao{
                 Assert.hasText(media.getMd5(), "媒体MD5不能为空");
 
                 media.setId(UUIDGenerator.by32());
-                media.setState(UsingState.NORMAL);
                 media.setCreateTime(new Date());
+                media.setState(UsingState.NORMAL);
                 mapper.save(media);
             }else{
                 media.setUpdateTime(new Date());
@@ -59,7 +60,7 @@ public class MediaDao{
             Assert.hasText(id, "媒体ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("id", id));
+            criteria.and(Restrictions.eq("m.id", id));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -76,7 +77,7 @@ public class MediaDao{
             Assert.hasText(md5, "md5值不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("md5", md5));
+            criteria.and(Restrictions.eq("m.md5", md5));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -86,31 +87,34 @@ public class MediaDao{
     }
 
     /**
-     * 根据状态查询记录
-     */
-    public List<Media> findByState(UsingState state){
-        try{
-            Assert.notNull(state, "媒体状态不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("state", state.getId()));
-
-            return mapper.findByParams(criteria);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
      * 分页查询
      */
-    public Page<Media> page(PageRequest pageRequest){
+    public Page<Media> page(PageRequest pageRequest, String remark, MediaType type, String suffix, String organizationId, String organizationToken, UsingState state){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+            criteria.sort(Restrictions.asc("m.createTime"));
+
+            if(!StringUtils.isBlank(remark)){
+                criteria.and(Restrictions.like("m.remark", remark));
+            }
+            if(!StringUtils.isBlank(suffix)){
+                criteria.and(Restrictions.like("m.suffix", suffix));
+            }
+            if(type != null){
+                criteria.and(Restrictions.eq("m.type", type.getId()));
+            }
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("m.organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
+            }
+            if(state != null){
+                criteria.and(Restrictions.eq("m.state", state.getId()));
+            }
 
             Long count = mapper.countByParams(criteria);
             List<Media> list = mapper.findByParams(criteria);
@@ -125,12 +129,28 @@ public class MediaDao{
     /**
      * 查询列表
      */
-    public List<Media> list(UsingState state){
+    public List<Media> list(String remark, MediaType type, String suffix, String organizationId, String organizationToken, UsingState state){
         try{
             Criteria criteria = new Criteria();
+            criteria.sort(Restrictions.asc("m.createTime"));
 
+            if(!StringUtils.isBlank(remark)){
+                criteria.and(Restrictions.like("m.remark", remark));
+            }
+            if(!StringUtils.isBlank(suffix)){
+                criteria.and(Restrictions.like("m.suffix", suffix));
+            }
+            if(type != null){
+                criteria.and(Restrictions.eq("m.type", type.getId()));
+            }
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("m.organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
+            }
             if(state != null){
-                criteria.and(Restrictions.eq("state", state.getId()));
+                criteria.and(Restrictions.eq("m.state", state.getId()));
             }
 
             return mapper.findByParams(criteria);

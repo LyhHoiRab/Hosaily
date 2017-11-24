@@ -19,8 +19,8 @@ public class Advisor implements Create, Update{
     private String nickname;
     //性别
     private Sex sex;
-    //微信号
-    private String wechat;
+    //企业ID
+    private String organizationId;
     //年龄
     private Integer age;
     //简介
@@ -74,14 +74,6 @@ public class Advisor implements Create, Update{
         this.sex = sex;
     }
 
-    public String getWechat(){
-        return wechat;
-    }
-
-    public void setWechat(String wechat){
-        this.wechat = wechat;
-    }
-
     public Integer getAge(){
         return age;
     }
@@ -128,6 +120,14 @@ public class Advisor implements Create, Update{
 
     public void setSort(Integer sort){
         this.sort = sort;
+    }
+
+    public String getOrganizationId(){
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId){
+        this.organizationId = organizationId;
     }
 
     @Override

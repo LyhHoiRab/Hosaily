@@ -7,5 +7,5 @@ public interface SalesService{
     /**
      * 微信号验证导师
      */
-    Advisor verifyAdvisor(String wechat);
+    Advisor verifyAdvisor(String wechat, String organizationToken);
 }

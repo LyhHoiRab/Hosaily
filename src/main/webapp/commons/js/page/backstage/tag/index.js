@@ -1,4 +1,11 @@
-app.controller('tagController', function($scope){
+app.controller('tagController', function($scope, $http, $state){
+    $scope.state = '';
+    $scope.organizationId = '';
+    $scope.name = '';
+    //下拉
+    $scope.states = [];
+    $scope.organizations = [];
+    //列表参数
     $scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
@@ -8,42 +15,89 @@ app.controller('tagController', function($scope){
         currentPage: 1
     };
 
-    //枚举常量
-    $scope.state = {
-        0: '正常',
-        1: '未激活',
-        2: '锁定',
-        3: '冻结',
-        4: '不可用'
+    $scope.reset = function(){
+        $scope.state          = '';
+        $scope.name           = '';
+        $scope.organizationId = '';
     };
 
-    $scope.getData = function(pageNum, pageSize){
-        $.ajax({
+    $scope.search = function(){
+        $scope.pagingOptions.currentPage = 1;
+        $scope.getData();
+    };
+
+    $scope.refresh = function(){
+        $scope.getData();
+    };
+
+    $scope.edit = function(id){
+        $state.go('tagEdit', {'id' : id});
+    };
+
+    $scope.getData = function(){
+        $http({
             url: '/api/1.0/tag/page',
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                'pageNum': pageNum,
-                'pageSize': pageSize
-            },
-            success: function(res){
-                if(res.success){
-                    $scope.list = res.result.content;
-                    $scope.total = res.result.total;
-                }
-                if(!$scope.$$phase){
-                    $scope.$apply();
-                }
+            method: 'POST',
+            data: $.param({
+                'pageNum'        : $scope.pagingOptions.currentPage,
+                'pageSize'       : $scope.pagingOptions.pageSize,
+                'state'          : $scope.state,
+                'organizationId' : $scope.organizationId,
+                'name'           : $scope.name
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.list = res.result.content;
+                $scope.total = res.result.total;
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+            $scope.list = [];
+            $scope.total = 0;
+
+            console.error(response);
+        });
+    };
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
+        });
+    };
+
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
         });
     };
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
-            var pageNum = newVal.currentPage;
-            var pageSize = newVal.pageSize;
-
-            $scope.getData(pageNum, pageSize);
+            $scope.getData();
         }
     }, true);
 
@@ -73,7 +127,7 @@ app.controller('tagController', function($scope){
         },{
             field: 'state',
             displayName: '状态',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{state[COL_FIELD]}}</span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{states[COL_FIELD]}}</span></div>'
         },{
             field: 'createTime',
             displayName: '创建时间',
@@ -84,10 +138,12 @@ app.controller('tagController', function($scope){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="tagEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a></span></div>'
         }]
     };
 
     //初始化数据
-    $scope.getData($scope.pagingOptions.currentPage, $scope.pagingOptions.pageSize);
+    $scope.getData();
+    $scope.getState();
+    $scope.getOrganization();
 });

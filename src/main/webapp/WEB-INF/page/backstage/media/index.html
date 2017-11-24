@@ -1,9 +1,9 @@
 <ol class="breadcrumb">
   <li>
-    <span>系统设置</span>
+    <span>课程设置</span>
   </li><!-- item -->
   <li>
-    <span>等级管理</span>
+    <span>媒体管理</span>
   </li><!-- item -->
 </ol><!-- 面包屑 -->
 
@@ -13,11 +13,8 @@
       <div class="col-xs-12 col-md-3">
         <div class="input-group">
           <span class="input-group-addon">类型</span>
-          <select class="form-control">
+          <select class="form-control" ng-model="mediaType" ng-options="key as value for (key, value) in mediaTypes">
             <option value="">请选择</option>
-            #foreach($type in $types)
-              <option value="$!{type.id}">$!{type.description}</option>
-            #end
           </select>
         </div>
       </div><!-- item -->
@@ -25,11 +22,8 @@
       <div class="col-xs-12 col-md-3">
         <div class="input-group">
           <span class="input-group-addon">格式</span>
-          <select class="form-control">
+          <select class="form-control" ng-model="suffixType" ng-options="key as value for (key, value) in suffixTypes">
             <option value="">请选择</option>
-            #foreach($suffix in $suffixs)
-              <option value="$!{suffix.id}">$!{suffix.id}</option>
-            #end
           </select>
         </div>
       </div><!-- item -->
@@ -37,52 +31,42 @@
       <div class="col-xs-12 col-md-3">
         <div class="input-group">
           <span class="input-group-addon">状态</span>
-          <select class="form-control">
+          <select class="form-control" ng-model="state" ng-options="key as value for (key, value) in states">
             <option value="">请选择</option>
-            #foreach($state in $states)
-              <option value="$!{state.id}">$!{state.description}</option>
-            #end
           </select>
         </div>
       </div><!-- item -->
 
       <div class="col-xs-12 col-md-3">
         <div class="input-group">
-          <span class="input-group-addon">创建时间</span>
-          <input type="date" class="form-control" placeholder="创建时间">
+          <span class="input-group-addon">企业</span>
+          <select class="form-control" ng-model="organizationId" ng-options="organization.id as organization.name for organization in organizations">
+            <option value="">请选择</option>
+          </select>
         </div>
       </div><!-- item -->
 
       <div class="col-xs-12 col-md-3">
         <div class="input-group">
-          <span class="input-group-addon">大小</span>
-          <input type="number" class="form-control double" placeholder="不小于">
-          <input type="number" class="form-control double" placeholder="不大于">
-        </div>
-      </div><!-- item -->
-
-      <div class="col-xs-12 col-md-3">
-        <div class="input-group">
-          <span class="input-group-addon">创建时间</span>
-          <input type="date" class="form-control double" placeholder="不早于">
-          <input type="date" class="form-control double" placeholder="不晚于">
+          <span class="input-group-addon">备注</span>
+          <input class="form-control" type="text" ng-model="remark">
         </div>
       </div><!-- item -->
     </div>
   </div><!-- container -->
 
   <div class="container-fluid">
-    <button type="button" class="btn">
+    <button type="button" class="btn" ng-click="search()">
       <i class="fa fa-search"></i>
       搜索
     </button><!-- item -->
 
-    <button type="button" class="btn">
+    <button type="button" class="btn" ng-click="reset()">
       <i class="fa fa-retweet"></i>
       重置
     </button><!-- item -->
 
-    <button type="button" class="btn">
+    <button type="button" class="btn" ng-click="refresh()">
       <i class="fa fa-refresh"></i>
       刷新
     </button><!-- item -->

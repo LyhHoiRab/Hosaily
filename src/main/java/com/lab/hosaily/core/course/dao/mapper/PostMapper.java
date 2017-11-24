@@ -2,6 +2,7 @@ package com.lab.hosaily.core.course.dao.mapper;
 
 import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.course.entity.Media;
+import com.lab.hosaily.core.course.entity.Tag;
 import com.rab.babylon.commons.security.mybatis.Criteria;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -45,6 +46,16 @@ public interface PostMapper{
      * 删除子课程
      */
     void deleteCourse(@Param("parentId") String parentId);
+
+    /**
+     * 添加标签
+     */
+    void addTag(@Param("courseId") String courseId, @Param("tags") List<Tag> tags);
+
+    /**
+     * 删除标签
+     */
+    void deleteTag(@Param("courseId") String courseId);
 
     /**
      * 根据条件查询记录

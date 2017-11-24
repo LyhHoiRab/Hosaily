@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
   <li>
-    <span>系统设置</span>
+    <span>课程管理</span>
   </li><!-- item -->
   <li>
     <a ui-sref="post">帖子管理</a>
@@ -65,8 +65,8 @@
 
     <div class="row-group">
       <div class="input-group">
-        <span class="input-group-addon">导师</span>
-        <select class="form-control" ng-model="post.advisor" ng-options="advisor as advisor.name for advisor in advisors">
+        <span class="input-group-addon">状态</span>
+        <select class="form-control" ng-model="post.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>
         </select>
       </div>
@@ -74,19 +74,43 @@
 
     <div class="row-group">
       <div class="input-group">
-        <span class="input-group-addon">多媒体</span>
-        <select class="form-control" ng-model="post.media" ng-options="media as media.remark for media in medias">
+        <span class="input-group-addon">企业</span>
+        <select class="form-control" ng-model="post.organizationId" ng-options="organization.id as organization.name for organization in organizations">
           <option value="">请选择</option>
         </select>
       </div>
-    </div>
+    </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
-        <span class="input-group-addon">状态</span>
-        <select class="form-control" ng-model="post.state" ng-options="key as value for (key, value) in states">
+        <span class="input-group-addon">导师</span>
+        <select class="form-control" ng-model="post.advisor.id" ng-options="advisor.id as advisor.name for advisor in advisors">
           <option value="">请选择</option>
         </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">媒体</span>
+        <ui-select class="form-control" multiple ng-model="post.media" theme="bootstrap">
+          <ui-select-match placeholder="请选择">{{$item.remark}}</ui-select-match>
+          <ui-select-choices repeat="media in medias">
+            <small>{{media.remark}}</small>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">标签</span>
+        <ui-select class="form-control" multiple ng-model="post.tag" theme="bootstrap">
+          <ui-select-match placeholder="请选择">{{$item.name}}</ui-select-match>
+          <ui-select-choices repeat="tag in tags">
+            <small>{{tag.name}}</small>
+          </ui-select-choices>
+        </ui-select>
       </div>
     </div><!-- item -->
 

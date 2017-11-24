@@ -37,6 +37,8 @@ public class Course implements Create, Update{
     private Integer sort;
     //父级ID
     private String parentId;
+    //企业ID
+    private String organizationId;
     //子课程
     private List<Course> children;
     //媒体资源
@@ -208,6 +210,14 @@ public class Course implements Create, Update{
 
     public void setComments(Integer comments){
         this.comments = comments;
+    }
+
+    public String getOrganizationId(){
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId){
+        this.organizationId = organizationId;
     }
 
     @Override

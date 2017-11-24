@@ -35,30 +35,17 @@ public class TagDao{
             Assert.notNull(tag, "标签信息不能为空");
 
             if(StringUtils.isBlank(tag.getId())){
+                Assert.notNull(tag.getState(), "标签状态不能为空");
                 Assert.hasText(tag.getName(), "标签名称不能为空");
+                Assert.hasText(tag.getOrganizationId(), "企业ID不能为空");
 
                 tag.setId(UUIDGenerator.by32());
-                tag.setState(UsingState.NORMAL);
                 tag.setCreateTime(new Date());
                 mapper.save(tag);
             }else{
                 tag.setUpdateTime(new Date());
                 mapper.update(tag);
             }
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 删除标签
-     */
-    public void delete(String id){
-        try{
-            Assert.hasText(id, "标签ID不能为空");
-
-            mapper.delete(id);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
@@ -73,7 +60,7 @@ public class TagDao{
             Assert.hasText(id, "标签ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("id", id));
+            criteria.and(Restrictions.eq("t.id", id));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -83,31 +70,23 @@ public class TagDao{
     }
 
     /**
-     * 根据状态查询
-     */
-    public List<Tag> findByState(UsingState state){
-        try{
-            Assert.notNull(state, "标签状态不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("state", state.getId()));
-
-            return mapper.findByParams(criteria);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
      * 查询列表
      */
-    public List<Tag> list(UsingState state){
+    public List<Tag> list(UsingState state, String name, String organizationId, String organizationToken){
         try{
             Criteria criteria = new Criteria();
 
             if(state != null){
-                criteria.and(Restrictions.eq("state", state.getId()));
+                criteria.and(Restrictions.eq("t.state", state.getId()));
+            }
+            if(!StringUtils.isBlank(name)){
+                criteria.and(Restrictions.like("t.name", name));
+            }
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("t.organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
             }
 
             return mapper.findByParams(criteria);
@@ -120,12 +99,26 @@ public class TagDao{
     /**
      * 分页查询
      */
-    public Page<Tag> page(PageRequest pageRequest){
+    public Page<Tag> page(PageRequest pageRequest, UsingState state, String name, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+            criteria.sort(Restrictions.asc("t.createTime"));
+
+            if(state != null){
+                criteria.and(Restrictions.eq("t.state", state.getId()));
+            }
+            if(!StringUtils.isBlank(name)){
+                criteria.and(Restrictions.like("t.name", name));
+            }
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("t.organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
+            }
 
             Long count = mapper.countByParams(criteria);
             List<Tag> list = mapper.findByParams(criteria);

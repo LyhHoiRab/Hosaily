@@ -1,13 +1,11 @@
 app.controller('customizationController', function($scope, $state, $http){
-    //枚举常量
-    $scope.state = {
-        0: '正常',
-        1: '未激活',
-        2: '锁定',
-        3: '冻结',
-        4: '不可用'
-    };
-
+    //查询列表
+    $scope.state          = '';
+    $scope.organizationId = '';
+    //下拉
+    $scope.organizations = [];
+    $scope.states        = [];
+    //列表参数
     $scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
@@ -18,10 +16,8 @@ app.controller('customizationController', function($scope, $state, $http){
     };
 
     $scope.reset = function(){
-        $('#state').val('');
-        $('#createTime').val('');
-        $('#minCreateTime').val('');
-        $('#maxCreateTime').val('');
+        $scope.state          = '';
+        $scope.organizationId = '';
     };
 
     $scope.search = function(){
@@ -34,35 +30,62 @@ app.controller('customizationController', function($scope, $state, $http){
     };
 
     $scope.getData = function(){
-        //查询参数
-        var pageNum       = $scope.pagingOptions.currentPage,
-            pageSize      = $scope.pagingOptions.pageSize,
-            state         = $('#state').val(),
-            createTime    = $('#createTime').val(),
-            minCreateTime = $('#minCreateTime').val(),
-            maxCreateTime = $('#maxCreateTime').val();
-
-        $.ajax({
+        $http({
             url: '/api/1.0/customization/page',
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                'pageNum'       : pageNum,
-                'pageSize'      : pageSize,
-                'state'         : state,
-                'createTime'    : createTime,
-                'minCreateTime' : minCreateTime,
-                'maxCreateTime' : maxCreateTime
-            },
-            success: function(res){
-                if(res.success){
-                    $scope.list = res.result.content;
-                    $scope.total = res.result.total;
-                }
-                if(!$scope.$$phase){
-                    $scope.$apply();
-                }
+            method: 'POST',
+            data: $.param({
+                'pageNum'        : $scope.pagingOptions.currentPage,
+                'pageSize'       : $scope.pagingOptions.pageSize,
+                'state'          : $scope.state,
+                'organizationId' : $scope.organizationId
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.list = res.result.content;
+                $scope.total = res.result.total;
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+            $scope.list = [];
+            $scope.total = 0;
+
+            console.error(response);
+        });
+    };
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
+        });
+    };
+
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
         });
     };
 
@@ -97,9 +120,6 @@ app.controller('customizationController', function($scope, $state, $http){
             field: 'title',
             displayName: '标题'
         },{
-            field: 'summary',
-            displayName: '概要'
-        },{
             field: 'subscribe',
             displayName: '定制人数'
         },{
@@ -108,7 +128,7 @@ app.controller('customizationController', function($scope, $state, $http){
         },{
             field: 'state',
             displayName: '状态',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{state[COL_FIELD]}}</span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{states[COL_FIELD]}}</span></div>'
         },{
             field: 'createTime',
             displayName: '创建时间',
@@ -125,4 +145,6 @@ app.controller('customizationController', function($scope, $state, $http){
 
     //初始化数据
     $scope.getData();
+    $scope.getState();
+    $scope.getOrganization();
 });

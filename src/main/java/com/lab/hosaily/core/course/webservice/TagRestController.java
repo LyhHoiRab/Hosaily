@@ -70,12 +70,12 @@ public class TagRestController{
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Tag>> page(Long pageNum, Long pageSize){
+    public Response<Page<Tag>> page(Long pageNum, Long pageSize, UsingState state, String name, String organizationId, String organizationToken){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Tag> page = tagService.page(pageRequest);
+            Page<Tag> page = tagService.page(pageRequest, state, name, organizationId, organizationToken);
 
-            return new Response<Page<Tag>>("查询成功", tagService.page(pageRequest));
+            return new Response<Page<Tag>>("查询成功", page);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -86,9 +86,10 @@ public class TagRestController{
      * 查询可用的标签列表
      */
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<Tag>> list(UsingState state){
+    public Response<List<Tag>> list(UsingState state, String name, String organizationId, String organizationToken){
         try{
-            List<Tag> list = tagService.list(state);
+            List<Tag> list = tagService.list(state, name, organizationId, organizationToken);
+
             return new Response<List<Tag>>("查询成功", list);
         }catch(Exception e){
             logger.error(e.getMessage(), e);

@@ -72,10 +72,10 @@ public class AdvisorRestController{
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Advisor>> page(Long pageNum, Long pageSize, String nickname, String name, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Response<Page<Advisor>> page(Long pageNum, Long pageSize, String nickname, String name, UsingState state, String organizationId, String organizationToken){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Advisor> page = advisorService.page(pageRequest, nickname, name, state, createTime, minCreateTime, maxCreateTime);
+            Page<Advisor> page = advisorService.page(pageRequest, nickname, name, state, organizationId, organizationToken);
 
             return new Response<Page<Advisor>>("查询成功", page);
         }catch(Exception e){
@@ -88,9 +88,9 @@ public class AdvisorRestController{
      * 查询列表
      */
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<Advisor>> list(String nickname, String name, UsingState state, Date createTime){
+    public Response<List<Advisor>> list(String nickname, String name, UsingState state, String organizationId, String organizationToken){
         try{
-            List<Advisor> list = advisorService.list(nickname, name, state, createTime);
+            List<Advisor> list = advisorService.list(nickname, name, state, organizationId, organizationToken);
 
             return new Response<List<Advisor>>("查询成功", list);
         }catch(Exception e){

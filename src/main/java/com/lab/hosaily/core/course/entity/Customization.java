@@ -5,6 +5,7 @@ import com.rab.babylon.core.base.entity.Update;
 import com.rab.babylon.core.consts.entity.UsingState;
 
 import java.util.Date;
+import java.util.List;
 
 public class Customization implements Create, Update{
 
@@ -19,6 +20,10 @@ public class Customization implements Create, Update{
     private String introduction;
     //订阅人数
     private Integer subscribe;
+    //企业ID
+    private String organizationId;
+    //标签
+    private List<Tag> tag;
     //排序
     private Integer sort;
     //使用状态
@@ -92,6 +97,22 @@ public class Customization implements Create, Update{
 
     public void setState(UsingState state){
         this.state = state;
+    }
+
+    public List<Tag> getTag(){
+        return tag;
+    }
+
+    public void setTag(List<Tag> tag){
+        this.tag = tag;
+    }
+
+    public String getOrganizationId(){
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId){
+        this.organizationId = organizationId;
     }
 
     @Override

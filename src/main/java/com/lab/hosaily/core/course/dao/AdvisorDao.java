@@ -68,26 +68,9 @@ public class AdvisorDao{
     }
 
     /**
-     * 根据状态查询
-     */
-    public List<Advisor> findByState(UsingState state){
-        try{
-            Assert.notNull(state, "导师状态不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("a.state", state.getId()));
-
-            return mapper.findByParams(criteria);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
      * 分页查询
      */
-    public Page<Advisor> page(PageRequest pageRequest, String nickname, String name, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Page<Advisor> page(PageRequest pageRequest, String nickname, String name, UsingState state, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -104,11 +87,11 @@ public class AdvisorDao{
             if(state != null){
                 criteria.and(Restrictions.eq("a.state", state.getId()));
             }
-            if(createTime != null){
-                criteria.and(Restrictions.eq("a.createTime", createTime));
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("a.organizationId", organizationId));
             }
-            if(minCreateTime != null && maxCreateTime != null){
-                criteria.and(Restrictions.between("a.createTime", minCreateTime, maxCreateTime));
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
             }
 
             Long count = mapper.countByParams(criteria);
@@ -124,7 +107,7 @@ public class AdvisorDao{
     /**
      * 查询列表
      */
-    public List<Advisor> list(String nickname, String name, UsingState state, Date createTime){
+    public List<Advisor> list(String nickname, String name, UsingState state, String organizationId, String organizationToken){
         try{
             Criteria criteria = new Criteria();
             criteria.sort(Restrictions.asc("a.sort"));
@@ -138,8 +121,11 @@ public class AdvisorDao{
             if(state != null){
                 criteria.and(Restrictions.eq("a.state", state.getId()));
             }
-            if(createTime != null){
-                criteria.and(Restrictions.eq("a.createTime", createTime));
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("a.organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
             }
 
             return mapper.findByParams(criteria);

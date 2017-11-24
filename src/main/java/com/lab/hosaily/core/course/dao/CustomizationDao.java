@@ -35,12 +35,21 @@ public class CustomizationDao{
             Assert.notNull(customization, "定制服务信息不能为空");
 
             if(StringUtils.isBlank(customization.getId())){
+                Assert.hasText(customization.getOrganizationId(), "企业ID不能为空");
+
                 customization.setId(UUIDGenerator.by32());
                 customization.setCreateTime(new Date());
                 mapper.save(customization);
             }else{
                 customization.setUpdateTime(new Date());
                 mapper.update(customization);
+            }
+
+            //删除关联标签
+            mapper.deleteTag(customization.getId());
+            //更新标签
+            if(customization.getTag() != null && !customization.getTag().isEmpty()){
+                mapper.addTag(customization.getId(), customization.getTag());
             }
         }catch(Exception e){
             logger.error(e.getMessage(), e);
@@ -56,7 +65,7 @@ public class CustomizationDao{
             Assert.hasText(id, "定制服务ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("id", id));
+            criteria.and(Restrictions.eq("c.id", id));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -68,22 +77,25 @@ public class CustomizationDao{
     /**
      * 分页查询
      */
-    public Page<Customization> page(PageRequest pageRequest, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Page<Customization> page(PageRequest pageRequest, UsingState state, String tagName, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.sort(Restrictions.asc("sort"));
+            criteria.sort(Restrictions.asc("c.sort"));
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             if(state != null){
-                criteria.and(Restrictions.eq("state", state.getId()));
+                criteria.and(Restrictions.eq("c.state", state.getId()));
             }
-            if(createTime != null){
-                criteria.and(Restrictions.eq("createTime", createTime));
+            if(!StringUtils.isBlank(tagName)){
+                criteria.and(Restrictions.eq("t.name", tagName));
             }
-            if(minCreateTime != null && maxCreateTime != null){
-                criteria.and(Restrictions.between("createTime", minCreateTime, maxCreateTime));
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("c.organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
             }
 
             Long count = mapper.countByParams(criteria);

@@ -1,6 +1,7 @@
 app.controller('advisorEditController', function($scope, $state, $stateParams, FileUploader, $http){
     $scope.sexs = [];
     $scope.states = [];
+    $scope.organizations = [];
 
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/advisor/upload',
@@ -29,27 +30,27 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
     };
 
     $scope.advisor = {
-        id           : $stateParams.id,
-        name         : '',
-        nickname     : '',
-        age          : '',
-        sex          : '',
-        wechat       : '',
-        introduction : '',
-        state        : '',
-        sort         : '',
-        headImgUrl   : ''
+        id             : $stateParams.id,
+        name           : '',
+        nickname       : '',
+        age            : '',
+        sex            : '',
+        introduction   : '',
+        state          : '',
+        sort           : '',
+        headImgUrl     : '',
+        organizationId : ''
     };
 
     $scope.reset = function(){
-        $scope.advisor.name         = '';
-        $scope.advisor.nickname     = '';
-        $scope.advisor.age          = '';
-        $scope.advisor.sex          = '';
-        $scope.advisor.wechat       = '';
-        $scope.advisor.introduction = '';
-        $scope.advisor.state        = '';
-        $scope.advisor.sort         = '';
+        $scope.advisor.name           = '';
+        $scope.advisor.nickname       = '';
+        $scope.advisor.age            = '';
+        $scope.advisor.sex            = '';
+        $scope.advisor.introduction   = '';
+        $scope.advisor.state          = '';
+        $scope.advisor.sort           = '';
+        $scope.advisor.organizationId = '';
     };
 
     $scope.submit = function(){
@@ -68,7 +69,7 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
                 alert(res.msg);
             }
         }).error(function(response){
-
+            console.error(response);
         });
     };
 
@@ -83,7 +84,7 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
                 alert(res.msg);
             }
         }).error(function(response){
-
+            console.error(response);
         });
     };
 
@@ -113,8 +114,28 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         });
     };
 
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
+        });
+    };
+
     //初始化
     $scope.getState();
     $scope.getSex();
+    $scope.getOrganization();
     $scope.getById();
 });

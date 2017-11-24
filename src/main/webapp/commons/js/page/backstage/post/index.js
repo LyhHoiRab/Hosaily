@@ -1,11 +1,11 @@
 app.controller('postController', function($scope, $http, $state){
     //查询列表
-    $scope.state;
-    $scope.advisor;
-    $scope.minCreateTime;
-    $scope.maxCreateTime;
-    $scope.createTime;
-    $scope.states = [];
+    $scope.state          = '';
+    $scope.advisor        = '';
+    $scope.organizationId = '';
+    //下拉
+    $scope.organizations = [];
+    $scope.states        = [];
     //列表参数
     $scope.list = [];
     $scope.selected = [];
@@ -17,11 +17,9 @@ app.controller('postController', function($scope, $http, $state){
     };
 
     $scope.reset = function(){
-        $scope.state         = '';
-        $scope.advisor       = '';
-        $scope.minCreateTime = '';
-        $scope.maxCreateTime = '';
-        $scope.createTime    = '';
+        $scope.state          = '';
+        $scope.advisor        = '';
+        $scope.organizationId = '';
     };
 
     $scope.search = function(){
@@ -34,26 +32,15 @@ app.controller('postController', function($scope, $http, $state){
     };
 
     $scope.getData = function(){
-        //查询参数
-        var pageNum       = $scope.pagingOptions.currentPage, 
-            pageSize      = $scope.pagingOptions.pageSize,
-            advisor       = $scope.advisor,
-            state         = $scope.state,
-            createTime    = $scope.createTime,
-            minCreateTime = $scope.minCreateTime,
-            maxCreateTime = $scope.maxCreateTime;
-
         $http({
             url: '/api/1.0/post/page',
             method: 'POST',
             data: $.param({
-                'pageNum'       : pageNum,
-                'pageSize'      : pageSize,
-                'advisor'       : advisor,
-                'state'         : state,
-                'createTime'    : createTime,
-                'minCreateTime' : minCreateTime,
-                'maxCreateTime' : maxCreateTime
+                'pageNum'        : $scope.pagingOptions.currentPage,
+                'pageSize'       : $scope.pagingOptions.pageSize,
+                'advisor'        : $scope.advisor,
+                'state'          : $scope.state,
+                'organizationId' : $scope.organizationId
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -62,10 +49,14 @@ app.controller('postController', function($scope, $http, $state){
             if(res.success){
                 $scope.list = res.result.content;
                 $scope.total = res.result.total;
+            }else{
+                alert(res.msg);
             }
         }).error(function(response){
             $scope.list = [];
             $scope.total = 0;
+
+            console.error(response);
         });
     };
 
@@ -76,14 +67,18 @@ app.controller('postController', function($scope, $http, $state){
         }).success(function(res, status, headers, config){
             if(res.success){
                 alert(res.msg);
-                $scope.pagingOptions.currentPage = 1;
-                $scope.getData();
+
+                $scope.search();
             }else{
                 alert(res.msg);
             }
         }).error(function(response){
-
+            console.error(response);
         });
+    };
+
+    $scope.edit = function(id){
+        $state.go('postEdit', {'id' : id});
     };
 
     $scope.getState = function(){
@@ -99,8 +94,23 @@ app.controller('postController', function($scope, $http, $state){
         });
     };
 
-    $scope.edit = function(id){
-        $state.go('postEdit', {'id' : id});
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
+        });
     };
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
@@ -165,4 +175,5 @@ app.controller('postController', function($scope, $http, $state){
     //初始化数据
     $scope.getData();
     $scope.getState();
+    $scope.getOrganization();
 });

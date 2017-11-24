@@ -21,6 +21,7 @@ public class CommonsInterceptor extends HandlerInterceptorAdapter{
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception{
         String url = request.getRequestURI().substring(request.getContextPath().length());
+        String domain = URLUtils.getBasePath(request);
 
         String basePath = URLUtils.getBasePath(request);
         ModelMap content = modelAndView.getModelMap();
@@ -33,15 +34,27 @@ public class CommonsInterceptor extends HandlerInterceptorAdapter{
             DeviceType deviceType = userAgent.getOperatingSystem().getDeviceType();
 
             if(deviceType != null && deviceType.equals(DeviceType.COMPUTER)){
-                content.put("commonsJsPath", CommonsPathConsts.JS_PATH);
-                content.put("commonsCssPath", CommonsPathConsts.CSS_PATH);
-                content.put("commonsImgPath", CommonsPathConsts.IMG_PATH);
+                if(domain.startsWith(CommonsPathConsts.DOMAIN_KULIAO)){
+                    content.put("commonsJsPath", CommonsPathConsts.JS_PATH);
+                    content.put("commonsCssPath", CommonsPathConsts.CSS_PATH);
+                    content.put("commonsImgPath", CommonsPathConsts.IMG_PATH);
+                }else{
+                    content.put("commonsJsPath", CommonsPathConsts.JS_PATH_YHQS);
+                    content.put("commonsCssPath", CommonsPathConsts.CSS_PATH_YHQS);
+                    content.put("commonsImgPath", CommonsPathConsts.IMG_PATH_YHQS);
+                }
 
                 modelAndView.setViewName(CommonsPathConsts.WEB_DIR + modelAndView.getViewName());
             }else{
-                content.put("commonsJsPath", CommonsPathConsts.MOBILE_JS_PATH);
-                content.put("commonsCssPath", CommonsPathConsts.MOBILE_CSS_PATH);
-                content.put("commonsImgPath", CommonsPathConsts.MOBILE_IMG_PATH);
+                if(domain.startsWith(CommonsPathConsts.DOMAIN_KULIAO)){
+                    content.put("commonsJsPath", CommonsPathConsts.MOBILE_JS_PATH);
+                    content.put("commonsCssPath", CommonsPathConsts.MOBILE_CSS_PATH);
+                    content.put("commonsImgPath", CommonsPathConsts.MOBILE_IMG_PATH);
+                }else{
+                    content.put("commonsJsPath", CommonsPathConsts.JS_PATH_YHQS);
+                    content.put("commonsCssPath", CommonsPathConsts.CSS_PATH_YHQS);
+                    content.put("commonsImgPath", CommonsPathConsts.IMG_PATH_YHQS);
+                }
 
                 modelAndView.setViewName(CommonsPathConsts.MOBILE_DIR + modelAndView.getViewName());
             }

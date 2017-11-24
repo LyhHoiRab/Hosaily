@@ -1,30 +1,28 @@
 app.controller('advisorController', function($scope, $http, $state){
     //查询列表
     $scope.state;
+    $scope.organizationId;
     $scope.name;
     $scope.nickname;
-    $scope.minCreateTime;
-    $scope.maxCreateTime;
-    $scope.createTime;
+    //下拉
     $scope.sexs = [];
     $scope.states = [];
+    $scope.organizations = [];
     //列表参数
     $scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
     $scope.pagingOptions = {
-        pageSizes: [20, 50, 100, 200],
-        pageSize: 20,
+        pageSizes: [10, 50, 100, 200],
+        pageSize: 10,
         currentPage: 1
     };
 
     $scope.reset = function(){
-        $scope.state         = '';
-        $scope.name          = '';
-        $scope.nickname      = '';
-        $scope.minCreateTime = '';
-        $scope.maxCreateTime = '';
-        $scope.createTime    = '';
+        $scope.state          = '';
+        $scope.name           = '';
+        $scope.nickname       = '';
+        $scope.organizationId = '';
     };
 
     $scope.search = function(){
@@ -37,28 +35,16 @@ app.controller('advisorController', function($scope, $http, $state){
     };
 
     $scope.getData = function(){
-        //查询参数
-        var pageNum       = $scope.pagingOptions.currentPage, 
-            pageSize      = $scope.pagingOptions.pageSize,
-            name          = $scope.name,
-            nickname      = $scope.nickname,
-            state         = $scope.state,
-            createTime    = $scope.createTime,
-            minCreateTime = $scope.minCreateTime,
-            maxCreateTime = $scope.maxCreateTime;
-
         $http({
             url: '/api/1.0/advisor/page',
             method: 'POST',
             data: $.param({
-                'pageNum'       : pageNum,
-                'pageSize'      : pageSize,
-                'nickname'      : nickname,
-                'name'          : name,
-                'state'         : state,
-                'createTime'    : createTime,
-                'minCreateTime' : minCreateTime,
-                'maxCreateTime' : maxCreateTime
+                'pageNum'        : $scope.pagingOptions.currentPage,
+                'pageSize'       : $scope.pagingOptions.pageSize,
+                'nickname'       : $scope.nickname,
+                'name'           : $scope.name,
+                'state'          : $scope.state,
+                'organizationId' : $scope.organizationId
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -67,10 +53,14 @@ app.controller('advisorController', function($scope, $http, $state){
             if(res.success){
                 $scope.list = res.result.content;
                 $scope.total = res.result.total;
+            }else{
+                alert(res.msg);
             }
         }).error(function(response){
-                $scope.list = [];
-                $scope.total = 0;
+            $scope.list = [];
+            $scope.total = 0;
+
+            console.error(response);
         });
     };
 
@@ -97,6 +87,25 @@ app.controller('advisorController', function($scope, $http, $state){
             }
         }).error(function(response){
             $scope.sexs = [];
+        });
+    };
+
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
         });
     };
 
@@ -135,9 +144,6 @@ app.controller('advisorController', function($scope, $http, $state){
             field: 'nickname',
             displayName: '昵称'
         },{
-            field: 'wechat',
-            displayName: '微信号'
-        },{
             field: 'headImgUrl',
             displayName: '头像',
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><img src="{{COL_FIELD}}" width="50" height="50" style="vertical-align:middle;"></div>'
@@ -148,9 +154,6 @@ app.controller('advisorController', function($scope, $http, $state){
         },{
             field: 'age',
             displayName: '年龄'
-        },{
-            field: 'introduction',
-            displayName: '简介'
         },{
             field: 'sort',
             displayName: '排序'
@@ -176,4 +179,5 @@ app.controller('advisorController', function($scope, $http, $state){
     $scope.getData();
     $scope.getState();
     $scope.getSex();
+    $scope.getOrganization();
 });

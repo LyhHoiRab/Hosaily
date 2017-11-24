@@ -1,29 +1,76 @@
-app.controller('tagAddController', function($scope, $state){
+app.controller('tagAddController', function($scope, $state, $http){
+    //下拉
+    $scope.states = [];
+    $scope.organizations = [];
+    //标签实体
     $scope.tag = {
-        name        : '',
-        description : '',
-        state       : ''
+        name           : '',
+        description    : '',
+        state          : '',
+        organizationId : ''
     };
 
     $scope.reset = function(){
-        $scope.tag.name         = '';
-        $scope.tag.description  = '';
-        $scope.tag.state        = '';
+        $scope.tag.name           = '';
+        $scope.tag.description    = '';
+        $scope.tag.state          = '';
+        $scope.tag.organizationId = '';
     };
 
     $scope.submit = function(){
-        $.ajax({
+        $http({
             url: '/api/1.0/tag',
-            type: 'POST',
+            method: 'POST',
             data: JSON.stringify($scope.tag),
-            dataType: 'JSON',
-            contentType: 'application/json',
-            success: function(res){
-                if(res.success){
-                    alert(res.msg);
-                    $state.go('tag');
-                }
+            headers: {
+                'Content-Type': 'application/json'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+                $state.go('tag');
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+            alert('系统繁忙');
+            console.error(response);
         });
     };
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
+        });
+    };
+
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
+        });
+    };
+
+    //初始化
+    $scope.getState();
+    $scope.getOrganization();
 });

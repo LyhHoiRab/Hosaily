@@ -1,4 +1,9 @@
-app.controller('customizationAddController', function($scope, $state, FileUploader){
+app.controller('customizationAddController', function($scope, $state, FileUploader, $http){
+    //下拉
+    $scope.states        = [];
+    $scope.organizations = [];
+    $scope.tags          = [];
+
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/customization/upload',
         queueLimit: 1,
@@ -16,52 +21,118 @@ app.controller('customizationAddController', function($scope, $state, FileUpload
 
     uploader.onSuccessItem = function(item, response, status, headers){
         $scope.customization.cover = response.result;
-
-        if(!$scope.$$phase){
-            $scope.$apply();
-        }
     };
 
-    var editor = CKEDITOR.replace('editor', {
+    $scope.editor = {
+        allowedContent: true,
+        entitles: false,
         customConfig: '/commons/js/plugin/ckeditor/config.js'
-    });
+    };
 
     $scope.customization = {
-        title        : '',
-        summary      : '',
-        introduction : '',
-        state        : '',
-        cover        : '/commons/img/level_default.jpg',
-        sort         : 0,
-        subscribe    : 0
+        title          : '',
+        summary        : '',
+        introduction   : '',
+        state          : '',
+        cover          : '/commons/img/level_default.jpg',
+        sort           : 0,
+        subscribe      : 0,
+        organizationId : '',
+        tag            : []
     };
 
     $scope.reset = function(){
-        $scope.customization.title         = '';
-        $scope.customization.summary       = '';
-        $scope.customization.introduction  = '';
-        $scope.customization.state         = '';
-        $scope.customization.sort          = 0;
-        $scope.customization.subscribe     = 0;
-
-        editor.setData('');
+        $scope.customization.title          = '';
+        $scope.customization.summary        = '';
+        $scope.customization.introduction   = '';
+        $scope.customization.state          = '';
+        $scope.customization.sort           = 0;
+        $scope.customization.subscribe      = 0;
+        $scope.customization.organizationId = '';
+        $scope.customization.tag            = [];
     };
 
     $scope.submit = function(){
-        $scope.customization.introduction = editor.getData();
-
-        $.ajax({
+        $http({
             url: '/api/1.0/customization',
-            type: 'POST',
+            method: 'POST',
             data: JSON.stringify($scope.customization),
-            dataType: 'JSON',
-            contentType: 'application/json',
-            success: function(res){
-                if(res.success){
-                    alert(res.msg);
-                    $state.go('customization');
-                }
+            headers: {
+                'Content-Type': 'application/json'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+                $state.go('customization');
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+            console.error(response);
         });
     };
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
+        });
+    };
+
+    $scope.getTag = function(){
+        $http({
+            url: '/api/1.0/tag/list',
+            method: 'POST',
+            data: $.param({
+                'state'          : 0,
+                'organizationId' : $scope.customization.organizationId
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.tags = res.result;
+            }
+        }).error(function(response){
+            $scope.tags = [];
+        });
+
+    };
+
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
+        });
+    };
+
+    $scope.$watch('customization.organizationId', function(newVal, oldVal){
+        if(newVal !== oldVal){
+            $scope.getTag();
+        }
+
+    }, true);
+
+    //初始化数据
+    $scope.getState();
+    $scope.getOrganization();
 });

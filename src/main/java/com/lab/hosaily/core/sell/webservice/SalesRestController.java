@@ -23,9 +23,9 @@ public class SalesRestController{
     private SalesService salesService;
 
     @RequestMapping(value = "/verify/{wechat}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Advisor> verifyAdvisor(@PathVariable("wechat") String wechat){
+    public Response<Advisor> verifyAdvisor(@PathVariable("wechat") String wechat, String organizationToken){
         try{
-            Advisor advisor = salesService.verifyAdvisor(wechat);
+            Advisor advisor = salesService.verifyAdvisor(wechat, organizationToken);
             return new Response<Advisor>("查询成功", advisor);
         }catch(Exception e){
             logger.error(e.getMessage(), e);

@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.course.service;
 
+import com.lab.hosaily.core.course.consts.MediaType;
 import com.lab.hosaily.core.course.entity.Media;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
@@ -31,19 +32,14 @@ public interface MediaService{
     Media getByMd5(String md5);
 
     /**
-     * 根据状态查询记录
-     */
-    List<Media> findByState(UsingState state);
-
-    /**
      * 分页查询
      */
-    Page<Media> page(PageRequest pageRequest);
+    Page<Media> page(PageRequest pageRequest, String remark, MediaType type, String suffix, String organizationId, String organizationToken, UsingState state);
 
     /**
      * 查询列表
      */
-    List<Media> list(UsingState state);
+    List<Media> list(String remark, MediaType type, String suffix, String organizationId, String organizationToken, UsingState state);
 
     /**
      * 上传媒体文件

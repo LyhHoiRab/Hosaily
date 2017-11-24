@@ -17,6 +17,7 @@ public class Media implements Create, Update{
     private Long size;
     private String remark;
     private MediaType type;
+    private String organizationId;
     private UsingState state;
     private Date createTime;
     private Date updateTime;
@@ -95,6 +96,14 @@ public class Media implements Create, Update{
 
     public void setMd5(String md5){
         this.md5 = md5;
+    }
+
+    public String getOrganizationId(){
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId){
+        this.organizationId = organizationId;
     }
 
     @Override

@@ -21,11 +21,6 @@ public interface AdvisorMapper{
     void update(Advisor advisor);
 
     /**
-     * 删除记录
-     */
-    void delete(String id);
-
-    /**
      * 根据条件查询单条记录
      */
     Advisor getByParams(@Param("params") Criteria criteria);

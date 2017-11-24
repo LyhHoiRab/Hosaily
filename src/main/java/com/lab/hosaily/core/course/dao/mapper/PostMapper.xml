@@ -4,31 +4,32 @@
 <mapper namespace="com.lab.hosaily.core.course.dao.mapper.PostMapper">
 	<!-- 帖子 -->
     <resultMap id="post" type="com.lab.hosaily.core.course.entity.Course">
-    	<id     column="id"           property="id"           javaType="java.lang.String"/>
-        <result column="type"         property="type"         typeHandler="courseTypeHandler"/>
-        <result column="kind"         property="kind"         typeHandler="courseKindHandler"/>
-        <result column="title"        property="title"        javaType="java.lang.String"/>
-        <result column="introduction" property="introduction" javaType="java.lang.String"/>
-        <result column="summary"      property="summary"      javaType="java.lang.String"/>
-        <result column="cover"        property="cover"        javaType="java.lang.String"/>
-        <result column="price"        property="price"        javaType="java.lang.Double"/>
-        <result column="likes"        property="likes"        javaType="java.lang.Integer"/>
-        <result column="view"         property="view"         javaType="java.lang.Integer"/>
-        <result column="sort"         property="sort"         javaType="java.lang.Integer"/>
-        <result column="comments"     property="comments"     javaType="java.lang.Integer"/>
-        <result column="state"        property="state"        typeHandler="usingStateHandler"/>
-        <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
-        <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
+    	<id     column="id"              property="id"              javaType="java.lang.String"/>
+        <result column="type"            property="type"            typeHandler="courseTypeHandler"/>
+        <result column="kind"            property="kind"            typeHandler="courseKindHandler"/>
+        <result column="title"           property="title"           javaType="java.lang.String"/>
+        <result column="introduction"    property="introduction"    javaType="java.lang.String"/>
+        <result column="organization_id" property="organizationId"  javaType="java.lang.String"/>
+        <result column="summary"         property="summary"         javaType="java.lang.String"/>
+        <result column="cover"           property="cover"           javaType="java.lang.String"/>
+        <result column="price"           property="price"           javaType="java.lang.Double"/>
+        <result column="likes"           property="likes"           javaType="java.lang.Integer"/>
+        <result column="view"            property="view"            javaType="java.lang.Integer"/>
+        <result column="sort"            property="sort"            javaType="java.lang.Integer"/>
+        <result column="comments"        property="comments"        javaType="java.lang.Integer"/>
+        <result column="state"           property="state"           typeHandler="usingStateHandler"/>
+        <result column="create_time"     property="createTime"      javaType="java.util.Date"/>
+        <result column="update_time"     property="updateTime"      javaType="java.util.Date"/>
         <association property="advisor"  resultMap="advisor"   columnPrefix="a_"/>
      	<collection  property="children" resultMap="children"  columnPrefix="ch_"/>
         <collection  property="media"    resultMap="media"     columnPrefix="m_"/>
+        <collection  property="tag"      resultMap="tag"       columnPrefix="t_"/>
     </resultMap>
 
     <resultMap id="advisor" type="com.lab.hosaily.core.course.entity.Advisor">
         <id     column="id"           property="id"           javaType="java.lang.String"/>
         <result column="name"         property="name"         javaType="java.lang.String"/>
         <result column="nickname"     property="nickname"     javaType="java.lang.String"/>
-        <result column="wechat"       property="wechat"       javaType="java.lang.String"/>
         <result column="head_img_url" property="headImgUrl"   javaType="java.lang.String"/>
     </resultMap>
 
@@ -41,10 +42,14 @@
 
     <resultMap id="media" type="com.lab.hosaily.core.course.entity.Media">
         <id     column="id"          property="id"         javaType="java.lang.String"/>
-        <result column="suffix"      property="suffix"     javaType="java.lang.String"/>
         <result column="url"         property="url"        javaType="java.lang.String"/>
         <result column="remark"      property="remark"     javaType="java.lang.String"/>
         <result column="type"        property="type"       typeHandler="mediaTypeHandler"/>
+    </resultMap>
+
+    <resultMap id="tag" type="com.lab.hosaily.core.course.entity.Tag">
+        <id     column="id"              property="id"              javaType="java.lang.String"/>
+        <result column="name"            property="name"            javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -152,6 +157,7 @@
                type,
                kind,
                title,
+               organization_id,
                introduction,
                summary,
                cover,
@@ -164,34 +170,38 @@
                advisor_id,
                create_time
 	  	) VALUE (
-               #{id,           jdbcType=VARCHAR},
-               #{type,         typeHandler=courseTypeHandler},
-               #{kind,         typeHandler=courseKindHandler},
-               #{title,        jdbcType=VARCHAR},
-               #{introduction, jdbcType=VARCHAR},
-               #{summary,      jdbcType=VARCHAR},
-               #{cover,        jdbcType=VARCHAR},
-               #{price,        jdbcType=DOUBLE},
-               #{likes,        jdbcType=INTEGER},
-               #{view,         jdbcType=INTEGER},
-               #{sort,         jdbcType=INTEGER},
-               #{comments,     jdbcType=INTEGER},
-               #{state,        typeHandler=usingStateHandler},
-               #{advisor.id,   jdbcType=VARCHAR},
-               #{createTime,   jdbcType=TIMESTAMP}
+               #{id,              jdbcType=VARCHAR},
+               #{type,            typeHandler=courseTypeHandler},
+               #{kind,            typeHandler=courseKindHandler},
+               #{title,           jdbcType=VARCHAR},
+               #{organizationId,  jdbcType=VARCHAR},
+               #{introduction,    jdbcType=VARCHAR},
+               #{summary,         jdbcType=VARCHAR},
+               #{cover,           jdbcType=VARCHAR},
+               #{price,           jdbcType=DOUBLE},
+               #{likes,           jdbcType=INTEGER},
+               #{view,            jdbcType=INTEGER},
+               #{sort,            jdbcType=INTEGER},
+               #{comments,        jdbcType=INTEGER},
+               #{state,           typeHandler=usingStateHandler},
+               #{advisor.id,      jdbcType=VARCHAR},
+               #{createTime,      jdbcType=TIMESTAMP}
         )
     </insert>
 
     <update id="update">
         UPDATE course
          <set>
-             <if test="title != null and title != ''">
+             <if test="organizationId != null and organizationId != ''">
+                 organization_id = #{organizationId, jdbcType=VARCHAR},
+             </if>
+             <if test="title != null">
                  title = #{title, jdbcType=VARCHAR},
              </if>
-             <if test="introduction != null and introduction != ''">
+             <if test="introduction != null">
                  introduction = #{introduction, jdbcType=VARCHAR},
              </if>
-             <if test="summary != null and summary != ''">
+             <if test="summary != null">
                  summary = #{summary, jdbcType=VARCHAR},
              </if>
              <if test="cover != null and cover != ''">
@@ -200,7 +210,7 @@
              <if test="price != null and price >= 0">
                  price = #{price, jdbcType=BOOLEAN},
              </if>
-             <if test="advisor != null and advisor.id != null and advisor.id != ''">
+             <if test="advisor != null and advisor.id != null">
                  advisor_id = #{advisor.id, jdbcType=VARCHAR},
              </if>
              <if test="likes != null and likes >= 0">
@@ -271,11 +281,30 @@
          WHERE course_id = #{courseId}
     </delete>
 
+    <insert id="addTag">
+        INSERT
+          INTO course_tag (
+               course_id,
+               tag_id
+        ) VALUES
+        <foreach collection="tags" item="tag" separator=",">
+            (
+              #{courseId, jdbcType=VARCHAR},
+              #{tag.id,   jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteTag">
+        DELETE
+          FROM course_tag
+         WHERE course_id = #{courseId}
+    </delete>
+
     <select id="getByParams" resultMap="post">
         SELECT c.*,
                a.id            AS a_id,
                a.nickname      AS a_nickname,
-               a.wechat        AS a_wechat,
                a.head_img_url  AS a_head_img_url,
                ch.id           AS ch_id,
                ch.title        AS ch_title,
@@ -284,7 +313,9 @@
                m.id            AS m_id,
                m.url           AS m_url,
                m.type          AS m_type,
-               m.suffix        AS m_suffix
+               m.suffix        AS m_suffix,
+               t.id            AS t_id,
+               t.name          AS t_name
           FROM course c
      LEFT JOIN advisor a
             ON c.advisor_id = a.id
@@ -296,6 +327,12 @@
             ON cm.course_id = c.id
      LEFT JOIN media m
             ON cm.media_id = m.id
+     LEFT JOIN organization o
+            ON o.id = c.organization_id
+     LEFT JOIN course_tag ct
+            ON ct.course_id = c.id
+     LEFT JOIN tag t
+            ON t.id = ct.tag_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
@@ -314,6 +351,12 @@
             ON cm.course_id = c.id
      LEFT JOIN media m
             ON cm.media_id = m.id
+     LEFT JOIN organization o
+            ON o.id = c.organization_id
+     LEFT JOIN course_tag ct
+            ON ct.course_id = c.id
+     LEFT JOIN tag t
+            ON t.id = ct.tag_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -338,22 +381,37 @@
     </select>
 
     <select id="findByParams" resultMap="post">
-        SELECT c.id,
-               c.title,
-               c.summary,
-               c.state,
-               c.create_time,
-               c.likes,
-               c.view,
-               c.cover,
-               c.sort,
+        SELECT c.*,
                a.id            AS a_id,
                a.nickname      AS a_nickname,
-               a.wechat        AS a_wechat,
-               a.head_img_url  AS a_head_img_url
+               a.head_img_url  AS a_head_img_url,
+               ch.id           AS ch_id,
+               ch.title        AS ch_title,
+               ch.summary      AS ch_summary,
+               ch.cover        AS ch_cover,
+               m.id            AS m_id,
+               m.url           AS m_url,
+               m.type          AS m_type,
+               m.suffix        AS m_suffix,
+               t.id            AS t_id,
+               t.name          AS t_name
           FROM course c
      LEFT JOIN advisor a
             ON c.advisor_id = a.id
+     LEFT JOIN course_course cc
+            ON cc.parent_id = c.id
+     LEFT JOIN course ch
+            ON ch.id = cc.children_id
+     LEFT JOIN course_media cm
+            ON cm.course_id = c.id
+     LEFT JOIN media m
+            ON cm.media_id = m.id
+     LEFT JOIN organization o
+            ON o.id = c.organization_id
+     LEFT JOIN course_tag ct
+            ON ct.course_id = c.id
+     LEFT JOIN tag t
+            ON t.id = ct.tag_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -392,6 +450,12 @@
                       ON cm.course_id = c.id
                LEFT JOIN media m
                       ON cm.media_id = m.id
+               LEFT JOIN organization o
+                      ON o.id = c.organization_id
+               LEFT JOIN course_tag ct
+                      ON ct.course_id = c.id
+               LEFT JOIN tag t
+                      ON t.id = ct.tag_id
                 <if test="params != null">
                     <include refid="WHERE_COLUMN"/>
 

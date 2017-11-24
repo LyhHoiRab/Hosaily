@@ -3,6 +3,7 @@ package com.lab.hosaily.core.course.service;
 import com.lab.hosaily.commons.utils.FileNameUtils;
 import com.lab.hosaily.commons.utils.MediaUtils;
 import com.lab.hosaily.commons.utils.UpyunUtils;
+import com.lab.hosaily.core.course.consts.MediaType;
 import com.lab.hosaily.core.course.consts.SuffixType;
 import com.lab.hosaily.core.course.dao.MediaDao;
 import com.lab.hosaily.core.course.entity.Media;
@@ -99,11 +100,11 @@ public class MediaServiceImpl implements MediaService{
      * 分页查询
      */
     @Override
-    public Page<Media> page(PageRequest pageRequest){
+    public Page<Media> page(PageRequest pageRequest, String remark, MediaType type, String suffix, String organizationId, String organizationToken, UsingState state){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return mediaDao.page(pageRequest);
+            return mediaDao.page(pageRequest, remark, type, suffix, organizationId, organizationToken, state);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -114,23 +115,9 @@ public class MediaServiceImpl implements MediaService{
      * 查询列表
      */
     @Override
-    public List<Media> list(UsingState state){
+    public List<Media> list(String remark, MediaType type, String suffix, String organizationId, String organizationToken, UsingState state){
         try{
-            return mediaDao.list(state);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据状态查询记录
-     */
-    public List<Media> findByState(UsingState state){
-        try{
-            Assert.notNull(state, "媒体状态不能为空");
-
-            return mediaDao.findByState(state);
+            return mediaDao.list(remark, type, suffix, organizationId, organizationToken, state);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -164,7 +151,7 @@ public class MediaServiceImpl implements MediaService{
             String uploadPath = UpyunUtils.COURSE_MEDIA_DIR + md5 + suffixType.getId();
 
             //上传到upyun
-            boolean result = UpyunUtils.upload(uploadPath, file);
+            boolean result = UpyunUtils.uploadVideo(uploadPath, file);
 
             if(result){
                 //查询文件是否已上传
@@ -179,7 +166,7 @@ public class MediaServiceImpl implements MediaService{
                 media.setMd5(md5);
                 media.setSuffix(suffix);
                 media.setType(suffixType.getType());
-                media.setUrl(UpyunUtils.URL + uploadPath);
+                media.setUrl(UpyunUtils.VIDEO_URL + uploadPath);
                 //保存信息
                 mediaDao.saveOrUpdate(media);
 

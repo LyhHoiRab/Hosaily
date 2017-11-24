@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
   <li>
-    <span>系统设置</span>
+    <span>课程管理</span>
   </li><!-- item -->
   <li>
     <a ui-sref="tag">标签管理</a>
@@ -21,25 +21,31 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">名称</span>
-        <input type="text" class="form-control" placeholder="名称" ng-model="tag.name" value="{{tag.name}}">
+        <input type="text" class="form-control" placeholder="名称" ng-model="tag.name">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">描述</span>
-        <input type="text" class="form-control" placeholder="描述" ng-model="tag.description" value="{{tag.description}}">
+        <input type="text" class="form-control" placeholder="描述" ng-model="tag.description">
       </div>
     </div><!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">状态</span>
-        <select class="form-control" ng-model="tag.state" value="{{tag.state}}">
+        <select class="form-control" ng-model="tag.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>
-          #foreach($state in $states)
-            <option value="${state.id}">${state.description}</option>
-          #end
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">状态</span>
+        <select class="form-control" ng-model="tag.organizationId" ng-options="organization.id as organization.name for organization in organizations">
+          <option value="">请选择</option>
         </select>
       </div>
     </div><!-- item -->

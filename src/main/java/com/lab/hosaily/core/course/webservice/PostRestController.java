@@ -89,10 +89,10 @@ public class PostRestController{
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Course>> page(Long pageNum, Long pageSize, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Response<Page<Course>> page(Long pageNum, Long pageSize, String advisor, UsingState state, String advisorId, String organizationId, String organizationToken, String tagName){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Course> page = postService.page(pageRequest, advisor, state, createTime, minCreateTime, maxCreateTime);
+            Page<Course> page = postService.page(pageRequest, advisor, state, advisorId, organizationId, organizationToken, tagName);
 
             return new Response<Page<Course>>("查询成功", page);
         }catch(Exception e){

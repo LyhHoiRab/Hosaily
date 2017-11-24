@@ -14,6 +14,8 @@ public class Tag implements Create, Update{
     private String name;
     //标签内容
     private String description;
+    //企业ID
+    private String organizationId;
     //状态
     private UsingState state;
     //创建时间
@@ -55,6 +57,14 @@ public class Tag implements Create, Update{
 
     public void setState(UsingState state){
         this.state = state;
+    }
+
+    public String getOrganizationId(){
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId){
+        this.organizationId = organizationId;
     }
 
     @Override

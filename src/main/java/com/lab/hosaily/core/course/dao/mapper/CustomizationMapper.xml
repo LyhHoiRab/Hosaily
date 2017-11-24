@@ -3,16 +3,23 @@
 
 <mapper namespace="com.lab.hosaily.core.course.dao.mapper.CustomizationMapper">
     <resultMap id="customization" type="com.lab.hosaily.core.course.entity.Customization">
-        <id     column="id"           property="id"           javaType="java.lang.String"/>
-        <result column="cover"        property="cover"        javaType="java.lang.String"/>
-        <result column="title"        property="title"        javaType="java.lang.String"/>
-        <result column="summary"      property="summary"      javaType="java.lang.String"/>
-        <result column="introduction" property="introduction" javaType="java.lang.String"/>
-        <result column="subscribe"    property="subscribe"    javaType="java.lang.Integer"/>
-        <result column="sort"         property="sort"         javaType="java.lang.Integer"/>
-        <result column="state"        property="state"        typeHandler="usingStateHandler"/>
-        <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
-        <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
+        <id     column="id"              property="id"              javaType="java.lang.String"/>
+        <result column="cover"           property="cover"           javaType="java.lang.String"/>
+        <result column="organization_id" property="organizationId"  javaType="java.lang.String"/>
+        <result column="title"           property="title"           javaType="java.lang.String"/>
+        <result column="summary"         property="summary"         javaType="java.lang.String"/>
+        <result column="introduction"    property="introduction"    javaType="java.lang.String"/>
+        <result column="subscribe"       property="subscribe"       javaType="java.lang.Integer"/>
+        <result column="sort"            property="sort"            javaType="java.lang.Integer"/>
+        <result column="state"           property="state"           typeHandler="usingStateHandler"/>
+        <result column="create_time"     property="createTime"      javaType="java.util.Date"/>
+        <result column="update_time"     property="updateTime"      javaType="java.util.Date"/>
+        <collection  property="tag"      resultMap="tag"       columnPrefix="t_"/>
+    </resultMap>
+
+    <resultMap id="tag" type="com.lab.hosaily.core.course.entity.Tag">
+        <id     column="id"              property="id"              javaType="java.lang.String"/>
+        <result column="name"            property="name"            javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -118,6 +125,7 @@
           INTO customization (
                id,
                cover,
+               organization_id,
                title,
                summary,
                introduction,
@@ -126,15 +134,16 @@
                state,
                create_time
         ) VALUE (
-               #{id,           jdbcType=VARCHAR},
-               #{cover,        jdbcType=VARCHAR},
-               #{title,        jdbcType=VARCHAR},
-               #{summary,      jdbcType=VARCHAR},
-               #{introduction, jdbcType=VARCHAR},
-               #{subscribe,    jdbcType=INTEGER},
-               #{sort,         jdbcType=INTEGER},
-               #{state,        typeHandler=usingStateHandler},
-               #{createTime,   jdbcType=TIMESTAMP}
+               #{id,             jdbcType=VARCHAR},
+               #{cover,          jdbcType=VARCHAR},
+               #{organizationId, jdbcType=VARCHAR},
+               #{title,          jdbcType=VARCHAR},
+               #{summary,        jdbcType=VARCHAR},
+               #{introduction,   jdbcType=VARCHAR},
+               #{subscribe,      jdbcType=INTEGER},
+               #{sort,           jdbcType=INTEGER},
+               #{state,          typeHandler=usingStateHandler},
+               #{createTime,     jdbcType=TIMESTAMP}
         )
     </insert>
 
@@ -144,7 +153,10 @@
              <if test="cover != null and cover != ''">
                  cover = #{cover, jdbcType=VARCHAR},
              </if>
-             <if test="title != null and title != ''">
+             <if test="title != null">
+                 title = #{title, jdbcType=VARCHAR},
+             </if>
+             <if test="summary != null">
                  summary = #{summary, jdbcType=VARCHAR},
              </if>
              <if test="subscribe != null and subscribe >= 0">
@@ -159,24 +171,63 @@
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
              </if>
-             <if test="introduction != null and introduction != ''">
+             <if test="introduction != null">
                  introduction = #{introduction, jdbcType=VARCHAR},
+             </if>
+             <if test="organizationId != null and organizationId != ''">
+                  organization_id = #{organizationId, jdbcType=VARCHAR},
              </if>
          </set>
           WHERE id = #{id}
     </update>
 
+    <insert id="addTag">
+        INSERT
+          INTO customization_tag (
+               customization_id,
+               tag_id
+        ) VALUES
+        <foreach collection="tags" item="tag" separator=",">
+            (
+                #{customizationId, jdbcType=VARCHAR},
+                #{tag.id,   jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteTag">
+        DELETE
+          FROM customization_tag
+         WHERE customization_id = #{customizationId}
+    </delete>
+
     <select id="getByParams" resultMap="customization">
-        SELECT *
-          FROM customization
+        SELECT c.*,
+               t.id   AS t_id,
+               t.name AS t_name
+          FROM customization c
+     LEFT JOIN customization_tag ct
+            ON ct.customization_id = c.id
+     LEFT JOIN tag t
+            ON ct.tag_id = t.id
+     LEFT JOIN organization o
+            ON o.id = c.organization_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
     </select>
 
     <select id="findByParams" resultMap="customization">
-        SELECT *
-          FROM customization
+        SELECT c.*,
+               t.id   AS t_id,
+               t.name AS t_name
+          FROM customization c
+     LEFT JOIN customization_tag ct
+            ON ct.customization_id = c.id
+     LEFT JOIN tag t
+            ON ct.tag_id = t.id
+     LEFT JOIN organization o
+            ON o.id = c.organization_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -195,9 +246,19 @@
 
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
-          FROM customization
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
-        </if>
+          FROM (
+                  SELECT c.id
+                    FROM customization c
+               LEFT JOIN customization_tag ct
+                      ON ct.customization_id = c.id
+               LEFT JOIN tag t
+                      ON ct.tag_id = t.id
+               LEFT JOIN organization o
+                      ON o.id = c.organization_id
+                <if test="params != null">
+                    <include refid="WHERE_COLUMN"/>
+                </if>
+                ORDER BY c.id
+        ) AS customization
     </select>
 </mapper>

@@ -50,10 +50,10 @@ public class MediaRestController{
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Media>> page(Long pageNum, Long pageSize){
+    public Response<Page<Media>> page(Long pageNum, Long pageSize, String remark, com.lab.hosaily.core.course.consts.MediaType type, String suffix, String organizationId, String organizationToken, UsingState state){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Media> page = mediaService.page(pageRequest);
+            Page<Media> page = mediaService.page(pageRequest, remark, type, suffix, organizationId, organizationToken, state);
 
             return new Response<Page<Media>>("查询成功", page);
         }catch(Exception e){
@@ -66,9 +66,9 @@ public class MediaRestController{
      * 查询列表
      */
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<Media>> list(UsingState state){
+    public Response<List<Media>> list(String remark, com.lab.hosaily.core.course.consts.MediaType type, String suffix, String organizationId, String organizationToken, UsingState state){
         try{
-            List<Media> list = mediaService.list(state);
+            List<Media> list = mediaService.list(remark, type, suffix, organizationId, organizationToken, state);
 
             return new Response<List<Media>>("查询成功", list);
         }catch(Exception e){

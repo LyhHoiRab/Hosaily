@@ -12,6 +12,7 @@ import java.util.Map;
 public class UpyunUtils{
 
     private final static String BUCKET_NAME = "kuliao";
+    private final static String BUCKET_VIDEO_NAME = "hsl-video";
     private final static String OPERATOR_NAME = "unesmall";
     private final static String OPERATOR_PWD = "unesmall123456";
 
@@ -33,20 +34,36 @@ public class UpyunUtils{
     public final static String COURSE_MEDIA_DIR = "/course/media/";
     //访问外链
     public final static String URL = "http://kuliao.b0.upaiyun.com";
+    //视频外链
+    public final static String VIDEO_URL = "http://hsl-video.test.upcdn.net";
 
     //UpYun
     private static UpYun upyun;
 
+    //自定义客户端
+    private static UpYun videoUpyun;
+
     private UpyunUtils(){
 
+    }
+
+    private static UpYun getVideoUpyun(){
+        if(videoUpyun == null){
+            videoUpyun = new UpYun(BUCKET_VIDEO_NAME, OPERATOR_NAME, OPERATOR_PWD);
+            videoUpyun.setDebug(false);
+            //5分钟超时时长
+            videoUpyun.setTimeout(300);
+        }
+
+        return videoUpyun;
     }
 
     private static UpYun getUpyun(){
         if(upyun == null){
             upyun = new UpYun(BUCKET_NAME, OPERATOR_NAME, OPERATOR_PWD);
             upyun.setDebug(false);
-            //2分钟超时时长
-            upyun.setTimeout(120);
+            //5分钟超时时长
+            upyun.setTimeout(300);
         }
 
         return upyun;
@@ -74,5 +91,38 @@ public class UpyunUtils{
         }
 
         return getUpyun().deleteFile(uploadPath);
+    }
+
+    /**
+     * 上传视频
+     */
+    public static boolean uploadVideo(String uploadPath, CommonsMultipartFile file){
+        if(StringUtils.isBlank(uploadPath)){
+            throw new IllegalArgumentException("上传路径不能为空");
+        }
+
+        return getVideoUpyun().writeFile(uploadPath, file.getBytes());
+    }
+
+    /**
+     * 获取视频信息
+     */
+    public static Map<String, String> getVideoFileInfo(String uploadPath){
+        if(StringUtils.isBlank(uploadPath)){
+            throw new IllegalArgumentException("上传路径不能为空");
+        }
+
+        return getVideoUpyun().getFileInfo(uploadPath);
+    }
+
+    /**
+     * 删除视频
+     */
+    public static boolean deleteVideo(String uploadPath){
+        if(StringUtils.isBlank(uploadPath)){
+            throw new IllegalArgumentException("上传路径不能为空");
+        }
+
+        return getVideoUpyun().deleteFile(uploadPath);
     }
 }

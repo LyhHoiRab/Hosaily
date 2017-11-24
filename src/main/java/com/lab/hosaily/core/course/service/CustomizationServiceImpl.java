@@ -83,11 +83,11 @@ public class CustomizationServiceImpl implements CustomizationService{
      * 分页查询
      */
     @Override
-    public Page<Customization> page(PageRequest pageRequest, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Page<Customization> page(PageRequest pageRequest, UsingState state, String tagName, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return customizationDao.page(pageRequest, state, createTime, minCreateTime, maxCreateTime);
+            return customizationDao.page(pageRequest, state, tagName, organizationId, organizationToken);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

@@ -20,6 +20,15 @@ public class CommonsPathConsts{
     public static final String WEB_DIR = "web/";
     //移动端目录
     public static final String MOBILE_DIR = "mobile/";
+    //酷撩域名
+    public static String DOMAIN_KULIAO;
+    //永恒情书域名
+    public static String DOMAIN_YHQS;
+
+    //永恒情书
+    public static String JS_PATH_YHQS;
+    public static String CSS_PATH_YHQS;
+    public static String IMG_PATH_YHQS;
 
     @Value(value = "${url.commons.js}")
     public void setJsPath(String jsPath){
@@ -93,7 +102,9 @@ public class CommonsPathConsts{
 
     @Value(value = "${url.commons.mobile.js}")
     public void setMobileJsPath(String mobileJsPath){
-        MOBILE_JS_PATH = mobileJsPath;
+        if(StringUtils.isBlank(MOBILE_JS_PATH)){
+            MOBILE_JS_PATH = mobileJsPath;
+        }
     }
 
     public String getMobileCssPath(){
@@ -102,7 +113,9 @@ public class CommonsPathConsts{
 
     @Value(value = "${url.commons.mobile.css}")
     public void setMobileCssPath(String mobileCssPath){
-        MOBILE_CSS_PATH = mobileCssPath;
+        if(StringUtils.isBlank(MOBILE_CSS_PATH)){
+            MOBILE_CSS_PATH = mobileCssPath;
+        }
     }
 
     public String getMobileImgPath(){
@@ -111,6 +124,63 @@ public class CommonsPathConsts{
 
     @Value(value = "${url.commons.mobile.img}")
     public void setMobileImgPath(String mobileImgPath){
-        MOBILE_IMG_PATH = mobileImgPath;
+        if(StringUtils.isBlank(MOBILE_IMG_PATH)){
+            MOBILE_IMG_PATH = mobileImgPath;
+        }
+    }
+
+    public String getDomainKuliao(){
+        return DOMAIN_KULIAO;
+    }
+
+    @Value(value = "${domain.kulaio}")
+    public void setDomainKuliao(String domainKuliao){
+        if(StringUtils.isBlank(DOMAIN_KULIAO)){
+            DOMAIN_KULIAO = domainKuliao;
+        }
+    }
+
+    public String getDomainYhqs(){
+        return DOMAIN_YHQS;
+    }
+
+    @Value(value = "${domain.yhqs}")
+    public void setDomainYhqs(String domainYhqs){
+        if(StringUtils.isBlank(DOMAIN_YHQS)){
+            DOMAIN_YHQS = domainYhqs;
+        }
+    }
+
+    public String getJsPathYhqs(){
+        return JS_PATH_YHQS;
+    }
+
+    @Value(value = "${url.commons.forever.js}")
+    public void setJsPathYhqs(String jsPathYhqs){
+        if(StringUtils.isBlank(JS_PATH_YHQS)){
+            JS_PATH_YHQS = jsPathYhqs;
+        }
+    }
+
+    public String getCssPathYhqs(){
+        return CSS_PATH_YHQS;
+    }
+
+    @Value(value = "${url.commons.forever.css}")
+    public void setCssPathYhqs(String cssPathYhqs){
+        if(StringUtils.isBlank(CSS_PATH_YHQS)){
+            CSS_PATH_YHQS = cssPathYhqs;
+        }
+    }
+
+    public String getImgPathYhqs(){
+        return IMG_PATH_YHQS;
+    }
+
+    @Value(value = "${url.commons.forever.img}")
+    public void setImgPathYhqs(String imgPathYhqs){
+        if(StringUtils.isBlank(IMG_PATH_YHQS)){
+            IMG_PATH_YHQS = imgPathYhqs;
+        }
     }
 }
