@@ -24,22 +24,17 @@ public interface CourseService{
     /**
      * 查询课程列表
      */
-    List<Course> listByCourse(UsingState state);
+    List<Course> listByCourse(String tagName, String advisor, UsingState state, String accountId, String organizationId, String organizationToken);
 
     /**
      * 分页查询课程
      */
-    Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime, String accountId);
+    Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, String accountId, String organizationId, String organizationToken);
 
     /**
      * 分页查询章节
      */
     Page<Course> pageByChapter(PageRequest pageRequest, String parentId, UsingState state);
-
-    /**
-     * 根据状态查询课程
-     */
-    List<Course> findCourseByState(UsingState state);
 
     /**
      * 根据ID查询课程

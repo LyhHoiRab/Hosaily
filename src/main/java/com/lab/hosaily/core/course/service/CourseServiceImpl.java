@@ -68,9 +68,9 @@ public class CourseServiceImpl implements CourseService{
      * 查询课程列表
      */
     @Override
-    public List<Course> listByCourse(UsingState state){
+    public List<Course> listByCourse(String tagName, String advisor, UsingState state, String accountId, String organizationId, String organizationToken){
         try{
-            return courseDao.listByCourse(state);
+            return courseDao.listByCourse(tagName, advisor, state, accountId, organizationId, organizationToken);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -81,11 +81,11 @@ public class CourseServiceImpl implements CourseService{
      * 分页查询课程
      */
     @Override
-    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime, String accountId){
+    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, String accountId, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return courseDao.pageByCourse(pageRequest, tagName, advisor, state, createTime, minCreateTime, maxCreateTime, accountId);
+            return courseDao.pageByCourse(pageRequest, tagName, advisor, state, accountId, organizationId, organizationToken);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -101,21 +101,6 @@ public class CourseServiceImpl implements CourseService{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             return courseDao.pageByChapter(pageRequest, parentId, state);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 根据状态查询课程
-     */
-    @Override
-    public List<Course> findCourseByState(UsingState state){
-        try{
-            Assert.notNull(state, "课程状态不能为空");
-
-            return courseDao.findCourseByState(UsingState.NORMAL);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

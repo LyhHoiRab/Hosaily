@@ -30,16 +30,6 @@ public class CourseController{
     @RequestMapping(value = "/add", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView add(ModelMap content){
         try{
-//            List<UsingState> states = Arrays.asList(UsingState.values());
-//            List<Advisor> advisors = advisorService.findByState(UsingState.NORMAL);
-//            List<Tag> tags = tagService.findByState(UsingState.NORMAL);
-//            List<Level> levels = levelService.findByState(UsingState.NORMAL);
-//
-//            content.put("states", states);
-//            content.put("advisors", advisors);
-//            content.put("tags", tags);
-//            content.put("levels", levels);
-
             return new ModelAndView("backstage/course/edit", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
@@ -50,15 +40,6 @@ public class CourseController{
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView edit(@PathVariable("id") String id, ModelMap content){
         try{
-//            List<UsingState> states = Arrays.asList(UsingState.values());
-//            List<Advisor> advisors = advisorService.findByState(UsingState.NORMAL);
-//            List<Tag> tags = tagService.findByState(UsingState.NORMAL);
-//            List<Level> levels = levelService.findByState(UsingState.NORMAL);
-
-//            content.put("states", states);
-//            content.put("advisors", advisors);
-//            content.put("tags", tags);
-//            content.put("levels", levels);
             content.put("id", id);
 
             return new ModelAndView("backstage/course/edit", content);
@@ -74,9 +55,6 @@ public class CourseController{
     @RequestMapping(value = "/add/chapter/{parentId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView addChapter(@PathVariable("parentId") String parentId, ModelMap content){
         try{
-//            List<UsingState> states = Arrays.asList(UsingState.values());
-//
-//            content.put("states", states);
             content.put("parentId", parentId);
 
             return new ModelAndView("backstage/course/chapterEdit", content);
@@ -92,9 +70,6 @@ public class CourseController{
     @RequestMapping(value = "/edit/chapter/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView editChapter(@PathVariable("id") String id, ModelMap content){
         try{
-//            List<UsingState> states = Arrays.asList(UsingState.values());
-//
-//            content.put("states", states);
             content.put("id", id);
 
             return new ModelAndView("backstage/course/chapterEdit", content);
@@ -110,11 +85,6 @@ public class CourseController{
     @RequestMapping(value = "/add/section/{parentId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView addSection(@PathVariable("parentId") String parentId, ModelMap content){
         try{
-//            List<UsingState> states = Arrays.asList(UsingState.values());
-//            List<Media> medias = mediaService.findByState(UsingState.NORMAL);
-//
-//            content.put("states", states);
-//            content.put("medias", medias);
             content.put("parentId", parentId);
 
             return new ModelAndView("backstage/course/sectionEdit", content);
@@ -130,11 +100,6 @@ public class CourseController{
     @RequestMapping(value = "/edit/section/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView editSection(@PathVariable("id") String id, ModelMap content){
         try{
-//            List<UsingState> states = Arrays.asList(UsingState.values());
-//            List<Media> medias = mediaService.findByState(UsingState.NORMAL);
-//
-//            content.put("states", states);
-//            content.put("medias", medias);
             content.put("id", id);
 
             return new ModelAndView("backstage/course/sectionEdit", content);

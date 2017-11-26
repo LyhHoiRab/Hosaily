@@ -182,7 +182,6 @@ app.controller('postAddController', function($scope, $state, FileUploader, $http
             $scope.getAdvisor();
             $scope.getTag();
         }
-
     }, true);
 
     //初始化数据

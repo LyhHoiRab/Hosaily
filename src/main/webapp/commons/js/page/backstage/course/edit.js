@@ -1,9 +1,10 @@
 app.controller('courseEditController', function($scope, $state, $stateParams, FileUploader, $http){
     //下拉
-    $scope.states   = [];
-    $scope.advisors = [];
-    $scope.tags     = [];
-    $scope.levels   = [];
+    $scope.states        = [];
+    $scope.advisors      = [];
+    $scope.organizations = [];
+    //$scope.tags     = [];
+    //$scope.levels   = [];
 
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/course/upload',
@@ -24,10 +25,6 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         $scope.course.cover = response.result;
     };
 
-    //$('.selectpicker').selectpicker({
-    //    title: '请选择'
-    //});
-
     $scope.editor = {
         allowedContent: true,
         entitles: false,
@@ -35,22 +32,23 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
     };
 
     $scope.course = {
-        id           : $stateParams.id,
-        title        : '',
-        type         : 0,
-        kind         : 1,
-        summary      : '',
-        introduction : '',
-        state        : '',
-        cover        : '/commons/img/level_default.jpg',
-        price        : 0,
-        likes        : 0,
-        view         : 0,
-        sort         : 0,
-        advisor      : {},
-        tag          : [],
-        level        : [],
-        children     : []
+        id             : $stateParams.id,
+        title          : '',
+        type           : 0,
+        kind           : 1,
+        summary        : '',
+        introduction   : '',
+        state          : '',
+        cover          : '/commons/img/level_default.jpg',
+        price          : 0,
+        likes          : 0,
+        view           : 0,
+        sort           : 0,
+        advisor        : {},
+        orgainzationId : '',
+        //tag          : [],
+        //level        : [],
+        children       : []
     };
 
     $scope.chapterAdd = function(){
@@ -58,18 +56,17 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
     };
 
     $scope.reset = function(){
-        $scope.course.title         = '';
-        $scope.course.summary       = '';
-        $scope.course.introduction  = '';
-        $scope.course.state         = '';
-        $scope.course.price         = 0;
-        $scope.course.likes         = 0;
-        $scope.course.view          = 0;
-        $scope.course.sort          = 0;
-        $scope.course.advisor       = {};
-        $scope.course.tag           = [];
-
-        //$('.selectpicker').selectpicker('deselectAll');
+        $scope.course.title          = '';
+        $scope.course.summary        = '';
+        $scope.course.introduction   = '';
+        $scope.course.state          = '';
+        $scope.course.price          = 0;
+        $scope.course.likes          = 0;
+        $scope.course.view           = 0;
+        $scope.course.sort           = 0;
+        $scope.course.advisor        = {};
+        //$scope.course.tag           = [];
+        $scope.course.organizationId = '';
     };
 
     $scope.getCourseById = function(){
@@ -81,37 +78,8 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
                 utils.copyOf(res.result, $scope.course);
             }
         }).error(function(response){
-
+            console.error(response);
         });
-
-        //$.ajax({
-        //    url: '/api/1.0/course/' + $scope.id,
-        //    dataType: 'JSON',
-        //    type: 'GET',
-        //    success: function(res){
-        //        if(res.success){
-        //            utils.copyOf(res.result, $scope.course);
-        //
-        //            var tags = [];
-        //            angular.forEach($scope.course.tag, function(data){
-        //                tags.push(data.id);
-        //            });
-        //            $('#tags').selectpicker('val', tags);
-        //
-        //            var levels = [];
-        //            angular.forEach($scope.course.level, function(data){
-        //                levels.push(data.id);
-        //            });
-        //            $('#levels').selectpicker('val', levels);
-        //
-        //            editor.setData($scope.course.introduction);
-        //        }
-        //
-        //        if(!$scope.$$phase){
-        //            $scope.$apply();
-        //        }
-        //    }
-        //});
     };
 
     $scope.getState = function(){
@@ -132,7 +100,8 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
             url: '/api/1.0/advisor/list',
             method: 'POST',
             data: $.param({
-                'state': 0
+                'state'          : 0,
+                'organizationId' : $scope.course.organizationId
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -200,47 +169,22 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
                 alert(res.msg);
             }
         }).error(function(response){
-
+            console.error(response);
         });
-
-        //var tags = $('#tags').val();
-        //var levels = $('#levels').val();
-        //
-        //$scope.course.tag = [];
-        //if(tags !== null && tags.length > 0){
-        //    angular.forEach(tags, function(data){
-        //        $scope.course.tag.push({id:data});
-        //    });
-        //};
-        //
-        //$scope.course.level = [];
-        //if(levels !== null && levels.length > 0){
-        //    angular.forEach(levels, function(data){
-        //        $scope.course.level.push({id:data});
-        //    });
-        //};
-        //
-        //$scope.course.introduction = editor.getData();
-        //
-        //$.ajax({
-        //    url: '/api/1.0/course',
-        //    type: 'PUT',
-        //    data: JSON.stringify($scope.course),
-        //    dataType: 'JSON',
-        //    contentType: 'application/json',
-        //    success: function(res){
-        //        if(res.success){
-        //            alert(res.msg);
-        //            $state.go('course');
-        //        }
-        //    }
-        //});
     };
 
+    $scope.$watch('post.organizationId', function(newVal, oldVal){
+        if(newVal !== oldVal){
+            $scope.getAdvisor();
+            //$scope.getTag();
+        }
+    }, true);
+
     //初始化数据
-    $scope.getAdvisor();
+    $scope.getOrganization();
+    //$scope.getAdvisor();
     $scope.getState();
-    $scope.getLevel();
-    $scope.getTag();
+    //$scope.getLevel();
+    //$scope.getTag();
     $scope.getCourseById();
 });

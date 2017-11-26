@@ -3,22 +3,23 @@
 
 <mapper namespace="com.lab.hosaily.core.course.dao.mapper.CourseMapper">
     <resultMap id="course" type="com.lab.hosaily.core.course.entity.Course">
-        <id     column="id"           property="id"           javaType="java.lang.String"/>
-        <result column="type"         property="type"         typeHandler="courseTypeHandler"/>
-        <result column="kind"         property="kind"         typeHandler="courseKindHandler"/>
-        <result column="title"        property="title"        javaType="java.lang.String"/>
-        <result column="introduction" property="introduction" javaType="java.lang.String"/>
-        <result column="summary"      property="summary"      javaType="java.lang.String"/>
-        <result column="cover"        property="cover"        javaType="java.lang.String"/>
-        <result column="price"        property="price"        javaType="java.lang.Double"/>
-        <result column="likes"        property="likes"        javaType="java.lang.Integer"/>
-        <result column="view"         property="view"         javaType="java.lang.Integer"/>
-        <result column="comments"     property="comments"     javaType="java.lang.Integer"/>
-        <result column="sort"         property="sort"         javaType="java.lang.Integer"/>
-        <result column="parent_id"    property="parentId"     javaType="java.lang.String"/>
-        <result column="state"        property="state"        typeHandler="usingStateHandler"/>
-        <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
-        <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
+        <id     column="id"                 property="id"               javaType="java.lang.String"/>
+        <result column="type"               property="type"             typeHandler="courseTypeHandler"/>
+        <result column="kind"               property="kind"             typeHandler="courseKindHandler"/>
+        <result column="title"              property="title"            javaType="java.lang.String"/>
+        <result column="introduction"       property="introduction"     javaType="java.lang.String"/>
+        <result column="summary"            property="summary"          javaType="java.lang.String"/>
+        <result column="cover"              property="cover"            javaType="java.lang.String"/>
+        <result column="price"              property="price"            javaType="java.lang.Double"/>
+        <result column="likes"              property="likes"            javaType="java.lang.Integer"/>
+        <result column="view"               property="view"             javaType="java.lang.Integer"/>
+        <result column="comments"           property="comments"         javaType="java.lang.Integer"/>
+        <result column="sort"               property="sort"             javaType="java.lang.Integer"/>
+        <result column="parent_id"          property="parentId"         javaType="java.lang.String"/>
+        <result column="organization_id"    property="organizationId"   javaType="java.lang.String"/>
+        <result column="state"              property="state"            typeHandler="usingStateHandler"/>
+        <result column="create_time"        property="createTime"       javaType="java.util.Date"/>
+        <result column="update_time"        property="updateTime"       javaType="java.util.Date"/>
         <association property="advisor"  resultMap="advisor"  columnPrefix="a_"/>
         <collection  property="media"    resultMap="media"    columnPrefix="m_"/>
         <collection  property="tag"      resultMap="tag"      columnPrefix="t_"/>
@@ -197,31 +198,33 @@
                comments,
                parent_id,
                state,
-               create_time
+               create_time,
+               orgainzation_id
         ) VALUE (
-               #{id,           jdbcType=VARCHAR},
-               #{advisor.id,   jdbcType=VARCHAR},
-               #{type,         typeHandler=courseTypeHandler},
-               #{kind,         typeHandler=courseKindHandler},
-               #{title,        jdbcType=VARCHAR},
-               #{introduction, jdbcType=VARCHAR},
-               #{summary,      jdbcType=VARCHAR},
-               #{cover,        jdbcType=VARCHAR},
-               #{price,        jdbcType=DOUBLE},
-               #{likes,        jdbcType=INTEGER},
-               #{view,         jdbcType=INTEGER},
-               #{sort,         jdbcType=INTEGER},
-               #{comments,     jdbcType=INTEGER},
-               #{parentId,     jdbcType=VARCHAR},
-               #{state,        typeHandler=usingStateHandler},
-               #{createTime,   jdbcType=TIMESTAMP}
+               #{id,             jdbcType=VARCHAR},
+               #{advisor.id,     jdbcType=VARCHAR},
+               #{type,           typeHandler=courseTypeHandler},
+               #{kind,           typeHandler=courseKindHandler},
+               #{title,          jdbcType=VARCHAR},
+               #{introduction,   jdbcType=VARCHAR},
+               #{summary,        jdbcType=VARCHAR},
+               #{cover,          jdbcType=VARCHAR},
+               #{price,          jdbcType=DOUBLE},
+               #{likes,          jdbcType=INTEGER},
+               #{view,           jdbcType=INTEGER},
+               #{sort,           jdbcType=INTEGER},
+               #{comments,       jdbcType=INTEGER},
+               #{parentId,       jdbcType=VARCHAR},
+               #{state,          typeHandler=usingStateHandler},
+               #{createTime,     jdbcType=TIMESTAMP},
+               #{orgainzationId, jdbcType=VARCHAR}
         )
     </insert>
 
     <update id="update">
         UPDATE course
          <set>
-            <if test="advisor != null and advisor.id != null and advisor.id != ''">
+            <if test="advisor != null and advisor.id != null">
                 advisor_id = #{advisor.id, jdbcType=VARCHAR},
             </if>
             <if test="type != null">
@@ -230,13 +233,13 @@
             <if test="kind != null">
                 kind = #{kind, typeHandler=courseKindHandler},
             </if>
-            <if test="title != null and title != ''">
+            <if test="title != null">
                 title = #{title, jdbcType=VARCHAR},
             </if>
-            <if test="introduction != null and introduction != ''">
+            <if test="introduction != null">
                 introduction = #{introduction, jdbcType=VARCHAR},
             </if>
-            <if test="summary != null and summary != ''">
+            <if test="summary != null">
                 summary = #{summary, jdbcType=VARCHAR},
             </if>
             <if test="cover != null and cover != ''">
@@ -265,6 +268,9 @@
             </if>
             <if test="updateTime != null">
                 update_time = #{updateTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="organizationId != null and organizationId != ''">
+                organization_id = #{organizationId, jdbcType=VARCHAR},
             </if>
          </set>
           WHERE id = #{id}
@@ -353,6 +359,8 @@
             ON cc.children_id = ch.id
      LEFT JOIN account_course ac
             ON ac.course_id = c.id
+     LEFT JOIN organization o
+            ON o.id = c.organization_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -401,6 +409,8 @@
                       ON cc.children_id = ch.id
                LEFT JOIN account_course ac
                       ON ac.course_id = c.id
+               LEFT JOIN organization o
+                      ON o.id = c.organization_id
                 <if test="params != null">
                     <include refid="WHERE_COLUMN"/>
 
@@ -442,6 +452,8 @@
             ON cl.course_id = c.id
      LEFT JOIN level l
             ON cl.level_id = l.id
+     LEFT JOIN organization o
+            ON o.id = c.organization_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 

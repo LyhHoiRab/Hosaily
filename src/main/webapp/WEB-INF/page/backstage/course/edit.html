@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
   <li>
-    <span>系统设置</span>
+    <span>课程管理</span>
   </li><!-- item -->
   <li>
     <a ui-sref="course">课程管理</a>
@@ -65,14 +65,16 @@
 
     <div class="row-group">
       <div class="input-group">
-        <span class="input-group-addon">导师</span>
-        <!--<select class="form-control" ng-model="course.advisor.id" value="{{course.advisor.id}}">-->
-          <!--<option value="">请选择</option>-->
-          <!--#foreach($advisor in $advisors)-->
-            <!--<option value="${advisor.id}">${advisor.nickname}</option>-->
-          <!--#end-->
-        <!--</select>-->
+        <span class="input-group-addon">企业</span>
+        <select class="form-control" ng-model="course.organizationId" ng-options="organization.id as organization.name for organization in organizations">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
 
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">导师</span>
         <select class="form-control" ng-model="course.advisor" ng-options="advisor as advisor.name for advisor in advisors">
           <option value="">请选择</option>
         </select>
@@ -81,37 +83,17 @@
 
     <!--<div class="row-group">-->
       <!--<div class="input-group">-->
-        <!--<span class="input-group-addon">标签</span>-->
-        <!--<select class="form-control" ng-model="course.tag" ng-options="tag as tag.name for tag in tags">-->
+        <!--<span class="input-group-addon">等级</span>-->
+        <!--<select class="form-control" ng-model="course.level" ng-options="level as level.name for level in levels">-->
           <!--<option value="">请选择</option>-->
         <!--</select>-->
       <!--</div>-->
     <!--</div>-->
-    <!-- item -->
-
-    <div class="row-group">
-      <div class="input-group">
-        <span class="input-group-addon">等级</span>
-        <!--<select class="selectpicker form-control" multiple id="levels">-->
-          <!--#foreach($level in $levels)-->
-            <!--<option value="${level.id}">${level.name}</option>-->
-          <!--#end-->
-        <!--</select>-->
-        <select class="form-control" ng-model="course.level" ng-options="level as level.name for level in levels">
-          <option value="">请选择</option>
-        </select>
-      </div>
-    </div><!-- item -->
+      <!-- item -->
 
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">状态</span>
-        <!--<select class="form-control" ng-model="course.state" value="{{course.state}}">-->
-          <!--<option value="">请选择</option>-->
-          <!--#foreach($state in $states)-->
-            <!--<option value="${state.id}">${state.description}</option>-->
-          <!--#end-->
-        <!--</select>-->
         <select class="form-control" ng-model="course.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>
         </select>

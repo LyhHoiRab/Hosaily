@@ -60,9 +60,9 @@ public class CourseRestController{
      * 查询课程列表
      */
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<Course>> list(UsingState state){
+    public Response<List<Course>> list(String tagName, String advisor, UsingState state, String accountId, String organizationId, String organizationToken){
         try{
-            List<Course> list = courseService.listByCourse(state);
+            List<Course> list = courseService.listByCourse(tagName, advisor, state, accountId, organizationId, organizationToken);
 
             return new Response<List<Course>>("查询成功", list);
         }catch(Exception e){
@@ -75,10 +75,10 @@ public class CourseRestController{
      * 分页查询课程
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Course>> page(Long pageNum, Long pageSize, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime, String accountId){
+    public Response<Page<Course>> page(Long pageNum, Long pageSize, String tagName, String advisor, UsingState state, String accountId, String organizationId, String organizationToken){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Course> page = courseService.pageByCourse(pageRequest, tagName, advisor, state, createTime, minCreateTime, maxCreateTime, accountId);
+            Page<Course> page = courseService.pageByCourse(pageRequest, tagName, advisor, state, accountId, organizationId, organizationToken);
 
             return new Response<Page<Course>>("查询成功", page);
         }catch(Exception e){

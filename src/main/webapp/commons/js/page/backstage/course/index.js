@@ -1,11 +1,12 @@
 app.controller('courseController', function($scope, $http, $state){
-    $scope.states = [];
-    $scope.state;
-    $scope.advisor;
-    $scope.tag;
-    $scope.createTime;
-    $scope.minCreateTime;
-    $scope.maxCreateTime;
+    //下拉
+    $scope.states       = [];
+    $scope.organization = [];
+    //查询列表
+    $scope.state          = '';
+    $scope.advisor        = '';
+    $scope.tag            = '';
+    $scope.organizationId = '';
     $scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
@@ -16,12 +17,10 @@ app.controller('courseController', function($scope, $http, $state){
     };
 
     $scope.reset = function(){
-        $scope.state         = '';
-        $scope.tag           = '';
-        $scope.advisor       = '';
-        $scope.createTime    = '';
-        $scope.minCreateTime = '';
-        $scope.maxCreateTime = '';
+        $scope.state          = '';
+        $scope.tag            = '';
+        $scope.advisor        = '';
+        $scope.organizationId = '';
     };
 
     $scope.search = function(){
@@ -34,27 +33,14 @@ app.controller('courseController', function($scope, $http, $state){
     };
 
     $scope.getData = function(){
-        var pageNum       = $scope.pagingOptions.currentPage, 
-            pageSize      = $scope.pagingOptions.pageSize,
-            advisor       = $scope.advisor,
-            tag           = $scope.tag,
-            state         = $scope.state,
-            createTime    = $scope.createTime,
-            minCreateTime = $scope.minCreateTime,
-            maxCreateTime = $scope.maxCreateTime;
-
         $http({
             url: '/api/1.0/course/page',
             method: 'POST',
             data: $.param({
-                'pageNum'       : pageNum,
-                'pageSize'      : pageSize,
-                'advisor'       : advisor,
-                'tag'           : tag,
-                'state'         : state,
-                'createTime'    : createTime,
-                'minCreateTime' : minCreateTime,
-                'maxCreateTime' : maxCreateTime
+                'pageNum'       : $scope.pagingOptions.currentPage,
+                'pageSize'      : $scope.pagingOptions.pageSize,
+                'advisor'       : $scope.advisor,
+                'state'         : $scope.state
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -63,10 +49,33 @@ app.controller('courseController', function($scope, $http, $state){
             if(res.success){
                 $scope.list = res.result.content;
                 $scope.total = res.result.total;
+            }else{
+                alert(res.msg);
             }
         }).error(function(response){
             $scope.list = [];
             $scope.total = 0;
+
+            console.error(response);
+        });
+    };
+
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
         });
     };
 
@@ -149,4 +158,5 @@ app.controller('courseController', function($scope, $http, $state){
     //初始化数据
     $scope.getData();
     $scope.getState();
+    $scope.getOrganization();
 });

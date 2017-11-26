@@ -40,6 +40,7 @@ public class CourseDao{
             if(StringUtils.isBlank(course.getId())){
                 Assert.notNull(course.getType(), "课程层级类型不能为空");
                 Assert.notNull(course.getKind(), "课程类型不能为空");
+                Assert.hasText(course.getOrganizationId(), "企业ID不能为空");
 
                 course.setId(UUIDGenerator.by32());
                 course.setCreateTime(new Date());
@@ -130,37 +131,35 @@ public class CourseDao{
     }
 
     /**
-     * 根据状态查询课程
-     */
-    public List<Course> findCourseByState(UsingState state){
-        try{
-            Assert.notNull(state, "课程状态不能为空");
-
-            Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
-            criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
-            criteria.and(Restrictions.eq("c.state", state.getId()));
-
-            return mapper.findCourseByParams(criteria);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-
-    /**
      * 查询课程列表
      */
-    public List<Course> listByCourse(UsingState state){
+    public List<Course> listByCourse(String tagName, String advisor, UsingState state, String accountId, String organizationId, String organizationToken){
         try{
             Assert.notNull(state, "课程状态不能为空");
 
             Criteria criteria = new Criteria();
             criteria.and(Restrictions.eq("c.type", CourseType.CATALOGUE.getId()));
             criteria.and(Restrictions.eq("c.kind", CourseKind.COURSE.getId()));
+            criteria.sort(Restrictions.asc("c.sort"));
+            criteria.sort(Restrictions.desc("c.createTime"));
 
+            if(!StringUtils.isBlank(tagName)){
+                criteria.and(Restrictions.like("t.name", tagName));
+            }
+            if(!StringUtils.isBlank(advisor)){
+                criteria.and(Restrictions.like("a.name", advisor));
+            }
             if(state != null){
                 criteria.and(Restrictions.eq("c.state", state.getId()));
+            }
+            if(!StringUtils.isBlank(accountId)){
+                criteria.and(Restrictions.eq("ac.accountId", accountId));
+            }
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("c.organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
             }
 
             return mapper.findCourseByParams(criteria);
@@ -173,7 +172,7 @@ public class CourseDao{
     /**
      * 分页查询课程
      */
-    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, Date createTime, Date minCreateTime, Date maxCreateTime, String accountId){
+    public Page<Course> pageByCourse(PageRequest pageRequest, String tagName, String advisor, UsingState state, String accountId, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -194,14 +193,14 @@ public class CourseDao{
             if(state != null){
                 criteria.and(Restrictions.eq("c.state", state.getId()));
             }
-            if(createTime != null){
-                criteria.and(Restrictions.eq("c.createTime", createTime));
-            }
-            if(minCreateTime != null && maxCreateTime != null){
-                criteria.and(Restrictions.between("c.createTime", minCreateTime, maxCreateTime));
-            }
             if(!StringUtils.isBlank(accountId)){
                 criteria.and(Restrictions.eq("ac.accountId", accountId));
+            }
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("c.organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
             }
 
             //分页查询ID
