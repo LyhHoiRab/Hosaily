@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
   <li>
-    <span>系统设置</span>
+    <span>课程管理</span>
   </li><!-- item -->
   <li>
     <a ui-sref="course">课程管理</a>
@@ -48,7 +48,7 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">点赞量</span>
-        <input type="number" class="form-control" placeholder="点赞量" ng-model="course.likes" value="{{course.likes}}">
+        <input type="number" class="form-control" placeholder="点赞量" ng-model="course.likes">
       </div>
     </div><!-- item -->
 
@@ -69,13 +69,6 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">状态</span>
-        <!--<select class="form-control" ng-model="course.state">-->
-          <!--<option value="">请选择</option>-->
-          <!--#foreach($state in $states)-->
-            <!--<option value="${state.id}">${state.description}</option>-->
-          <!--#end-->
-        <!--</select>-->
-
         <select class="form-control" ng-model="course.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>
         </select>
@@ -108,14 +101,14 @@
           <div class="col-md-5">
             <div class="input-group">
               <span class="input-group-addon">标题</span>
-              <input type="text" class="form-control" placeholder="标题" ng-model="item.title" value="{{item.title}}" readonly="readonly">
+              <input type="text" class="form-control" placeholder="标题" ng-model="item.title" readonly="readonly">
             </div>
           </div>
 
           <div class="col-md-5">
             <div class="input-group">
               <span class="input-group-addon">概要</span>
-              <input type="text" class="form-control" placeholder="概要" ng-model="item.summary" value="{{item.summary}}" readonly="readonly">
+              <input type="text" class="form-control" placeholder="概要" ng-model="item.summary" readonly="readonly">
             </div>
           </div>
 

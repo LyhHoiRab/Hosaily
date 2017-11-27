@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
   <li>
-    <span>系统设置</span>
+    <span>课程管理</span>
   </li><!-- item -->
   <li>
     <a ui-sref="course">课程管理</a>
@@ -69,12 +69,6 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">状态</span>
-        <!--<select class="form-control" ng-model="course.state" value="{{course.state}}">-->
-          <!--<option value="">请选择</option>-->
-          <!--#foreach($state in $states)-->
-            <!--<option value="${state.id}">${state.description}</option>-->
-          <!--#end-->
-        <!--</select>-->
         <select class="form-control" ng-model="course.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>
         </select>
@@ -84,14 +78,12 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">媒体</span>
-        <!--<select class="selectpicker form-control" multiple id="medias">-->
-          <!--#foreach($media in $medias)-->
-            <!--<option value="${media.id}">${media.remark}</option>-->
-          <!--#end-->
-        <!--</select>-->
-        <select class="form-control" ng-model="course.media" ng-options="media as media.remark for media in medias" ng-multiple="true" multiple>
-          <option value="">请选择</option>
-        </select>
+        <ui-select class="form-control" multiple ng-model="course.media" theme="bootstrap">
+          <ui-select-match placeholder="请选择">{{$item.remark}}</ui-select-match>
+          <ui-select-choices repeat="media in medias">
+            <small>{{media.remark}}</small>
+          </ui-select-choices>
+        </ui-select>
       </div>
     </div><!-- item -->
 

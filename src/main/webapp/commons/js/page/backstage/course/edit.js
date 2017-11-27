@@ -134,6 +134,25 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         });
     };
 
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
+        });
+    };
+
     $scope.getTag = function(){
         $http({
             url: '/api/1.0/tag/list',

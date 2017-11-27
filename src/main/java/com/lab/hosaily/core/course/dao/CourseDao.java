@@ -42,7 +42,6 @@ public class CourseDao{
             if(StringUtils.isBlank(course.getId())){
                 Assert.notNull(course.getType(), "课程层级类型不能为空");
                 Assert.notNull(course.getKind(), "课程类型不能为空");
-                Assert.hasText(course.getOrganizationId(), "企业ID不能为空");
 
                 if(course.getMedia() == null || course.getMedia().isEmpty()){
                     course.setMediaType(MediaType.TEXT);

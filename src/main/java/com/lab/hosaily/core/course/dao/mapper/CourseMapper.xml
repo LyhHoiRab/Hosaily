@@ -457,6 +457,8 @@
             ON cl.course_id = c.id
      LEFT JOIN level l
             ON cl.level_id = l.id
+     LEFT JOIN account_course ac
+            ON ac.course_id = c.id
      LEFT JOIN organization o
             ON o.id = c.organization_id
         <if test="params != null">
@@ -491,6 +493,7 @@
                ch.price        AS ch_price,
                ch.likes        AS ch_likes,
                ch.view         AS ch_view,
+               ch.media_type   AS ch_media_type,
                m.id            AS ch_m_id,
                m.url           AS ch_m_url,
                m.type          AS ch_m_type,
@@ -578,7 +581,8 @@
                ch.id           AS ch_id,
                ch.title        AS ch_title,
                ch.summary      AS ch_summary,
-               ch.introduction AS ch_introduction
+               ch.introduction AS ch_introduction,
+               ch.media_type   AS ch_media_type
           FROM course c
       LEFT JOIN advisor a
              ON c.advisor_id = a.id
@@ -613,6 +617,7 @@
                ch.price        AS ch_price,
                ch.likes        AS ch_likes,
                ch.view         AS ch_view,
+               ch.media_type   AS ch_media_type,
                m.id            AS ch_m_id,
                m.url           AS ch_m_url,
                m.type          AS ch_m_type,
