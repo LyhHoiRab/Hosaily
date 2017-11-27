@@ -173,7 +173,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         });
     };
 
-    $scope.$watch('post.organizationId', function(newVal, oldVal){
+    $scope.$watch('course.organizationId', function(newVal, oldVal){
         if(newVal !== oldVal){
             $scope.getAdvisor();
             //$scope.getTag();

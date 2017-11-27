@@ -37,10 +37,11 @@ app.controller('courseController', function($scope, $http, $state){
             url: '/api/1.0/course/page',
             method: 'POST',
             data: $.param({
-                'pageNum'       : $scope.pagingOptions.currentPage,
-                'pageSize'      : $scope.pagingOptions.pageSize,
-                'advisor'       : $scope.advisor,
-                'state'         : $scope.state
+                'pageNum'        : $scope.pagingOptions.currentPage,
+                'pageSize'       : $scope.pagingOptions.pageSize,
+                'advisor'        : $scope.advisor,
+                'state'          : $scope.state,
+                'organizationId' : $scope.organizationId
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

@@ -17,6 +17,7 @@
         <result column="sort"               property="sort"             javaType="java.lang.Integer"/>
         <result column="parent_id"          property="parentId"         javaType="java.lang.String"/>
         <result column="organization_id"    property="organizationId"   javaType="java.lang.String"/>
+        <result column="media_type"         property="mediaType"        typeHandler="mediaTypeHandler"/>
         <result column="state"              property="state"            typeHandler="usingStateHandler"/>
         <result column="create_time"        property="createTime"       javaType="java.util.Date"/>
         <result column="update_time"        property="updateTime"       javaType="java.util.Date"/>
@@ -41,6 +42,7 @@
         <result column="comments"     property="comments"     javaType="java.lang.Integer"/>
         <result column="sort"         property="sort"         javaType="java.lang.Integer"/>
         <result column="parent_id"    property="parentId"     javaType="java.lang.String"/>
+        <result column="media_type"   property="mediaType"    typeHandler="mediaTypeHandler"/>
         <result column="state"        property="state"        typeHandler="usingStateHandler"/>
         <result column="create_time"  property="createTime"   javaType="java.util.Date"/>
         <result column="update_time"  property="updateTime"   javaType="java.util.Date"/>
@@ -76,7 +78,6 @@
         <result column="name"         property="name"         javaType="java.lang.String"/>
         <result column="nickname"     property="nickname"     javaType="java.lang.String"/>
         <result column="sex"          property="sex"          typeHandler="sexHandler"/>
-        <result column="wechat"       property="wechat"       javaType="java.lang.String"/>
         <result column="age"          property="age"          javaType="java.lang.Integer"/>
         <result column="introduction" property="introduction" javaType="java.lang.String"/>
         <result column="head_img_url" property="headImgUrl"   javaType="java.lang.String"/>
@@ -199,7 +200,8 @@
                parent_id,
                state,
                create_time,
-               orgainzation_id
+               organization_id,
+               media_type
         ) VALUE (
                #{id,             jdbcType=VARCHAR},
                #{advisor.id,     jdbcType=VARCHAR},
@@ -217,7 +219,8 @@
                #{parentId,       jdbcType=VARCHAR},
                #{state,          typeHandler=usingStateHandler},
                #{createTime,     jdbcType=TIMESTAMP},
-               #{orgainzationId, jdbcType=VARCHAR}
+               #{organizationId, jdbcType=VARCHAR},
+               #{mediaType,      typeHandler=mediaTypeHandler}
         )
     </insert>
 
@@ -271,6 +274,9 @@
             </if>
             <if test="organizationId != null and organizationId != ''">
                 organization_id = #{organizationId, jdbcType=VARCHAR},
+            </if>
+            <if test="mediaType != null">
+                media_type = #{mediaType, typeHandler=mediaTypeHandler},
             </if>
          </set>
           WHERE id = #{id}
@@ -430,7 +436,6 @@
                a.nickname     AS a_nickname,
                a.name         AS a_name,
                a.sex          AS a_sex,
-               a.wechat       AS a_wechat,
                a.age          AS a_age,
                a.introduction AS a_introduction,
                a.head_img_url AS a_head_img_url,
@@ -560,7 +565,6 @@
                a.nickname      AS a_nickname,
                a.name          AS a_name,
                a.sex           AS a_sex,
-               a.wechat        AS a_wechat,
                a.age           AS a_age,
                a.introduction  AS a_introduction,
                a.head_img_url  AS a_head_img_url,

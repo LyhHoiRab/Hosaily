@@ -2,8 +2,10 @@ package com.lab.hosaily.core.course.dao;
 
 import com.lab.hosaily.core.course.consts.CourseKind;
 import com.lab.hosaily.core.course.consts.CourseType;
+import com.lab.hosaily.core.course.consts.MediaType;
 import com.lab.hosaily.core.course.dao.mapper.CourseMapper;
 import com.lab.hosaily.core.course.entity.Course;
+import com.lab.hosaily.core.course.entity.Media;
 import com.rab.babylon.commons.security.exception.DataAccessException;
 import com.rab.babylon.commons.security.mybatis.Criteria;
 import com.rab.babylon.commons.security.mybatis.Restrictions;
@@ -42,10 +44,24 @@ public class CourseDao{
                 Assert.notNull(course.getKind(), "课程类型不能为空");
                 Assert.hasText(course.getOrganizationId(), "企业ID不能为空");
 
+                if(course.getMedia() == null || course.getMedia().isEmpty()){
+                    course.setMediaType(MediaType.TEXT);
+                }else{
+                    Media media = course.getMedia().get(0);
+                    course.setMediaType(media.getType());
+                }
+
                 course.setId(UUIDGenerator.by32());
                 course.setCreateTime(new Date());
                 mapper.save(course);
             }else{
+                if(course.getMedia() == null || course.getMedia().isEmpty()){
+                    course.setMediaType(MediaType.TEXT);
+                }else{
+                    Media media = course.getMedia().get(0);
+                    course.setMediaType(media.getType());
+                }
+
                 course.setUpdateTime(new Date());
                 mapper.update(course);
             }

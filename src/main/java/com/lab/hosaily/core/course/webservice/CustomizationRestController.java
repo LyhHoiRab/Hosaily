@@ -7,6 +7,7 @@ import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
 import com.rab.babylon.core.consts.entity.UsingState;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,10 @@ public class CustomizationRestController{
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Page<Customization>> page(Long pageNum, Long pageSize, UsingState state, String tagName, String organizationId, String organizationToken){
         try{
+            if(StringUtils.isBlank(organizationId) && StringUtils.isBlank(organizationToken)){
+                organizationToken = "kuliao";
+            }
+
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
             Page<Customization> page = customizationService.page(pageRequest, state, tagName, organizationId, organizationToken);
 

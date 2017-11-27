@@ -17,6 +17,7 @@
         <result column="view"            property="view"            javaType="java.lang.Integer"/>
         <result column="sort"            property="sort"            javaType="java.lang.Integer"/>
         <result column="comments"        property="comments"        javaType="java.lang.Integer"/>
+        <result column="media_type"      property="mediaType"       typeHandler="mediaTypeHandler"/>
         <result column="state"           property="state"           typeHandler="usingStateHandler"/>
         <result column="create_time"     property="createTime"      javaType="java.util.Date"/>
         <result column="update_time"     property="updateTime"      javaType="java.util.Date"/>
@@ -168,7 +169,8 @@
                comments,
                state,
                advisor_id,
-               create_time
+               create_time,
+               media_type
 	  	) VALUE (
                #{id,              jdbcType=VARCHAR},
                #{type,            typeHandler=courseTypeHandler},
@@ -185,7 +187,8 @@
                #{comments,        jdbcType=INTEGER},
                #{state,           typeHandler=usingStateHandler},
                #{advisor.id,      jdbcType=VARCHAR},
-               #{createTime,      jdbcType=TIMESTAMP}
+               #{createTime,      jdbcType=TIMESTAMP},
+               #{mediaType,       typeHandler=mediaTypeHandler}
         )
     </insert>
 
@@ -230,6 +233,9 @@
              </if>
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=VARCHAR},
+             </if>
+             <if test="mediaType != null">
+                 media_type = #{mediaType, typeHandler=mediaTypeHandler},
              </if>
          </set>
           WHERE id = #{id}

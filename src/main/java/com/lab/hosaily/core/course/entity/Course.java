@@ -2,6 +2,7 @@ package com.lab.hosaily.core.course.entity;
 
 import com.lab.hosaily.core.course.consts.CourseKind;
 import com.lab.hosaily.core.course.consts.CourseType;
+import com.lab.hosaily.core.course.consts.MediaType;
 import com.rab.babylon.core.base.entity.Create;
 import com.rab.babylon.core.base.entity.Update;
 import com.rab.babylon.core.consts.entity.UsingState;
@@ -43,6 +44,8 @@ public class Course implements Create, Update{
     private List<Course> children;
     //媒体资源
     private List<Media> media;
+    //媒体标识
+    private MediaType mediaType;
     //导师
     private Advisor advisor;
     //限制等级
@@ -218,6 +221,14 @@ public class Course implements Create, Update{
 
     public void setOrganizationId(String organizationId){
         this.organizationId = organizationId;
+    }
+
+    public MediaType getMediaType(){
+        return mediaType;
+    }
+
+    public void setMediaType(MediaType mediaType){
+        this.mediaType = mediaType;
     }
 
     @Override

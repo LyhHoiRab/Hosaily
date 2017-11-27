@@ -1,7 +1,8 @@
 app.controller('courseAddController', function($scope, $state, FileUploader, $http){
     //下拉
-    $scope.states   = [];
-    $scope.advisors = [];
+    $scope.states        = [];
+    $scope.advisors      = [];
+    $scope.organizations = [];
     //$scope.tags     = [];
     //$scope.levels   = [];
 
@@ -173,7 +174,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader, $ht
         });
     };
 
-    $scope.$watch('post.organizationId', function(newVal, oldVal){
+    $scope.$watch('course.organizationId', function(newVal, oldVal){
         if(newVal !== oldVal){
             $scope.getAdvisor();
             //$scope.getTag();

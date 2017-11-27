@@ -36,6 +36,7 @@ public class AdvisorDao{
 
             if(StringUtils.isBlank(advisor.getId())){
                 Assert.notNull(advisor.getState(), "导师状态不能为空");
+                Assert.hasText(advisor.getOrganizationId(), "企业ID不能为空");
 
                 advisor.setId(UUIDGenerator.by32());
                 advisor.setCreateTime(new Date());
