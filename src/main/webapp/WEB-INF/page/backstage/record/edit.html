@@ -1,0 +1,77 @@
+<ol class="breadcrumb">
+  <li>
+    <span>系统设置</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="record">录音管理</a>
+  </li><!-- item -->
+  <li>
+    <span>
+      #if($id)
+        修改录音
+      #else
+        添加录音
+      #end
+    </span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">sim卡号码</span>
+        <input type="text" class="form-control" placeholder="sim卡号码" ng-model="record.sim" value="{{record.sim}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">打出号码</span>
+        <input type="text" class="form-control" placeholder="打出号码" ng-model="record.outGoingNum" value="{{record.outGoingNum}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">本机号码</span>
+        <input type="text" class="form-control" placeholder="本机号码" ng-model="record.num" value="{{record.num}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">时长</span>
+        <input type="text" class="form-control" placeholder="时长" ng-model="record.time" value="{{record.time}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">录音文件地址</span>
+        <input type="text" class="form-control" placeholder="录音文件地址" ng-model="record.path" value="{{record.path}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">使用者</span>
+        <input type="text" class="form-control" placeholder="使用者" ng-model="record.userName" value="{{record.userName}}">
+      </div>
+    </div><!-- item -->
+    
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div><!-- container -->
+</div><!-- table info -->

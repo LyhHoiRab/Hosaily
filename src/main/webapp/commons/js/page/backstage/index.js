@@ -712,5 +712,99 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 ]);
             }]
         }
+    }).state('record', {
+        url: '/record',
+        templateUrl: '/page/backstage/record',
+        controller: 'recordController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/record/index.js'
+                ]);
+            }]
+        }
+    }).state('recordAdd', {
+        url: '/record/add',
+        templateUrl: '/page/backstage/record/add',
+        controller: 'recordAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/record/add.js'
+                ]);
+            }]
+        }
+    }).state('recordEdit', {
+        url: '/record/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/record/edit/' + $stateParams.id;
+        },
+        controller: 'recordEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/record/edit.js'
+                ]);
+            }]
+        }
+    }).state('simNumUser', {
+        url: '/simNumUser',
+        templateUrl: '/page/backstage/simNumUser',
+        controller: 'simNumUserController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/simNumUser/index.js'
+                ]);
+            }]
+        }
+    }).state('simNumUserAdd', {
+        url: '/simNumUser/add',
+        templateUrl: '/page/backstage/simNumUser/add',
+        controller: 'simNumUserAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/simNumUser/add.js'
+                ]);
+            }]
+        }
+    }).state('simNumUserEdit', {
+        url: '/simNumUser/edit/:sim',
+        templateUrl: function($stateParams){
+            return '/page/backstage/simNumUser/edit/' + $stateParams.sim;
+        },
+        controller: 'simNumUserEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/simNumUser/edit.js'
+                ]);
+            }]
+        }
     });
 }]);

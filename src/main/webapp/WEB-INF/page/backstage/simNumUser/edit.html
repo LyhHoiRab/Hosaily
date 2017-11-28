@@ -1,0 +1,57 @@
+<ol class="breadcrumb">
+  <li>
+    <span>系统设置</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="simNumUser">sim卡电话号码使用者配置管理</a>
+  </li><!-- item -->
+  <li>
+    <span>
+      #if($sim)
+        修改sim卡电话号码使用者配置
+      #else
+        添加sim卡电话号码使用者配置
+      #end
+    </span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">sim卡号码</span>
+        <input type="text" class="form-control" placeholder="sim卡号码" #if($sim) disabled="disabled" #else #end ng-model="simNumUser.sim" value="{{simNumUser.sim}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">本机号码</span>
+        <input type="text" class="form-control" placeholder="本机号码" ng-model="simNumUser.num" value="{{simNumUser.num}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">使用者名称</span>
+        <input type="text" class="form-control" placeholder="使用者名称" ng-model="simNumUser.userName" value="{{simNumUser.userName}}">
+      </div>
+    </div><!-- item -->
+
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div><!-- container -->
+</div><!-- table info -->

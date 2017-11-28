@@ -401,3 +401,32 @@ CREATE TABLE `xcx_account` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `open_id_UNIQUE` (`open_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='小程序账户';
+
+
+
+
+
+DROP TABLE IF EXISTS `record`;
+CREATE TABLE `record` (
+  `id` varchar(32) NOT NULL,
+  `sim` varchar(45) DEFAULT NULL,
+  `out_going_num` varchar(45) DEFAULT NULL,
+  `num` varchar(45) DEFAULT NULL,
+  `time` varchar(60) DEFAULT NULL,
+  `user_name` varchar(60) DEFAULT NULL,
+  `path` varchar(256) DEFAULT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='录音表';
+
+
+DROP TABLE IF EXISTS `sim_num_user`;
+CREATE TABLE `sim_num_user` (
+  `sim` varchar(32) NOT NULL,
+  `num` varchar(45) DEFAULT NULL,
+  `user_name` varchar(45) DEFAULT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`sim`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='sim序号手机号码使用者对照表';
