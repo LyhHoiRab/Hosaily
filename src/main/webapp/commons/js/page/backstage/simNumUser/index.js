@@ -1,4 +1,4 @@
-app.controller('simNumUserController', function($scope){
+app.controller('simNumUserController', function($scope, $http){
     $scope.list = [];
     $scope.selected = [];
     $scope.total = 0;
@@ -8,33 +8,67 @@ app.controller('simNumUserController', function($scope){
         currentPage: 1
     };
 
-    $scope.getData = function(pageNum, pageSize){
-        $.ajax({
+    $scope.reset = function(){
+        $scope.num           = '';
+    };
+
+    $scope.search = function(){
+        $scope.pagingOptions.currentPage = 1;
+        $scope.getData();
+    };
+
+    $scope.refresh = function(){
+        $scope.getData();
+    };
+
+    $scope.getData = function(){
+        //查询参数
+        var pageNum       = $scope.pagingOptions.currentPage,
+            pageSize      = $scope.pagingOptions.pageSize,
+            num           = $scope.num;
+
+        $http({
             url: '/api/1.0/simNumUser/page',
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
+            method: 'POST',
+            data: $.param({
                 'pageNum': pageNum,
-                'pageSize': pageSize
-            },
-            success: function(res){
-                if(res.success){
-                    $scope.list = res.result.content;
-                    $scope.total = res.result.total;
-                }
-                if(!$scope.$$phase){
-                    $scope.$apply();
-                }
+                'pageSize': pageSize,
+                'num':num
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.list = res.result.content;
+                $scope.total = res.result.total;
+            }
+        }).error(function(response){
+            $scope.list = [];
+            $scope.total = 0;
+        });
+    };
+
+    $scope.delete = function(id){
+        $http({
+            url: '/api/1.0/simNumUser/' + id,
+            method: 'DELETE'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+                $scope.pagingOptions.currentPage = 1;
+                $scope.getData();
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+
         });
     };
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
-            var pageNum = newVal.currentPage;
-            var pageSize = newVal.pageSize;
-
-            $scope.getData(pageNum, pageSize);
+            $scope.getData();
         }
     }, true);
 
@@ -71,10 +105,10 @@ app.controller('simNumUserController', function($scope){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="simNumUserEdit({sim:\'{{row.getProperty(\'sim\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="simNumUserEdit({sim:\'{{row.getProperty(\'sim\')}}\'})">[修改]</a><a href="javascript:;" ng-click="delete(row.getProperty(\'sim\'))">[删除]</a></span></div>'
         }]
     };
 
     //初始化数据
-    $scope.getData($scope.pagingOptions.currentPage, $scope.pagingOptions.pageSize);
+    $scope.getData();
 });

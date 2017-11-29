@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.io.File;
+
 @Service
 @Transactional(readOnly = true)
 @Component("recordService")
@@ -67,6 +69,27 @@ public class RecordServiceImpl implements RecordService {
             Assert.hasText(id, "标签信息不能为空");
 
             return recordDao.getById(id);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 删除
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void delete(String id){
+        try{
+            Assert.hasText(id, "帖子ID不能为空");
+            Record record = recordDao.getById(id);
+            File file = new File(record.getPath());
+            if(file.exists()){
+                System.out.println(file.getName() + " deleted!!");
+                file.delete();
+            }
+            recordDao.delete(id);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

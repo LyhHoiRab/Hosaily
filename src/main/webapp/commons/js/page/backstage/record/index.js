@@ -61,6 +61,23 @@ app.controller('recordController', function($scope, $http){
         });
     };
 
+    $scope.delete = function(id){
+        $http({
+            url: '/api/1.0/record/' + id,
+            method: 'DELETE'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+                $scope.pagingOptions.currentPage = 1;
+                $scope.getData();
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+
+        });
+    };
+
     //初始化数据
     $scope.getData();
 
@@ -100,8 +117,9 @@ app.controller('recordController', function($scope, $http){
             field: 'time',
             displayName: '时长'
         },{
-            field: 'path',
-            displayName: '录音文件地址'
+            // field: 'path',
+            displayName: '录音文件',
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="http://localhost:8888/api/1.0/record/testHttpMessageDown/{{row.getProperty(\'id\')}}">下载</a></span></div>'
         },{
             field: 'userName',
             displayName: '使用者'
@@ -115,7 +133,7 @@ app.controller('recordController', function($scope, $http){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="recordEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="javascript:;" ng-click="delete(row.getProperty(\'id\'))">[删除]</a></span></div>'
         }]
     };
 

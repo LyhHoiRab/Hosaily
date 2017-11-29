@@ -67,12 +67,27 @@ public class SimNumUserRestController {
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<SimNumUser>> page(Long pageNum, Long pageSize){
+    public Response<Page<SimNumUser>> page(Long pageNum, Long pageSize, String num){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<SimNumUser> page = simNumUserService.page(pageRequest);
+            Page<SimNumUser> page = simNumUserService.page(pageRequest, num);
 
             return new Response<Page<SimNumUser>>("查询成功", page);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response delete(@PathVariable("id") String id){
+        try{
+            simNumUserService.delete(id);
+
+            return new Response("删除成功", null);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

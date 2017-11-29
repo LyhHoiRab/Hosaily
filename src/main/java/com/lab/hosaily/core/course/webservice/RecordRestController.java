@@ -9,8 +9,17 @@ import com.rab.babylon.commons.security.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 @RequestMapping(value = "/api/1.0/record")
@@ -73,6 +82,39 @@ public class RecordRestController {
             Page<Record> page = recordService.page(pageRequest, userName, num, outGoingNum, sim);
 
             return new Response<Page<Record>>("查询成功", page);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+
+    @RequestMapping("/testHttpMessageDown/{id}")
+    public ResponseEntity<byte[]> download(HttpServletRequest request, @PathVariable("id") String id) throws IOException {
+        System.out.println("TTTTTTTTTTTTTDDDDDDDDDDDDDDDDDD: " + id);
+        Record record = recordService.getById(id);
+        File file = new File(record.getPath());
+        byte[] body = null;
+        InputStream is = new FileInputStream(file);
+        body = new byte[is.available()];
+        is.read(body);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attchement;filename=" + file.getName());
+        HttpStatus statusCode = HttpStatus.OK;
+        ResponseEntity<byte[]> entity = new ResponseEntity<byte[]>(body, headers, statusCode);
+        return entity;
+    }
+
+
+    /**
+     * 删除
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response delete(@PathVariable("id") String id){
+        try{
+            recordService.delete(id);
+
+            return new Response("删除成功", null);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

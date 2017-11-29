@@ -22,7 +22,12 @@ public interface SimNumUserService {
     SimNumUser getBySim(String sim);
 
     /**
+     * 删除
+     */
+    void delete(String id);
+
+    /**
      * 分页查询
      */
-    Page<SimNumUser> page(PageRequest pageRequest);
+    Page<SimNumUser> page(PageRequest pageRequest, String num);
 }

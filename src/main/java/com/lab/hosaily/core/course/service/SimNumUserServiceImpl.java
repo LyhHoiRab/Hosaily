@@ -14,7 +14,7 @@ import org.springframework.util.Assert;
 
 @Service
 @Transactional(readOnly = true)
-public class SimNumUserServiceImpl implements SimNumUserService{
+public class SimNumUserServiceImpl implements SimNumUserService {
 
     private static Logger logger = LoggerFactory.getLogger(SimNumUserServiceImpl.class);
 
@@ -55,6 +55,22 @@ public class SimNumUserServiceImpl implements SimNumUserService{
     }
 
     /**
+     * 删除
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void delete(String id){
+        try{
+            Assert.hasText(id, "帖子ID不能为空");
+
+            simNumUserDao.delete(id);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 根据ID查询记录
      */
     @Override
@@ -73,11 +89,11 @@ public class SimNumUserServiceImpl implements SimNumUserService{
      * 分页查询
      */
     @Override
-    public Page<SimNumUser> page(PageRequest pageRequest){
+    public Page<SimNumUser> page(PageRequest pageRequest, String num){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return simNumUserDao.page(pageRequest);
+            return simNumUserDao.page(pageRequest, num);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

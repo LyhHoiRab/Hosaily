@@ -23,6 +23,11 @@ public interface RecordService {
     Record getById(String id);
 
     /**
+     * 删除
+     */
+    void delete(String id);
+
+    /**
      * 分页查询
      */
     Page<Record> page(PageRequest pageRequest, String userName, String num, String outGoingNum, String sim);

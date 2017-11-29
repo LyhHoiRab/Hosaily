@@ -8,6 +8,7 @@ import com.rab.babylon.commons.security.mybatis.Restrictions;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.core.consts.entity.UsingState;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,11 +97,14 @@ public class SimNumUserDao {
     /**
      * 分页查询
      */
-    public Page<SimNumUser> page(PageRequest pageRequest){
+    public Page<SimNumUser> page(PageRequest pageRequest, String num){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
+            if(!StringUtils.isBlank(num)){
+                criteria.and(Restrictions.like("num", num));
+            }
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             Long count = mapper.countByParams(criteria);
