@@ -109,7 +109,8 @@ public class UploadServlet extends HttpServlet {
                 Record record = new Record();
                 record.setSim(paramArr[1]);
                 record.setOutGoingNum(paramArr[2]);
-                record.setTime(paramArr[3].split("\\.")[0]);
+//                record.setTime(paramArr[3].split("\\.")[0]);
+                record.setTime(paramArr[3]);
                 record.setPath(outFilePath);
                 recordService.save(record);
                 out.println("文件上传成功!");
