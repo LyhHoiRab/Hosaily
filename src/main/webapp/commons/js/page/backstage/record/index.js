@@ -119,7 +119,7 @@ app.controller('recordController', function($scope, $http){
         },{
             // field: 'path',
             displayName: '录音文件',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="http://localhost:8888/api/1.0/record/testHttpMessageDown/{{row.getProperty(\'id\')}}">下载</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="/api/1.0/record/testHttpMessageDown/{{row.getProperty(\'id\')}}">下载</a></span></div>'
         },{
             field: 'userName',
             displayName: '使用者'
