@@ -332,4 +332,11 @@
          WHERE cg.course_id = #{courseId}
            AND ag.account_id = #{accountId}
     </select>
+
+    <select id="accountCourse" resultType="java.lang.Boolean">
+        SELECT COUNT(*)
+          FROM account_course
+         WHERE account_id = #{accountId}
+           AND course_id = #{courseId}
+    </select>
 </mapper>

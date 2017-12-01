@@ -75,4 +75,9 @@ public interface CourseGroupMapper{
      * 是否有授权课程
      */
     Boolean hasCourse(@Param("accountId") String accountId, @Param("courseId") String courseId);
+
+    /**
+     * 账户-课程关联表
+     */
+    Boolean accountCourse(@Param("accountId") String accountId, @Param("courseId") String courseId);
 }

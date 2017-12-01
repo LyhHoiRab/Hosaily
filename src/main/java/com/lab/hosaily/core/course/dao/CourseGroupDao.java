@@ -202,7 +202,8 @@ public class CourseGroupDao{
             Assert.hasText(accountId, "账户ID不能为空");
             Assert.hasText(courseId, "课程ID不能为空");
 
-            return mapper.hasCourse(accountId, courseId);
+            //旧数据中过度
+            return mapper.hasCourse(accountId, courseId) || mapper.accountCourse(accountId, courseId);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

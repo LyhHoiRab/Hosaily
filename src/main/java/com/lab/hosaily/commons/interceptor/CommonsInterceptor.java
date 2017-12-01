@@ -48,9 +48,9 @@ public class CommonsInterceptor extends HandlerInterceptorAdapter{
 
                 modelAndView.setViewName(CommonsPathConsts.WEB_DIR + modelAndView.getViewName());
             }else{
-                content.put("commonsJsPath", resource == null ? basePath + CommonsPathConsts.JS_MOBILE_PATH : resource.getJsUrl());
-                content.put("commonsCssPath", resource == null ? basePath + CommonsPathConsts.CSS_MOBILE_PATH : resource.getCssUrl());
-                content.put("commonsImgPath", resource == null ? basePath + CommonsPathConsts.IMG_MOBILE_PATH : resource.getImgUrl());
+                content.put("commonsJsPath", resource == null ? basePath + CommonsPathConsts.JS_MOBILE_PATH : resource.getMobileJsUrl());
+                content.put("commonsCssPath", resource == null ? basePath + CommonsPathConsts.CSS_MOBILE_PATH : resource.getMobileCssUrl());
+                content.put("commonsImgPath", resource == null ? basePath + CommonsPathConsts.IMG_MOBILE_PATH : resource.getMobileImgUrl());
 
                 modelAndView.setViewName(CommonsPathConsts.MOBILE_DIR + modelAndView.getViewName());
             }

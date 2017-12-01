@@ -365,10 +365,8 @@
             ON cl.course_id = c.id
      LEFT JOIN level l
             ON cl.level_id = l.id
-     LEFT JOIN course_course cc
-            ON cc.parent_id = c.id
      LEFT JOIN course ch
-            ON cc.children_id = ch.id
+            ON c.id = ch.parent_id
      LEFT JOIN account_course ac
             ON ac.course_id = c.id
      LEFT JOIN organization o

@@ -1,6 +1,5 @@
 package com.lab.hosaily.core.course.webservice;
 
-import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.course.entity.CourseGroup;
 import com.lab.hosaily.core.course.service.CourseGroupService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
@@ -9,12 +8,10 @@ import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
 import com.rab.babylon.core.consts.entity.UsingState;
-import org.bouncycastle.ocsp.Req;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

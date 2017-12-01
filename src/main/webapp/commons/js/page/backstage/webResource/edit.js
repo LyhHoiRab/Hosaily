@@ -1,4 +1,4 @@
-app.controller('webResourceAddController', function($scope, $state, $http, $stateParams){
+app.controller('webResourceEditController', function($scope, $state, $http, $stateParams){
     //下拉
     $scope.states        = [];
     $scope.organizations = [];
@@ -12,7 +12,8 @@ app.controller('webResourceAddController', function($scope, $state, $http, $stat
         mobileImgUrl   : '',
         mobileCssUrl   : '',
         mobileJsUrl    : '',
-        organizationId : ''
+        organizationId : '',
+        state          : ''
     };
 
     $scope.reset = function(){
@@ -29,7 +30,7 @@ app.controller('webResourceAddController', function($scope, $state, $http, $stat
     $scope.submit = function(){
         $http({
             url: '/api/1.0/webResource',
-            method: 'POST',
+            method: 'PUT',
             data: JSON.stringify($scope.resource),
             headers: {
                 'Content-Type': 'application/json'

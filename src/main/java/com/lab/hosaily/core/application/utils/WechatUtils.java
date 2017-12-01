@@ -69,7 +69,7 @@ public class WechatUtils{
                         throw new HttpClientException(accessToken.getErrmsg());
                     }
 
-                    return getAccessToken(appId, secret);
+                    return accessToken;
                 }
             }
 
