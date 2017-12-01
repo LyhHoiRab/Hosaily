@@ -1,0 +1,101 @@
+<ol class="breadcrumb">
+  <li>
+    <span>系统设置</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="webResource">域名管理</a>
+  </li><!-- item -->
+  <li>
+    <span>
+      #if($id)
+        修改域名
+      #else
+        添加域名
+      #end
+    </span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">域名</span>
+        <input type="text" class="form-control" placeholder="域名" ng-model="resource.domain">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">图片路径</span>
+        <input type="text" class="form-control" placeholder="图片路径" ng-model="resource.imgUrl" >
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">样式路径</span>
+        <input type="text" class="form-control" placeholder="样式路径" ng-model="resource.cssUrl">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">JS路径</span>
+        <input type="text" class="form-control" placeholder="JS路径" ng-model="resource.jsUrl">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">移动端图片路径</span>
+        <input type="text" class="form-control" placeholder="移动端图片路径" ng-model="resource.mobileImgUrl">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">移动端样式路径</span>
+        <input type="text" class="form-control" placeholder="移动端样式路径" ng-model="resource.mobileCssUrl">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">移动端JS路径</span>
+        <input type="text" class="form-control" placeholder="移动端JS路径" ng-model="resource.mobileJsUrl">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">状态</span>
+        <select class="form-control" ng-model="resource.state" ng-options="key as value for (key, value) in states">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">企业</span>
+        <select class="form-control" ng-model="resource.organizationId" ng-options="organization.id as organization.name for organization in organizations">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div><!-- container -->
+</div><!-- table info -->

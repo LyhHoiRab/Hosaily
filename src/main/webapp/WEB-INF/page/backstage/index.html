@@ -13,7 +13,6 @@
     <link rel="stylesheet" type="text/css" href="${basePath}/commons/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${basePath}/commons/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="${basePath}/commons/css/animate.css">
-    <!--<link rel="stylesheet" type="text/css" href="${basePath}/commons/js/plugin/angular-ui-select/select.min.css">-->
     <link rel="stylesheet" type="text/css" href="${basePath}/commons/css/reset.css">
     <link rel="stylesheet" type="text/css" href="${basePath}/commons/css/page/backstage/index.css">
 
@@ -71,6 +70,14 @@
               <i class="fa fa-angle-right"></i>
             </a>
           </div><!-- second level item -->
+
+          <div class="menu-item">
+            <a href ui-sref="webResource" ui-sref-active="active">
+              <i class="fa fa-cubes"></i>
+              <span>域名管理</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+          </div><!-- second level item -->
         </div><!-- item -->
 
         <div class="side">
@@ -120,26 +127,17 @@
           </div><!-- second level item -->
 
           <div class="menu-item">
-            <a href ui-sref="record" ui-sref-active="active">
-              <i class="fa fa-map-o"></i>
-              <span>录音管理</span>
-              <i class="fa fa-angle-right"></i>
-            </a>
-          </div><!-- second level item -->
-
-          <div class="menu-item">
-            <a href ui-sref="simNumUser" ui-sref-active="active">
-              <i class="fa fa-map-o"></i>
-              <span>sim卡管理</span>
-              <i class="fa fa-angle-right"></i>
-            </a>
-          </div><!-- second level item -->
-
-
-          <div class="menu-item">
             <a href ui-sref="course" ui-sref-active="active">
               <i class="fa fa-mortar-board"></i>
               <span>课程管理</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+          </div><!-- second level item -->
+
+          <div class="menu-item">
+            <a href ui-sref="courseGroup" ui-sref-active="active">
+              <i class="fa fa-mortar-board"></i>
+              <span>课程组管理</span>
               <i class="fa fa-angle-right"></i>
             </a>
           </div><!-- second level item -->
@@ -169,23 +167,40 @@
           <div class="menu-item">
             <a href ui-sref="user" ui-sref-active="active">
               <i class="fa fa-pencil"></i>
-              <span>授权管理</span>
+              <span>用户管理</span>
               <i class="fa fa-angle-right"></i>
             </a>
           </div><!-- second level item -->
 
-          <div class="menu-item">
-            <a href ui-sref="order" ui-sref-active="active">
-              <i class="fa fa-edit"></i>
-              <span>订单管理</span>
-              <i class="fa fa-angle-right"></i>
-            </a>
-          </div><!-- second level item -->
+          <!--<div class="menu-item">-->
+            <!--<a href ui-sref="order" ui-sref-active="active">-->
+              <!--<i class="fa fa-edit"></i>-->
+              <!--<span>订单管理</span>-->
+              <!--<i class="fa fa-angle-right"></i>-->
+            <!--</a>-->
+          <!--</div>-->
+          <!-- second level item -->
 
           <div class="menu-item">
             <a href ui-sref="paymentType" ui-sref-active="active">
               <i class="fa fa-dollar"></i>
               <span>支付方式管理</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+          </div><!-- second level item -->
+
+          <div class="menu-item">
+            <a href ui-sref="record" ui-sref-active="active">
+              <i class="fa fa-map-o"></i>
+              <span>录音管理</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+          </div><!-- second level item -->
+
+          <div class="menu-item">
+            <a href ui-sref="simNumUser" ui-sref-active="active">
+              <i class="fa fa-map-o"></i>
+              <span>sim卡管理</span>
               <i class="fa fa-angle-right"></i>
             </a>
           </div><!-- second level item -->
@@ -221,7 +236,6 @@
     <script type="text/javascript" src="${basePath}/commons/js/angular.js"></script>
     <script type="text/javascript" src="${basePath}/commons/js/angular-ui-router.js"></script>
     <script type="text/javascript" src="${basePath}/commons/js/oclazyload.js"></script>
-    <!--<script type="text/javascript" src="${basePath}/commons/js/plugin/angular-bootstrap/ui-bootstrap-tpls.js"></script>-->
     <script type="text/javascript" src="${basePath}/commons/js/plugin/angular-sanitize/angular-sanitize.js"></script>
     <script type="text/javascript" src="${basePath}/commons/js/plugin/ng-grid/ng-grid.min.js"></script>
     <script type="text/javascript" src="${basePath}/commons/js/plugin/angular-ckeditor/angular-ckeditor.js"></script>

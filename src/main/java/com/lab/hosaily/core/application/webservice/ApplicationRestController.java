@@ -9,6 +9,7 @@ import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
+import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,10 +82,10 @@ public class ApplicationRestController{
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Application>> page(Long pageNum, Long pageSize, String name, String token, ApplicationType type, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Response<Page<Application>> page(Long pageNum, Long pageSize, UsingState state, String name, String token, ApplicationType type, String organizationId, String organizationToken){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Application> page = applicationService.page(pageRequest, name, token, type, createTime, minCreateTime, maxCreateTime);
+            Page<Application> page = applicationService.page(pageRequest, state, name, token, type, organizationId, organizationToken);
 
             return new Response<Page<Application>>("查询成功", page);
         }catch(Exception e){

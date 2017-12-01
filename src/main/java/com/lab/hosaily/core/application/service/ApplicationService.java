@@ -4,6 +4,7 @@ import com.lab.hosaily.core.application.consts.ApplicationType;
 import com.lab.hosaily.core.application.entity.Application;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
+import com.rab.babylon.core.consts.entity.UsingState;
 
 import java.util.Date;
 import java.util.Map;
@@ -28,7 +29,7 @@ public interface ApplicationService{
     /**
      * 分页查询
      */
-    Page<Application> page(PageRequest pageRequest, String name, String token, ApplicationType type, Date createTime, Date minCreateTime, Date maxCreateTime);
+    Page<Application> page(PageRequest pageRequest, UsingState state, String name, String token, ApplicationType type, String organizationId, String organizationToken);
 
     /**
      * 根据ID查询

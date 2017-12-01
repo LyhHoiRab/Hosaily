@@ -19,6 +19,7 @@ public class Application implements Create, Update, Delete{
     private String secret;
     private String aesKey;
     private String token;
+    private String organizationId;
     private ApplicationType type;
     private UsingState state;
     private Boolean isDelete;
@@ -92,6 +93,14 @@ public class Application implements Create, Update, Delete{
 
     public void setState(UsingState state){
         this.state = state;
+    }
+
+    public String getOrganizationId(){
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId){
+        this.organizationId = organizationId;
     }
 
     @Override

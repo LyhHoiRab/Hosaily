@@ -1,6 +1,7 @@
 package com.lab.hosaily.core.application.service;
 
 import com.lab.hosaily.commons.utils.WeChatUtils;
+import com.lab.hosaily.core.account.consts.WeChatSex;
 import com.lab.hosaily.core.account.dao.AccountDao;
 import com.lab.hosaily.core.account.dao.UserDao;
 import com.lab.hosaily.core.account.dao.WeChatAccountDao;
@@ -198,9 +199,21 @@ public class WechatServiceImpl implements WechatService{
 
             WeChatAccount weChatAccount = weChatAccountDao.getByOpenId(userInfo.getOpenId());
             if(weChatAccount == null){
+                //未注册
                 weChatAccount = WechatUtils.changeToWeChatAccount(userInfo);
                 weChatAccount.setAppId(application.getAppId());
-
+                weChatAccountDao.saveOrUpdate(weChatAccount);
+            }else{
+                //更新微信信息
+                weChatAccount.setNickname(userInfo.getNickname());
+                weChatAccount.setSex(userInfo.getSex());
+                weChatAccount.setLanguage(userInfo.getLanguage());
+                weChatAccount.setCity(userInfo.getCity());
+                weChatAccount.setProvince(userInfo.getProvince());
+                weChatAccount.setCountry(userInfo.getCountry());
+                weChatAccount.setHeadImgUrl(userInfo.getHeadimgurl());
+                weChatAccount.setSubscribeTime(userInfo.getSubscribeTime());
+                weChatAccount.setRemark(userInfo.getRemark());
                 weChatAccountDao.saveOrUpdate(weChatAccount);
             }
             //更新unionId
@@ -229,6 +242,12 @@ public class WechatServiceImpl implements WechatService{
                 //未注册
                 user = WeChatUtils.changeToUser(weChatAccount);
                 user.setAccountId(account.getId());
+                userDao.saveOrUpdate(user);
+            }else{
+                //更新用户信息
+                user.setNickname(weChatAccount.getNickname());
+                user.setHeadImgUrl(weChatAccount.getHeadImgUrl());
+                user.setSex(WeChatSex.changeToSex(weChatAccount.getSex()));
                 userDao.saveOrUpdate(user);
             }
 

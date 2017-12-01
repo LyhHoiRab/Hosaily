@@ -75,10 +75,6 @@ public class AdvisorRestController{
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Page<Advisor>> page(Long pageNum, Long pageSize, String nickname, String name, UsingState state, String organizationId, String organizationToken){
         try{
-            if(StringUtils.isBlank(organizationId) && StringUtils.isBlank(organizationToken)){
-                organizationToken = "kuliao";
-            }
-
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
             Page<Advisor> page = advisorService.page(pageRequest, nickname, name, state, organizationId, organizationToken);
 

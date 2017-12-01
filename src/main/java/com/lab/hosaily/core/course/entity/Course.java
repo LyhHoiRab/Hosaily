@@ -6,6 +6,7 @@ import com.lab.hosaily.core.course.consts.MediaType;
 import com.rab.babylon.core.base.entity.Create;
 import com.rab.babylon.core.base.entity.Update;
 import com.rab.babylon.core.consts.entity.UsingState;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -249,5 +250,27 @@ public class Course implements Create, Update{
     @Override
     public void setUpdateTime(Date updateTime){
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if(this == object){
+            return true;
+        }
+
+        if(object != null && this.getClass() == object.getClass()){
+            Course course = (Course) object;
+
+            if(!StringUtils.isBlank(this.getId())){
+                return this.getId().equals(course.getId());
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode(){
+        return !StringUtils.isBlank(this.getId()) ? this.getId().hashCode() : 0;
     }
 }

@@ -58,6 +58,21 @@ public class CourseRestController{
     }
 
     /**
+     * 删除课程
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response delete(@PathVariable("id") String id){
+        try{
+            courseService.delete(id);
+
+            return new Response("删除成功", null);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 查询课程列表
      */
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,10 +93,6 @@ public class CourseRestController{
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Page<Course>> page(Long pageNum, Long pageSize, String tagName, String advisor, UsingState state, String accountId, String organizationId, String organizationToken){
         try{
-            if(StringUtils.isBlank(organizationId) && StringUtils.isBlank(organizationToken)){
-                organizationToken = "kuliao";
-            }
-
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
             Page<Course> page = courseService.pageByCourse(pageRequest, tagName, advisor, state, accountId, organizationId, organizationToken);
 

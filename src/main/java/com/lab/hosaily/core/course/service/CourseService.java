@@ -22,6 +22,11 @@ public interface CourseService{
     void update(Course course);
 
     /**
+     * 删除记录
+     */
+    void delete(String id);
+
+    /**
      * 查询课程列表
      */
     List<Course> listByCourse(String tagName, String advisor, UsingState state, String accountId, String organizationId, String organizationToken);

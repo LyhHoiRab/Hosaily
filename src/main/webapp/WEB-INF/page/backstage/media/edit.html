@@ -48,7 +48,7 @@
 
     <div class="row-group">
       <div class="input-group">
-        <span class="input-group-addon">大小(MB)</span>
+        <span class="input-group-addon">大小(KB)</span>
         <input type="text" class="form-control" placeholder="大小" ng-model="media.size" readonly="readonly">
       </div>
     </div><!-- item -->
@@ -73,6 +73,15 @@
       <div class="input-group">
         <span class="input-group-addon">状态</span>
         <select class="form-control" ng-model="media.state" ng-options="key as value for (key, value) in states">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">企业</span>
+        <select class="form-control" ng-model="media.organizationId" ng-options="organization.id as organization.name for organization in organizations">
           <option value="">请选择</option>
         </select>
       </div>

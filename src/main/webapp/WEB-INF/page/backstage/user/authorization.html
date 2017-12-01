@@ -1,0 +1,62 @@
+<ol class="breadcrumb">
+  <li>
+    <span>销售管理</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="user">用户管理</a>
+  </li><!-- item -->
+  <li>
+    <span>课程授权</span>
+  </li>
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">企业</span>
+        <select class="form-control" ng-model="organizationId" ng-options="organization.id as organization.name for organization in organizations">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">课程组</span>
+        <ui-select class="form-control" multiple ng-model="selected.group" theme="bootstrap">
+          <ui-select-match placeholder="请选择">{{$item.name}}</ui-select-match>
+          <ui-select-choices repeat="group in groups">
+            <small>{{group.name}}</small>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group" ng-show="selected.group.length > 0">
+      <div class="item-group">
+        <div class="row" ng-repeat="group in selected.group">
+          <div class="col-md-12" ng-repeat="item in group.course">
+            <div class="input-group">
+              <span class="input-group-addon">课程</span>
+              <input type="text" class="form-control" placeholder="课程" ng-model="item.title" readonly="readonly">
+            </div>
+          </div>
+        </div><!-- row -->
+      </div><!-- item group -->
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div><!-- container -->
+</div><!-- table info -->

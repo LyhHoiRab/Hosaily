@@ -92,10 +92,6 @@ public class PostRestController{
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Page<Course>> page(Long pageNum, Long pageSize, String advisor, UsingState state, String advisorId, String organizationId, String organizationToken, String tagName){
         try{
-            if(StringUtils.isBlank(organizationId) && StringUtils.isBlank(organizationToken)){
-                organizationToken = "kuliao";
-            }
-
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
             Page<Course> page = postService.page(pageRequest, advisor, state, advisorId, organizationId, organizationToken, tagName);
 

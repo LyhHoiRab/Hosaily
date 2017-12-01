@@ -42,12 +42,7 @@ public class SalesServiceImpl implements SalesService{
         try{
             Assert.hasText(wechat, "导师微信不能为空");
 
-            //默认酷撩
-            if(StringUtils.isBlank(organizationToken)){
-                organizationToken = "kuliao";
-            }
-
-            List<User> users = userDao.list(null, UsingState.NORMAL, null, null, null, null, wechat);
+            List<User> users = userDao.list(null, null, wechat, null, null, null, null, organizationToken);
 
             if(users != null && !users.isEmpty()){
                 Advisor advisor = advisorDao.getById(users.get(0).getAdvisorId());

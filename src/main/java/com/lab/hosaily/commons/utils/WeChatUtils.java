@@ -21,8 +21,8 @@ import java.util.Map;
 
 public class WeChatUtils{
 
-    private static final Charset SOURCE_CHARSET = Charset.forName("ISO-8859-1");
-    private static final Charset CHARSET = Charset.forName("UTF-8");
+    private final static Charset SOURCE_CHARSET = Charset.forName("ISO-8859-1");
+    private final static Charset CHARSET = Charset.forName("UTF-8");
     private final static String GET_ACCESS_TOKEN = "https://api.weixin.qq.com/sns/oauth2/access_token";
     private final static String REFRESH_TOKEN = "https://api.weixin.qq.com/sns/oauth2/refresh_token";
     private final static String GET_USER_INFO = "https://api.weixin.qq.com/sns/userinfo";

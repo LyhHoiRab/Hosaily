@@ -192,6 +192,10 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         });
     };
 
+    $scope.chapterEdit = function(id){
+        $state.go('chapterEdit', {'id':id});
+    };
+
     $scope.$watch('course.organizationId', function(newVal, oldVal){
         if(newVal !== oldVal){
             $scope.getAdvisor();

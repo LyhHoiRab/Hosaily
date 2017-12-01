@@ -66,10 +66,10 @@ public class WechatUtils{
                     WechatAccessTokenResponse accessToken = ObjectUtils.deserialize(json, WechatAccessTokenResponse.class);
 
                     if(accessToken == null || StringUtils.isBlank(accessToken.getAccessToken())){
-                        accessToken = getAccessToken(appId, secret);
+                        throw new HttpClientException(accessToken.getErrmsg());
                     }
 
-                    return accessToken;
+                    return getAccessToken(appId, secret);
                 }
             }
 

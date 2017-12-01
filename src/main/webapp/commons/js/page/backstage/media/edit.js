@@ -10,7 +10,7 @@ app.controller('mediaEditController', function($scope, $state, $stateParams, $sc
 		suffix         : '',
 		url            : '',
 		md5            : '',
-		size           : 0/1024/1024,
+		size           : 0,
 		remark         : '',
 		type           : '',
 		state          : '',
@@ -26,8 +26,6 @@ app.controller('mediaEditController', function($scope, $state, $stateParams, $sc
 		}).success(function(res, status, headers, config){
 			if(res.success){
 				utils.copyOf(res.result, $scope.media);
-
-				$scope.media.size = ($scope.media.size / 1024 / 1024);
 
 				if($scope.media.type == 1){
 					$scope.mediaView = $sce.trustAsHtml('<audio src="' + $scope.media.url + '" controls></audio>');

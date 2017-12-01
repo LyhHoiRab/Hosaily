@@ -8,6 +8,7 @@ import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.utils.FileUtils;
 import com.rab.babylon.core.account.entity.User;
+import com.rab.babylon.core.consts.entity.Sex;
 import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,11 +146,11 @@ public class UserServiceImpl implements UserService{
      * 分页查询
      */
     @Override
-    public Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat){
+    public Page<User> page(PageRequest pageRequest, Sex sex, UsingState state, String wechat, String nickname, String name, Integer code, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return userDao.page(pageRequest, accountId, state, wechat, nickname, name, code, salesWechat);
+            return userDao.page(pageRequest, sex, state, wechat, nickname, name, code, organizationId, organizationToken);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -160,9 +161,9 @@ public class UserServiceImpl implements UserService{
      * 查询列表
      */
     @Override
-    public List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat){
+    public List<User> list(Sex sex, UsingState state, String wechat, String nickname, String name, Integer code, String organizationId, String organizationToken){
         try{
-            return userDao.list(accountId, state, wechat, nickname, name, code, salesWechat);
+            return userDao.list(sex, state, wechat, nickname, name, code, organizationId, organizationToken);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

@@ -282,6 +282,12 @@
           WHERE id = #{id}
     </update>
 
+    <delete id="delete">
+        DELETE
+          FROM course
+         WHERE id = #{id}
+    </delete>
+
     <insert id="addTag">
         INSERT
           INTO course_tag (

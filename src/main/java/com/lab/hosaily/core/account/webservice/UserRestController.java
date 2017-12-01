@@ -7,6 +7,7 @@ import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
 import com.rab.babylon.core.account.entity.User;
+import com.rab.babylon.core.consts.entity.Sex;
 import com.rab.babylon.core.consts.entity.UsingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,10 +106,10 @@ public class UserRestController{
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<User>> page(Long pageNum, Long pageSize, String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
+    public Response<Page<User>> page(Long pageNum, Long pageSize, Sex sex, UsingState state, String wechat, String nickname, String name, Integer code, String organizationId, String organizationToken){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<User> page = userService.page(pageRequest, accountId, state, wechat, nickname, name, code, null);
+            Page<User> page = userService.page(pageRequest, sex, state, wechat, nickname, name, code, organizationId, organizationToken);
 
             return new Response<Page<User>>("查询成功", page);
         }catch(Exception e){
@@ -121,9 +122,9 @@ public class UserRestController{
      * 查询列表
      */
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<User>> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code){
+    public Response<List<User>> list(UsingState state, Sex sex, String wechat, String nickname, String name, Integer code, String organizationId, String organizationToken){
         try{
-            List<User> list = userService.list(accountId, state, wechat, nickname, name, code, null);
+            List<User> list = userService.list(sex, state, wechat, nickname, name, code, organizationId, organizationToken);
 
             return new Response<List<User>>("查询成功", list);
         }catch(Exception e){

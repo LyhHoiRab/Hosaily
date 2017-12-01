@@ -5,6 +5,8 @@ import com.lab.hosaily.commons.response.wechat.SessionKeyResponse;
 import com.lab.hosaily.commons.response.wechat.UserInfoResponse;
 import com.lab.hosaily.commons.utils.WeChatUtils;
 import com.lab.hosaily.commons.utils.XcxUtils;
+import com.lab.hosaily.core.account.consts.Gender;
+import com.lab.hosaily.core.account.consts.WeChatSex;
 import com.lab.hosaily.core.account.dao.AccountDao;
 import com.lab.hosaily.core.account.dao.UserDao;
 import com.lab.hosaily.core.account.dao.WeChatAccountDao;
@@ -97,7 +99,16 @@ public class AccountServiceImpl implements AccountService{
                         //未注册
                         xcxAccount = decrypt;
                         xcxAccount.setAppId(appId);
-
+                        xcxAccountDao.saveOrUpdate(xcxAccount);
+                    }else{
+                        //更新微信信息
+                        xcxAccount.setNickname(decrypt.getNickname());
+                        xcxAccount.setGender(decrypt.getGender());
+                        xcxAccount.setLanguage(decrypt.getLanguage());
+                        xcxAccount.setCountry(decrypt.getCountry());
+                        xcxAccount.setProvince(decrypt.getProvince());
+                        xcxAccount.setCity(decrypt.getCity());
+                        xcxAccount.setAvatarUrl(decrypt.getAvatarUrl());
                         xcxAccountDao.saveOrUpdate(xcxAccount);
                     }
                     //更新unionId
@@ -125,6 +136,12 @@ public class AccountServiceImpl implements AccountService{
                         //未注册
                         user = XcxUtils.changeToUser(xcxAccount);
                         user.setAccountId(account.getId());
+                        userDao.saveOrUpdate(user);
+                    }else{
+                        //更新用户信息
+                        user.setNickname(xcxAccount.getNickname());
+                        user.setHeadImgUrl(xcxAccount.getAvatarUrl());
+                        user.setSex(Gender.changeToSex(xcxAccount.getGender()));
                         userDao.saveOrUpdate(user);
                     }
 
@@ -174,10 +191,20 @@ public class AccountServiceImpl implements AccountService{
             }
 
             WeChatAccount weChatAccount = weChatAccountDao.getByOpenId(accessToken.getOpenId());
+            UserInfoResponse userInfo = WeChatUtils.getUserInfo(accessToken.getAccessToken(), appId);
             if(weChatAccount == null){
-                UserInfoResponse userInfo = WeChatUtils.getUserInfo(accessToken.getAccessToken(), appId);
+                //未注册
                 weChatAccount = userInfo.changeToWeChatAccount();
                 weChatAccount.setAppId(appId);
+                weChatAccountDao.saveOrUpdate(weChatAccount);
+            }else{
+                //更新微信信息
+                weChatAccount.setNickname(userInfo.getNickname());
+                weChatAccount.setSex(userInfo.getSex());
+                weChatAccount.setCity(userInfo.getCity());
+                weChatAccount.setProvince(userInfo.getProvince());
+                weChatAccount.setCountry(userInfo.getCountry());
+                weChatAccount.setHeadImgUrl(userInfo.getHeadImgUrl());
                 weChatAccountDao.saveOrUpdate(weChatAccount);
             }
             //更新unionId
@@ -206,6 +233,12 @@ public class AccountServiceImpl implements AccountService{
                 //未注册
                 user = WeChatUtils.changeToUser(weChatAccount);
                 user.setAccountId(account.getId());
+                userDao.saveOrUpdate(user);
+            }else{
+                //更新用户信息
+                user.setNickname(weChatAccount.getNickname());
+                user.setHeadImgUrl(weChatAccount.getHeadImgUrl());
+                user.setSex(WeChatSex.changeToSex(weChatAccount.getSex()));
                 userDao.saveOrUpdate(user);
             }
 

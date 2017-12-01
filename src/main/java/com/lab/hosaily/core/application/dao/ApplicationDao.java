@@ -41,7 +41,6 @@ public class ApplicationDao{
                 Assert.notNull(application.getType(), "应用类型不能为空");
 
                 application.setId(UUIDGenerator.by32());
-                application.setState(UsingState.NORMAL);
                 application.setIsDelete(false);
                 application.setCreateTime(new Date());
                 mapper.save(application);
@@ -63,8 +62,8 @@ public class ApplicationDao{
             Assert.hasText(id, "应用ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("id", id));
-            criteria.and(Restrictions.eq("isDelete", false));
+            criteria.and(Restrictions.eq("a.id", id));
+            criteria.and(Restrictions.eq("a.isDelete", false));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -81,8 +80,8 @@ public class ApplicationDao{
             Assert.hasText(token, "应用Token不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("token", token));
-            criteria.and(Restrictions.eq("isDelete", false));
+            criteria.and(Restrictions.eq("a.token", token));
+            criteria.and(Restrictions.eq("a.isDelete", false));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -94,28 +93,31 @@ public class ApplicationDao{
     /**
      * 分页查询
      */
-    public Page<Application> page(PageRequest pageRequest, String name, String token, ApplicationType type, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Page<Application> page(PageRequest pageRequest, UsingState state, String name, String token, ApplicationType type, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("isDelete", false));
+            criteria.and(Restrictions.eq("a.isDelete", false));
             criteria.setLimit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             if(!StringUtils.isBlank(name)){
-                criteria.and(Restrictions.like("name", name));
+                criteria.and(Restrictions.like("a.name", name));
             }
             if(!StringUtils.isBlank(token)){
-                criteria.and(Restrictions.like("token", token));
+                criteria.and(Restrictions.like("a.token", token));
             }
             if(type != null){
-                criteria.and(Restrictions.eq("type", type.getId()));
+                criteria.and(Restrictions.eq("a.type", type.getId()));
             }
-            if(createTime != null){
-
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("a.organizationId", organizationId));
             }
-            if(minCreateTime != null && maxCreateTime != null){
-
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
+            }
+            if(state != null){
+                criteria.and(Restrictions.eq("a.state", state.getId()));
             }
 
             Long count = mapper.countByParams(criteria);

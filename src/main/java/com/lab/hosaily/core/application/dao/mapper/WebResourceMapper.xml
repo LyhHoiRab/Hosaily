@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lab.hosaily.core.application.dao.mapper.WebResourceMapper">
+    <resultMap id="resource" type="com.lab.hosaily.core.application.entity.WebResource">
+        <id     column="id"              property="id"             javaType="java.lang.String"/>
+        <result column="description"     property="description"    javaType="java.lang.String"/>
+        <result column="domain"          property="domain"         javaType="java.lang.String"/>
+        <result column="img_url"         property="imgUrl"         javaType="java.lang.String"/>
+        <result column="css_url"         property="cssUrl"         javaType="java.lang.String"/>
+        <result column="js_url"          property="jsUrl"          javaType="java.lang.String"/>
+        <result column="mobile_img_url"  property="mobileImgUrl"   javaType="java.lang.String"/>
+        <result column="mobile_css_url"  property="mobileCssUrl"   javaType="java.lang.String"/>
+        <result column="mobile_js_url"   property="mobileJsUrl"    javaType="java.lang.String"/>
+        <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
+        <result column="state"           property="state"          typeHandler="usingStateHandler"/>
+        <result column="create_time"     property="createTime"     javaType="java.util.Date"/>
+        <result column="update_time"     property="updateTime"     javaType="java.util.Date"/>
+    </resultMap>
+
+    <sql id="WHERE_COLUMN">
+        <where>
+            <if test="params.andCreiterions != null and params.andCreiterions.size > 0">
+                <foreach collection="params.andCreiterions" item="criterion" separator="AND">
+                    <trim prefix="(" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.criterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="listItem" open="(" close=")" separator=",">
+                                                    #{listItem}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+
+            <if test="params.orCreiterions != null and params.orCreiterions.size > 0">
+                <foreach collection="params.orCreiterions" item="criterion" separator="OR">
+                    <trim prefix="(" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.criterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="listItem" open="(" close=")" separator=",">
+                                                    #{listItem}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <insert id="save">
+        INSERT
+          INTO web_resource (
+               id,
+               description,
+               domain,
+               img_url,
+               css_url,
+               js_url,
+               mobile_img_url,
+               mobile_css_url,
+               mobile_js_url,
+               organization_id,
+               state,
+               create_time
+        ) VALUE (
+               #{id,              jdbcType=VARCHAR},
+               #{description,     jdbcType=VARCHAR},
+               #{domain,          jdbcType=VARCHAR},
+               #{imgUrl,          jdbcType=VARCHAR},
+               #{cssUrl,          jdbcType=VARCHAR},
+               #{jsUrl,           jdbcType=VARCHAR},
+               #{mobileImgUrl,    jdbcType=VARCHAR},
+               #{mobileCssUrl,    jdbcType=VARCHAR},
+               #{mobileJsUrl,     jdbcType=VARCHAR},
+               #{organizationId,  jdbcType=VARCHAR},
+               #{state,           typeHandler=usingStateHandler},
+               #{createTime,      jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE web_resource
+         <set>
+             <if test="description != null">
+                 description = #{description, jdbcType=VARCHAR},
+             </if>
+             <if test="domain != null and domain != ''">
+                 domain = #{domain, jdbcType=VARCHAR},
+             </if>
+             <if test="imgUrl != null and imgUrl != ''">
+                 img_url = #{imgUrl, jdbcType=VARCHAR},
+             </if>
+             <if test="cssUrl != null and cssUrl != ''">
+                 css_url = #{cssUrl, jdbcType=VARCHAR},
+             </if>
+             <if test="jsUrl != null and jsUrl != ''">
+                 js_url = #{jsUrl, jdbcType=VARCHAR},
+             </if>
+             <if test="mobileImgUrl != null and mobileImgUrl != ''">
+                 mobile_img_url = #{mobileImgUrl, jdbcType=VARCHAR},
+             </if>
+             <if test="mobileCssUrl != null and mobileCssUrl != ''">
+                 mobile_css_url = #{mobileCssUrl, jdbcType=VARCHAR},
+             </if>
+             <if test="mobileJsUrl != null and mobileJsUrl != ''">
+                 mobile_js_url = #{mobileJsUrl, jdbcType=VARCHAR},
+             </if>
+             <if test="organizationId != null and organizationId != ''">
+                 organization_id = #{organizationId, jdbcType=VARCHAR},
+             </if>
+             <if test="state != null">
+                 state = #{state, typeHandler=usingStateHandler},
+             </if>
+             <if test="updateTime != null">
+                 update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+         </set>
+          WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+          FROM web_resource
+         WHERE id = #{id}
+    </delete>
+
+    <select id="getByParams" resultMap="resource">
+        SELECT w.*
+          FROM web_resource w
+     LEFT JOIN organization o
+            ON o.id = w.organization_id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+    <select id="findByParams" resultMap="resource">
+        SELECT w.*
+          FROM web_resource w
+     LEFT JOIN organization o
+            ON o.id = w.organization_id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+    <select id="countByParams" resultMap="resource">
+        SELECT COUNT(*)
+          FROM web_resource w
+     LEFT JOIN organization o
+            ON o.id = w.organization_id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+</mapper>

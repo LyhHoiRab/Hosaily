@@ -77,10 +77,6 @@ public class CustomizationRestController{
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Page<Customization>> page(Long pageNum, Long pageSize, UsingState state, String tagName, String organizationId, String organizationToken){
         try{
-            if(StringUtils.isBlank(organizationId) && StringUtils.isBlank(organizationToken)){
-                organizationToken = "kuliao";
-            }
-
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
             Page<Customization> page = customizationService.page(pageRequest, state, tagName, organizationId, organizationToken);
 

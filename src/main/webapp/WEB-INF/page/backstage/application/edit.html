@@ -55,12 +55,27 @@
 
     <div class="row-group">
       <div class="input-group">
-        <span class="input-group-addon">类型</span>
-        <select class="form-control" ng-model="application.type" value="{{application.type}}">
+        <span class="input-group-addon">状态</span>
+        <select class="form-control" ng-model="application.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>
-          #foreach($type in $types)
-            <option value="$!{type.id}">$!{type.description}</option>
-          #end
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">类型</span>
+        <select class="form-control" ng-model="application.type" ng-options="key as value for (key, value) in types">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">企业</span>
+        <select class="form-control" ng-model="application.organizationId" ng-options="organization.id as organization.name for organization in organizations">
+          <option value="">请选择</option>
         </select>
       </div>
     </div><!-- item -->

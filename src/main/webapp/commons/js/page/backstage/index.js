@@ -11,7 +11,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
 
 }]).run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams){
     $rootScope.$state       = $state;
-    $rootScope.$stateParams = $stateParams; 
+    $rootScope.$stateParams = $stateParams;
 
 }]).config(['$stateProvider', function($stateProvider){
 	$stateProvider.state('application', {
@@ -473,38 +473,39 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 ]);
             }]
         }
-    }).state('accountCourse', {
-        url: '/accountCourse/:accountId',
+    }).state('userEdit', {
+        url: '/user/:id',
         templateUrl: function($stateParams){
-            return '/page/backstage/accountCourse/' + $stateParams.accountId;
+            return '/page/backstage/user/edit/' + $stateParams.id;
         },
-        controller: 'accountCourseController',
+        controller: 'userEditController',
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
                     basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
                     basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
-                    basePath + '/commons/js/page/backstage/user/accountCourse.js'
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/page/backstage/user/edit.js'
                 ]);
             }]
         }
-    }).state('accountCourseAdd', {
-        url: '/accountCourse/add/:accountId',
+    }).state('authorization', {
+        url: '/user/authorization/:accountId',
         templateUrl: function($stateParams){
-            return '/page/backstage/accountCourse/add/' + $stateParams.accountId;
+            return '/page/backstage/user/authorization/' + $stateParams.accountId;
         },
-        controller: 'accountCourseAddController',
+        controller: 'authorizationController',
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
                     basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
                     basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
-                    //basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
-                    //basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
-                    basePath + '/commons/js/page/backstage/user/add.js'
+                    basePath + '/commons/js/page/backstage/user/authorization.js'
                 ]);
             }]
         }
@@ -803,6 +804,108 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                     basePath + '/commons/js/utils.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/simNumUser/edit.js'
+                ]);
+            }]
+        }
+    }).state('courseGroup', {
+        url: '/courseGroup',
+        templateUrl: '/page/backstage/courseGroup',
+        controller: 'courseGroupController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/courseGroup/index.js'
+                ]);
+            }]
+        }
+    }).state('courseGroupAdd', {
+        url: '/courseGroup/add',
+        templateUrl: '/page/backstage/courseGroup/add',
+        controller: 'courseGroupAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/courseGroup/add.js'
+                ]);
+            }]
+        }
+    }).state('courseGroupEdit', {
+        url: '/courseGroup/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/courseGroup/edit/' + $stateParams.id;
+        },
+        controller: 'courseGroupEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/courseGroup/edit.js'
+                ]);
+            }]
+        }
+    }).state('webResource', {
+        url: '/webResource',
+        templateUrl: '/page/backstage/webResource',
+        controller: 'webResourceController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/webResource/index.js'
+                ]);
+            }]
+        }
+    }).state('webResourceAdd', {
+        url: '/webResource/add',
+        templateUrl: '/page/backstage/webResource/add',
+        controller: 'webResourceAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/webResource/add.js'
+                ]);
+            }]
+        }
+    }).state('webResourceEdit', {
+        url: '/webResource/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/webResource/edit/' + $stateParams.id;
+        },
+        controller: 'webResourceEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/webResource/edit.js'
                 ]);
             }]
         }

@@ -140,17 +140,11 @@ app.controller('postController', function($scope, $http, $state){
             field: 'title',
             displayName: '标题'
         },{
-            field: 'summary',
-            displayName: '概要'
-        },{
             field: 'view',
             displayName: '浏览量'
         },{
             field: 'likes',
             displayName: '点赞量'
-        },{
-            field: 'comments',
-            displayName: '评论量'
         },{
             field: 'sort',
             displayName: '排序'

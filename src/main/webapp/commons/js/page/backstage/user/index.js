@@ -1,16 +1,17 @@
 app.controller('userController', function($scope, $http, $state){
     //查询列表
-    $scope.state;
-    $scope.name;
-    $scope.nickname;
-    $scope.code;
-    $scope.unionId;
-    $scope.createTime;
-    $scope.states = [];
-    $scope.sexs   = [];
+    $scope.state          = '';
+    $scope.name           = '';
+    $scope.nickname       = '';
+    $scope.code           = '';
+    $scope.sex            = '';
+    $scope.organizationId = '';
+    //下拉
+    $scope.states        = [];
+    $scope.sexs          = [];
+    $scope.organizations = [];
     //列表参数
     $scope.list = [];
-    $scope.selected = [];
     $scope.total = 0;
     $scope.pagingOptions = {
         pageSizes: [20, 50, 100, 200],
@@ -19,12 +20,12 @@ app.controller('userController', function($scope, $http, $state){
     };
 
     $scope.reset = function(){
-        $scope.state         = '';
-        $scope.name          = '';
-        $scope.nickname      = '';
-        $scope.code          = '';
-        $scope.createTime    = '';
-        $scope.unionId       = '';
+        $scope.state          = '';
+        $scope.name           = '';
+        $scope.nickname       = '';
+        $scope.sex            = '';
+        $scope.code           = '';
+        $scope.organizationId = '';
     };
 
     $scope.search = function(){
@@ -37,28 +38,18 @@ app.controller('userController', function($scope, $http, $state){
     };
 
     $scope.getData = function(){
-        //查询参数
-        var pageNum       = $scope.pagingOptions.currentPage,
-            pageSize      = $scope.pagingOptions.pageSize,
-            name          = $scope.name,
-            state         = $scope.state,
-            createTime    = $scope.createTime,
-            nickname      = $scope.nickname,
-            code          = $scope.code,
-            unionId       = $scope.unionId;
-
         $http({
             url: '/api/1.0/user/page',
             method: 'POST',
             data: $.param({
-                'pageNum'       : pageNum,
-                'pageSize'      : pageSize,
-                'name'          : name,
-                'state'         : state,
-                'createTime'    : createTime,
-                'code'          : code,
-                'nickname'      : nickname,
-                'wechat'        : unionId
+                'pageNum'        : $scope.pagingOptions.currentPage,
+                'pageSize'       : $scope.pagingOptions.pageSize,
+                'name'           : $scope.name,
+                'nickname'       : $scope.nickname,
+                'state'          : $scope.state,
+                'code'           : $scope.code,
+                'organizationId' : $scope.organizationId,
+                'sex'            : $scope.sex
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -100,8 +91,31 @@ app.controller('userController', function($scope, $http, $state){
         });
     };
 
-    $scope.accountCourse = function(accountId){
-        $state.go('accountCourse', {'accountId' : accountId});
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
+        });
+    };
+
+    $scope.edit = function(id){
+        $state.go('userEdit', {'id':id});
+    };
+
+    $scope.authorization = function(accountId){
+        $state.go('authorization', {'accountId':accountId});
     };
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
@@ -155,7 +169,7 @@ app.controller('userController', function($scope, $http, $state){
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="accountCourse(row.getProperty(\'accountId\'))">[课程]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a><a ng-click="authorization(row.getProperty(\'accountId\'))">[课程]</a></span></div>'
         }]
     };
 
@@ -163,4 +177,5 @@ app.controller('userController', function($scope, $http, $state){
     $scope.getData();
     $scope.getState();
     $scope.getSex();
+    $scope.getOrganization();
 });

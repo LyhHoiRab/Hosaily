@@ -13,4 +13,7 @@ public class RedisConsts{
 
     //AccessToken
     public static final String WECHAT_ACCESS_TOKEN = "wechat:accessToken:";
+
+    //网站资源目录缓存
+    public static final String WEB_RESOURCE = "web:resource";
 }

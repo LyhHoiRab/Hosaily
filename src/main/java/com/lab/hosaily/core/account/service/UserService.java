@@ -3,6 +3,7 @@ package com.lab.hosaily.core.account.service;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.core.account.entity.User;
+import com.rab.babylon.core.consts.entity.Sex;
 import com.rab.babylon.core.consts.entity.UsingState;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -43,10 +44,10 @@ public interface UserService{
     /**
      * 分页查询
      */
-    Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat);
+    Page<User> page(PageRequest pageRequest, Sex sex, UsingState state, String wechat, String nickname, String name, Integer code, String organizationId, String organizationToke);
 
     /**
      * 查询列表
      */
-    List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat);
+    List<User> list(Sex sex, UsingState state, String wechat, String nickname, String name, Integer code, String organizationId, String organizationToken);
 }

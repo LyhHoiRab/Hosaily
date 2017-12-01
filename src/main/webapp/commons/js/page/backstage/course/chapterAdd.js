@@ -69,22 +69,8 @@ app.controller('chapterAddController', function($scope, $state, $stateParams, Fi
                 alert(res.msg);
             }
         }).error(function(response){
-
+                console.error(response);
         });
-        //
-        //$.ajax({
-        //    url: '/api/1.0/course',
-        //    type: 'POST',
-        //    data: JSON.stringify($scope.course),
-        //    dataType: 'JSON',
-        //    contentType: 'application/json',
-        //    success: function(res){
-        //        if(res.success){
-        //            alert(res.msg);
-        //            $state.go('courseEdit', {id : $scope.parentId});
-        //        }
-        //    }
-        //});
     };
 
     $scope.getState = function(){

@@ -9,6 +9,7 @@ import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.utils.AESUtils;
+import com.rab.babylon.core.consts.entity.UsingState;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,11 +104,11 @@ public class ApplicationServiceImpl implements ApplicationService{
      * 分页查询
      */
     @Override
-    public Page<Application> page(PageRequest pageRequest, String name, String token, ApplicationType type, Date createTime, Date minCreateTime, Date maxCreateTime){
+    public Page<Application> page(PageRequest pageRequest, UsingState state, String name, String token, ApplicationType type, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return applicationDao.page(pageRequest, name, token, type, createTime, minCreateTime, maxCreateTime);
+            return applicationDao.page(pageRequest, state, name, token, type, organizationId, organizationToken);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

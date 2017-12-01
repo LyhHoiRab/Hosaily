@@ -65,6 +65,22 @@ public class CourseServiceImpl implements CourseService{
     }
 
     /**
+     * 删除课程
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void delete(String id){
+        try{
+            Assert.hasText(id, "课程ID不能为空");
+
+            courseDao.delete(id);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 查询课程列表
      */
     @Override

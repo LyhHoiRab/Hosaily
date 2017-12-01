@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lab.hosaily.core.course.dao.mapper.CourseGroupMapper">
+    <resultMap id="group" type="com.lab.hosaily.core.course.entity.CourseGroup">
+        <id     column="id"              property="id"             javaType="java.lang.String"/>
+        <result column="name"            property="name"           javaType="java.lang.String"/>
+        <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
+        <result column="state"           property="state"          typeHandler="usingStateHandler"/>
+        <result column="create_time"     property="createTime"     javaType="java.util.Date"/>
+        <result column="update_time"     property="updateTime"     javaType="java.util.Date"/>
+        <collection property="course" resultMap="course" columnPrefix="c_"/>
+    </resultMap>
+
+    <resultMap id="course" type="com.lab.hosaily.core.course.entity.Course">
+        <id     column="id"    property="id"    javaType="java.lang.String"/>
+        <result column="title" property="title" javaType="java.lang.String"/>
+    </resultMap>
+
+    <sql id="WHERE_COLUMN">
+        <where>
+            <if test="params.andCreiterions != null and params.andCreiterions.size > 0">
+                <foreach collection="params.andCreiterions" item="criterion" separator="AND">
+                    <trim prefix="(" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.criterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="listItem" open="(" close=")" separator=",">
+                                                    #{listItem}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+
+            <if test="params.orCreiterions != null and params.orCreiterions.size > 0">
+                <foreach collection="params.orCreiterions" item="criterion" separator="OR">
+                    <trim prefix="(" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.criterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="listItem" open="(" close=")" separator=",">
+                                                    #{listItem}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <insert id="save">
+        INSERT
+          INTO groups (
+               id,
+               name,
+               organization_id,
+               state,
+               create_time
+        ) VALUE (
+               #{id,             jdbcType=VARCHAR},
+               #{name,           jdbcType=VARCHAR},
+               #{organizationId, jdbcType=VARCHAR},
+               #{state,          typeHandler=usingStateHandler},
+               #{createTime,     jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE groups
+         <set>
+             <if test="name != null">
+                name = #{name, jdbcType=VARCHAR},
+             </if>
+             <if test="organizationId != null and organizationId != ''">
+                organization_id = #{organizationId, jdbcType=VARCHAR},
+             </if>
+             <if test="state != null">
+                state = #{state, typeHandler=usingStateHandler},
+             </if>
+             <if test="updateTime != null">
+                 update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+         </set>
+          WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+          FROM groups
+         WHERE id = #{id}
+    </delete>
+
+    <insert id="addCourse">
+        INSERT
+          INTO course_group (
+               course_id,
+               group_id
+        ) VALUES
+        <foreach collection="courses" item="course" separator=",">
+            (
+              #{course.id, jdbcType=VARCHAR},
+              #{groupId,   jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteCourse">
+        DELETE
+          FROM course_group
+         WHERE group_id = #{groupId}
+    </delete>
+
+    <insert id="addAccount">
+        INSERT
+          INTO account_group (
+               account_id,
+               group_id
+        ) VALUES
+        <foreach collection="groups" item="group" separator=",">
+            (
+              #{accountId,  jdbcType=VARCHAR},
+              #{group.id,   jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteAccount">
+        DELETE
+          FROM account_group
+         WHERE account_id = #{accountId}
+    </delete>
+
+    <delete id="deleteAccountByGroupId">
+        DELETE
+          FROM account_group
+         WHERE group_id = #{groupId}
+    </delete>
+
+    <select id="getByParams" resultMap="group">
+        SELECT g.*,
+               c.id    AS c_id,
+               c.title AS c_title
+          FROM groups g
+     LEFT JOIN organization o
+            ON o.id = g.organization_id
+     LEFT JOIN course_group cg
+            ON cg.group_id = g.id
+     LEFT JOIN course c
+            ON cg.course_id = c.id
+     LEFT JOIN account_group ag
+            ON ag.group_id = g.id
+     LEFT JOIN account a
+            ON ag.account_id = a.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+    <select id="findIdByParams" resultType="java.lang.String">
+        SELECT g.id
+          FROM groups g
+     LEFT JOIN organization o
+            ON o.id = g.organization_id
+     LEFT JOIN course_group cg
+            ON cg.group_id = g.id
+     LEFT JOIN course c
+            ON cg.course_id = c.id
+     LEFT JOIN account_group ag
+            ON ag.group_id = g.id
+     LEFT JOIN account a
+            ON ag.account_id = a.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.groups != null and params.groups.size > 0">
+                GROUP BY
+                <foreach collection="params.groups" item="group" separator=",">
+                    ${group.property}
+                </foreach>
+            </if>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+    <select id="findByParams" resultMap="group">
+        SELECT g.*,
+               c.id    AS c_id,
+               c.title AS c_title
+          FROM groups g
+     LEFT JOIN organization o
+            ON o.id = g.organization_id
+     LEFT JOIN course_group cg
+            ON cg.group_id = g.id
+     LEFT JOIN course c
+            ON cg.course_id = c.id
+     LEFT JOIN account_group ag
+            ON ag.group_id = g.id
+     LEFT JOIN account a
+            ON ag.account_id = a.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.groups != null and params.groups.size > 0">
+                GROUP BY
+                <foreach collection="params.groups" item="group" separator=",">
+                    ${group.property}
+                </foreach>
+            </if>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+    <select id="countByParams" resultType="java.lang.Long">
+        SELECT COUNT(*)
+          FROM (
+                  SELECT g.id
+                    FROM groups g
+               LEFT JOIN organization o
+                      ON o.id = g.organization_id
+               LEFT JOIN course_group cg
+                      ON cg.group_id = g.id
+               LEFT JOIN course c
+                      ON cg.course_id = c.id
+               LEFT JOIN account_group ag
+                      ON ag.group_id = g.id
+               LEFT JOIN account a
+                      ON ag.account_id = a.id
+                <if test="params != null">
+                    <include refid="WHERE_COLUMN"/>
+
+                    <if test="params.groups != null and params.groups.size > 0">
+                        GROUP BY
+                        <foreach collection="params.groups" item="group" separator=",">
+                            ${group.property}
+                        </foreach>
+                    </if>
+                </if>
+        ) AS groups
+    </select>
+
+    <select id="hasCourse" resultType="java.lang.Boolean">
+        SELECT COUNT(*)
+          FROM course_group cg
+     LEFT JOIN account_group ag ON ag.group_id = cg.group_id
+         WHERE cg.course_id = #{courseId}
+           AND ag.account_id = #{accountId}
+    </select>
+</mapper>

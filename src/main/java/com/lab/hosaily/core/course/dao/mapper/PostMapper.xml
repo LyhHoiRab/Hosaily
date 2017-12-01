@@ -387,7 +387,16 @@
     </select>
 
     <select id="findByParams" resultMap="post">
-        SELECT c.*,
+        SELECT c.id,
+               c.summary,
+               c.title,
+               c.create_time,
+               c.update_time,
+               c.cover,
+               c.sort,
+               c.view,
+               c.likes,
+               c.state,
                a.id            AS a_id,
                a.nickname      AS a_nickname,
                a.head_img_url  AS a_head_img_url,

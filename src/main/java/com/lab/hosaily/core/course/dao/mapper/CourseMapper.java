@@ -24,6 +24,11 @@ public interface CourseMapper{
     void update(Course course);
 
     /**
+     * 删除
+     */
+    void delete(String id);
+
+    /**
      * 添加标签
      */
     void addTag(@Param("courseId") String courseId, @Param("tags") List<Tag> tags);

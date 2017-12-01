@@ -1,16 +1,15 @@
 app.controller('applicationController', function($scope, $state, $http){
     //下拉
-    $scope.types = [];
-    $scope.states = [];
+    $scope.types         = [];
+    $scope.states        = [];
+    $scope.organizations = [];
     //查询列表
-    $scope.type;
-    $scope.state;
-    $scope.createTime;
-    $scope.minCreateTime;
-    $scope.maxCreateTime;
-    $scope.name;
-    $scope.token;
-    $scope.appId;
+    $scope.type           = '';
+    $scope.state          = '';
+    $scope.name           = '';
+    $scope.token          = '';
+    $scope.appId          = '';
+    $scope.organizationId = '';
 
     $scope.list = [];
     $scope.selected = [];
@@ -27,14 +26,12 @@ app.controller('applicationController', function($scope, $state, $http){
             url: '/api/1.0/application/page',
             method: 'POST',
             data: $.param({
-                'pageSize'      : $scope.pagingOptions.pageSize,
-                'pageNum'       : $scope.pagingOptions.currentPage,
-                'name'          : $scope.name,
-                'state'         : $scope.state,
-                'type'          : $scope.type,
-                'createTime'    : $scope.createTime,
-                'minCreateTime' : $scope.minCreateTime,
-                'maxCreateTime' : $scope.maxCreateTime
+                'pageSize'       : $scope.pagingOptions.pageSize,
+                'pageNum'        : $scope.pagingOptions.currentPage,
+                'name'           : $scope.name,
+                'state'          : $scope.state,
+                'type'           : $scope.type,
+                'organizationId' : $scope.organizationId
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -76,18 +73,35 @@ app.controller('applicationController', function($scope, $state, $http){
         });
     };
 
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
+        });
+    };
+
     $scope.edit = function(id){
         $state.go('applicationEdit', {'id' : id});
     };
 
     $scope.reset = function(){
-        $scope.state         = '';
-        $scope.type          = '';
-        $scope.name          = '';
-        $scope.token         = '';
-        $scope.createTime    = '';
-        $scope.minCreateTime = '';
-        $scope.maxCreateTime = '';
+        $scope.state          = '';
+        $scope.type           = '';
+        $scope.name           = '';
+        $scope.token          = '';
+        $scope.organizationId = '';
     };
 
     $scope.search = function(){
@@ -157,4 +171,5 @@ app.controller('applicationController', function($scope, $state, $http){
     $scope.getData();
     $scope.getState();
     $scope.getType();
+    $scope.getOrganization();
 });

@@ -8,7 +8,7 @@
         <result column="suffix"          property="suffix"         javaType="java.lang.String"/>
         <result column="url"             property="url"            javaType="java.lang.String"/>
         <result column="md5"             property="md5"            javaType="java.lang.String"/>
-        <result column="organization_id" property="orgainzationId" javaType="java.lang.String"/>
+        <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
         <result column="size"            property="size"           javaType="java.lang.Long"/>
         <result column="remark"          property="remark"         javaType="java.lang.String"/>
         <result column="type"            property="type"           typeHandler="mediaTypeHandler"/>

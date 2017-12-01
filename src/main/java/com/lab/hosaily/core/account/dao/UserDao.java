@@ -10,6 +10,7 @@ import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.utils.RedisUtils;
 import com.rab.babylon.commons.utils.UUIDGenerator;
 import com.rab.babylon.core.account.entity.User;
+import com.rab.babylon.core.consts.entity.Sex;
 import com.rab.babylon.core.consts.entity.UsingState;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -138,22 +139,20 @@ public class UserDao{
     /**
      * 根据条件分页查询
      */
-    public Page<User> page(PageRequest pageRequest, String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat){
+    public Page<User> page(PageRequest pageRequest, Sex sex, UsingState state, String wechat, String nickname, String name, Integer code, String organizationId, String organizationToken){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
             criteria.groupBy(Restrictions.groupBy("u.id"));
+            criteria.sort(Restrictions.asc("u.code"));
 
-            if(!StringUtils.isBlank(accountId)){
-                criteria.and(Restrictions.eq("u.accountId", accountId));
-            }
             if(state != null){
                 criteria.and(Restrictions.eq("u.state", state.getId()));
             }
             if(!StringUtils.isBlank(wechat)){
-                criteria.and(Restrictions.eq("a.wechat", wechat));
+                criteria.and(Restrictions.eq("u.wechat", wechat));
             }
             if(!StringUtils.isBlank(nickname)){
                 criteria.and(Restrictions.like("u.nickname", nickname));
@@ -164,8 +163,14 @@ public class UserDao{
             if(code != null){
                 criteria.and(Restrictions.eq("u.code", code));
             }
-            if(!StringUtils.isBlank(salesWechat)){
-                criteria.and(Restrictions.eq("u.wechat", salesWechat));
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("ap.organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
+            }
+            if(sex != null){
+                criteria.and(Restrictions.eq("u.sex", sex.getId()));
             }
 
             //分页查询ID
@@ -192,19 +197,17 @@ public class UserDao{
     /**
      * 查询列表
      */
-    public List<User> list(String accountId, UsingState state, String wechat, String nickname, String name, Integer code, String salesWechat){
+    public List<User> list(Sex sex, UsingState state, String wechat, String nickname, String name, Integer code, String organizationId, String organizationToken){
         try{
             Criteria criteria = new Criteria();
             criteria.groupBy(Restrictions.groupBy("u.id"));
+            criteria.sort(Restrictions.asc("u.code"));
 
-            if(!StringUtils.isBlank(accountId)){
-                criteria.and(Restrictions.eq("u.accountId", accountId));
-            }
             if(state != null){
                 criteria.and(Restrictions.eq("u.state", state.getId()));
             }
             if(!StringUtils.isBlank(wechat)){
-                criteria.and(Restrictions.eq("a.wechat", wechat));
+                criteria.and(Restrictions.eq("u.wechat", wechat));
             }
             if(!StringUtils.isBlank(nickname)){
                 criteria.and(Restrictions.like("u.nickname", nickname));
@@ -215,8 +218,14 @@ public class UserDao{
             if(code != null){
                 criteria.and(Restrictions.eq("u.code", code));
             }
-            if(!StringUtils.isBlank(salesWechat)){
-                criteria.and(Restrictions.eq("u.wechat", salesWechat));
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.eq("ap.organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(organizationToken)){
+                criteria.and(Restrictions.eq("o.token", organizationToken));
+            }
+            if(sex != null){
+                criteria.and(Restrictions.eq("u.sex", sex.getId()));
             }
 
             List<String> ids = mapper.findIdByParams(criteria);

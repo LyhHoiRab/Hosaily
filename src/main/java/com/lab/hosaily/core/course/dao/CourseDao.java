@@ -65,21 +65,39 @@ public class CourseDao{
                 mapper.update(course);
             }
 
+            //删除等级
+            mapper.deleteLevel(course.getId());
+            //删除标签
+            mapper.deleteTag(course.getId());
+            //删除媒体
+            mapper.deleteMedia(course.getId());
+
             //更新等级
             if(course.getLevel() != null && !course.getLevel().isEmpty()){
-                mapper.deleteLevel(course.getId());
                 mapper.addLevel(course.getId(), course.getLevel());
             }
             //更新标签
             if(course.getTag() != null && !course.getTag().isEmpty()){
-                mapper.deleteTag(course.getId());
                 mapper.addTag(course.getId(), course.getTag());
             }
             //更新媒体
             if(course.getMedia() != null && !course.getMedia().isEmpty()){
-                mapper.deleteMedia(course.getId());
                 mapper.addMedia(course.getId(), course.getMedia());
             }
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 删除
+     */
+    public void delete(String id){
+        try{
+            Assert.hasText(id, "课程ID不能为空");
+
+            mapper.delete(id);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

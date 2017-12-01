@@ -106,22 +106,6 @@ app.controller('chapterEditController', function($scope, $state, $stateParams, F
         }).error(function(response){
 
         });
-
-        //$.ajax({
-        //    url: '/api/1.0/course/chapter/' + $scope.id,
-        //    dataType: 'JSON',
-        //    type: 'GET',
-        //    success: function(res){
-        //        if(res.success){
-        //            utils.copyOf(res.result, $scope.course);
-        //            editor.setData($scope.course.introduction);
-        //        }
-        //
-        //        if(!$scope.$$phase){
-        //            $scope.$apply();
-        //        }
-        //    }
-        //});
     };
 
     $scope.getState = function(){
@@ -134,6 +118,25 @@ app.controller('chapterEditController', function($scope, $state, $stateParams, F
             }
         }).error(function(response){
             $scope.states = [];
+        });
+    };
+
+    $scope.sectionEdit = function(id){
+        $state.go("sectionEdit", {'id':id});
+    };
+
+    $scope.sectionDelete = function(id){
+        $http({
+            url: '/api/1.0/course/' + id,
+            method: 'DELETE'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+            console.error(response);
         });
     };
 

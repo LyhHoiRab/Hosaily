@@ -1,13 +1,10 @@
 <ol class="breadcrumb">
   <li>
-    <span>销售管理</span>
+    <span>系统设置</span>
   </li><!-- item -->
   <li>
-    <a ui-sref="user">授权管理</a>
+    <span>域名管理</span>
   </li><!-- item -->
-  <li>
-    <span>已授权课程</span>
-  </li>
 </ol><!-- 面包屑 -->
 
 <div class="search-bar">
@@ -15,22 +12,8 @@
     <div class="row">
       <div class="col-xs-12 col-md-3">
         <div class="input-group">
-          <span class="input-group-addon">有效天数</span>
-          <input type="number" class="form-control" placeholder="有效天数" ng-model="effective">
-        </div>
-      </div><!-- item -->
-
-      <div class="col-xs-12 col-md-3">
-        <div class="input-group">
-          <span class="input-group-addon">有效期</span>
-          <input type="date" class="form-control" placeholder="有效期" ng-model="deadline">
-        </div>
-      </div><!-- item -->
-
-      <div class="col-xs-12 col-md-3">
-        <div class="input-group">
-          <span class="input-group-addon">生效期</span>
-          <input type="date" class="form-control" placeholder="生效期" ng-model="forceTime">
+          <span class="input-group-addon">域名</span>
+          <input type="text" class="form-control" placeholder="域名">
         </div>
       </div><!-- item -->
 
@@ -38,6 +21,15 @@
         <div class="input-group">
           <span class="input-group-addon">状态</span>
           <select class="form-control" ng-model="state" ng-options="key as value for (key, value) in states">
+            <option value="">请选择</option>
+          </select>
+        </div>
+      </div><!-- item -->
+
+      <div class="col-xs-12 col-md-3">
+        <div class="input-group">
+          <span class="input-group-addon">企业</span>
+          <select class="form-control" ng-model="organizationId" ng-options="organization.id as organization.name for organization in organizations">
             <option value="">请选择</option>
           </select>
         </div>
@@ -61,7 +53,7 @@
       刷新
     </button><!-- item -->
 
-    <button type="button" class="btn" ui-sref="accountCourseAdd({accountId:accountId})">
+    <button type="button" class="btn" ui-sref="webResourceAdd">
       <i class="fa fa-plus"></i>
       添加
     </button><!-- item -->

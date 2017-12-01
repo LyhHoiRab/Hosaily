@@ -3,18 +3,19 @@
 
 <mapper namespace="com.lab.hosaily.core.application.dao.mapper.ApplicationMapper">
     <resultMap id="application" type="com.lab.hosaily.core.application.entity.Application">
-        <id     column="id"          property="id"         javaType="java.lang.String"/>
-        <result column="name"        property="name"       javaType="java.lang.String"/>
-        <result column="app_id"      property="appId"      javaType="java.lang.String"/>
-        <result column="secret"      property="secret"     javaType="java.lang.String"/>
-        <result column="aes_key"     property="aesKey"     javaType="java.lang.String"/>
-        <result column="token"       property="token"      javaType="java.lang.String"/>
-        <result column="type"        property="type"       typeHandler="applicationTypeHandler"/>
-        <result column="state"       property="state"      typeHandler="usingStateHandler"/>
-        <result column="is_delete"   property="isDelete"   javaType="java.lang.Boolean"/>
-        <result column="create_time" property="createTime" javaType="java.util.Date"/>
-        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
-        <result column="delete_time" property="deleteTime" javaType="java.util.Date"/>
+        <id     column="id"              property="id"              javaType="java.lang.String"/>
+        <result column="name"            property="name"            javaType="java.lang.String"/>
+        <result column="organization_id" property="organizationId"  javaType="java.lang.String"/>
+        <result column="app_id"          property="appId"           javaType="java.lang.String"/>
+        <result column="secret"          property="secret"          javaType="java.lang.String"/>
+        <result column="aes_key"         property="aesKey"          javaType="java.lang.String"/>
+        <result column="token"           property="token"           javaType="java.lang.String"/>
+        <result column="type"            property="type"            typeHandler="applicationTypeHandler"/>
+        <result column="state"           property="state"           typeHandler="usingStateHandler"/>
+        <result column="is_delete"       property="isDelete"        javaType="java.lang.Boolean"/>
+        <result column="create_time"     property="createTime"      javaType="java.util.Date"/>
+        <result column="update_time"     property="updateTime"      javaType="java.util.Date"/>
+        <result column="delete_time"     property="deleteTime"      javaType="java.util.Date"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -119,6 +120,7 @@
         INSERT
           INTO application (
               id,
+              organization_id,
               name,
               app_id,
               secret,
@@ -129,16 +131,17 @@
               is_delete,
               create_time
           ) VALUE (
-              #{id,         jdbcType=VARCHAR},
-              #{name,       jdbcType=VARCHAR},
-              #{appId,      jdbcType=VARCHAR},
-              #{secret,     jdbcType=VARCHAR},
-              #{aesKey,     jdbcType=VARCHAR},
-              #{token,      jdbcType=VARCHAR},
-              #{type,       typeHandler=applicationTypeHandler},
-              #{state,      typeHandler=usingStateHandler},
-              #{isDelete,   jdbcType=BOOLEAN},
-              #{createTime, jdbcType=TIMESTAMP}
+              #{id,             jdbcType=VARCHAR},
+              #{organizationId, jdbcType=VARCHAR},
+              #{name,           jdbcType=VARCHAR},
+              #{appId,          jdbcType=VARCHAR},
+              #{secret,         jdbcType=VARCHAR},
+              #{aesKey,         jdbcType=VARCHAR},
+              #{token,          jdbcType=VARCHAR},
+              #{type,           typeHandler=applicationTypeHandler},
+              #{state,          typeHandler=usingStateHandler},
+              #{isDelete,       jdbcType=BOOLEAN},
+              #{createTime,     jdbcType=TIMESTAMP}
           )
     </insert>
 
@@ -148,13 +151,16 @@
              <if test="name != null and name != ''">
                  name = #{name, jdbcType=VARCHAR},
              </if>
+             <if test="organizationId != null and organizationId != ''">
+                 organization_id = #{organizationId, jdbcType=VARCHAR},
+             </if>
              <if test="appId != null and appId != ''">
                  app_id = #{appId, jdbcType=VARCHAR},
              </if>
              <if test="secret != null and secret != ''">
                  secret = #{secret, jdbcType=VARCHAR},
              </if>
-             <if test="aesKey != null and aesKey != ''">
+             <if test="aesKey != null">
                  aes_key = #{aesKey, jdbcType=VARCHAR},
              </if>
              <if test="token != null and token != ''">
@@ -187,16 +193,20 @@
     </update>
 
     <select id="getByParams" resultMap="application">
-        SELECT *
-          FROM application
+        SELECT a.*
+          FROM application a
+     LEFT JOIN organization o
+            ON o.id = a.organization_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
     </select>
 
     <select id="findByParams" resultMap="application">
-        SELECT *
-          FROM application
+        SELECT a.*
+          FROM application a
+     LEFT JOIN organization o
+            ON o.id = a.organization_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -215,7 +225,9 @@
 
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
-          FROM application
+          FROM application a
+     LEFT JOIN organization o
+            ON o.id = a.organization_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>

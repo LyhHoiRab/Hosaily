@@ -175,10 +175,10 @@
              <if test="nickname != null and nickname != ''">
                  nickname = #{nickname, jdbcType=VARCHAR},
              </if>
-             <if test="name != null and name != ''">
+             <if test="name != null and name">
                  name = #{name, jdbcType=VARCHAR},
              </if>
-             <if test="idCard != null and idCard != ''">
+             <if test="idCard != null">
                  id_card = #{idCard, jdbcType=VARCHAR},
              </if>
              <if test="sex != null">
@@ -214,7 +214,7 @@
              <if test="advisorId != null and advisorId != ''">
                  advisor_id = #{advisorId, jdbcType=VARCHAR},
              </if>
-             <if test="wechat != null and wechat != ''">
+             <if test="wechat != null">
                  wechat = #{wechat, jdbcType=VARCHAR},
              </if>
          </set>
@@ -228,11 +228,19 @@
                e.name        AS e_name,
                e.value       AS e_value,
                e.description AS e_description
-          FROM user u
+          FROM account a
+     LEFT JOIN user u
+            ON u.account_id = a.id
      LEFT JOIN user_expand e
             ON e.user_id = u.id
-     LEFT JOIN account a
-            ON a.id = u.account_id
+     LEFT JOIN wechat_account wa
+            ON (wa.open_id = a.wechat OR wa.union_id = a.wechat)
+     LEFT JOIN xcx_account xcx
+            ON (xcx.open_id = a.wechat OR xcx.union_id = a.wechat)
+     LEFT JOIN application ap
+            ON (ap.app_id = wa.app_id OR ap.app_id = xcx.app_id)
+     LEFT JOIN organization o
+            ON o.id = ap.organization_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
@@ -240,9 +248,19 @@
 
     <select id="findIdByParams" resultType="java.lang.String">
         SELECT u.id
-          FROM user u
-     LEFT JOIN account a
-            ON a.id = u.account_id
+          FROM account a
+     LEFT JOIN user u
+            ON u.account_id = a.id
+     LEFT JOIN user_expand e
+            ON e.user_id = u.id
+     LEFT JOIN wechat_account wa
+            ON (wa.open_id = a.wechat OR wa.union_id = a.wechat)
+     LEFT JOIN xcx_account xcx
+            ON (xcx.open_id = a.wechat OR xcx.union_id = a.wechat)
+     LEFT JOIN application ap
+            ON (ap.app_id = wa.app_id OR ap.app_id = xcx.app_id)
+     LEFT JOIN organization o
+            ON o.id = ap.organization_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -273,11 +291,19 @@
                e.name        AS e_name,
                e.value       AS e_value,
                e.description AS e_description
-          FROM user u
+          FROM account a
+     LEFT JOIN user u
+            ON u.account_id = a.id
      LEFT JOIN user_expand e
             ON e.user_id = u.id
-     LEFT JOIN account a
-            ON a.id = u.account_id
+     LEFT JOIN wechat_account wa
+            ON (wa.open_id = a.wechat OR wa.union_id = a.wechat)
+     LEFT JOIN xcx_account xcx
+            ON (xcx.open_id = a.wechat OR xcx.union_id = a.wechat)
+     LEFT JOIN application ap
+            ON (ap.app_id = wa.app_id OR ap.app_id = xcx.app_id)
+     LEFT JOIN organization o
+            ON o.id = ap.organization_id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -294,9 +320,19 @@
         SELECT COUNT(*)
           FROM (
                     SELECT u.id
-                      FROM user u
-                 LEFT JOIN account a
-                        ON a.id = u.account_id
+                      FROM account a
+                 LEFT JOIN user u
+                        ON u.account_id = a.id
+                 LEFT JOIN user_expand e
+                        ON e.user_id = u.id
+                 LEFT JOIN wechat_account wa
+                        ON (wa.open_id = a.wechat OR wa.union_id = a.wechat)
+                 LEFT JOIN xcx_account xcx
+                        ON (xcx.open_id = a.wechat OR xcx.union_id = a.wechat)
+                 LEFT JOIN application ap
+                        ON (ap.app_id = wa.app_id OR ap.app_id = xcx.app_id)
+                 LEFT JOIN organization o
+                        ON o.id = ap.organization_id
                     <if test="params != null">
                         <include refid="WHERE_COLUMN"/>
 
