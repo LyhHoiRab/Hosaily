@@ -94,6 +94,21 @@ app.controller('webResourceController', function($scope, $state, $http){
         $scope.getData();
     };
 
+    $scope.refreshCache = function(){
+        $http({
+            url: '/api/1.0/webResource/refresh',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+            console.error(response);
+        });
+    };
+
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
             $scope.getData();

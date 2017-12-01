@@ -217,7 +217,7 @@
         </if>
     </select>
 
-    <select id="countByParams" resultMap="resource">
+    <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
           FROM web_resource w
      LEFT JOIN organization o
