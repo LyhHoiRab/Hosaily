@@ -49,6 +49,8 @@ public class Course implements Create, Update{
     private MediaType mediaType;
     //导师
     private Advisor advisor;
+    //是否需要授权
+    private Boolean authorization;
     //限制等级
     private List<Level> level;
     //标签
@@ -230,6 +232,14 @@ public class Course implements Create, Update{
 
     public void setMediaType(MediaType mediaType){
         this.mediaType = mediaType;
+    }
+
+    public Boolean getAuthorization(){
+        return authorization;
+    }
+
+    public void setAuthorization(Boolean authorization){
+        this.authorization = authorization;
     }
 
     @Override

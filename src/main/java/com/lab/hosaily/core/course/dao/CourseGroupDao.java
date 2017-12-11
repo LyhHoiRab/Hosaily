@@ -1,6 +1,7 @@
 package com.lab.hosaily.core.course.dao;
 
 import com.lab.hosaily.core.course.dao.mapper.CourseGroupMapper;
+import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.course.entity.CourseGroup;
 import com.rab.babylon.commons.security.exception.DataAccessException;
 import com.rab.babylon.commons.security.mybatis.Criteria;

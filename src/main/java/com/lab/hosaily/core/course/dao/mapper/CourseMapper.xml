@@ -19,6 +19,7 @@
         <result column="organization_id"    property="organizationId"   javaType="java.lang.String"/>
         <result column="media_type"         property="mediaType"        typeHandler="mediaTypeHandler"/>
         <result column="state"              property="state"            typeHandler="usingStateHandler"/>
+        <result column="authorization"      property="authorization"    javaType="java.lang.Boolean"/>
         <result column="create_time"        property="createTime"       javaType="java.util.Date"/>
         <result column="update_time"        property="updateTime"       javaType="java.util.Date"/>
         <association property="advisor"  resultMap="advisor"  columnPrefix="a_"/>
@@ -201,7 +202,8 @@
                state,
                create_time,
                organization_id,
-               media_type
+               media_type,
+               authorization
         ) VALUE (
                #{id,             jdbcType=VARCHAR},
                #{advisor.id,     jdbcType=VARCHAR},
@@ -220,7 +222,8 @@
                #{state,          typeHandler=usingStateHandler},
                #{createTime,     jdbcType=TIMESTAMP},
                #{organizationId, jdbcType=VARCHAR},
-               #{mediaType,      typeHandler=mediaTypeHandler}
+               #{mediaType,      typeHandler=mediaTypeHandler},
+               #{authorization,  jdbcType=BOOLEAN}
         )
     </insert>
 
@@ -277,6 +280,9 @@
             </if>
             <if test="mediaType != null">
                 media_type = #{mediaType, typeHandler=mediaTypeHandler},
+            </if>
+            <if test="authorization != null">
+                authorization = #{authorization, jdbcType=BOOLEAN},
             </if>
          </set>
           WHERE id = #{id}
@@ -435,7 +441,18 @@
     </select>
 
     <select id="findCourseByParams" resultMap="course">
-        SELECT c.*,
+        SELECT c.id,
+               c.summary,
+               c.title,
+               c.create_time,
+               c.update_time,
+               c.cover,
+               c.sort,
+               c.view,
+               c.likes,
+               c.state,
+               c.organization_id,
+               c.authorization,
                a.id           AS a_id,
                a.nickname     AS a_nickname,
                a.name         AS a_name,
@@ -489,14 +506,23 @@
     </select>
 
     <select id="findChapterByParams" resultMap="course">
-        SELECT c.*,
+        SELECT c.id,
+               c.summary,
+               c.title,
+               c.create_time,
+               c.update_time,
+               c.cover,
+               c.sort,
+               c.view,
+               c.likes,
+               c.state,
+               c.organization_id,
                ch.id           AS ch_id,
                ch.title        AS ch_title,
-               ch.summary      AS ch_summary,
-               ch.introduction AS ch_introduction,
                ch.price        AS ch_price,
                ch.likes        AS ch_likes,
                ch.view         AS ch_view,
+               ch.summary      AS ch_summary,
                ch.media_type   AS ch_media_type,
                m.id            AS ch_m_id,
                m.url           AS ch_m_url,

@@ -1,7 +1,8 @@
 app.controller('courseController', function($scope, $http, $state){
     //下拉
-    $scope.states       = [];
-    $scope.organization = [];
+    $scope.states         = [];
+    $scope.organizations  = [];
+    $scope.authorizations = {'false':'否', 'true':'是'};
     //查询列表
     $scope.state          = '';
     $scope.advisor        = '';
@@ -133,11 +134,12 @@ app.controller('courseController', function($scope, $http, $state){
             field: 'likes',
             displayName: '点赞量'
         },{
-            field: 'comments',
-            displayName: '评论量'
-        },{
             field: 'sort',
             displayName: '排序'
+        },{
+            field: 'authorization',
+            displayName: '是否需要授权',
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{authorizations[COL_FIELD]}}</span></div>'
         },{
             field: 'state',
             displayName: '状态',

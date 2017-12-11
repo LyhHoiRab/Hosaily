@@ -93,6 +93,15 @@
 
     <div class="row-group">
       <div class="input-group">
+        <span class="input-group-addon">是否需要授权</span>
+        <select class="form-control" ng-model="course.authorization" ng-options="key as value for (key, value) in authorizations">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
         <span class="input-group-addon">状态</span>
         <select class="form-control" ng-model="course.state" ng-options="key as value for (key, value) in states">
           <option value="">请选择</option>

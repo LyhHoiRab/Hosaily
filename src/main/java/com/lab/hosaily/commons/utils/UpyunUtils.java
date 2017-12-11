@@ -35,8 +35,8 @@ public class UpyunUtils{
     //访问外链
     public final static String URL = "http://kuliao.b0.upaiyun.com";
     //视频外链
-//    public final static String VIDEO_URL = "http://hsl-video.test.upcdn.net";
-    public final static String VIDEO_URL = "http://media.ishsls.com";
+    public final static String VIDEO_URL = "http://hsl-video.test.upcdn.net";
+//    public final static String VIDEO_URL = "http://media.ishsls.com";
 
     //UpYun
     private static UpYun upyun;

@@ -1,8 +1,9 @@
 app.controller('courseEditController', function($scope, $state, $stateParams, FileUploader, $http){
     //下拉
-    $scope.states        = [];
-    $scope.advisors      = [];
-    $scope.organizations = [];
+    $scope.states         = [];
+    $scope.advisors       = [];
+    $scope.organizations  = [];
+    $scope.authorizations = {'false':'否', 'true':'是'};
     //$scope.tags     = [];
     //$scope.levels   = [];
 
@@ -45,10 +46,11 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         view           : 0,
         sort           : 0,
         advisor        : {},
-        orgainzationId : '',
+        organizationId : '',
         //tag          : [],
         //level        : [],
-        children       : []
+        children       : [],
+        authorization  : ''
     };
 
     $scope.chapterAdd = function(){
@@ -67,6 +69,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         $scope.course.advisor        = {};
         //$scope.course.tag           = [];
         $scope.course.organizationId = '';
+        $scope.course.authorization  = '';
     };
 
     $scope.getCourseById = function(){

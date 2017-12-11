@@ -1,8 +1,9 @@
 app.controller('courseAddController', function($scope, $state, FileUploader, $http){
     //下拉
-    $scope.states        = [];
-    $scope.advisors      = [];
-    $scope.organizations = [];
+    $scope.states         = [];
+    $scope.advisors       = [];
+    $scope.organizations  = [];
+    $scope.authorizations = {'false':'否', 'true':'是'};
     //$scope.tags     = [];
     //$scope.levels   = [];
 
@@ -44,7 +45,8 @@ app.controller('courseAddController', function($scope, $state, FileUploader, $ht
         view           : 0,
         sort           : 0,
         advisor        : {},
-        organizationId : ''
+        organizationId : '',
+        authorization  : ''
         //tag          : [],
         //level        : []
     };
@@ -60,6 +62,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader, $ht
         $scope.course.sort           = 0;
         $scope.course.advisor        = {};
         $scope.course.organizationId = '';
+        $scope.course.authorization  = '';
         //$scope.course.tag           = [];
         //$scope.course.level         = [];
     };

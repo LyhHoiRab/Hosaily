@@ -1,6 +1,8 @@
 package com.lab.hosaily.core.course.service;
 
+import com.lab.hosaily.core.course.dao.CourseDao;
 import com.lab.hosaily.core.course.dao.CourseGroupDao;
+import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.course.entity.CourseGroup;
 import com.rab.babylon.commons.security.exception.DataAccessException;
 import com.rab.babylon.commons.security.exception.ServiceException;
@@ -24,6 +26,9 @@ public class CourseGroupServiceImpl implements CourseGroupService{
 
     @Autowired
     private CourseGroupDao courseGroupDao;
+
+    @Autowired
+    private CourseDao courseDao;
 
     /**
      * 保存
@@ -140,6 +145,12 @@ public class CourseGroupServiceImpl implements CourseGroupService{
         try{
             Assert.hasText(accountId, "账户ID不能为空");
             Assert.hasText(courseId, "课程ID不能为空");
+
+            Course course = courseDao.getCourseById(courseId);
+
+            if(course.getAuthorization()){
+                return true;
+            }
 
             return courseGroupDao.hasCourse(accountId, courseId);
         }catch(Exception e){
