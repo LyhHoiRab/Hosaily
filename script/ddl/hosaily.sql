@@ -430,3 +430,26 @@ CREATE TABLE `sim_num_user` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`sim`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='sim序号手机号码使用者对照表';
+
+CREATE TABLE `web_resource` (
+  `id` varchar(32) NOT NULL,
+  `description` varchar(60) DEFAULT NULL,
+  `domain` varchar(100) NOT NULL,
+  `img_url` varchar(255) DEFAULT NULL,
+  `css_url` varchar(255) DEFAULT NULL,
+  `js_url` varchar(255) DEFAULT NULL,
+  `mobile_img_url` varchar(255) DEFAULT NULL,
+  `mobile_css_url` varchar(255) DEFAULT NULL,
+  `mobile_js_url` varchar(255) DEFAULT NULL,
+  `organization_id` varchar(32) DEFAULT NULL,
+  `state` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `domain_UNIQUE` (`domain`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `account_group` (
+  `account_id` varchar(32) NOT NULL,
+  `group_id` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账户 - 分组关联表';
