@@ -1,7 +1,7 @@
 app.controller('mediaEditController', function($scope, $state, $stateParams, $sce, $http){
 	//下拉
-	$scope.mediaTypes         = [];
-	$scope.states        = [];
+	$scope.mediaTypes    = {};
+	$scope.states        = {};
 	$scope.organizations = [];
 	//实体
 	$scope.media = {

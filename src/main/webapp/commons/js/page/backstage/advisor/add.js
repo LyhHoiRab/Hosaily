@@ -1,6 +1,6 @@
-app.controller('advisorAddController', function($scope, $state, FileUploader, $http){
-    $scope.sexs = [];
-    $scope.states = [];
+app.controller('advisorAddController', function($scope, $state, FileUploader, $http, $stateParams){
+    $scope.sexs          = {};
+    $scope.states        = {};
     $scope.organizations = [];
 
     var uploader = $scope.uploader = new FileUploader({
@@ -37,7 +37,7 @@ app.controller('advisorAddController', function($scope, $state, FileUploader, $h
         state          : '',
         sort           : '',
         headImgUrl     : '/commons/img/level_default.jpg',
-        organizationId : ''
+        organizationId : $stateParams.organizationId
     };
 
     $scope.reset = function(){

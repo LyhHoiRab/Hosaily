@@ -1,13 +1,18 @@
-app.controller('tagAddController', function($scope, $state, $http){
+app.controller('tagAddController', function($scope, $state, $http, $stateParams){
     //下拉
-    $scope.states = [];
+    $scope.states        = {};
     $scope.organizations = [];
+
     //标签实体
     $scope.tag = {
         name           : '',
         description    : '',
         state          : '',
-        organizationId : ''
+        organizationId : $stateParams.organizationId
+    };
+
+    $scope.back = function(){
+        $state.go('tag');
     };
 
     $scope.reset = function(){
@@ -28,12 +33,11 @@ app.controller('tagAddController', function($scope, $state, $http){
         }).success(function(res, status, headers, config){
             if(res.success){
                 alert(res.msg);
-                $state.go('tag');
+                $scope.back();
             }else{
                 alert(res.msg);
             }
         }).error(function(response){
-            alert('系统繁忙');
             console.error(response);
         });
     };

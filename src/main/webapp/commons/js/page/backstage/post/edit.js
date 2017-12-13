@@ -1,6 +1,6 @@
 app.controller('postEditController', function($scope, $state, $stateParams, FileUploader, $http){
     //下拉
-    $scope.states        = [];
+    $scope.states        = {};
     $scope.advisors      = [];
     $scope.medias        = [];
     $scope.organizations = [];
@@ -87,7 +87,7 @@ app.controller('postEditController', function($scope, $state, $stateParams, File
                 $scope.states = res.result;
             }
         }).error(function(response){
-            $scope.states = [];
+            $scope.states = {};
         });
     };
 

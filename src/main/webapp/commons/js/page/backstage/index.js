@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.router', 'oc.lazyLoad', 'ngGrid', 'ckeditor', 'ngSanitize']);
+var app = angular.module('app', ['ui.router', 'oc.lazyLoad', 'ngGrid', 'ckeditor', 'ngSanitize', 'ui.bootstrap']);
 
 app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', function($controllerProvider, $compileProvider, $filterProvider, $provide){
     app.controller = $controllerProvider.register;
@@ -109,10 +109,26 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
+                    //basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    //basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/media/index.js'
+                ]);
+            }]
+        }
+    }).state('media.list', {
+        url: '/media/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/media/list/' + $stateParams.organizationId;
+        },
+        controller: 'mediaListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
                     basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
                     basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
-                    basePath + '/commons/js/page/backstage/media/index.js'
+                    basePath + '/commons/js/page/backstage/media/list.js'
                 ]);
             }]
         }
@@ -153,15 +169,31 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
-                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
-                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    //basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    //basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/page/backstage/advisor/index.js'
                 ]);
             }]
         }
+    }).state('advisor.list', {
+        url: '/advisor/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/advisor/list/' + $stateParams.organizationId;
+        },
+        controller: 'advisorListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/advisor/list.js'
+                ]);
+            }]
+        }
     }).state('advisorAdd', {
-        url: '/advisor/add',
+        url: '/advisor/add/:organizationId',
         templateUrl: '/page/backstage/advisor/add',
         controller: 'advisorAddController',
         resolve: {
@@ -200,15 +232,31 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
-                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
-                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    //basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    //basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/page/backstage/tag/index.js'
                 ]);
             }]
         }
+    }).state('tag.list', {
+        url: '/tag/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/tag/list/' + $stateParams.organizationId;
+        },
+        controller: 'tagListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/tag/list.js'
+                ]);
+            }]
+        }
     }).state('tagAdd', {
-        url: '/tag/add',
+        url: '/tag/add/:organizationId',
         templateUrl: '/page/backstage/tag/add',
         controller: 'tagAddController',
         resolve: {
@@ -243,15 +291,31 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
-                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
-                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    //basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    //basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/page/backstage/post/index.js'
                 ]);
             }]
         }
+    }).state('post.list', {
+        url: '/post/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/post/list/' + $stateParams.organizationId;
+        },
+        controller: 'postListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/post/list.js'
+                ]);
+            }]
+        }
     }).state('postAdd', {
-        url: '/post/add',
+        url: '/post/add/:organizationId',
         templateUrl: '/page/backstage/post/add',
         controller: 'postAddController',
         resolve: {
@@ -466,10 +530,26 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
+                    //basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    //basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/user/index.js'
+                ]);
+            }]
+        }
+    }).state('user.list', {
+        url: '/user/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/user/list/' + $stateParams.organizationId;
+        },
+        controller: 'userListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
                     basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
                     basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
-                    basePath + '/commons/js/page/backstage/user/index.js'
+                    basePath + '/commons/js/page/backstage/user/list.js'
                 ]);
             }]
         }

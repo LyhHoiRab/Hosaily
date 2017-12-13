@@ -1,6 +1,6 @@
-app.controller('postAddController', function($scope, $state, FileUploader, $http){
+app.controller('postAddController', function($scope, $state, FileUploader, $http, $stateParams){
     //下拉
-    $scope.states        = [];
+    $scope.states        = {};
     $scope.advisors      = [];
     $scope.medias        = [];
     $scope.organizations = [];
@@ -46,7 +46,7 @@ app.controller('postAddController', function($scope, $state, FileUploader, $http
         advisor        : {},
         media          : [],
         tag            : [],
-        organizationId : ''
+        organizationId : $stateParams.organizationId
     };
 
     $scope.reset = function(){

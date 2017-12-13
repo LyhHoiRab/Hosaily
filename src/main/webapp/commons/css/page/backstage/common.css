@@ -15,6 +15,21 @@
     color: #98a6ad;
 }
 
+/* tabset */
+.tab-view {
+    padding-top: 25px;
+}
+
+.tab-view .nav > li > a {
+    color: #58666e;
+}
+
+.tab-view .nav-tabs > li.active > a,
+.tab-view .nav-tabs > li.active > a:focus,
+.tab-view .nav-tabs > li.active > a:hover {
+    background-color: #f6f8f8;
+}
+
 /* search-bar */
 .search-bar {
     padding: 0 0 20px 0;
@@ -63,9 +78,10 @@
 }
 
 .gridStyle {
-    height: 700px;
+    height: 620px;
     text-align: center;
     border: 1px solid #dee5e7;
+    border-bottom: none;
     background-color: #fff;
 }
 

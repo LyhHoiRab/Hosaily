@@ -1,6 +1,6 @@
 app.controller('tagEditController', function($scope, $state, $stateParams, $http){
     //下拉
-    $scope.states = [];
+    $scope.states        = {};
     $scope.organizations = [];
     //标签实体
     $scope.tag = {
@@ -29,12 +29,11 @@ app.controller('tagEditController', function($scope, $state, $stateParams, $http
         }).success(function(res, status, headers, config){
             if(res.success){
                 alert(res.msg);
-                $state.go('tag');
+                $scope.back();
             }else{
                 alert(res.msg);
             }
         }).error(function(response){
-            alert('系统繁忙');
             console.error(response);
         });
     };
@@ -50,7 +49,6 @@ app.controller('tagEditController', function($scope, $state, $stateParams, $http
                 alert(res.msg);
             }
         }).error(function(response){
-            alert('系统繁忙');
             console.error(response);
         });
     };

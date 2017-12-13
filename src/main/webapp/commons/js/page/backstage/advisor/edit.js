@@ -1,6 +1,6 @@
 app.controller('advisorEditController', function($scope, $state, $stateParams, FileUploader, $http){
-    $scope.sexs = [];
-    $scope.states = [];
+    $scope.sexs          = {};
+    $scope.states        = {};
     $scope.organizations = [];
 
     var uploader = $scope.uploader = new FileUploader({
@@ -40,6 +40,10 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         sort           : '',
         headImgUrl     : '',
         organizationId : ''
+    };
+
+    $scope.back = function(){
+        $state.go('tag');
     };
 
     $scope.reset = function(){

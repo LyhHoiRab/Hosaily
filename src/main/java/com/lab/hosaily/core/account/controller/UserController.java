@@ -30,6 +30,18 @@ public class UserController{
         }
     }
 
+    @RequestMapping(value = "/list/{organizationId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView list(@PathVariable("organizationId") String organizationId, ModelMap content){
+        try{
+            content.put("organizationId", organizationId);
+
+            return new ModelAndView("backstage/user/list", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView edit(@PathVariable("id") String id, ModelMap content){
         try{
