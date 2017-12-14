@@ -1,5 +1,5 @@
 app.controller('courseGroupEditController', function($scope, $state, $http, $stateParams){
-    $scope.states        = [];
+    $scope.states        = {};
     $scope.organizations = [];
     $scope.courses       = [];
 
@@ -25,8 +25,6 @@ app.controller('courseGroupEditController', function($scope, $state, $http, $sta
         }).success(function(res, status, headers, config){
             if(res.success){
                 utils.copyOf(res.result, $scope.group);
-
-                console.log($scope.group);
             }else{
                 alert(res.msg);
             }
@@ -65,19 +63,6 @@ app.controller('courseGroupEditController', function($scope, $state, $http, $sta
             }
         }).error(function(response){
             $scope.states = [];
-        });
-    };
-
-    $scope.getSex = function(){
-        $http({
-            url: '/api/1.0/sex/list',
-            method: 'GET'
-        }).success(function(res, status, headers, config){
-            if(res.success){
-                $scope.sexs = res.result;
-            }
-        }).error(function(response){
-            $scope.sexs = [];
         });
     };
 

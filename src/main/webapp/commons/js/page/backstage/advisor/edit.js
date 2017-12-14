@@ -42,10 +42,6 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         organizationId : ''
     };
 
-    $scope.back = function(){
-        $state.go('tag');
-    };
-
     $scope.reset = function(){
         $scope.advisor.name           = '';
         $scope.advisor.nickname       = '';

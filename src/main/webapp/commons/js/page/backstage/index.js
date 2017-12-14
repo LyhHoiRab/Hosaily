@@ -358,15 +358,31 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
-                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
-                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    //basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    //basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/page/backstage/course/index.js'
                 ]);
             }]
         }
+    }).state('course.list', {
+        url: '/course/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/course/list/' + $stateParams.organizationId;
+        },
+        controller: 'courseListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/course/list.js'
+                ]);
+            }]
+        }
     }).state('courseAdd', {
-        url: '/course/add',
+        url: '/course/add/:organizationId',
         templateUrl: '/page/backstage/course/add',
         controller: 'courseAddController',
         resolve: {
@@ -486,8 +502,24 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 ]);
             }]
         }
+    }).state('customization.list', {
+        url: '/customization/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/customization/list/' + $stateParams.organizationId;
+        },
+        controller: 'customizationListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/customization/list.js'
+                ]);
+            }]
+        }
     }).state('customizationAdd', {
-        url: '/customization/add',
+        url: '/customization/add/:organizationId',
         templateUrl: '/page/backstage/customization/add',
         controller: 'customizationAddController',
         resolve: {
@@ -894,15 +926,31 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
-                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
-                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    //basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    //basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/page/backstage/courseGroup/index.js'
                 ]);
             }]
         }
+    }).state('courseGroup.list', {
+        url: '/courseGroup/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/courseGroup/list/' + $stateParams.organizationId;
+        },
+        controller: 'courseGroupListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/courseGroup/list.js'
+                ]);
+            }]
+        }
     }).state('courseGroupAdd', {
-        url: '/courseGroup/add',
+        url: '/courseGroup/add/:organizationId',
         templateUrl: '/page/backstage/courseGroup/add',
         controller: 'courseGroupAddController',
         resolve: {

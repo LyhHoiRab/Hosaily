@@ -1,8 +1,8 @@
-app.controller('customizationAddController', function($scope, $state, FileUploader, $http){
+app.controller('customizationAddController', function($scope, $state, FileUploader, $http, $stateParams){
     //下拉
-    $scope.states        = [];
-    $scope.organizations = [];
-    $scope.tags          = [];
+    $scope.states         = {};
+    $scope.organizations  = [];
+    $scope.tags           = [];
 
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/customization/upload',
@@ -81,7 +81,7 @@ app.controller('customizationAddController', function($scope, $state, FileUpload
                 $scope.states = res.result;
             }
         }).error(function(response){
-            $scope.states = [];
+            $scope.states = {};
         });
     };
 

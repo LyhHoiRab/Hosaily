@@ -1,6 +1,6 @@
-app.controller('courseAddController', function($scope, $state, FileUploader, $http){
+app.controller('courseAddController', function($scope, $state, FileUploader, $http, $stateParams){
     //下拉
-    $scope.states         = [];
+    $scope.states         = {};
     $scope.advisors       = [];
     $scope.organizations  = [];
     $scope.authorizations = {'false':'否', 'true':'是'};
@@ -76,7 +76,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader, $ht
                 $scope.states = res.result;
             }
         }).error(function(response){
-            $scope.states = [];
+            $scope.states = {};
         });
     };
 

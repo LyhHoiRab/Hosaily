@@ -1,6 +1,6 @@
 app.controller('customizationEditController', function($scope, $state, $stateParams, FileUploader, $http){
     //下拉
-    $scope.states        = [];
+    $scope.states        = {};
     $scope.organizations = [];
     $scope.tags          = [];
 
@@ -95,7 +95,7 @@ app.controller('customizationEditController', function($scope, $state, $statePar
                 $scope.states = res.result;
             }
         }).error(function(response){
-            $scope.states = [];
+            $scope.states = {};
         });
     };
 

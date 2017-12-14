@@ -27,6 +27,18 @@ public class CourseGroupController{
         }
     }
 
+    @RequestMapping(value = "/list/{organizationId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView list(@PathVariable("organizationId") String organizationId, ModelMap content){
+        try{
+            content.put("organizationId", organizationId);
+
+            return new ModelAndView("backstage/courseGroup/list", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView add(ModelMap content){
         try{

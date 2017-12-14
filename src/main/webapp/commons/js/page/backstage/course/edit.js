@@ -1,6 +1,6 @@
-app.controller('courseEditController', function($scope, $state, $stateParams, FileUploader, $http){
+app.controller('courseEditController', function($scope, $state, $stateParams, FileUploader, $http, $stateParams){
     //下拉
-    $scope.states         = [];
+    $scope.states         = {};
     $scope.advisors       = [];
     $scope.organizations  = [];
     $scope.authorizations = {'false':'否', 'true':'是'};
@@ -94,7 +94,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
                 $scope.states = res.result;
             }
         }).error(function(response){
-            $scope.states = [];
+            $scope.states = {};
         });
     };
 

@@ -1,5 +1,5 @@
-app.controller('courseGroupAddController', function($scope, $state, $http){
-    $scope.states        = [];
+app.controller('courseGroupAddController', function($scope, $state, $http, $stateParams){
+    $scope.states        = {};
     $scope.organizations = [];
     $scope.courses       = [];
 
@@ -46,20 +46,7 @@ app.controller('courseGroupAddController', function($scope, $state, $http){
                 $scope.states = res.result;
             }
         }).error(function(response){
-            $scope.states = [];
-        });
-    };
-
-    $scope.getSex = function(){
-        $http({
-            url: '/api/1.0/sex/list',
-            method: 'GET'
-        }).success(function(res, status, headers, config){
-            if(res.success){
-                $scope.sexs = res.result;
-            }
-        }).error(function(response){
-            $scope.sexs = [];
+            $scope.states = {};
         });
     };
 
