@@ -65,14 +65,14 @@ public class UploadServlet extends HttpServlet {
 // 分析请求，并得到上传文件的FileItem对象
             List<FileItem> items = upload.parseRequest(request);
 // 从web.xml文件中的参数中得到上传文件的路径
-            String uploadPath = "E://test//";
-//            String uploadPath = "/opt/project/hsl_api/luyin/";
-            File file = new File(uploadPath);
-            if (!file.exists()) {
-                file.mkdir();
-            }
+//            String uploadPath = "E://test//";
+////            String uploadPath = "/opt/project/hsl_api/luyin/";
+//            File file = new File(uploadPath);
+//            if (!file.exists()) {
+//                file.mkdir();
+//            }
             String filename = ""; // 上传文件保存到服务器的文件名
-            InputStream is = null; // 当前上传文件的InputStream对象
+//            InputStream is = null; // 当前上传文件的InputStream对象
 
 
 
@@ -95,7 +95,7 @@ public class UploadServlet extends HttpServlet {
 // 从客户端发送过来的上传文件路径中截取文件名
                     filename = item.getName().substring(
                             item.getName().lastIndexOf("\\") + 1);
-                    is = item.getInputStream(); // 得到上传文件的InputStream对象
+//                    is = item.getInputStream(); // 得到上传文件的InputStream对象
 
                     //上传路径
                     String filePath = UpyunUtils.MEI_RONG_ASK_LU_YIN_DIR + filename;
@@ -126,34 +126,34 @@ public class UploadServlet extends HttpServlet {
 
                 }
             }
-// 将路径和上传文件名组合成完整的服务端路径
-            String outFilePath = uploadPath + filename;
-// 如果服务器已经存在和上传文件同名的文件，则输出提示信息
-            if (new File(outFilePath).exists()) {
-                new File(outFilePath).delete();
-            }
-// 开始上传文件
-            if (!outFilePath.equals("")) {
-// 用FileOutputStream打开服务端的上传文件
-                FileOutputStream fos = new FileOutputStream(outFilePath);
-                byte[] buffer = new byte[8192]; // 每次读8K字节
-                int count = 0;
-// 开始读取上传文件的字节，并将其输出到服务端的上传文件输出流中
-                while ((count = is.read(buffer)) > 0) {
-                    fos.write(buffer, 0, count); // 向服务端文件写入字节流
-                }
-                fos.close(); // 关闭FileOutputStream对象
-                is.close(); // InputStream对象
-//                String[] paramArr = filename.split("_");
-//                Record record = new Record();
-//                record.setSim(paramArr[1]);
-//                record.setOutGoingNum(paramArr[2]);
-////                record.setTime(paramArr[3].split("\\.")[0]);
-//                record.setTime(paramArr[3]);
-//                record.setPath(outFilePath);
-//                recordService.save(record);
-//                out.println("文件上传成功!");
-            }
+//// 将路径和上传文件名组合成完整的服务端路径
+//            String outFilePath = uploadPath + filename;
+//// 如果服务器已经存在和上传文件同名的文件，则输出提示信息
+//            if (new File(outFilePath).exists()) {
+//                new File(outFilePath).delete();
+//            }
+//// 开始上传文件
+//            if (!outFilePath.equals("")) {
+//// 用FileOutputStream打开服务端的上传文件
+//                FileOutputStream fos = new FileOutputStream(outFilePath);
+//                byte[] buffer = new byte[8192]; // 每次读8K字节
+//                int count = 0;
+//// 开始读取上传文件的字节，并将其输出到服务端的上传文件输出流中
+//                while ((count = is.read(buffer)) > 0) {
+//                    fos.write(buffer, 0, count); // 向服务端文件写入字节流
+//                }
+//                fos.close(); // 关闭FileOutputStream对象
+//                is.close(); // InputStream对象
+////                String[] paramArr = filename.split("_");
+////                Record record = new Record();
+////                record.setSim(paramArr[1]);
+////                record.setOutGoingNum(paramArr[2]);
+//////                record.setTime(paramArr[3].split("\\.")[0]);
+////                record.setTime(paramArr[3]);
+////                record.setPath(outFilePath);
+////                recordService.save(record);
+////                out.println("文件上传成功!");
+//            }
             System.out.println("UploadServlet end...........................................");
         } catch (Exception e) {
             throw new ApplicationException(e.getMessage(), e);
