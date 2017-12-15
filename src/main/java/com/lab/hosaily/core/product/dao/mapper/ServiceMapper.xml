@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lab.hosaily.core.product.dao.mapper.ServiceMapper">
+    <resultMap id="service" type="com.lab.hosaily.core.product.entity.Service">
+        <id     column="id"             property="id"           javaType="java.lang.String"/>
+        <result column="product_id"     property="productId"    javaType="java.lang.String"/>
+        <result column="name"           property="name"         javaType="java.lang.String"/>
+        <result column="description"    property="description"  javaType="java.lang.String"/>
+        <result column="time"           property="time"         javaType="java.lang.Integer"/>
+        <result column="unit_price"     property="unitPrice"    javaType="java.lang.Double"/>
+        <result column="create_time"    property="createTime"   javaType="java.util.Date"/>
+        <result column="update_time"    property="updateTime"   javaType="java.util.Date"/>
+    </resultMap>
+
+    <insert id="save">
+        INSERT
+          INTO service (
+               id,
+               product_id,
+               name,
+               description,
+               time,
+               unit_price,
+               create_time
+        ) VALUE (
+               #{id,          jdbcType=VARCHAR},
+               #{productId,   jdbcType=VARCHAR},
+               #{name,        jdbcType=VARCHAR},
+               #{description, jdbcType=VARCHAR},
+               #{time,        jdbcType=INTEGER},
+               #{unitPrice,   jdbcType=DOUBLE},
+               #{createTime,  jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE service
+         <set>
+             <if test="name != null">
+                 name = #{name, jdbcType=VARCHAR},
+             </if>
+             <if test="description != null">
+                 description = #{description, jdbcType=VARCHAR},
+             </if>
+             <if test="time != null and time >= 0">
+                 time = #{time, jdbcType=INTEGER},
+             </if>
+             <if test="unitPrice != null and unitPrice >= 0">
+                 unit_price = #{unitPrice, jdbcType=DOUBLE},
+             </if>
+             <if test="updateTime != null">
+                 update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+         </set>
+          WHERE id = #{id}
+    </update>
+</mapper>

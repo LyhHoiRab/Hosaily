@@ -194,7 +194,6 @@ CREATE TABLE `level` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='等级表';
 
-
 DROP TABLE IF EXISTS `level_price`;
 CREATE TABLE `level_price` (
   `id` varchar(32) NOT NULL,
@@ -206,7 +205,6 @@ CREATE TABLE `level_price` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='等级价格表';
-
 
 DROP TABLE IF EXISTS `media`;
 CREATE TABLE `media` (
@@ -225,27 +223,6 @@ CREATE TABLE `media` (
   UNIQUE KEY `md5_UNIQUE` (`md5`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='媒体资源表';
 
-
-DROP TABLE IF EXISTS `orders`;
-CREATE TABLE `orders` (
-  `id` varchar(32) NOT NULL,
-  `order_id` varchar(45) NOT NULL,
-  `sales_user` varchar(32) NOT NULL,
-  `sales_account` varchar(32) NOT NULL,
-  `client_user` varchar(32) NOT NULL,
-  `client_account` varchar(32) NOT NULL,
-  `price` double NOT NULL DEFAULT '0',
-  `pay` double NOT NULL DEFAULT '0',
-  `remark` varchar(255) DEFAULT NULL,
-  `state` tinyint(1) NOT NULL,
-  `is_delete` tinyint(1) NOT NULL DEFAULT '0',
-  `create_time` datetime NOT NULL,
-  `update_time` datetime DEFAULT NULL,
-  `delete_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
-
-
 DROP TABLE IF EXISTS `organization`;
 CREATE TABLE `organization` (
   `id` varchar(32) NOT NULL,
@@ -258,18 +235,6 @@ CREATE TABLE `organization` (
   UNIQUE KEY `token_UNIQUE` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
-DROP TABLE IF EXISTS `pay_logs`;
-CREATE TABLE `pay_logs` (
-  `id` varchar(32) NOT NULL,
-  `order_id` varchar(32) NOT NULL,
-  `pay` double NOT NULL DEFAULT '0',
-  `payment` varchar(32) NOT NULL,
-  `create_time` datetime NOT NULL,
-  `update_time` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付记录表';
-
-
 DROP TABLE IF EXISTS `payment_type`;
 CREATE TABLE `payment_type` (
   `id` varchar(32) NOT NULL,
@@ -280,7 +245,6 @@ CREATE TABLE `payment_type` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付方式表';
-
 
 DROP TABLE IF EXISTS `tag`;
 CREATE TABLE `tag` (
@@ -293,8 +257,6 @@ CREATE TABLE `tag` (
   `organization_id` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='标签表';
-
-
 
 DROP TABLE IF EXISTS `test_library`;
 CREATE TABLE `test_library` (
@@ -402,10 +364,6 @@ CREATE TABLE `xcx_account` (
   UNIQUE KEY `open_id_UNIQUE` (`open_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='小程序账户';
 
-
-
-
-
 DROP TABLE IF EXISTS `record`;
 CREATE TABLE `record` (
   `id` varchar(32) NOT NULL,
@@ -419,7 +377,6 @@ CREATE TABLE `record` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='录音表';
-
 
 DROP TABLE IF EXISTS `sim_num_user`;
 CREATE TABLE `sim_num_user` (
@@ -453,3 +410,27 @@ CREATE TABLE `account_group` (
   `account_id` varchar(32) NOT NULL,
   `group_id` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账户 - 分组关联表';
+
+CREATE TABLE `product` (
+  `id` varchar(32) NOT NULL,
+  `organization_id` varchar(32) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `price` double DEFAULT '0',
+  `duration` int(1) DEFAULT '0',
+  `state` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `service` (
+  `id` varchar(32) NOT NULL,
+  `product_id` varchar(32) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `time` int(11) DEFAULT '0',
+  `unit_price` double DEFAULT '0',
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
