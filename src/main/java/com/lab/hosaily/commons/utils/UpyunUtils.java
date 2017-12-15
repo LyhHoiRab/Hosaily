@@ -4,6 +4,8 @@ import main.java.com.UpYun;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -24,6 +26,8 @@ public class UpyunUtils{
     public final static String USER_HEAD_DIR = "/user/head/";
     //导师头像目录
     public final static String ADVISOR_HEAD_DIR = "/advisor/head/";
+    //美容问问录音目录
+    public final static String MEI_RONG_ASK_LU_YIN_DIR = "/meiRongAsk/luyin/";
     //会员等级图片目录
     public final static String LEVEL_COVER_DIR = "/level/cover/";
     //支付方式图片目录
@@ -44,8 +48,22 @@ public class UpyunUtils{
     //自定义客户端
     private static UpYun videoUpyun;
 
+    //UpYun
+    private static UpYunTest upYunTest;
+
     private UpyunUtils(){
 
+    }
+
+    private static UpYunTest getUpyunTest() {
+        if (upYunTest == null) {
+            upYunTest = new UpYunTest(BUCKET_NAME, OPERATOR_NAME, OPERATOR_PWD);
+            upYunTest.setDebug(false);
+            //2分钟超时时长
+            upYunTest.setTimeout(120);
+        }
+
+        return upYunTest;
     }
 
     private static UpYun getVideoUpyun(){
@@ -125,5 +143,14 @@ public class UpyunUtils{
         }
 
         return getVideoUpyun().deleteFile(uploadPath);
+    }
+
+    public static boolean writerFile(String filePath, InputStream inputStream, boolean auto, Map<String, String> params) throws IOException {
+
+        if (StringUtils.isBlank(filePath)) {
+            throw new IllegalArgumentException("上传路径不能为空");
+        }
+        return getUpyunTest().writerFile(filePath, inputStream, auto, params);
+
     }
 }

@@ -97,13 +97,19 @@ public class SimNumUserDao {
     /**
      * 分页查询
      */
-    public Page<SimNumUser> page(PageRequest pageRequest, String num){
+    public Page<SimNumUser> page(PageRequest pageRequest, String num, String userType, String organizationId){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
             if(!StringUtils.isBlank(num)){
                 criteria.and(Restrictions.like("num", num));
+            }
+            if(!StringUtils.isBlank(userType)){
+                criteria.and(Restrictions.like("userType", userType));
+            }
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.like("organizationId", organizationId));
             }
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 

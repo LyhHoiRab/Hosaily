@@ -839,6 +839,22 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 ]);
             }]
         }
+    }).state('record.list', {
+        url: '/record/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/record/list/' + $stateParams.organizationId;
+        },
+        controller: 'recordListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/record/list.js'
+                ]);
+            }]
+        }
     }).state('recordAdd', {
         url: '/record/add',
         templateUrl: '/page/backstage/record/add',
@@ -883,6 +899,22 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                     basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/page/backstage/simNumUser/index.js'
+                ]);
+            }]
+        }
+    }).state('simNumUser.list', {
+        url: '/simNumUser/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/simNumUser/list/' + $stateParams.organizationId;
+        },
+        controller: 'simNumUserListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/simNumUser/list.js'
                 ]);
             }]
         }

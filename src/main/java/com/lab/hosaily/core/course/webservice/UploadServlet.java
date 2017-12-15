@@ -4,6 +4,7 @@ package com.lab.hosaily.core.course.webservice;
  * Created by miku03 on 2017/11/24.
  */
 
+import com.lab.hosaily.commons.utils.UpyunUtils;
 import com.lab.hosaily.core.course.entity.Record;
 import com.lab.hosaily.core.course.service.RecordService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Component("UploadServlet")
@@ -48,7 +51,7 @@ public class UploadServlet extends HttpServlet {
     protected void service(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {
         try {
-
+            System.out.println("UploadServlet start...........................................");
 //            String outGoingNum = request.getParameter("outGoingNum");
 //            String sim = request.getParameter("sim");
 //            String time = request.getParameter("time");
@@ -62,13 +65,21 @@ public class UploadServlet extends HttpServlet {
 // 分析请求，并得到上传文件的FileItem对象
             List<FileItem> items = upload.parseRequest(request);
 // 从web.xml文件中的参数中得到上传文件的路径
-            String uploadPath = "/opt/project/hsl_api/luyin/";
+            String uploadPath = "E://test//";
+//            String uploadPath = "/opt/project/hsl_api/luyin/";
             File file = new File(uploadPath);
             if (!file.exists()) {
                 file.mkdir();
             }
             String filename = ""; // 上传文件保存到服务器的文件名
             InputStream is = null; // 当前上传文件的InputStream对象
+
+
+
+
+
+
+
 // 循环处理上传文件
             for (FileItem item : items) {
 // 处理普通的表单域
@@ -85,6 +96,34 @@ public class UploadServlet extends HttpServlet {
                     filename = item.getName().substring(
                             item.getName().lastIndexOf("\\") + 1);
                     is = item.getInputStream(); // 得到上传文件的InputStream对象
+
+                    //上传路径
+                    String filePath = UpyunUtils.MEI_RONG_ASK_LU_YIN_DIR + filename;
+                    System.out.println(filePath);
+                    //上传
+                    boolean result = UpyunUtils.writerFile(filePath, item.getInputStream(), true, null);
+                    System.out.println("AAAAAAAAAAAAAAA: " + result);
+                    String[] paramArr = filename.split("_");
+                    String outFilePath = "http://kuliao.b0.upaiyun.com" + filePath;
+                    System.out.println("AAAAAAAAAAAAAAA: " + outFilePath);
+                    Record record = new Record();
+                    record.setSim(paramArr[1]);
+                    record.setOutGoingNum(paramArr[2]);
+    //                record.setTime(paramArr[3].split("\\.")[0]);
+
+                    record.setTime(Long.parseLong(paramArr[3])/1000 + "");
+                    //时间戳转化为Sting或Date
+                    SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Long time=new Long(paramArr[4].split("\\.")[0]);
+                    String d = format.format(time);
+                    Date date=format.parse(d);
+                    System.out.println("Format To String(Date):"+d);
+                    System.out.println("Format To Date:"+date);
+                    record.setCreateTime(date);
+                    record.setPath(outFilePath);
+                    recordService.save(record);
+                    out.println("文件上传成功!");
+
                 }
             }
 // 将路径和上传文件名组合成完整的服务端路径
@@ -105,16 +144,17 @@ public class UploadServlet extends HttpServlet {
                 }
                 fos.close(); // 关闭FileOutputStream对象
                 is.close(); // InputStream对象
-                String[] paramArr = filename.split("_");
-                Record record = new Record();
-                record.setSim(paramArr[1]);
-                record.setOutGoingNum(paramArr[2]);
-//                record.setTime(paramArr[3].split("\\.")[0]);
-                record.setTime(paramArr[3]);
-                record.setPath(outFilePath);
-                recordService.save(record);
-                out.println("文件上传成功!");
+//                String[] paramArr = filename.split("_");
+//                Record record = new Record();
+//                record.setSim(paramArr[1]);
+//                record.setOutGoingNum(paramArr[2]);
+////                record.setTime(paramArr[3].split("\\.")[0]);
+//                record.setTime(paramArr[3]);
+//                record.setPath(outFilePath);
+//                recordService.save(record);
+//                out.println("文件上传成功!");
             }
+            System.out.println("UploadServlet end...........................................");
         } catch (Exception e) {
             throw new ApplicationException(e.getMessage(), e);
         }

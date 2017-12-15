@@ -40,6 +40,25 @@
       </div>
     </div><!-- item -->
 
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">使用者类型</span>
+        <!--<input type="text" class="form-control" placeholder="使用者类型" ng-model="simNumUser.userType" value="{{simNumUser.userType}}">-->
+        <select class="form-control" ng-model="simNumUser.userType" ng-options="userType for userType in userTypes">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">企业</span>
+        <select class="form-control" ng-model="simNumUser.organizationId" ng-options="organization.id as organization.name for organization in organizations">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
 
     <div class="row-group">
       <div class="button-group">

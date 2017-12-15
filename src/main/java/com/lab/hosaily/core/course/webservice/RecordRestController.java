@@ -14,12 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 
 @RestController
 @RequestMapping(value = "/api/1.0/record")
@@ -76,10 +75,10 @@ public class RecordRestController {
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Record>> page(Long pageNum, Long pageSize, String userName, String num, String outGoingNum, String sim){
+    public Response<Page<Record>> page(Long pageNum, Long pageSize, String userName, String num, String outGoingNum, String sim, String userType, String organizationId){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Record> page = recordService.page(pageRequest, userName, num, outGoingNum, sim);
+            Page<Record> page = recordService.page(pageRequest, userName, num, outGoingNum, sim, userType, organizationId);
 
             return new Response<Page<Record>>("查询成功", page);
         }catch(Exception e){
@@ -103,6 +102,51 @@ public class RecordRestController {
         HttpStatus statusCode = HttpStatus.OK;
         ResponseEntity<byte[]> entity = new ResponseEntity<byte[]>(body, headers, statusCode);
         return entity;
+    }
+
+    @RequestMapping("/testHttpMessagePlay/{id}")
+    public ModelAndView testHttpMessagePlay(HttpServletRequest request, @PathVariable("id") String id, HttpServletResponse response) throws IOException {
+        System.out.println("TTTTTTTTTTTTTDDDDDDDDDDDDDDDDDD: " + id);
+        Record record = recordService.getById(id);
+        File file = new File(record.getPath());
+
+        String range = request.getHeader("Range");
+        String[] rs = range.split("\\=");
+        range = rs[1].split("\\-")[0];
+
+//        String path = request.getServletContext().getRealPath("/");
+//        File file = new File(path + "/WEB-INF/mp3/" + id + ".mp3");
+        if(!file.exists()) throw new RuntimeException("音频文件不存在 --> 404");
+        OutputStream os = response.getOutputStream();
+        FileInputStream fis = new FileInputStream(file);
+        long length = file.length();
+        System.out.println("file length : " + length);
+        // 播放进度
+        int count = 0;
+        // 播放百分比
+        int percent = (int)(length * 0.4);
+
+        int irange = Integer.parseInt(range);
+        length = length - irange;
+
+        response.addHeader("Accept-Ranges", "bytes");
+        response.addHeader("Content-Length", length + "");
+        response.addHeader("Content-Range", "bytes " + range + "-" + length + "/" + length);
+        response.addHeader("Content-Type", "audio/mpeg;charset=UTF-8");
+
+        int len = 0;
+        byte[] b = new byte[1024];
+        while ((len = fis.read(b)) != -1) {
+            os.write(b, 0, len);
+            count += len;
+            if(count >= percent){
+                break;
+            }
+        }
+        System.out.println("count: " + count + ", percent: " + percent);
+        fis.close();
+        os.close();
+        return null;
     }
 
 
