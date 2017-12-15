@@ -9,6 +9,8 @@
         <result column="user_name"        property="userName"        javaType="java.lang.String"/>
         <result column="create_time" property="createTime"  javaType="java.util.Date"/>
         <result column="update_time" property="updateTime"  javaType="java.util.Date"/>
+        <result column="user_type"        property="userType"        javaType="java.lang.String"/>
+        <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -115,12 +117,16 @@
               sim,
               num,
               user_name,
-              create_time
+              create_time,
+              user_type,
+              organization_id
           ) VALUE (
               #{sim,        jdbcType=VARCHAR},
               #{num,        jdbcType=VARCHAR},
               #{userName,        jdbcType=VARCHAR},
-              #{createTime,  jdbcType=TIMESTAMP}
+              #{createTime,  jdbcType=TIMESTAMP},
+              #{userType,        jdbcType=VARCHAR},
+              #{organizationId,        jdbcType=VARCHAR}
           )
     </insert>
 
@@ -132,6 +138,12 @@
              </if>
              <if test="userName != null and userName != ''">
                  user_name = #{userName, jdbcType=VARCHAR},
+             </if>
+             <if test="userType != null and userType != ''">
+                 user_type = #{userType, jdbcType=VARCHAR},
+             </if>
+             <if test="organizationId != null and organizationId != ''">
+                 organization_id = #{organizationId, jdbcType=VARCHAR},
              </if>
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},

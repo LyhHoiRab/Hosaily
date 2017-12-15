@@ -20,6 +20,28 @@ public class SimNumUser implements Create, Update {
     //更新时间
     private Date updateTime;
 
+    //使用者类型
+    private String userType;
+
+    //企业ID
+    private String organizationId;
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
+    }
+
     public String getSim() {
         return sim;
     }

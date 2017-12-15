@@ -12,6 +12,8 @@
         <result column="user_name"        property="userName"        javaType="java.lang.String"/>
         <result column="create_time" property="createTime"  javaType="java.util.Date"/>
         <result column="update_time" property="updateTime"  javaType="java.util.Date"/>
+        <result column="user_type"        property="userType"        javaType="java.lang.String"/>
+        <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -122,7 +124,9 @@
               time,
               path,
               user_name,
-              create_time
+              create_time,
+              user_type,
+              organization_id
           ) VALUE (
               #{id,          jdbcType=VARCHAR},
               #{sim,        jdbcType=VARCHAR},
@@ -131,7 +135,9 @@
               #{time,        jdbcType=VARCHAR},
               #{path,        jdbcType=VARCHAR},
               (SELECT user_name FROM sim_num_user WHERE sim = #{sim,        jdbcType=VARCHAR}),
-              #{createTime,  jdbcType=TIMESTAMP}
+              #{createTime,  jdbcType=TIMESTAMP},
+              (SELECT user_type FROM sim_num_user WHERE sim = #{sim,        jdbcType=VARCHAR}),
+              (SELECT organization_id FROM sim_num_user WHERE sim = #{sim,        jdbcType=VARCHAR})
           )
     </insert>
 
@@ -152,6 +158,12 @@
              </if>
              <if test="path != null and path != ''">
                  path = #{path, jdbcType=VARCHAR},
+             </if>
+             <if test="userType != null and path != ''">
+                 user_type = #{userType, jdbcType=VARCHAR},
+             </if>
+             <if test="organizationId != null and organizationId != ''">
+                 organization_id = #{organizationId, jdbcType=VARCHAR},
              </if>
              <if test="userName != null and userName != ''">
                  user_name = #{userName, jdbcType=VARCHAR},

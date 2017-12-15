@@ -375,6 +375,8 @@ CREATE TABLE `record` (
   `path` varchar(256) DEFAULT NULL,
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
+  `organization_id` varchar(32) DEFAULT NULL,
+  `user_type` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='录音表';
 
@@ -385,6 +387,8 @@ CREATE TABLE `sim_num_user` (
   `user_name` varchar(45) DEFAULT NULL,
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
+  `organization_id` varchar(32) DEFAULT NULL,
+  `user_type` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`sim`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='sim序号手机号码使用者对照表';
 

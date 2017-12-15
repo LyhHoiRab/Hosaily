@@ -29,5 +29,5 @@ public interface SimNumUserService {
     /**
      * 分页查询
      */
-    Page<SimNumUser> page(PageRequest pageRequest, String num);
+    Page<SimNumUser> page(PageRequest pageRequest, String num, String userType, String organizationId);
 }

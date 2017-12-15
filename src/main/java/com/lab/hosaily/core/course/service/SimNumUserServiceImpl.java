@@ -89,11 +89,11 @@ public class SimNumUserServiceImpl implements SimNumUserService {
      * 分页查询
      */
     @Override
-    public Page<SimNumUser> page(PageRequest pageRequest, String num){
+    public Page<SimNumUser> page(PageRequest pageRequest, String num, String userType, String organizationId){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return simNumUserDao.page(pageRequest, num);
+            return simNumUserDao.page(pageRequest, num, userType, organizationId);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

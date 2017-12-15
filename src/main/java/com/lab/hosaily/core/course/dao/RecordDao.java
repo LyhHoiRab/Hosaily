@@ -38,8 +38,13 @@ public class RecordDao {
 //                Assert.hasText(record.getName(), "标签名称不能为空");
 
                 record.setId(UUIDGenerator.by32());
-                record.setCreateTime(new Date());
+//                record.setCreateTime(new Date());
                 mapper.save(record);
+
+
+
+
+
             }else{
                 record.setUpdateTime(new Date());
                 mapper.update(record);
@@ -97,7 +102,7 @@ public class RecordDao {
     /**
      * 分页查询
      */
-    public Page<Record> page(PageRequest pageRequest, String userName, String num, String outGoingNum, String sim){
+    public Page<Record> page(PageRequest pageRequest, String userName, String num, String outGoingNum, String sim, String userType, String organizationId){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -115,6 +120,12 @@ public class RecordDao {
             }
             if(!StringUtils.isBlank(sim)){
                 criteria.and(Restrictions.like("sim", sim));
+            }
+            if(!StringUtils.isBlank(userType)){
+                criteria.and(Restrictions.like("userType", userType));
+            }
+            if(!StringUtils.isBlank(organizationId)){
+                criteria.and(Restrictions.like("organizationId", organizationId));
             }
 
 

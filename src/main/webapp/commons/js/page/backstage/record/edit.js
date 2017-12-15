@@ -1,5 +1,6 @@
-app.controller('recordEditController', function($scope, $state, $stateParams){
+app.controller('recordEditController', function($scope, $state, $stateParams, $http){
     $scope.id = $stateParams.id;
+    $scope.organizations = [];
 
     $scope.record = {
         id           : $stateParams.id,
@@ -8,7 +9,8 @@ app.controller('recordEditController', function($scope, $state, $stateParams){
         num : '',
         time : '',
         path       : '',
-        userName       : ''
+        userName       : '',
+        organizationId : ''
     };
 
     $scope.reset = function(){
@@ -18,41 +20,65 @@ app.controller('recordEditController', function($scope, $state, $stateParams){
         $scope.record.time        = '';
         $scope.record.path        = '';
         $scope.record.userName        = '';
+        $scope.record.organizationId = '';
     };
 
+
     $scope.submit = function(){
-        $.ajax({
+        $http({
             url: '/api/1.0/record',
-            type: 'PUT',
+            method: 'PUT',
             data: JSON.stringify($scope.record),
-            dataType: 'JSON',
-            contentType: 'application/json',
-            success: function(res){
-                if(res.success){
-                    alert(res.msg);
-                    $state.go('record');
-                }
+            headers: {
+                'Content-Type': 'application/json'
             }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                alert(res.msg);
+                $state.go('record');
+            }else{
+                alert(res.msg);
+            }
+        }).error(function(response){
+            console.error(response);
         });
     };
 
     $scope.getById = function(){
-        $.ajax({
+        $http({
             url: '/api/1.0/record/' + $scope.id,
-            type: 'GET',
-            dataType: 'JSON',
-            success: function(res){
-                if(res.success){
-                    //$scope.tag = res.result;
-                    utils.copyOf(res.result, $scope.record);
-                }
-
-                if(!$scope.$$phase){
-                    $scope.$apply();
-                }
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                utils.copyOf(res.result, $scope.record);
+            }else{
+                alert(res.msg);
             }
+        }).error(function(response){
+            console.error(response);
         });
     };
 
+    $scope.getOrganization = function(){
+        $http({
+            url: '/api/1.0/organization/list',
+            method: 'POST',
+            data: $.param({
+                'state' : 0
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.organizations = res.result;
+            }
+        }).error(function(response){
+            $scope.organizations = [];
+        });
+    };
+
+
     $scope.getById();
+    $scope.getOrganization();
 });

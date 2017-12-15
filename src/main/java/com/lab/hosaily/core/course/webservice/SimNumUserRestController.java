@@ -67,10 +67,10 @@ public class SimNumUserRestController {
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<SimNumUser>> page(Long pageNum, Long pageSize, String num){
+    public Response<Page<SimNumUser>> page(Long pageNum, Long pageSize, String num, String userType, String organizationId){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<SimNumUser> page = simNumUserService.page(pageRequest, num);
+            Page<SimNumUser> page = simNumUserService.page(pageRequest, num, userType, organizationId);
 
             return new Response<Page<SimNumUser>>("查询成功", page);
         }catch(Exception e){
