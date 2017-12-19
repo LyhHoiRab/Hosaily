@@ -1,6 +1,7 @@
 package com.lab.hosaily.core.product.service;
 
 import com.lab.hosaily.core.product.dao.ProductDao;
+import com.lab.hosaily.core.product.dao.ServiceDao;
 import com.lab.hosaily.core.product.entity.Product;
 import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.commons.security.response.Page;
@@ -24,6 +25,9 @@ public class ProductServiceImpl implements ProductService{
     @Autowired
     private ProductDao productDao;
 
+    @Autowired
+    private ServiceDao serviceDao;
+
     /**
      * 保存
      */
@@ -33,7 +37,11 @@ public class ProductServiceImpl implements ProductService{
         try{
             Assert.notNull(product, "产品信息不能为空");
 
+            //保存产品
             productDao.saveOrUpdate(product);
+
+            //保存服务
+            serviceDao.save(product.getId(), product.getServices());
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -50,7 +58,12 @@ public class ProductServiceImpl implements ProductService{
             Assert.notNull(product, "产品信息不能为空");
             Assert.hasText(product.getId(), "产品ID不能为空");
 
+            //更新产品
             productDao.saveOrUpdate(product);
+
+            //更新服务
+            serviceDao.deleteByMasterId(product.getId());
+            serviceDao.save(product.getId(), product.getServices());
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

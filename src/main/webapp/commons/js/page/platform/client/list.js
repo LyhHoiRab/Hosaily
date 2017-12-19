@@ -75,6 +75,10 @@ app.controller('clientListController', function($scope, $http, $state, $statePar
         });
     };
 
+    $scope.purchase = function(accountId){
+        $state.go('purchase', {'accountId':accountId, 'organizationId':$scope.organizationId});
+    };
+
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
             $scope.getData();
@@ -126,7 +130,7 @@ app.controller('clientListController', function($scope, $http, $state, $statePar
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a><a ng-click="authorization(row.getProperty(\'accountId\'))">[课程]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="purchase(row.getProperty(\'accountId\'))">[下单]</a></span></div>'
         }]
     };
 

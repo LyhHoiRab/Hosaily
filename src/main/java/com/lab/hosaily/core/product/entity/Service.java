@@ -9,8 +9,8 @@ public class Service implements Create, Update{
 
     //ID
     private String id;
-    //产品ID
-    private String productId;
+    //Master ID
+    private String masterId;
     //名称
     private String name;
     //描述
@@ -36,12 +36,12 @@ public class Service implements Create, Update{
         this.id = id;
     }
 
-    public String getProductId() {
-        return productId;
+    public String getMasterId() {
+        return masterId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
     }
 
     public String getName() {

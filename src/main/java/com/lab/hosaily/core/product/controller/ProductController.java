@@ -38,4 +38,26 @@ public class ProductController{
             throw new ApplicationException(e.getMessage(), e);
         }
     }
+
+    @RequestMapping(value = "/add", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView add(ModelMap content){
+        try{
+            return new ModelAndView("platform/product/edit", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView edit(@PathVariable("id") String id, ModelMap content){
+        try{
+            content.put("id", id);
+
+            return new ModelAndView("platform/product/edit", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 }

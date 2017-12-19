@@ -1,13 +1,10 @@
 app.controller('organizationController', function($scope, $state, $http){
     //下拉
-    $scope.states = [];
+    $scope.states = {};
     //查询列表
-    $scope.state;
-    $scope.createTime;
-    $scope.minCreateTime;
-    $scope.maxCreateTime;
-    $scope.name;
-    $scope.token;
+    $scope.state = '';
+    $scope.name  = '';
+    $scope.token = '';
 
     $scope.list = [];
     $scope.selected = [];
@@ -28,10 +25,7 @@ app.controller('organizationController', function($scope, $state, $http){
                 'pageNum'       : $scope.pagingOptions.currentPage,
                 'name'          : $scope.name,
                 'state'         : $scope.state,
-                'token'         : $scope.token,
-                'createTime'    : $scope.createTime,
-                'minCreateTime' : $scope.minCreateTime,
-                'maxCreateTime' : $scope.maxCreateTime
+                'token'         : $scope.token
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

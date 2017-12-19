@@ -36,6 +36,10 @@ app.controller('productListController', function($scope, $http, $state, $statePa
         $state.go('productEdit', {'id':id});
     };
 
+    $scope.add = function(){
+        $state.go('productAdd', {'organizationId' : $scope.organizationId});
+    };
+
     $scope.getData = function(){
         $http({
             url: '/api/1.0/product/page',

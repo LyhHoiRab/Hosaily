@@ -2,15 +2,29 @@ app.controller('organizationAddController', function($scope, $state, $http){
     $scope.states = [];
 
     $scope.organization = {
-        name         : '',
-        token        : '',
-        state        : ''
+        name            : '',
+        token           : '',
+        state           : '',
+        company         : '',
+        licenseNumber   : '',
+        legalPerson     : '',
+        companyAddress  : '',
+        companyPhone    : '',
+        companyEmail    : '',
+        companyWebsite  : ''
     };
 
     $scope.reset = function(){
-        $scope.organization.name         = '';
-        $scope.organization.state        = '';
-        $scope.organization.token        = '';
+        $scope.organization.name            = '';
+        $scope.organization.state           = '';
+        $scope.organization.token           = '';
+        $scope.organization.company         = '';
+        $scope.organization.licenseNumber   = '';
+        $scope.organization.legalPerson     = '';
+        $scope.organization.companyAddress  = '';
+        $scope.organization.companyPhone    = '';
+        $scope.organization.companyEmail    = '';
+        $scope.organization.companyWebsite  = '';
     };
 
     $scope.submit = function(){

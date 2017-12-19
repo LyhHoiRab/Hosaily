@@ -18,6 +18,99 @@
 
 <div class="table-info">
     <div class="container-fluid">
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">名称</span>
+                <input type="text" class="form-control" placeholder="名称" ng-model="product.name">
+            </div>
+        </div><!-- item -->
 
-    </div>
-</div>
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">价格</span>
+                <input type="number" class="form-control" placeholder="价格" ng-model="product.price">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">有效期(月)</span>
+                <input type="text" class="form-control" placeholder="有效期(月)" ng-model="product.duration">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">企业</span>
+                <select class="form-control" ng-model="product.organizationId" ng-options="organization.id as organization.name for organization in organizations">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">状态</span>
+                <select class="form-control" ng-model="product.state" ng-options="key as value for (key, value) in states">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group" ng-show="product.services.length > 0">
+            <div class="item-group">
+                <div class="row" ng-repeat="item in product.services">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">名称</span>
+                            <input type="text" class="form-control" placeholder="名称" ng-model="item.name" value="{{item.name}}">
+                        </div>
+                    </div><!-- item -->
+
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">描述</span>
+                            <input type="text" class="form-control" placeholder="描述" ng-model="item.description" value="{{item.description}}">
+                        </div>
+                    </div><!-- item -->
+
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">服务次数</span>
+                            <input type="number" class="form-control" placeholder="服务次数" ng-model="item.time" value="{{item.time}}">
+                        </div>
+                    </div><!-- item -->
+
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">单价</span>
+                            <input type="number" class="form-control" placeholder="单价" ng-model="item.unitPrice" value="{{item.unitPrice}}">
+                        </div>
+                    </div><!-- item -->
+
+                    <div class="col-xs-12">
+                        <a href="javascript:;" ng-click="serviceDelete(item.id)">[删除]</a>
+                    </div><!-- item -->
+                </div><!-- row -->
+            </div><!-- item group -->
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="button-group">
+                <button type="button" class="btn" ng-click="serviceAdd()">
+                    <i class="fa fa-plus"></i>
+                    添加服务
+                </button>
+
+                <button type="button" class="btn" ng-click="submit()">
+                    <i class="fa fa-check"></i>
+                    提交
+                </button>
+                <button type="button" class="btn" ng-click="reset()">
+                    <i class="fa fa-close"></i>
+                    重置
+                </button>
+            </div>
+        </div><!-- item -->
+    </div><!-- container -->
+</div><!-- table info -->

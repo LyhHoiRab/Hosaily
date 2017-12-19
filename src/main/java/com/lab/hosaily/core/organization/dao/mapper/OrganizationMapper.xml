@@ -3,12 +3,19 @@
 
 <mapper namespace="com.lab.hosaily.core.organization.dao.mapper.OrganizationMapper">
     <resultMap id="organization" type="com.lab.hosaily.core.organization.entity.Organization">
-        <id     column="id"          property="id"         javaType="java.lang.String"/>
-        <result column="token"       property="token"      javaType="java.lang.String"/>
-        <result column="name"        property="name"       javaType="java.lang.String"/>
-        <result column="state"       property="state"      typeHandler="usingStateHandler"/>
-        <result column="create_time" property="createTime" javaType="java.util.Date"/>
-        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+        <id     column="id"                 property="id"               javaType="java.lang.String"/>
+        <result column="token"              property="token"            javaType="java.lang.String"/>
+        <result column="name"               property="name"             javaType="java.lang.String"/>
+        <result column="state"              property="state"            typeHandler="usingStateHandler"/>
+        <result column="create_time"        property="createTime"       javaType="java.util.Date"/>
+        <result column="update_time"        property="updateTime"       javaType="java.util.Date"/>
+        <result column="company"            property="company"          javaType="java.lang.String"/>
+        <result column="license_number"     property="licenseNumber"    javaType="java.lang.String"/>
+        <result column="legal_person"       property="legalPerson"      javaType="java.lang.String"/>
+        <result column="company_address"    property="companyAddress"   javaType="java.lang.String"/>
+        <result column="company_phone"      property="companyPhone"     javaType="java.lang.String"/>
+        <result column="company_email"      property="companyEmail"     javaType="java.lang.String"/>
+        <result column="company_website"    property="companyWebsite"   javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -116,13 +123,27 @@
                token,
                name,
                state,
-               create_time
+               create_time,
+               company,
+               license_number,
+               legal_person,
+               company_address,
+               company_phone,
+               company_email,
+               company_website
         ) VALUE (
-               #{id,         jdbcType=VARCHAR},
-               #{token,      jdbcType=VARCHAR},
-               #{name,       jdbcType=VARCHAR},
-               #{state,      typeHandler=usingStateHandler},
-               #{createTime, jdbcType=TIMESTAMP}
+               #{id,              jdbcType=VARCHAR},
+               #{token,           jdbcType=VARCHAR},
+               #{name,            jdbcType=VARCHAR},
+               #{state,           typeHandler=usingStateHandler},
+               #{createTime,      jdbcType=TIMESTAMP},
+               #{company,         jdbcType=VARCHAR},
+               #{licenseNumber,   jdbcType=VARCHAR},
+               #{legalPerson,     jdbcType=VARCHAR},
+               #{companyAddress,  jdbcType=VARCHAR},
+               #{companyPhone,    jdbcType=VARCHAR},
+               #{companyEmail,    jdbcType=VARCHAR},
+               #{companyWebsite,  jdbcType=VARCHAR}
         )
     </insert>
 
@@ -140,6 +161,27 @@
              </if>
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+             <if test="company != null">
+                 company = #{company, jdbcType=VARCHAR},
+             </if>
+             <if test="licenseNumber != null">
+                 license_number = #{licenseNumber, jdbcType=VARCHAR},
+             </if>
+             <if test="legalPerson != null">
+                 legal_person = #{legalPerson, jdbcType=VARCHAR},
+             </if>
+             <if test="companyAddress != null">
+                 company_address = #{companyAddress, jdbcType=VARCHAR},
+             </if>
+             <if test="companyPhone != null">
+                 company_phone = #{companyPhone, jdbcType=VARCHAR},
+             </if>
+             <if test="companyEmail != null">
+                 company_email = #{companyEmail, jdbcType=VARCHAR},
+             </if>
+             <if test="companyWebsite != null">
+                 company_website = #{companyWebsite, jdbcType=VARCHAR},
              </if>
          </set>
           WHERE id = #{id}

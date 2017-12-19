@@ -27,7 +27,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
 			}]
 		}
 	}).state('client.list', {
-        url: '/list/:organizationId',
+        url: '/client/list/:organizationId',
         templateUrl: function($stateParams){
             return '/page/platform/client/list/' + $stateParams.organizationId;
         },
@@ -39,6 +39,25 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                     basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/platform/common.css',
                     basePath + '/commons/js/page/platform/client/list.js'
+                ]);
+            }]
+        }
+    }).state('purchase', {
+        url: '/purchase/:accountId:',
+        templateUrl: function($stateParams){
+            return '/page/platform/purchase/' + $stateParams.accountId;
+        },
+        controller: 'purchaseController',
+        params: {
+            'accountId'      : '',
+            'organizationId' : ''
+        },
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/platform/common.css',
+                    basePath + '/commons/js/page/platform/client/purchase.js'
                 ]);
             }]
         }
@@ -67,6 +86,39 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                     basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/platform/common.css',
                     basePath + '/commons/js/page/platform/product/list.js'
+                ]);
+            }]
+        }
+    }).state('productAdd', {
+        url: '/product/add/:organizationId',
+        templateUrl: '/page/platform/product/add',
+        controller: 'productAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/platform/product/add.js'
+                ]);
+            }]
+        }
+    }).state('productEdit', {
+        url: '/product/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/platform/product/edit/' + $stateParams.id;
+        },
+        controller: 'productEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/platform/product/edit.js'
                 ]);
             }]
         }

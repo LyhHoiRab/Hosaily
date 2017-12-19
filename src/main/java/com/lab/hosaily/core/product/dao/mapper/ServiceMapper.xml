@@ -4,7 +4,7 @@
 <mapper namespace="com.lab.hosaily.core.product.dao.mapper.ServiceMapper">
     <resultMap id="service" type="com.lab.hosaily.core.product.entity.Service">
         <id     column="id"             property="id"           javaType="java.lang.String"/>
-        <result column="product_id"     property="productId"    javaType="java.lang.String"/>
+        <result column="master_id"      property="masterId"     javaType="java.lang.String"/>
         <result column="name"           property="name"         javaType="java.lang.String"/>
         <result column="description"    property="description"  javaType="java.lang.String"/>
         <result column="time"           property="time"         javaType="java.lang.Integer"/>
@@ -17,42 +17,35 @@
         INSERT
           INTO service (
                id,
-               product_id,
+               master_id,
                name,
                description,
                time,
                unit_price,
                create_time
-        ) VALUE (
-               #{id,          jdbcType=VARCHAR},
-               #{productId,   jdbcType=VARCHAR},
-               #{name,        jdbcType=VARCHAR},
-               #{description, jdbcType=VARCHAR},
-               #{time,        jdbcType=INTEGER},
-               #{unitPrice,   jdbcType=DOUBLE},
-               #{createTime,  jdbcType=TIMESTAMP}
-        )
+        ) VALUES
+        <foreach collection="services" item="service" separator=",">
+            (
+                #{service.id,          jdbcType=VARCHAR},
+                #{service.masterId,    jdbcType=VARCHAR},
+                #{service.name,        jdbcType=VARCHAR},
+                #{service.description, jdbcType=VARCHAR},
+                #{service.time,        jdbcType=INTEGER},
+                #{service.unitPrice,   jdbcType=DOUBLE},
+                #{service.createTime,  jdbcType=TIMESTAMP}
+            )
+        </foreach>
     </insert>
 
-    <update id="update">
-        UPDATE service
-         <set>
-             <if test="name != null">
-                 name = #{name, jdbcType=VARCHAR},
-             </if>
-             <if test="description != null">
-                 description = #{description, jdbcType=VARCHAR},
-             </if>
-             <if test="time != null and time >= 0">
-                 time = #{time, jdbcType=INTEGER},
-             </if>
-             <if test="unitPrice != null and unitPrice >= 0">
-                 unit_price = #{unitPrice, jdbcType=DOUBLE},
-             </if>
-             <if test="updateTime != null">
-                 update_time = #{updateTime, jdbcType=TIMESTAMP},
-             </if>
-         </set>
-          WHERE id = #{id}
-    </update>
+    <delete id="deleteByMasterId">
+        DELETE
+          FROM service
+         WHERE master_id = #{masterId}
+    </delete>
+
+    <delete id="delete">
+        DELETE
+          FROM service
+         WHERE id = #{id}
+    </delete>
 </mapper>

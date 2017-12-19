@@ -224,13 +224,20 @@ CREATE TABLE `media` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='媒体资源表';
 
 DROP TABLE IF EXISTS `organization`;
-CREATE TABLE `organization` (
+SELECT * FROM hsl.service;CREATE TABLE `organization` (
   `id` varchar(32) NOT NULL,
   `name` varchar(60) DEFAULT NULL,
   `token` varchar(45) NOT NULL,
   `state` tinyint(1) NOT NULL,
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `license_number` varchar(45) DEFAULT NULL,
+  `legal_person` varchar(100) DEFAULT NULL,
+  `company_address` varchar(255) DEFAULT NULL,
+  `company_phone` varchar(45) DEFAULT NULL,
+  `company_email` varchar(50) DEFAULT NULL,
+  `company_website` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `token_UNIQUE` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -429,7 +436,7 @@ CREATE TABLE `product` (
 
 CREATE TABLE `service` (
   `id` varchar(32) NOT NULL,
-  `product_id` varchar(32) NOT NULL,
+  `master_id` varchar(32) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
   `time` int(11) DEFAULT '0',
@@ -438,3 +445,4 @@ CREATE TABLE `service` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+

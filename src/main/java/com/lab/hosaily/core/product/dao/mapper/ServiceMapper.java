@@ -13,25 +13,15 @@ public interface ServiceMapper{
     /**
      * 保存
      */
-    void save(Service service);
+    void save(@Param("services") List<Service> services);
 
     /**
-     * 更新
+     * 删除
      */
-    void update(Service service);
+    void deleteByMasterId(String masterId);
 
     /**
      * 删除
      */
     void delete(String id);
-
-    /**
-     * 查询
-     */
-    Service getByParams(@Param("params") Criteria criteria);
-
-    /**
-     * 查询
-     */
-    List<Service> findByParams(@Param("params") Criteria criteria);
 }

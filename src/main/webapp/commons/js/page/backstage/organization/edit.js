@@ -5,13 +5,27 @@ app.controller('organizationEditController', function($scope, $state, $statePara
         id           : $stateParams.id,
         name         : '',
         state        : '',
-        token        : ''
+        token        : '',
+        company         : '',
+        licenseNumber   : '',
+        legalPerson     : '',
+        companyAddress  : '',
+        companyPhone    : '',
+        companyEmail    : '',
+        companyWebsite  : ''
     };
 
     $scope.reset = function(){
-        $scope.organization.name         = '';
-        $scope.organization.state        = '';
-        $scope.organization.token        = '';
+        $scope.organization.name            = '';
+        $scope.organization.state           = '';
+        $scope.organization.token           = '';
+        $scope.organization.company         = '';
+        $scope.organization.licenseNumber   = '';
+        $scope.organization.legalPerson     = '';
+        $scope.organization.companyAddress  = '';
+        $scope.organization.companyPhone    = '';
+        $scope.organization.companyEmail    = '';
+        $scope.organization.companyWebsite  = '';
     };
 
     $scope.submit = function(){
