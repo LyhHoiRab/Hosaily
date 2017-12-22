@@ -1,10 +1,12 @@
 package com.lab.hosaily.core.client.entity;
 
+import com.lab.hosaily.core.product.entity.Service;
 import com.rab.babylon.core.base.entity.Create;
 import com.rab.babylon.core.base.entity.Update;
 import com.rab.babylon.core.consts.entity.UsingState;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 协议
@@ -14,7 +16,7 @@ public class Agreement implements Create, Update{
     //ID
     private String id;
     //购买记录ID
-    private Purchase purchase;
+    private String purchaseId;
     //客户ID
     private String accountId;
     //客户名称
@@ -53,6 +55,14 @@ public class Agreement implements Create, Update{
     private Date createTime;
     //更新时间
     private Date updateTime;
+    //服务
+    private List<Service> services;
+    //产品价格
+    private Double retail;
+    //售价
+    private Double price;
+    //有效期(月)
+    private Integer duration;
 
     public Agreement(){
 
@@ -66,12 +76,12 @@ public class Agreement implements Create, Update{
         this.id = id;
     }
 
-    public Purchase getPurchase() {
-        return purchase;
+    public String getPurchaseId() {
+        return purchaseId;
     }
 
-    public void setPurchase(Purchase purchase) {
-        this.purchase = purchase;
+    public void setPurchaseId(String purchaseId) {
+        this.purchaseId = purchaseId;
     }
 
     public String getAccountId() {
@@ -208,6 +218,38 @@ public class Agreement implements Create, Update{
 
     public void setState(UsingState state) {
         this.state = state;
+    }
+
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
+    public Double getRetail() {
+        return retail;
+    }
+
+    public void setRetail(Double retail) {
+        this.retail = retail;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     @Override

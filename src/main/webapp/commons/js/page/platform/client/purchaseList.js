@@ -1,13 +1,12 @@
-app.controller('clientListController', function($scope, $http, $state, $stateParams){
+app.controller('purchaseListController', function($scope, $http, $state, $stateParams){
     //查询列表
-    $scope.name           = '';
-    $scope.nickname       = '';
-    $scope.code           = '';
-    $scope.sex            = '';
     $scope.organizationId = $stateParams.organizationId;
+    $scope.accountId      = $stateParams.accountId;
+    $scope.state          = '';
+    $scope.purchaseState  = '';
     //下拉
-    $scope.states        = {};
-    $scope.sexs          = {};
+    $scope.states         = {};
+    $scope.purchaseStates = {};
     //列表参数
     $scope.list = [];
     $scope.total = 0;
@@ -18,10 +17,8 @@ app.controller('clientListController', function($scope, $http, $state, $statePar
     };
 
     $scope.reset = function(){
-        $scope.name           = '';
-        $scope.nickname       = '';
-        $scope.sex            = '';
-        $scope.code           = '';
+        $scope.state         = '';
+        $scope.purchaseState = '';
     };
 
     $scope.search = function(){
@@ -35,16 +32,15 @@ app.controller('clientListController', function($scope, $http, $state, $statePar
 
     $scope.getData = function(){
         $http({
-            url: '/api/1.0/user/page',
+            url: '/api/1.0/purchase/page',
             method: 'POST',
             data: $.param({
                 'pageNum'        : $scope.pagingOptions.currentPage,
                 'pageSize'       : $scope.pagingOptions.pageSize,
-                'name'           : $scope.name,
-                'nickname'       : $scope.nickname,
-                'code'           : $scope.code,
                 'organizationId' : $scope.organizationId,
-                'sex'            : $scope.sex
+                'accountId'      : $scope.accountId,
+                'state'          : $scope.state,
+                'purchaseState'  : $scope.purchaseState
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -62,21 +58,38 @@ app.controller('clientListController', function($scope, $http, $state, $statePar
         });
     };
 
-    $scope.getSex = function(){
+    $scope.getState = function(){
         $http({
-            url: '/api/1.0/sex/list',
+            url: '/api/1.0/usingState/list',
             method: 'GET'
         }).success(function(res, status, headers, config){
             if(res.success){
-                $scope.sexs = res.result;
+                $scope.states = res.result;
             }
         }).error(function(response){
-            $scope.sexs = {};
+            $scope.states = {};
         });
     };
 
-    $scope.purchaseList = function(accountId){
-        $state.go('purchaseList', {'accountId':accountId, 'organizationId':$scope.organizationId});
+    $scope.getPurchaseState = function(){
+        $http({
+            url: '/api/1.0/purchaseState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.purchaseStates = res.result;
+            }
+        }).error(function(response){
+            $scope.purchaseStates = {};
+        });
+    };
+
+    $scope.purchaseAdd = function(){
+        $state.go('purchaseAdd', {'accountId':$scope.accountId, 'organizationId':$scope.organizationId});
+    };
+
+    $scope.purchaseEdit = function(id){
+        $state.go('purchaseEdit', {'id':id, 'accountId':$scope.accountId, 'organizationId':$scope.organizationId});
     };
 
     $scope.$watch('pagingOptions', function(newVal, oldVal){
@@ -99,27 +112,17 @@ app.controller('clientListController', function($scope, $http, $state, $statePar
         pagingOptions          : $scope.pagingOptions,
         totalServerItems       : 'total',
         i18n                   : 'zh-cn',
-        rowHeight              : 60,
         columnDefs: [{
             field: 'id',
             visible: false
         },{
-            field: 'headImgUrl',
-            displayName: '头像',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><img src="{{COL_FIELD}}" width="50" height="50" style="vertical-align:middle;"></div>'
+            field: 'orderTime',
+            displayName: '下单时间',
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
-            field: 'nickname',
-            displayName: '昵称'
-        },{
-            field: 'name',
-            displayName: '姓名'
-        },{
-            field: 'code',
-            displayName: '编码'
-        },{
-            field: 'sex',
-            displayName: '性别',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{sexs[COL_FIELD]}}</span></div>'
+            field: 'purchaseState',
+            displayName: '流程状态',
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{purchaseStates[COL_FIELD]}}</span></div>'
         },{
             field: 'state',
             displayName: '状态',
@@ -130,11 +133,12 @@ app.controller('clientListController', function($scope, $http, $state, $statePar
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="purchaseList(row.getProperty(\'accountId\'))">[订单管理]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="purchaseEdit(row.getProperty(\'id\'))">[修改]</a></span></div>'
         }]
     };
 
     //初始化数据
     $scope.getData();
-    $scope.getSex();
+    $scope.getState();
+    $scope.getPurchaseState();
 });

@@ -1,12 +1,11 @@
 package com.lab.hosaily.core.client.entity;
 
-import com.lab.hosaily.core.product.entity.Service;
+import com.lab.hosaily.core.client.consts.PurchaseState;
 import com.rab.babylon.core.base.entity.Create;
 import com.rab.babylon.core.base.entity.Update;
 import com.rab.babylon.core.consts.entity.UsingState;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  *  购买记录
@@ -19,20 +18,12 @@ public class Purchase implements Create, Update{
     private String accountId;
     //企业ID
     private String organizationId;
-    //名称
-    private String name;
-    //产品ID
-    private String productId;
-    //产品价格
-    private Double retail;
-    //售价
-    private Double price;
-    //有效期(月)
-    private Integer duration;
-    //服务
-    private List<Service> services;
+    //协议
+    private Agreement agreement;
     //下单时间
     private Date orderTime;
+    //流程状态
+    private PurchaseState purchaseState;
     //状态
     private UsingState state;
     //创建时间
@@ -68,38 +59,6 @@ public class Purchase implements Create, Update{
         this.organizationId = organizationId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public Double getRetail() {
-        return retail;
-    }
-
-    public void setRetail(Double retail) {
-        this.retail = retail;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
     public Date getOrderTime() {
         return orderTime;
     }
@@ -116,20 +75,20 @@ public class Purchase implements Create, Update{
         this.state = state;
     }
 
-    public Integer getDuration() {
-        return duration;
+    public Agreement getAgreement() {
+        return agreement;
     }
 
-    public void setDuration(Integer duration) {
-        this.duration = duration;
+    public void setAgreement(Agreement agreement) {
+        this.agreement = agreement;
     }
 
-    public List<Service> getServices() {
-        return services;
+    public PurchaseState getPurchaseState() {
+        return purchaseState;
     }
 
-    public void setServices(List<Service> services) {
-        this.services = services;
+    public void setPurchaseState(PurchaseState purchaseState) {
+        this.purchaseState = purchaseState;
     }
 
     @Override

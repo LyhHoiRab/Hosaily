@@ -17,12 +17,36 @@ public class PurchaseController{
 
     private static Logger logger = LoggerFactory.getLogger(PurchaseController.class);
 
-    @RequestMapping(value = "/{accountId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView index(@PathVariable("accountId") String accountId, ModelMap content){
+    @RequestMapping(value = "/add/{accountId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView add(@PathVariable("accountId") String accountId, ModelMap content){
         try{
             content.put("accountId", accountId);
 
             return new ModelAndView("platform/client/purchase", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView edit(@PathVariable("id") String id, ModelMap content){
+        try{
+            content.put("id", id);
+
+            return new ModelAndView("platform/client/purchase", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/list/{accountId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView list(@PathVariable("accountId") String accountId, ModelMap content){
+        try{
+            content.put("accountId", accountId);
+
+            return new ModelAndView("platform/client/purchaseList", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

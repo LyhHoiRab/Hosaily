@@ -6,7 +6,13 @@
         <a ui-sref="client">客户管理</a>
     </li><!-- item -->
     <li>
-        <span>下单</span>
+        <span>
+            #if($id)
+                修改订单
+            #else
+                添加订单
+            #end
+        </span>
     </li><!-- item -->
 </ol><!-- 面包屑 -->
 
@@ -106,16 +112,16 @@
         <div class="row-group">
             <div class="input-group">
                 <span class="input-group-addon">状态</span>
-                <select class="form-control" ng-model="agreement.state" ng-options="key as value for (key, value) in states">
+                <select class="form-control" ng-model="state" ng-options="key as value for (key, value) in states">
                     <option value="">请选择</option>
                 </select>
             </div>
         </div><!-- item -->
 
-        <div class="row-group">
+        <div class="row-group" ng-show="products.length > 0">
             <div class="input-group">
                 <span class="input-group-addon">套餐</span>
-                <select class="form-control" ng-model="product" ng-options="product.id as product.name for product in products">
+                <select class="form-control" ng-model="product" ng-options="product as product.name for product in products">
                     <option value="">请选择</option>
                 </select>
             </div>
@@ -124,27 +130,27 @@
         <div class="row-group">
             <div class="input-group">
                 <span class="input-group-addon">套餐价格</span>
-                <input type="number" class="form-control" placeholder="套餐价格" ng-model="product.price" readonly="readonly">
+                <input type="number" class="form-control" placeholder="套餐价格" ng-model="agreement.retail" readonly="readonly">
             </div>
         </div><!-- item -->
 
         <div class="row-group">
             <div class="input-group">
                 <span class="input-group-addon">售价</span>
-                <input type="number" class="form-control" placeholder="售价" ng-model="purchase.price">
+                <input type="number" class="form-control" placeholder="售价" ng-model="agreement.price">
             </div>
         </div><!-- item -->
 
         <div class="row-group">
             <div class="input-group">
                 <span class="input-group-addon">有效期(月)</span>
-                <input type="number" class="form-control" placeholder="有效期(月)" ng-model="purchase.duration">
+                <input type="number" class="form-control" placeholder="有效期(月)" ng-model="agreement.duration">
             </div>
         </div><!-- item -->
 
-        <div class="row-group" ng-show="product.services.length > 0">
+        <div class="row-group" ng-show="agreement.services.length > 0">
             <div class="item-group">
-                <div class="row" ng-repeat="item in product.services">
+                <div class="row" ng-repeat="item in agreement.services">
                     <div class="col-xs-12">
                         <div class="input-group">
                             <span class="input-group-addon">名称</span>
@@ -190,10 +196,6 @@
                 <button type="button" class="btn" ng-click="submit()">
                     <i class="fa fa-check"></i>
                     提交
-                </button>
-                <button type="button" class="btn" ng-click="reset()">
-                    <i class="fa fa-close"></i>
-                    重置
                 </button>
             </div>
         </div><!-- item -->

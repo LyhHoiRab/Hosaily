@@ -42,12 +42,32 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 ]);
             }]
         }
-    }).state('purchase', {
-        url: '/purchase/:accountId:',
+    }).state('purchaseList', {
+            url: '/purchaseList/:accountId',
+            templateUrl: function($stateParams){
+                return '/page/platform/purchase/list/' + $stateParams.accountId;
+            },
+            controller: 'purchaseListController',
+            params: {
+                'accountId'      : '',
+                'organizationId' : ''
+            },
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad){
+                    return $ocLazyLoad.load([
+                        basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                        basePath + '/commons/js/plugin/ng-grid/theme.css',
+                        basePath + '/commons/css/page/platform/common.css',
+                        basePath + '/commons/js/page/platform/client/purchaseList.js'
+                    ]);
+                }]
+            }
+        }).state('purchaseAdd', {
+        url: '/purchaseAdd/:accountId',
         templateUrl: function($stateParams){
-            return '/page/platform/purchase/' + $stateParams.accountId;
+            return '/page/platform/purchase/add/' + $stateParams.accountId;
         },
-        controller: 'purchaseController',
+        controller: 'purchaseAddController',
         params: {
             'accountId'      : '',
             'organizationId' : ''
@@ -57,7 +77,35 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 return $ocLazyLoad.load([
                     basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/platform/common.css',
-                    basePath + '/commons/js/page/platform/client/purchase.js'
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/platform/client/purchaseAdd.js'
+                ]);
+            }]
+        }
+    }).state('purchaseEdit', {
+        url: '/purchaseEdit/:id',
+        templateUrl: function($stateParams){
+            return '/page/platform/purchase/edit/' + $stateParams.id;
+        },
+        controller: 'purchaseEditController',
+        params: {
+            'accountId'      : '',
+            'organizationId' : '',
+            'id'             : '',
+        },
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/platform/common.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.css',
+                    basePath + '/commons/js/plugin/angular-ui-select/select.min.js',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/platform/client/purchaseEdit.js'
                 ]);
             }]
         }

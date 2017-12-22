@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lab.hosaily.core.product.dao.mapper.ProductMapper">
-    <resultMap id="product" type="com.lab.hosaily.core.product.entity.Product">
-        <id     column="id"              property="id"              javaType="java.lang.String"/>
-        <result column="organization_id" property="organizationId"  javaType="java.lang.String"/>
-        <result column="name"            property="name"            javaType="java.lang.String"/>
-        <result column="price"           property="price"           javaType="java.lang.Double"/>
-        <result column="duration"        property="duration"        javaType="java.lang.Integer"/>
-        <result column="state"           property="state"           typeHandler="usingStateHandler"/>
-        <result column="create_time"     property="createTime"      javaType="java.util.Date"/>
-        <result column="update_time"     property="updateTime"      javaType="java.util.Date"/>
-        <collection property="services" resultMap="service" columnPrefix="s_"/>
+<mapper namespace="com.lab.hosaily.core.client.dao.mapper.AgreementMapper">
+    <resultMap id="agreement" type="com.lab.hosaily.core.client.entity.Agreement">
+        <id     column="id"                 property="id"               javaType="java.lang.String"/>
+        <result column="purchase_id"        property="purchaseId"       javaType="java.lang.String"/>
+        <result column="account_id"         property="accountId"        javaType="java.lang.String"/>
+        <result column="client"             property="client"           javaType="java.lang.String"/>
+        <result column="phone"              property="phone"            javaType="java.lang.String"/>
+        <result column="id_card"            property="idCard"           javaType="java.lang.String"/>
+        <result column="wechat"             property="wechat"           javaType="java.lang.String"/>
+        <result column="email"              property="email"            javaType="java.lang.String"/>
+        <result column="emergency_contact"  property="emergencyContact" javaType="java.lang.String"/>
+        <result column="company"            property="company"          javaType="java.lang.String"/>
+        <result column="license_number"     property="licenseNumber"    javaType="java.lang.String"/>
+        <result column="legal_person"       property="legalPerson"      javaType="java.lang.String"/>
+        <result column="company_address"    property="companyAddress"   javaType="java.lang.String"/>
+        <result column="company_phone"      property="companyPhone"     javaType="java.lang.String"/>
+        <result column="company_email"      property="companyEmail"     javaType="java.lang.String"/>
+        <result column="company_website"    property="companyWebsite"   javaType="java.lang.String"/>
+        <result column="affirm_time"        property="affirmTime"       javaType="java.util.Date"/>
+        <result column="version"            property="version"          javaType="java.lang.String"/>
+        <result column="retail"             property="retail"           javaType="java.lang.Double"/>
+        <result column="price"              property="price"            javaType="java.lang.Double"/>
+        <result column="duration"           property="duration"         javaType="java.lang.Integer"/>
+        <result column="state"              property="state"            typeHandler="usingStateHandler"/>
+        <result column="create_time"        property="createTime"       javaType="java.util.Date"/>
+        <result column="update_time"        property="updateTime"       javaType="java.util.Date"/>
+        <collection  property="services"  resultMap="service"   columnPrefix="s_"/>
     </resultMap>
 
     <resultMap id="service" type="com.lab.hosaily.core.product.entity.Service">
@@ -123,39 +139,110 @@
 
     <insert id="save">
         INSERT
-          INTO product (
+          INTO agreement (
                id,
-               organization_id,
-               name,
-               price,
-               duration,
+               purchase_id,
+               account_id,
+               client,
+               phone,
+               id_card,
+               wechat,
+               email,
+               emergency_contact,
+               company,
+               license_number,
+               legal_person,
+               company_address,
+               company_phone,
+               company_email,
+               company_website,
+               affirm_time,
+               version,
                state,
-               create_time
+               create_time,
+               retail,
+               price,
+               duration
         ) VALUE (
-               #{id,              jdbcType=VARCHAR},
-               #{organizationId,  jdbcType=VARCHAR},
-               #{name,            jdbcType=VARCHAR},
-               #{price,           jdbcType=DOUBLE},
-               #{duration,        jdbcType=INTEGER},
-               #{state,           typeHandler=usingStateHandler},
-               #{createTime,      jdbcType=TIMESTAMP}
+               #{id,                jdbcType=VARCHAR},
+               #{purchaseId,        jdbcType=VARCHAR},
+               #{accountId,         jdbcType=VARCHAR},
+               #{client,            jdbcType=VARCHAR},
+               #{phone,             jdbcType=VARCHAR},
+               #{idCard,            jdbcType=VARCHAR},
+               #{wechat,            jdbcType=VARCHAR},
+               #{email,             jdbcType=VARCHAR},
+               #{emergencyContact,  jdbcType=VARCHAR},
+               #{company,           jdbcType=VARCHAR},
+               #{licenseNumber,     jdbcType=VARCHAR},
+               #{legalPerson,       jdbcType=VARCHAR},
+               #{companyAddress,    jdbcType=VARCHAR},
+               #{companyPhone,      jdbcType=VARCHAR},
+               #{companyEmail,      jdbcType=VARCHAR},
+               #{companyWebsite,    jdbcType=VARCHAR},
+               #{affirmTime,        jdbcType=TIMESTAMP},
+               #{version,           jdbcType=VARCHAR},
+               #{state,             typeHandler=usingStateHandler},
+               #{createTime,        jdbcType=TIMESTAMP},
+               #{retail,            jdbcType=DOUBLE},
+               #{price,             jdbcType=DOUBLE},
+               #{duration,          jdbcType=INTEGER}
         )
     </insert>
 
     <update id="update">
-        UPDATE product
+        UPDATE agreement
          <set>
-             <if test="organizationId != null and organizationId != ''">
-                 organization_id = #{organizationId, jdbcType=VARCHAR},
+             <if test="purchaseId != null and purchaseId != ''">
+                 purchase_id = #{purchaseId, jdbcType=VARCHAR},
              </if>
-             <if test="name != null">
-                 name = #{name, jdbcType=VARCHAR},
+             <if test="accountId != null and accountId != ''">
+                 account_id = #{accountId, jdbcType=VARCHAR},
              </if>
-             <if test="price != null and price >= 0">
-                 price = #{price, jdbcType=DOUBLE},
+             <if test="client != null">
+                 client = #{client, jdbcType=VARCHAR},
              </if>
-             <if test="duration != null and duration >= 0">
-                 duration = #{duration, jdbcType=INTEGER},
+             <if test="phone != null">
+                 phone = #{phone, jdbcType=VARCHAR},
+             </if>
+             <if test="idCard != null">
+                 id_card = #{idCard, jdbcType=VARCHAR},
+             </if>
+             <if test="wechat != null">
+                 wechat = #{wechat, jdbcType=VARCHAR},
+             </if>
+             <if test="email != null">
+                 email = #{email, jdbcType=VARCHAR},
+             </if>
+             <if test="emergencyContact != null">
+                 emergency_contact = #{emergencyContact, jdbcType=VARCHAR},
+             </if>
+             <if test="company != null">
+                 company = #{company, jdbcType=VARCHAR},
+             </if>
+             <if test="licenseNumber != null">
+                 license_number = #{licenseNumber, jdbcType=VARCHAR},
+             </if>
+             <if test="legalPerson != null">
+                 legal_person = #{legalPerson, jdbcType=VARCHAR},
+             </if>
+             <if test="companyAddress != null">
+                 company_address = #{companyAddress, jdbcType=VARCHAR},
+             </if>
+             <if test="companyPhone != null">
+                 company_phone = #{companyPhone, jdbcType=VARCHAR},
+             </if>
+             <if test="companyEmail != null">
+                 company_email = #{companyEmail, jdbcType=VARCHAR},
+             </if>
+             <if test="companyWebsite != null">
+                 company_website = #{companyWebsite, jdbcType=VARCHAR},
+             </if>
+             <if test="affirmTime != null">
+                 affirm_time = #{affirmTime, jdbcType=TIMESTAMP},
+             </if>
+             <if test="version != null">
+                 version = #{version, jdbcType=VARCHAR},
              </if>
              <if test="state != null">
                  state = #{state, typeHandler=usingStateHandler},
@@ -163,62 +250,30 @@
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
              </if>
+             <if test="retail != null and retail >= 0">
+                 retail = #{retail, jdbcType=DOUBLE},
+             </if>
+             <if test="price != null and price >= 0">
+                 price = #{price, jdbcType=DOUBLE},
+             </if>
+             <if test="duration != null and duration >= 0">
+                 duration = #{duration, jdbcType=INTEGER},
+             </if>
          </set>
           WHERE id = #{id}
     </update>
 
-    <select id="getByParams" resultMap="product">
-        SELECT p.*,
-               s.id           AS s_id,
-               s.master_id    AS s_master_id,
-               s.name         AS s_name,
-               s.description  AS s_description,
-               s.time         AS s_time,
-               s.unit_price   AS s_unit_price
-          FROM product p
+    <select id="getByParams" resultMap="agreement">
+        SELECT a.*,
+               s.name               AS s_name,
+               s.description        AS s_description,
+               s.time               AS s_time,
+               s.unit_price         AS s_unit_price
+          FROM agreement a
      LEFT JOIN service s
-            ON s.master_id = p.id
+            ON s.master_id = a.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
-        </if>
-    </select>
-
-    <select id="findByParams" resultMap="product">
-        SELECT p.*,
-               s.id           AS s_id,
-               s.master_id    AS s_master_id,
-               s.name         AS s_name,
-               s.description  AS s_description,
-               s.time         AS s_time,
-               s.unit_price   AS s_unit_price
-          FROM product p
-     LEFT JOIN service s
-            ON s.master_id = p.id
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
-
-            <if test="params.sorts != null and params.sorts.size > 0">
-                ORDER BY
-                <foreach collection="params.sorts" item="sort" separator=",">
-                    ${sort.property} ${sort.operator}
-                </foreach>
-            </if>
-
-            <if test="params.limit != null">
-                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
-            </if>
-        </if>
-    </select>
-
-    <select id="countByParams" resultType="java.lang.Long">
-        SELECT COUNT(*)
-          FROM product p
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
-
-            <if test="params.limit != null">
-                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
-            </if>
         </if>
     </select>
 </mapper>

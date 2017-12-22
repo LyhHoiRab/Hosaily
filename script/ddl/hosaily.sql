@@ -446,3 +446,43 @@ CREATE TABLE `service` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `agreement` (
+  `id` varchar(32) NOT NULL,
+  `purchase_id` varchar(32) NOT NULL,
+  `account_id` varchar(32) NOT NULL,
+  `client` varchar(50) DEFAULT NULL,
+  `phone` varchar(20) NOT NULL,
+  `id_card` varchar(18) DEFAULT NULL,
+  `wechat` varchar(32) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `emergency_contact` varchar(255) DEFAULT NULL,
+  `company` varchar(255) DEFAULT NULL,
+  `license_number` varchar(255) DEFAULT NULL,
+  `legal_person` varchar(255) DEFAULT NULL,
+  `company_address` varchar(255) DEFAULT NULL,
+  `company_phone` varchar(20) DEFAULT NULL,
+  `company_email` varchar(255) DEFAULT NULL,
+  `company_website` varchar(255) DEFAULT NULL,
+  `affirm_time` datetime DEFAULT NULL,
+  `version` varchar(2) DEFAULT NULL,
+  `state` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `retail` double DEFAULT '0',
+  `price` double DEFAULT '0',
+  `duration` int(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `purchase` (
+  `id` varchar(32) NOT NULL,
+  `account_id` varchar(32) NOT NULL,
+  `organization_id` varchar(32) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `order_time` datetime NOT NULL,
+  `state` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
