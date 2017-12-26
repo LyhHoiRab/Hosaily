@@ -4,12 +4,19 @@ import com.lab.hosaily.commons.consts.SessionConsts;
 import com.lab.hosaily.core.account.entity.Attention;
 import com.lab.hosaily.core.account.service.AttentionService;
 import com.lab.hosaily.core.account.service.UserService;
-import com.lab.hosaily.core.course.entity.*;
-import com.lab.hosaily.core.course.service.*;
+import com.lab.hosaily.core.client.consts.PurchaseState;
+import com.lab.hosaily.core.client.entity.Purchase;
+import com.lab.hosaily.core.client.service.PurchaseService;
+import com.lab.hosaily.core.course.entity.Course;
+import com.lab.hosaily.core.course.entity.Customization;
+import com.lab.hosaily.core.course.entity.Level;
+import com.lab.hosaily.core.course.service.CourseService;
+import com.lab.hosaily.core.course.service.CustomizationService;
+import com.lab.hosaily.core.course.service.LevelService;
+import com.lab.hosaily.core.course.service.PostService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.core.account.entity.User;
 import com.rab.babylon.core.consts.entity.UsingState;
-import org.bouncycastle.ocsp.Req;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -43,13 +51,13 @@ public class PageController{
     private CourseService courseService;
 
     @Autowired
-    private TagService tagService;
-
-    @Autowired
     private LevelService levelService;
 
     @Autowired
     private CustomizationService customizationService;
+
+    @Autowired
+    private PurchaseService purchaseService;
 
     /**
      * 首页
@@ -274,6 +282,51 @@ public class PageController{
             content.put("params", params);
 
             return new ModelAndView("test", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 支付首页
+     */
+    @RequestMapping(value = "/goPay", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView goPay(String purchaseId, ModelMap content){
+        try{
+            content.put("purchaseId", purchaseId);
+
+            return new ModelAndView("goPay", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 协议
+     */
+    @RequestMapping(value = "/agreement", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView agreement(String purchaseId, ModelMap content){
+        try{
+            content.put("purchaseId", purchaseId);
+
+            return new ModelAndView("agreement", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 支付页面
+     */
+    @RequestMapping(value = "/pay", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView pay(String purchaseId, ModelMap content){
+        try{
+            content.put("purchaseId", purchaseId);
+
+            return new ModelAndView("pay", content);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>支付中心</title>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/sm.css">
+		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/sm-extend.min.css">
+		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/common.css">
+		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/ui-box.css" />
+		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/goPay.css"/>
+
+		<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/zepto.min.js' charset='utf-8'></script>
+	</head>
+	<body>
+		<div class="page">
+				<div class="ub head">
+					<div class="logoDiv">
+						<!--<a href="javascript:history.go(-1)"><span class="icon icon-left"></span></a>-->
+					</div>
+					<div class="ub ub-f1 headText">
+						<div class="title_50">套餐支付</div>
+					</div>
+				</div>
+				<div class="content infinite-scroll infinite-scroll-bottom" data-distance="100">
+					<div class="cus_content">
+						
+						<div class="payBanner">
+							<img src="http://h.ishsls.com/yhqs_h5/purchase/img/clubPic.png"/>
+							<div class="bgText">常规咨询套餐&nbsp;￥&nbsp;<span class="price" id="price">0</span>元</div>
+						</div>
+						
+						<div class="lineS ub">
+							<div class="lfetText">需求类型</div>
+							<div class="ub-f1"></div>
+							<div class="rightText">挽回/维护恋情</div>
+						</div>
+						<div class="lineS ub lineBottom">
+							<div class="lfetText">永恒情书权限</div>
+							<div class="ub-f1"></div>
+							<div class="rightText">男女版</div>
+						</div>
+						
+						<div class="lineS ub">
+							<div class="lfetText">客户信息</div>
+							<div class="ub-f1"></div>
+							<div class="rightText"></div>
+						</div>
+						<div class="lineS ub">
+							<div class="lfetText">用户姓名</div>
+							<div class="ub-f1"></div>
+							<div class="rightText" id="client"></div>
+						</div>
+						<div class="lineS ub lineBottom">
+							<div class="lfetText">手机号码</div>
+							<div class="ub-f1"></div>
+							<div class="rightText" id="phone"></div>
+						</div>
+						
+						<div class="lineS ub">
+							<div class="lfetText">用户协议</div>
+							<div class="ub-f1"></div>
+							<div class="rightText"></div>
+						</div>
+						<div class="lineS ub lineBottom">
+							<div class="lfetText"><span class="xys">《永恒情书服务协议》</span></div>
+							<div class="ub-f1"></div>
+							<div class="rightText redText" onclick="openXys()">查看&nbsp;&nbsp;&nbsp;<span class="icon icon-right"></span></div>
+						</div>
+						
+						<div class="goPay">
+							<input type="hidden" id="agreementId">
+							<input type="checkbox" name="" id="yyd" value=""/>
+							<label for="yyd">本人已阅读协议，且已理解其内容并承担相关风险</label>
+							<div class="btnPay">去支付</div>
+						</div>
+			        </div> 	
+		      </div>
+		</div>
+
+		<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/config.js' charset='utf-8'></script>
+		<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/sm.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/init.js' charset='utf-8'></script>
+		<script src="http://h.ishsls.com/yhqs_h5/purchase/js/js.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			function getQueryString(name){
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r!=null)return  unescape(r[2]); return null;
+			};
+
+			$('#yyd').change(function(){
+				var isChecked = $(this).is(':checked');
+				if(isChecked){
+					$.ajax({
+						url: '/api/1.0/agreement/affirm/' + $('#agreementId').val(),
+						type: 'GET',
+						dataType: 'json',
+						success: function(res){
+							if(res.success){
+								$('.btnPay').addClass('btnPay_on');
+								$('.goPay').append('<div class="zhezhu"></div>');
+							}else{
+								alert(res.msg);
+							}
+						},
+						error: function(response){
+							console.error(response);
+						}
+					});
+				}else{
+					$('.btnPay').removeClass('btnPay_on');
+				}
+			});
+
+			function openXys(){
+				var purchaseId = getQueryString('purchaseId');
+				location.href = '/page/h5/agreement?purchaseId=' + purchaseId;
+			};
+
+			function openPay(){
+				location.href = 'pay.html';
+			};
+
+			$(function(){
+				var purchaseId = getQueryString('purchaseId');
+
+				if(purchaseId !== undefined && purchaseId !== ''){
+					$.ajax({
+						url: '/api/1.0/agreement/purchaseId/' + purchaseId,
+						type: 'GET',
+						dataType: 'json',
+						success: function(res){
+							if(res.success){
+								$('#price').html(res.result.price);
+								$('#client').html(res.result.client);
+								$('#phone').html(res.result.phone);
+								$('#agreementId').val(res.result.id);
+
+								if(res.result.affirmTime){
+									$('#yyd').attr("checked", true);
+									$('.btnPay').addClass('btnPay_on');
+									$('.goPay').append('<div class="zhezhu"></div>');
+								}
+							}else{
+								alert(res.msg);
+							}
+						},
+						error: function(response){
+							console.error(response);
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,7 +1,10 @@
 package com.lab.hosaily.core.client.service;
 
+import com.lab.hosaily.core.client.consts.PurchaseState;
 import com.lab.hosaily.core.client.dao.AgreementDao;
+import com.lab.hosaily.core.client.dao.PurchaseDao;
 import com.lab.hosaily.core.client.entity.Agreement;
+import com.lab.hosaily.core.client.entity.Purchase;
 import com.lab.hosaily.core.product.dao.ServiceDao;
 import com.rab.babylon.commons.security.exception.ServiceException;
 import org.slf4j.Logger;
@@ -10,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+
+import java.util.Date;
 
 @Service
 @Transactional(readOnly = true)
@@ -22,6 +27,9 @@ public class AgreementServiceImpl implements AgreementService{
 
     @Autowired
     private ServiceDao serviceDao;
+
+    @Autowired
+    private PurchaseDao purchaseDao;
 
     /**
      * 保存
@@ -87,6 +95,29 @@ public class AgreementServiceImpl implements AgreementService{
             Assert.hasText(purchaseId, "购买记录ID不能为空");
 
             return agreementDao.getByPurchaseId(purchaseId);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 协议确认
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void affirm(String id){
+        try{
+            Assert.hasText(id, "协议ID不能为空");
+
+            //更新协议
+            Agreement agreement = agreementDao.getById(id);
+            agreement.setAffirmTime(new Date());
+            agreementDao.saveOrUpdate(agreement);
+            //更新购买记录状态
+            Purchase purchase = purchaseDao.getById(agreement.getPurchaseId());
+            purchase.setPurchaseState(PurchaseState.AGREEMENT);
+            purchaseDao.saveOrUpdate(purchase);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

@@ -23,6 +23,8 @@ public class Agreement implements Create, Update{
     private String client;
     //联系电话
     private String phone;
+    //地址
+    private String address;
     //身份证
     private String idCard;
     //微信
@@ -250,6 +252,14 @@ public class Agreement implements Create, Update{
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public String getAddress(){
+        return address;
+    }
+
+    public void setAddress(String address){
+        this.address = address;
     }
 
     @Override

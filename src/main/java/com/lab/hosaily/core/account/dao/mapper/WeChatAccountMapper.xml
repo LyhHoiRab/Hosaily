@@ -230,16 +230,20 @@
     </update>
 
     <select id="getByParams" resultMap="account">
-        SELECT *
+        SELECT w.*
           FROM wechat_account
+     LEFT JOIN account a
+            ON (a.wechat = w.union_id OR a.wechat = w.open_id)
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
     </select>
 
     <select id="findByParams" resultMap="account">
-        SELECT *
+        SELECT w.*
           FROM wechat_account
+     LEFT JOIN account a
+            ON (a.wechat = w.union_id OR a.wechat = w.open_id)
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -259,6 +263,8 @@
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
           FROM wechat_account
+     LEFT JOIN account a
+            ON (a.wechat = w.union_id OR a.wechat = w.open_id)
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>

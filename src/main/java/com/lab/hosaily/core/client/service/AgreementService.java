@@ -23,4 +23,9 @@ public interface AgreementService{
      * 根据购买ID查询
      */
     Agreement getByPurchaseId(String purchaseId);
+
+    /**
+     * 协议确认
+     */
+    void affirm(String id);
 }

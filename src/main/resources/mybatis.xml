@@ -27,5 +27,7 @@
     <typeAlias type="com.lab.hosaily.core.account.utils.handler.GenderHandler"              alias="genderHandler"/>
     <typeAlias type="com.lab.hosaily.core.account.utils.handler.AttentionTypeHandler"       alias="attentionTypeHandler"/>
     <typeAlias type="com.lab.hosaily.core.client.utils.PurchaseStateHandler"                alias="purchaseStateHandler"/>
+    <typeAlias type="com.lab.hosaily.core.client.utils.PayStateHandler"                     alias="payStateHandler"/>
+    <typeAlias type="com.lab.hosaily.core.client.utils.PayTypeHandler"                      alias="payTypeHandler"/>
   </typeAliases>
 </configuration>

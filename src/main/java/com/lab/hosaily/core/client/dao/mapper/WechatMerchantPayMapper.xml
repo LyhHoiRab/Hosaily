@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lab.hosaily.core.client.dao.mapper.PurchaseMapper">
-    <resultMap id="purchase" type="com.lab.hosaily.core.client.entity.Purchase">
+<mapper namespace="com.lab.hosaily.core.client.dao.mapper.WechatMerchantPayMapper">
+    <resultMap id="wechatMerchantPay" type="com.lab.hosaily.core.client.entity.WechatMerchantPay">
         <id     column="id"                 property="id"               javaType="java.lang.String"/>
-        <result column="account_id"         property="accountId"        javaType="java.lang.String"/>
-        <result column="organization_id"    property="organizationId"   javaType="java.lang.String"/>
-        <result column="order_time"         property="orderTime"        javaType="java.util.Date"/>
-        <result column="state"              property="state"            typeHandler="usingStateHandler"/>
-        <result column="purchase_state"     property="purchaseState"    typeHandler="purchaseStateHandler"/>
+        <result column="app_id"             property="appId"            javaType="java.lang.String"/>
+        <result column="mch_id"             property="mchId"            javaType="java.lang.Double"/>
+        <result column="open_id"            property="openId"           javaType="java.lang.String"/>
+        <result column="nonce_str"          property="nonceStr"         javaType="java.lang.String"/>
+        <result column="sign_type"          property="signType"         javaType="java.lang.String"/>
+        <result column="body"               property="body"             javaType="java.lang.String"/>
+        <result column="out_trade_no"       property="outTradeNo"       javaType="java.lang.String"/>
+        <result column="total_fee"          property="totalFee"         javaType="java.lang.Integer"/>
+        <result column="notify_rul"         property="notifyUrl"        javaType="java.lang.String"/>
+        <result column="trade_type"         property="tradeType"        javaType="java.lang.String"/>
+        <result column="prepay_id"          property="prepayId"         javaType="java.lang.String"/>
+        <result column="is_success"         property="isSuccess"        javaType="java.lang.Double"/>
+        <result column="msg"                property="msg"              javaType="java.lang.String"/>
         <result column="create_time"        property="createTime"       javaType="java.util.Date"/>
         <result column="update_time"        property="updateTime"       javaType="java.util.Date"/>
-        <association property="agreement" resultMap="agreement" columnPrefix="a_"/>
-    </resultMap>
-
-    <resultMap id="agreement" type="com.lab.hosaily.core.client.entity.Agreement">
-        <id     column="id"                 property="id"               javaType="java.lang.String"/>
-    </resultMap>
-
-    <resultMap id="service" type="com.lab.hosaily.core.product.entity.Service">
-        <id     column="id"             property="id"           javaType="java.lang.String"/>
+        <result column="key"                property="key"              javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -122,73 +122,72 @@
 
     <insert id="save">
         INSERT
-          INTO purchase (
+          INTO wechat_merchant_pay (
                id,
-               account_id,
-               organization_id,
-               order_time,
-               state,
+               app_id,
+               mch_id,
+               open_id,
+               nonce_str,
+               sign_type,
+               body,
+               out_trade_no,
+               total_fee,
+               notify_url,
+               trade_type,
+               prepay_id,
+               is_success,
+               msg,
                create_time,
-               purchase_state
+               key
         ) VALUE (
-               #{id,              jdbcType=VARCHAR},
-               #{accountId,       jdbcType=VARCHAR},
-               #{organizationId,  jdbcType=VARCHAR},
-               #{orderTime,       jdbcType=TIMESTAMP},
-               #{state,           typeHandler=usingStateHandler},
-               #{createTime,      jdbcType=TIMESTAMP},
-               #{purchaseState,   typeHandler=purchaseStateHandler}
+               #{id,          jdbcType=VARCHAR},
+               #{appId,       jdbcType=VARCHAR},
+               #{mchId,       jdbcType=VARCHAR},
+               #{openId,      jdbcType=VARCHAR},
+               #{nonceStr,    jdbcType=VARCHAR},
+               #{signType,    jdbcType=VARCHAR},
+               #{body,        jdbcType=VARCHAR},
+               #{outTradeNo,  jdbcType=VARCHAR},
+               #{totalFee,    jdbcType=INTEGER},
+               #{notifyUrl,   jdbcType=VARCHAR},
+               #{tradeType,   jdbcType=VARCHAR},
+               #{prepayId,    jdbcType=VARCHAR},
+               #{isSuccess,   jdbcType=BOOLEAN},
+               #{msg,         jdbcType=VARCHAR},
+               #{createTime,  jdbcType=TIMESTAMP}
         )
     </insert>
 
     <update id="update">
-        UPDATE purchase
+        UPDATE wechat_merchant_pay
          <set>
-             <if test="accountId != null and accountId != ''">
-                 account_id = #{accountId, jdbcType=VARCHAR},
+             <if test="prepayId != null">
+                 prepay_id = #{prepayId, jdbcType=VARCHAR},
              </if>
-             <if test="organizationId != null and organizationId != ''">
-                 organization_id = #{organizationId, jdbcType=VARCHAR},
+             <if test="isSuccess != null">
+                 is_success = #{isSuccess, jdbcTyp=BOOLEAN},
              </if>
-             <if test="orderTime != null">
-                 order_time = #{orderTime, jdbcType=TIMESTAMP},
-             </if>
-             <if test="state != null">
-                 state = #{state, typeHandler=usingStateHandler},
+             <if test="msg != null">
+                 msg = #{msg, jdbcType=VARCHAR},
              </if>
              <if test="updateTime != null">
-                 update_time = #{updateTime, jdbcType=TIMESTAMP},
-             </if>
-             <if test="purchaseState != null">
-                 purchase_state = #{purchaseState, typeHandler=purchaseStateHandler},
+                 key = #{key, jdbcType=VARCHAR},
              </if>
          </set>
           WHERE id = #{id}
     </update>
 
-    <select id="getByParams" resultMap="purchase">
-        SELECT p.*,
-               a.id AS a_id,
-               s.id AS s_id
-          FROM purchase p
-     LEFT JOIN agreement a
-            ON a.purchase_id = p.id
-     LEFT JOIN service s
-            ON s.master_id = a.id
+    <select id="getByParams" resultMap="wechatMerchantPay">
+        SELECT *
+          FROM wechat_merchant_pay
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
     </select>
 
-    <select id="findIdByParams" resultType="java.lang.String">
-        SELECT p.id,
-               a.id AS a_id,
-               s.id AS s_id
-          FROM purchase p
-     LEFT JOIN agreement a
-            ON a.purchase_id = p.id
-     LEFT JOIN service s
-            ON s.master_id = a.id
+    <select id="findByParams" resultMap="wechatMerchantPay">
+        SELECT *
+          FROM wechat_merchant_pay
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 
@@ -210,55 +209,5 @@
                 ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
             </if>
         </if>
-    </select>
-
-    <select id="findByParams" resultMap="purchase">
-        SELECT p.*,
-               a.id AS a_id,
-               s.id AS s_id
-          FROM purchase p
-     LEFT JOIN agreement a
-            ON a.purchase_id = p.id
-     LEFT JOIN service s
-            ON s.master_id = a.id
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
-
-            <if test="params.groups != null and params.groups.size > 0">
-                GROUP BY
-                <foreach collection="params.groups" item="group" separator=",">
-                    ${group.property}
-                </foreach>
-            </if>
-
-            <if test="params.sorts != null and params.sorts.size > 0">
-                ORDER BY
-                <foreach collection="params.sorts" item="sort" separator=",">
-                    ${sort.property} ${sort.operator}
-                </foreach>
-            </if>
-        </if>
-    </select>
-
-    <select id="countByParams" resultType="java.lang.Long">
-        SELECT COUNT(*)
-          FROM (
-                    SELECT p.id
-                      FROM purchase p
-                 LEFT JOIN agreement a
-                        ON a.purchase_id = p.id
-                 LEFT JOIN service s
-                        ON s.master_id = a.id
-                    <if test="params != null">
-                        <include refid="WHERE_COLUMN"/>
-
-                        <if test="params.groups != null and params.groups.size > 0">
-                            GROUP BY
-                            <foreach collection="params.groups" item="group" separator=",">
-                                ${group.property}
-                            </foreach>
-                        </if>
-                    </if>
-        ) AS purchase
     </select>
 </mapper>

@@ -8,6 +8,7 @@
         <result column="account_id"         property="accountId"        javaType="java.lang.String"/>
         <result column="client"             property="client"           javaType="java.lang.String"/>
         <result column="phone"              property="phone"            javaType="java.lang.String"/>
+        <result column="address"            property="address"          javaType="java.lang.String"/>
         <result column="id_card"            property="idCard"           javaType="java.lang.String"/>
         <result column="wechat"             property="wechat"           javaType="java.lang.String"/>
         <result column="email"              property="email"            javaType="java.lang.String"/>
@@ -145,6 +146,7 @@
                account_id,
                client,
                phone,
+               address,
                id_card,
                wechat,
                email,
@@ -169,6 +171,7 @@
                #{accountId,         jdbcType=VARCHAR},
                #{client,            jdbcType=VARCHAR},
                #{phone,             jdbcType=VARCHAR},
+               #{address,           jdbcType=VARCHAR},
                #{idCard,            jdbcType=VARCHAR},
                #{wechat,            jdbcType=VARCHAR},
                #{email,             jdbcType=VARCHAR},
@@ -204,6 +207,9 @@
              </if>
              <if test="phone != null">
                  phone = #{phone, jdbcType=VARCHAR},
+             </if>
+             <if test="address != null">
+                 address = #{address, jdbcType=VARCHAR},
              </if>
              <if test="idCard != null">
                  id_card = #{idCard, jdbcType=VARCHAR},
