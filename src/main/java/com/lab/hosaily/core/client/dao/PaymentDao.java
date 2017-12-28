@@ -58,7 +58,7 @@ public class PaymentDao{
             Assert.hasText(id, "支付记录ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("p.id", id));
+            criteria.and(Restrictions.eq("id", id));
 
              return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -142,7 +142,7 @@ public class PaymentDao{
     /**
      * 查询金额
      */
-    public long priceByPurchaseId(String purchaseId, PayType type, PayState state){
+    public double priceByPurchaseId(String purchaseId, PayType type, PayState state){
         try{
             Assert.hasText(purchaseId, "购买记录ID不能为空");
 
@@ -157,7 +157,9 @@ public class PaymentDao{
                 criteria.and(Restrictions.eq("state", state.getId()));
             }
 
-            return mapper.priceByPurchaseId(criteria);
+            Double price = mapper.priceByPurchaseId(criteria);
+
+            return (price == null ? 0 : price);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

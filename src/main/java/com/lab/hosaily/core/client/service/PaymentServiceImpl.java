@@ -24,7 +24,7 @@ public class PaymentServiceImpl implements PaymentService{
      * 根据购买记录统计微信支付已成功付款金额
      */
     @Override
-    public long priceWechatMerchantPayByPurchaseId(String purchaseId){
+    public double priceWechatMerchantPayByPurchaseId(String purchaseId){
         try{
             Assert.hasText(purchaseId, "购买记录ID不能为空");
 

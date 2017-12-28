@@ -38,5 +38,5 @@ public interface PaymentMapper{
     /**
      * 查询金额
      */
-    Long priceByPurchaseId(@Param("params") Criteria criteria);
+    Double priceByPurchaseId(@Param("params") Criteria criteria);
 }

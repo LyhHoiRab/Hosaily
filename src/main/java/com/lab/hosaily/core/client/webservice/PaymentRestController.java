@@ -25,11 +25,11 @@ public class PaymentRestController{
      * 根据购买记录统计微信支付已成功付款金额
      */
     @RequestMapping(value = "/price/{purchaseId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Long> priceWechatMerchantPayByPurchaseId(@PathVariable("purchaseId") String purchaseId){
+    public Response<Double> priceWechatMerchantPayByPurchaseId(@PathVariable("purchaseId") String purchaseId){
         try{
-            long price = paymentService.priceWechatMerchantPayByPurchaseId(purchaseId);
+            double price = paymentService.priceWechatMerchantPayByPurchaseId(purchaseId);
 
-            return new Response<Long>("查询成功", price);
+            return new Response<Double>("查询成功", price);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

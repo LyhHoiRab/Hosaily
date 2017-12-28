@@ -387,6 +387,29 @@
         if(r!=null)return  unescape(r[2]); return null;
     }
 
+    function paid(purchaseId){
+        var price = 0;
+
+        $.ajax({
+            url: '/api/1.0/payment/price/' + purchaseId,
+            type: 'GET',
+            dataType: 'json',
+            async: false,
+            success: function(res){
+                if(res.success){
+                    price = res.result;
+                }else{
+                    alert(res.msg);
+                }
+            },
+            error: function(response){
+                console.error(response);
+            }
+        });
+
+        return price;
+    };
+
     $(function(){
         var purchaseId = getQueryString('purchaseId');
 
@@ -397,6 +420,8 @@
                 dataType: 'json',
                 success: function(res){
                     if(res.success){
+                        var price = paid(purchaseId);
+
                         if(res.result.client !== undefined){
                             $('#client').val(res.result.client);
                             $('#sign').append(res.result.client);
@@ -451,8 +476,6 @@
                             $('#affirmTime').text('日期: 年 月 日');
                         }
 
-                        console.log(res.result);
-
                         if(res.result.services !== undefined && res.result.services.length > 0){
                             var html = '';
 
@@ -470,7 +493,7 @@
                                  + '<td colspan="2">'
                                  + '您实际应缴纳的金额：'
                                  + res.result.price
-                                 + '  您已支付的金额：0元'
+                                 + '  您已支付的金额：' + price + '元'
                                  + '</td>'
                                  + '</tr>';
 

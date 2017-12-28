@@ -40,6 +40,7 @@
         <upyun.version>3.13</upyun.version>
         <velocity.version>1.7</velocity.version>
         <velocity-tools.version>2.0</velocity-tools.version>
+        <alipay.version>20170307171631</alipay.version>
     </properties>
 
     <dependencies>
@@ -50,6 +51,12 @@
             <version>${babylon.version}</version>
             <!--<scope>system</scope>-->
             <!--<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/babylon-1.0.2.jar</systemPath>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.alipay</groupId>
+            <artifactId>alipay</artifactId>
+            <version>${alipay.version}</version>
         </dependency>
 
         <!-- test -->

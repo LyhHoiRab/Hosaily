@@ -95,7 +95,7 @@ public class WeChatAccountDao{
             Assert.hasText(appId, "AppId不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("a.accountId", accountId));
+            criteria.and(Restrictions.eq("a.id", accountId));
             criteria.and(Restrictions.eq("w.appId", appId));
 
             return mapper.getByParams(criteria);

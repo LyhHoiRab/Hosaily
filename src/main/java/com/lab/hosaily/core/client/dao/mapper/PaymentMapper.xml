@@ -154,7 +154,7 @@
                  affirm_time = #{affirmTime, jdbcType=TIMESTAMP},
              </if>
              <if test="updateTime != null">
-                 update_time = #{updaetTime, jdbcType=TIMESTAMP},
+                 update_time = #{updateTime, jdbcType=TIMESTAMP},
              </if>
          </set>
           WHERE id = #{id}
@@ -202,8 +202,8 @@
         </if>
     </select>
 
-    <select id="priceByPurchaseId" resultMap="java.lang.Long">
-        SELECT SUM(price)
+    <select id="priceByPurchaseId" resultType="java.lang.Double">
+        SELECT IFNULL(SUM(price), 0)
           FROM payment
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>

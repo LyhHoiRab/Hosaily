@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lab.hosaily.core.client.dao.mapper.WechatMerchantPayMapper">
-    <resultMap id="wechatMerchantPay" type="com.lab.hosaily.core.client.entity.WechatMerchantPay">
-        <id     column="id"                 property="id"               javaType="java.lang.String"/>
-        <result column="app_id"             property="appId"            javaType="java.lang.String"/>
-        <result column="mch_id"             property="mchId"            javaType="java.lang.String"/>
-        <result column="open_id"            property="openId"           javaType="java.lang.String"/>
-        <result column="nonce_str"          property="nonceStr"         javaType="java.lang.String"/>
-        <result column="sign_type"          property="signType"         javaType="java.lang.String"/>
-        <result column="body"               property="body"             javaType="java.lang.String"/>
-        <result column="out_trade_no"       property="outTradeNo"       javaType="java.lang.String"/>
-        <result column="total_fee"          property="totalFee"         javaType="java.lang.Integer"/>
-        <result column="notify_rul"         property="notifyUrl"        javaType="java.lang.String"/>
-        <result column="trade_type"         property="tradeType"        javaType="java.lang.String"/>
-        <result column="prepay_id"          property="prepayId"         javaType="java.lang.String"/>
-        <result column="is_success"         property="isSuccess"        javaType="java.lang.Double"/>
-        <result column="msg"                property="msg"              javaType="java.lang.String"/>
-        <result column="create_time"        property="createTime"       javaType="java.util.Date"/>
-        <result column="update_time"        property="updateTime"       javaType="java.util.Date"/>
-        <result column="key"                property="key"              javaType="java.lang.String"/>
+<mapper namespace="com.lab.hosaily.core.client.dao.mapper.AlipayMapper">
+    <resultMap id="alipay" type="com.lab.hosaily.core.client.entity.Alipay">
+        <id     column="id"             property="id"           javaType="java.lang.String"/>
+        <result column="app_id"         property="appId"        javaType="java.lang.String"/>
+        <result column="return_url"     property="returnUrl"    javaType="java.lang.String"/>
+        <result column="sign_type"      property="signType"     javaType="java.lang.String"/>
+        <result column="notify_url"     property="notifyUrl"    javaType="java.lang.String"/>
+        <result column="subject"        property="subject"      javaType="java.lang.String"/>
+        <result column="out_trade_no"   property="outTradeNo"   javaType="java.lang.String"/>
+        <result column="total_amount"   property="totalAmount"  javaType="java.lang.Double"/>
+        <result column="product_code"   property="productCode"  javaType="java.lang.String"/>
+        <result column="trade_no"       property="tradeNo"      javaType="java.lang.String"/>
+        <result column="status"         property="status"       typeHandler="alipayStatusHandler"/>
+        <result column="create_time"    property="createTime"   javaType="java.util.Date"/>
+        <result column="update_time"    property="updateTime"   javaType="java.util.Date"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -122,73 +118,83 @@
 
     <insert id="save">
         INSERT
-          INTO wechat_merchant_pay (
+          INTO alipay (
                id,
                app_id,
-               mch_id,
-               open_id,
-               nonce_str,
+               return_url,
                sign_type,
-               body,
-               out_trade_no,
-               total_fee,
                notify_url,
-               trade_type,
-               prepay_id,
-               is_success,
-               msg,
-               create_time,
-               `key`
+               subject,
+               out_trade_no,
+               total_amount,
+               product_code,
+               trade_no,
+               status,
+               create_time
         ) VALUE (
                #{id,          jdbcType=VARCHAR},
                #{appId,       jdbcType=VARCHAR},
-               #{mchId,       jdbcType=VARCHAR},
-               #{openId,      jdbcType=VARCHAR},
-               #{nonceStr,    jdbcType=VARCHAR},
+               #{returnUrl,   jdbcType=VARCHAR},
                #{signType,    jdbcType=VARCHAR},
-               #{body,        jdbcType=VARCHAR},
-               #{outTradeNo,  jdbcType=VARCHAR},
-               #{totalFee,    jdbcType=INTEGER},
                #{notifyUrl,   jdbcType=VARCHAR},
-               #{tradeType,   jdbcType=VARCHAR},
-               #{prepayId,    jdbcType=VARCHAR},
-               #{isSuccess,   jdbcType=BOOLEAN},
-               #{msg,         jdbcType=VARCHAR},
-               #{createTime,  jdbcType=TIMESTAMP},
-               #{key,         jdbcType=VARCHAR}
+               #{subject,     jdbcType=VARCHAR},
+               #{outTradeNo,  jdbcType=VARCHAR},
+               #{totalAmount, jdbcType=DOUBLE},
+               #{productCode, jdbcType=VARCHAR},
+               #{tradeNo,     jdbcType=VARCHAR},
+               #{status,      typeHandler=alipayStatusHandler},
+               #{createTime,  jdbcType=TIMESTAMP}
         )
     </insert>
 
     <update id="update">
-        UPDATE wechat_merchant_pay
+        UPDATE alipay
          <set>
-             <if test="prepayId != null">
-                 prepay_id = #{prepayId, jdbcType=VARCHAR},
+             <if test="returnUrl != null">
+                 return_url = #{returnUrl, jdbcType=VARCHAR},
              </if>
-             <if test="isSuccess != null">
-                 is_success = #{isSuccess, jdbcTyp=BOOLEAN},
+             <if test="signType != null">
+                 sign_type = #{signType, jdbcType=VARCHAR},
              </if>
-             <if test="msg != null">
-                 msg = #{msg, jdbcType=VARCHAR},
+             <if test="notifyUrl != null">
+                 notify_url = #{notifyUrl, jdbcType=VARCHAR},
+             </if>
+             <if test="subject != null">
+                 subject = #{subject, jdbcType=VARCHAR},
+             </if>
+             <if test="outTradeNo != null">
+                 out_trade_no = #{outTradeNo, jdbcType=VARCHAR},
+             </if>
+             <if test="totalAmount != null and totalAmount >= 0">
+                 total_amount = #{totalAmount, jdbcType=DOUBLE},
+             </if>
+             <if test="productCode != null">
+                 product_code = #{productCode, jdbcType=VARCHAR},
+             </if>
+             <if test="tradeNo != null">
+                 trade_no = #{tradeNo, jdbcType=VARCHAR},
+             </if>
+             <if test="status != null">
+                 status = #{status, typeHandler=alipayStatusHandler},
              </if>
              <if test="updateTime != null">
-                 `key` = #{key, jdbcType=VARCHAR},
+                 update_time = #{updateTime, jdbcType=TIMESTAMP},
              </if>
          </set>
           WHERE id = #{id}
     </update>
 
-    <select id="getByParams" resultMap="wechatMerchantPay">
+    <select id="getByParams" resultMap="alipay">
         SELECT *
-          FROM wechat_merchant_pay
+          FROM alipay
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>
     </select>
 
-    <select id="findByParams" resultMap="wechatMerchantPay">
+    <select id="findByParams" resultMap="alipay">
         SELECT *
-          FROM wechat_merchant_pay
+          FROM alipay
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
 

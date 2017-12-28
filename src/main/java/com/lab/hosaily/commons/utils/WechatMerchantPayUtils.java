@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
@@ -41,12 +42,16 @@ public class WechatMerchantPayUtils{
         String xml = toXml(params);
 
         CloseableHttpClient client = HttpClientUtils.createHttpClient();
-        HttpPost post = HttpClientUtils.getPost(PREPAY_API, xml);
+
+        HttpPost post = new HttpPost(PREPAY_API);
+        StringEntity entity = new StringEntity(xml, "UTF-8");
+        post.setEntity(entity);
 
         try{
             HttpResponse response = client.execute(post);
             if(response != null && response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                 String result = EntityUtils.toString(response.getEntity());
+                result = new String(result.getBytes("ISO-8859-1"), "UTF-8");
 
                 if(StringUtils.isBlank(result)){
                     throw new RuntimeException("预支付失败");
@@ -112,24 +117,56 @@ public class WechatMerchantPayUtils{
         params.put("openid", wechatMerchantPay.getOpenId());
         params.put("out_trade_no", wechatMerchantPay.getOutTradeNo());
 
-        List<String> list = new ArrayList<String>();
-        for(Map.Entry<String, String> entry : params.entrySet()){
-            if(!StringUtils.isBlank(entry.getValue())){
-                list.add(entry.getKey() + "=" + entry.getValue());
-            }
-        }
-        //排序参数
-        String[] sort = list.toArray(new String[]{});
-        Arrays.sort(sort);
+//        List<String> list = new ArrayList<String>();
+//        for(Map.Entry<String, String> entry : params.entrySet()){
+//            if(!StringUtils.isBlank(entry.getValue())){
+//                list.add(entry.getKey() + "=" + entry.getValue());
+//            }
+//        }
+//        //排序参数
+//        String[] sort = list.toArray(new String[]{});
+//        Arrays.sort(sort);
+//        //生成参数列表字符串
+//        StringBuffer sb = new StringBuffer();
+//        for(String param : sort){
+//            sb.append(param).append("&");
+//
+//        }
+//        sb.append("key=" + wechatMerchantPay.getKey());
+
+        List<String> keys = new ArrayList<String>(params.keySet());
+        Collections.sort(keys);
+
         //生成参数列表字符串
         StringBuffer sb = new StringBuffer();
-        for(String param : sort){
-            sb.append(param).append("&");
 
+        for(int i = 0; i < keys.size(); i++){
+            String key = keys.get(i);
+            String value = params.get(key);
+
+            sb.append((i == 0 ? "" : "&") + key + "=" + value);
         }
-        sb.append("key=" + wechatMerchantPay.getKey());
 
         params.put("sign", MD5Utils.encrypt(sb.toString()).toUpperCase());
+        return params;
+    }
+
+    /**
+     * 生成JSAPI支付参数列表
+     */
+    public static Map<String, String> getJsapiParams(WechatMerchantPay wechatMerchantPay) throws Exception{
+        if(wechatMerchantPay == null){
+            throw new IllegalArgumentException("微信商户支付信息不能为空");
+        }
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("appId", wechatMerchantPay.getAppId());
+        params.put("timeStamp", String.valueOf(System.currentTimeMillis() / 1000));
+        params.put("nonceStr", wechatMerchantPay.getNonceStr());
+        params.put("package", "prepay_id=" + wechatMerchantPay.getPrepayId());
+        params.put("signType", wechatMerchantPay.getSignType());
+        params.put("paySign", sign(params, wechatMerchantPay.getKey()));
+
         return params;
     }
 
@@ -273,6 +310,9 @@ public class WechatMerchantPayUtils{
                     break;
                 case "total_fee":
                     response.setTotalFee(Integer.valueOf(element.getText().trim()));
+                    break;
+                case "out_trade_no":
+                    response.setOutTradeNo(element.getText().trim());
                     break;
                 default:
                     break;
