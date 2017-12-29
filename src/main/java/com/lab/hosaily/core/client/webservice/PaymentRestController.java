@@ -22,12 +22,12 @@ public class PaymentRestController{
     private PaymentService paymentService;
 
     /**
-     * 根据购买记录统计微信支付已成功付款金额
+     * 根据购买记录统计已成功付款金额
      */
     @RequestMapping(value = "/price/{purchaseId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Double> priceWechatMerchantPayByPurchaseId(@PathVariable("purchaseId") String purchaseId){
+    public Response<Double> priceByPurchaseId(@PathVariable("purchaseId") String purchaseId){
         try{
-            double price = paymentService.priceWechatMerchantPayByPurchaseId(purchaseId);
+            double price = paymentService.priceByPurchaseId(purchaseId);
 
             return new Response<Double>("查询成功", price);
         }catch(Exception e){

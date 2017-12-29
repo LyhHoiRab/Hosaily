@@ -21,14 +21,14 @@ public class PaymentServiceImpl implements PaymentService{
     private PaymentDao paymentDao;
 
     /**
-     * 根据购买记录统计微信支付已成功付款金额
+     * 根据购买记录统计已成功付款金额
      */
     @Override
-    public double priceWechatMerchantPayByPurchaseId(String purchaseId){
+    public double priceByPurchaseId(String purchaseId){
         try{
             Assert.hasText(purchaseId, "购买记录ID不能为空");
 
-            return paymentDao.priceByPurchaseId(purchaseId, PayType.WECHAT_MERCHANT, PayState.PAID);
+            return paymentDao.priceByPurchaseId(purchaseId, null, PayState.PAID);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

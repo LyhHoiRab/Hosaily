@@ -141,6 +141,14 @@
 			}
 		};
 
+		//支付宝支付
+		function alipay(){
+			var price = $('#price').val();
+			var purchaseId = getQueryString('purchaseId');
+
+			location.href = '/api/1.0/alipay/pay?purchaseId=' + purchaseId + "&totalFee=" + price;
+		};
+
 		//已付金额
 		function paid(purchaseId){
 			var price = 0;
@@ -205,6 +213,8 @@
 
 				if(isWeChatPay){
 					wechatPay();
+				}else{
+					alipay();
 				}
 			});
 		});

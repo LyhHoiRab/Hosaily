@@ -4,9 +4,8 @@ import com.lab.hosaily.commons.consts.SessionConsts;
 import com.lab.hosaily.core.account.entity.Attention;
 import com.lab.hosaily.core.account.service.AttentionService;
 import com.lab.hosaily.core.account.service.UserService;
-import com.lab.hosaily.core.client.consts.PurchaseState;
-import com.lab.hosaily.core.client.entity.Purchase;
-import com.lab.hosaily.core.client.service.PurchaseService;
+import com.lab.hosaily.core.client.dao.PaymentDao;
+import com.lab.hosaily.core.client.entity.Payment;
 import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.course.entity.Customization;
 import com.lab.hosaily.core.course.entity.Level;
@@ -57,7 +56,7 @@ public class PageController{
     private CustomizationService customizationService;
 
     @Autowired
-    private PurchaseService purchaseService;
+    private PaymentDao paymentDao;
 
     /**
      * 首页
