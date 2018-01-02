@@ -26,8 +26,10 @@ public class UpyunUtils{
     public final static String USER_HEAD_DIR = "/user/head/";
     //导师头像目录
     public final static String ADVISOR_HEAD_DIR = "/advisor/head/";
-    //美容问问录音目录
-    public final static String MEI_RONG_ASK_LU_YIN_DIR = "/meiRongAsk/luyin/";
+    //录音目录
+    public final static String RECORD_LU_YIN_DIR = "/record/luyin/";
+    //wxdb目录
+    public final static String RECORD_WX_DB_DIR = "/record/wxdb/";
     //会员等级图片目录
     public final static String LEVEL_COVER_DIR = "/level/cover/";
     //支付方式图片目录

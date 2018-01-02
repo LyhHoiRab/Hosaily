@@ -13,6 +13,8 @@
         <result column="create_time" property="createTime"  javaType="java.util.Date"/>
         <result column="update_time" property="updateTime"  javaType="java.util.Date"/>
         <result column="user_type"        property="userType"        javaType="java.lang.String"/>
+        <result column="file_type"        property="fileType"        javaType="java.lang.String"/>
+        <result column="uid_md5"        property="uidMd5"        javaType="java.lang.String"/>
         <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
     </resultMap>
 
@@ -126,6 +128,8 @@
               user_name,
               create_time,
               user_type,
+              file_type,
+              uid_md5,
               organization_id
           ) VALUE (
               #{id,          jdbcType=VARCHAR},
@@ -137,6 +141,8 @@
               (SELECT user_name FROM sim_num_user WHERE sim = #{sim,        jdbcType=VARCHAR}),
               #{createTime,  jdbcType=TIMESTAMP},
               (SELECT user_type FROM sim_num_user WHERE sim = #{sim,        jdbcType=VARCHAR}),
+              #{fileType,        jdbcType=VARCHAR},
+              #{uidMd5,        jdbcType=VARCHAR},
               (SELECT organization_id FROM sim_num_user WHERE sim = #{sim,        jdbcType=VARCHAR})
           )
     </insert>
@@ -159,8 +165,14 @@
              <if test="path != null and path != ''">
                  path = #{path, jdbcType=VARCHAR},
              </if>
-             <if test="userType != null and path != ''">
+             <if test="userType != null and userType != ''">
                  user_type = #{userType, jdbcType=VARCHAR},
+             </if>
+             <if test="fileType != null and fileType != ''">
+                 file_type = #{fileType, jdbcType=VARCHAR},
+             </if>
+             <if test="uidMd5 != null and uidMd5 != ''">
+                 uid_md5 = #{uidMd5, jdbcType=VARCHAR},
              </if>
              <if test="organizationId != null and organizationId != ''">
                  organization_id = #{organizationId, jdbcType=VARCHAR},

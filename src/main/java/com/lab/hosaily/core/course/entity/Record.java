@@ -31,11 +31,33 @@ public class Record implements Create, Update {
     //使用者类型
     private String userType;
 
+    //文件类型
+    private String fileType;
+
+    //微信uid_MD5码
+    private String uidMd5;
+
     //企业ID
     private String organizationId;
 
     public Record() {
 
+    }
+
+    public String getUidMd5() {
+        return uidMd5;
+    }
+
+    public void setUidMd5(String uidMd5) {
+        this.uidMd5 = uidMd5;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
     public String getUserType() {

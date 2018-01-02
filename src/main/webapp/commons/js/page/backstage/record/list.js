@@ -1,5 +1,6 @@
 app.controller('recordListController', function($scope, $http, $stateParams){
     $scope.userTypes        = ["情感分析师","情感导师"];
+    $scope.fileTypes        = ["wx备份文件","录音文件"];
     $scope.userType;
     $scope.userName;
     $scope.num;
@@ -22,6 +23,7 @@ app.controller('recordListController', function($scope, $http, $stateParams){
         $scope.outGoingNum       = '';
         $scope.sim = '';
         $scope.userType = '';
+        $scope.fileType = '';
     };
 
     $scope.search = function(){
@@ -48,8 +50,9 @@ app.controller('recordListController', function($scope, $http, $stateParams){
             userName       = $scope.userName,
             num       = $scope.num,
             outGoingNum       = $scope.outGoingNum,
-            sim       = $scope.sim;
-        userType       = $scope.userType;
+            sim       = $scope.sim,
+            userType       = $scope.userType,
+            fileType       = $scope.fileType
         $http({
             url: '/api/1.0/record/page',
             method: 'POST',
@@ -61,6 +64,7 @@ app.controller('recordListController', function($scope, $http, $stateParams){
                 'outGoingNum': outGoingNum,
                 'sim': sim,
                 'userType': userType,
+                'fileType': fileType,
                 'organizationId' : $scope.organizationId
             }),
             headers: {
@@ -96,12 +100,18 @@ app.controller('recordListController', function($scope, $http, $stateParams){
     };
 
 
-    $scope.play = function(path){
-        mesg=open("cnrose","DisplayWindow","toolbar=no,,menubar=no,location=no,scrollbars=no");
-        mesg.moveTo(screen.availWidth/2,screen.availHeight/2);
-        mesg.resizeTo(350,120);
-        mesg.document.write("<HEAD><TITLE>录音播放</TITLE></HEAD>");
-        mesg.document.write("<audio src='"+path+"' controls='controls'>Your browser does not support the audio tag. </audio>");
+    $scope.play = function(path, fileType){
+        // alert(fileType);
+        if('wx备份文件' == fileType){
+            window.open(path);
+        }else {
+            mesg=open("cnrose","DisplayWindow","toolbar=no,,menubar=no,location=no,scrollbars=no");
+            mesg.moveTo(screen.availWidth/2,screen.availHeight/2);
+            mesg.resizeTo(350,120);
+            mesg.document.write("<HEAD><TITLE>录音播放</TITLE></HEAD>");
+            mesg.document.write("<audio src='"+path+"' controls='controls'>Your browser does not support the audio tag. </audio>");
+        }
+
     };
 
     //初始化数据
@@ -150,11 +160,14 @@ app.controller('recordListController', function($scope, $http, $stateParams){
             field: 'time',
             displayName: '时长(秒)'
         },{
+            field: 'fileType',
+            displayName: '文件类型'
+        },{
             // field: 'path',
             displayName: '通话记录',
             // cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="/api/1.0/record/testHttpMessageDown/{{row.getProperty(\'id\')}}">下载</a></span></div>'
             // cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><audio ng-src="http://kuliao.b0.upaiyun.com/meiRongAsk/luyin/dhly_89860040191604470827_10086_42350_1512702362638.mp3" controls="controls">Your browser does not support the audio tag. </audio></div>'
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="javascript:;" ng-click="play(row.getProperty(\'path\'))">[播放]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="javascript:;" ng-click="play(row.getProperty(\'path\'), row.getProperty(\'fileType\'))">[播放/下载]</a></span></div>'
             // },{
             //     field: 'createTime',
             //     displayName: '创建时间',
