@@ -60,7 +60,7 @@ public class WeChatAccountDao{
             Assert.hasText(id, "微信账户ID不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("id", id));
+            criteria.and(Restrictions.eq("w.id", id));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){
@@ -77,7 +77,26 @@ public class WeChatAccountDao{
             Assert.hasText(openId, "微信账户openId不能为空");
 
             Criteria criteria = new Criteria();
-            criteria.and(Restrictions.eq("openId", openId));
+            criteria.and(Restrictions.eq("w.openId", openId));
+
+            return mapper.getByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据账户ID和appId查询
+     */
+    public WeChatAccount getByAccountIdAndAppId(String accountId, String appId){
+        try{
+            Assert.hasText(accountId, "账户Id不能为空");
+            Assert.hasText(appId, "AppId不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("a.id", accountId));
+            criteria.and(Restrictions.eq("w.appId", appId));
 
             return mapper.getByParams(criteria);
         }catch(Exception e){

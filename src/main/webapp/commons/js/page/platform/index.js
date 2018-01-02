@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.router', 'oc.lazyLoad', 'ngGrid', 'ckeditor', 'ngSanitize', 'ui.bootstrap']);
+var app = angular.module('app', ['ui.router', 'oc.lazyLoad', 'ngGrid', 'ckeditor', 'ngSanitize', 'ui.bootstrap', 'monospaced.qrcode']);
 
 app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', function($controllerProvider, $compileProvider, $filterProvider, $provide){
     app.controller = $controllerProvider.register;
@@ -94,7 +94,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
         params: {
             'accountId'      : '',
             'organizationId' : '',
-            'id'             : '',
+            'id'             : ''
         },
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){

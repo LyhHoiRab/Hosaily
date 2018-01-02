@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>永恒情书服务协议</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/sm.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/sm-extend.min.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/common.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/ui-box.css" />
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/style.css"/>
+
+    <script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/zepto.min.js' charset='utf-8'></script>
+</head>
+<style type="text/css">
+    .content{
+        padding-top: 0rem;
+    }
+    .cus_content{
+        background-color: white;
+        padding: 0 0.3rem 0 0.3rem;
+    }
+    .fmPic img{
+        width: 100%;
+    }
+    .title_xys{
+        text-align: center;
+    }
+    .proMsg{
+        height: 22rem;
+        padding-left: 0.5rem;
+        margin-top: 0.5rem;
+        padding-right: 0.5rem;
+        font-size: 0.6rem;
+        position: relative;
+    }
+    .proMsg input{
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid black;
+        padding-left: 0.5rem;
+    }
+    .proMsg .ub{
+        margin: 0.3rem 0;
+    }
+    .proMsg .line{
+        height: 0px;
+        border-bottom: 1px dashed gray;
+        margin: 2rem 0 2rem 0;
+    }
+    .gsz{
+        position: absolute;
+        bottom: 1rem;
+        right: 5%;
+    }
+    h4,h5{
+        margin: 1rem 0;
+    }
+    p{
+        text-indent: 1.2rem;
+    }
+    table{
+        width: 100%;
+    }
+    table td{
+        border: 1px solid gray;
+        text-align: center;
+        height: 1rem;
+    }
+    td h4{
+        text-align: center !important;
+    }
+    tr :first-child{
+        text-align: left;
+        padding-left: 0.5rem;
+    }
+    .redText{
+        color: red;
+    }
+    td b{
+        color: black;
+    }
+    .signName{
+        margin-top: 3rem;
+        position: relative;
+        padding-left: 0.5rem;
+    }
+    .signName label:nth-child(n+2){
+        position: absolute;
+        left: 50%;
+    }
+</style>
+<body>
+<div class="page">
+    <!--<div class="ub head">
+        <div class="logoDiv">
+            <a href="javascript:history.go(-1)"><span class="icon icon-left"></span></a>
+        </div>
+        <div class="ub ub-f1 headText">
+            <div class="title_50">永恒情书服务协议</div>
+        </div>
+    </div>-->
+    <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100">
+        <div class="cus_content">
+
+            <div class="fmPic">
+                <img src="http://h.ishsls.com/yhqs_h5/purchase/imgg/fm.png"/>
+            </div>
+
+            <h3 class="title_xys">永恒情书•服务协议</h3>
+
+            <div class="proMsg">
+                <div class="ub">
+                    <div>甲方（客户）：</div>
+                    <div class="ub-f1"><input type="text" id="client"></div>
+                </div>
+                <div class="ub">
+                    <div>身份证号码：</div>
+                    <div class="ub-f1"><input type="text" id="idCard"></div>
+                </div>
+                <div class="ub">
+                    <div>地址：</div>
+                    <div class="ub-f1"><input type="text" id="address"></div>
+                </div>
+                <div class="ub">
+                    <div>联系电话：</div>
+                    <div class="ub-f1"><input type="text" id="phone"></div>
+                </div>
+                <div class="ub">
+                    <div>微信：</div>
+                    <div class="ub-f1"><input type="text" id="wechat"></div>
+                </div>
+                <div class="ub">
+                    <div>邮箱：</div>
+                    <div class="ub-f1"><input type="text" id="email"></div>
+                </div>
+                <div class="ub">
+                    <div>紧急联系人：</div>
+                    <div class="ub-f1"><input type="text" id="emergencyContact"></div>
+                </div>
+                <div class="line"></div>
+                <div class="ub">
+                    <div>乙方：</div>
+                    <div class="ub-f1"><input type="text" id="company"></div>
+                </div>
+                <div class="ub">
+                    <div>营业执照注册号：</div>
+                    <div class="ub-f1"><input type="text" id="licenseNumber"></div>
+                </div>
+                <div class="ub">
+                    <div>法定代表人：</div>
+                    <div class="ub-f1"><input type="text" id="legalPerson"></div>
+                </div>
+                <div class="ub">
+                    <div>地址：</div>
+                    <div class="ub-f1"><input type="text" id="companyAddress"></div>
+                </div>
+                <div class="ub">
+                    <div>联系电话：</div>
+                    <div class="ub-f1"><input type="text" id="companyPhone"></div>
+                </div>
+                <div class="ub">
+                    <div>邮箱：</div>
+                    <div class="ub-f1"><input type="text" id="companyEmail"></div>
+                </div>
+                <div class="ub">
+                    <div> 网址：</div>
+                    <div class="ub-f1"><input type="text" id="companyWebsite"></div>
+                </div>
+
+                <div class="gsz"><img src="http://h.ishsls.com/yhqs_h5/purchase/imgg/gzfuben.png"/></div>
+                <div class="clear"></div>
+            </div>
+
+
+            <h4>一、产品定义及解释</h4>
+            <h5>1.1 您</h5>
+            <p>
+                本协议中对客户的尊称，指拟与永恒情书签署协议的具备完全民事行为能力的自然人或具备独立人格的法人、组织等。
+            </p>
+            <h5>1.2 永恒情书</h5>
+            <p>
+                “永恒情书”是指永恒情书平台，是猴赛雷（广州）文化传媒有限公司旗下的女性情感咨询品牌。本协议中提及的应由“永恒情书”行使的权利或履行的义务，由“永恒情书”平台内部负责相关业务范围的职能部门履行，本协议由猴赛雷（广州）文化传媒有限公司代表“永恒情书”与您签署。
+            </p>
+            <h5>1.3永恒情书官网</h5>
+            <p>
+                永恒情书官方网站：<a href="http://www.ellxy.com">http://www.ellxy.com</a>
+            </p>
+            <h5>1.4永恒情书产品</h5>
+            <p>
+                1.4.1 永恒情书产品按照服务人员划分为内部产品、外部产品，内部产品主要由永恒情书内部的专业团队提供，外部产品主要由永恒情书的商业合作伙伴提供。
+            </p>
+            <p>
+                1.4.2 永恒情书产品按照服务内容划分为组合产品与单一产品，组合产品由不同形式的单一产品搭配形成，不同形式的产品在收费标准、服务内容、服务形式、服务有效期、服务人员、购买条件以及优惠政策等方面都存在差异，您可根据自身需求进行选购。
+            </p>
+            <h5>1.5 幸福卫士学习系统</h5>
+            <p>
+                永恒情书自主研发的一套在情感管理专业领域的自学系统，旨在指导您解决在恋爱、婚姻、家庭生活中遇到的各种情感问题。您可通过付费确定套餐后获取该系统的学习权限，在系统开通权限的期限内，您可以不限次地登录系统进行学习，形式主要包含音频课程学习、视频课程学习、文章阅读等。
+            </p>
+            <h5>1.6 一对一跟踪服务</h5>
+            <p>
+                永恒情书根据您选择的套餐标准，指派不同档位的情感咨询服务人员及其相关的辅助人员、形象改造服务人员一起为您提供一对一跟踪服务。服务的形式包括但不限于电话咨询、视频、微信即时沟通等。
+            </p>
+            <h5>1.7 服务人员</h5>
+            <p>
+                指为您提供各个档次情感咨询服务的人员及其相关辅助人员、形象改造服务人员。
+            </p>
+            <p>
+                因内部产品服务人员的流动具有不可预见性，具体服务人员以您预约服务的为准。
+            </p>
+            <h5>1.8 单个小时电话/视频</h5>
+            <p>
+                通过电话/视频的形式提供情感咨询服务，每次服务时间60分钟。
+            </p>
+            <h5>1.9 微信留言咨询</h5>
+            <p>
+                常规套餐中一对一跟踪服务的服务形式之一。在您付费确定套餐所对应的服务有效时间内，若您遇到情感方面紧急情况，可以通过微信不限次地向指定服务人员寻求咨询帮助，工作时间（10：00-22：00）内实时回复，工作时间外需要提前预约。
+            </p>
+            <h5>1.10 服务有效期</h5>
+            <p>
+                指您付费选择套餐后使用永恒情书产品套餐的有效期限，您必须在有效期限内使用完套餐所对应的服务次数。
+            </p>
+
+            <h4>二、产品服务内容</h4>
+            <h5>2.1 您选择的产品服务</h5>
+
+            <table id="service">
+                <tr><td colspan="2"><h4>服务项目</h4></td></tr>
+                <tr><td colspan="2">您选择的产品为：  基础咨询套餐</td></tr>
+                <tr><td colspan="2"><span class="redText">1.一对一跟踪服务 </span><b>（首次咨询时间以永恒请书系统内实际显示时间为准）</b></td></tr>
+                <!--
+                <tr><td colspan="1">（1）.电话咨询指导（60分钟/次），单价为1000 元/次</td><td colspan="1">共  4  次</td></tr>
+                <tr><td colspan="1">（2）.微信陪伴跟踪服务</td><td colspan="1">不限次数</td></tr>
+                <tr><td colspan="1">（3）.形象改造指导服务（微信）</td><td colspan="1">不限次数</td></tr>
+                <tr><td colspan="1">（4）.视频（60分钟/次），单价为2000 元/次</td><td colspan="1">共  0  次</td></tr>
+                <tr><td colspan="1">（5）.服务有效期</td><td colspan="1"><b>自首次咨询之日起计  1  个月</b></td></tr>
+                <tr><td colspan="2"><span class="redText">2.幸福卫士学习权限</span> <b>（自开通之日起计1年，多次购买或续费升级套餐，可叠加）</b></td></tr>
+                <tr><td colspan="1">（1）. 1 年幸福卫士课程学习</td><td colspan="1">不限次数</td></tr>
+                <tr><td colspan="2">您实际应缴纳的金额：  3900 元  您已支付的金额：  0 元</td></tr>
+                -->
+            </table>
+
+            <h5>2.2 产品组成及价格</h5>
+            <p>
+                2.2.1 产品组成 = 一对一情感跟踪服务费用 + 一对一形象改造跟踪服务费用 + 幸福管家学习权限
+            </p>
+            <p>
+                2.2.2 电话咨询/视频的购买价格与服务人员级别相对应，服务人员级别越高，对应的单价越高，但服务有效期统一，即购买1小时有效期为10个自然日，购买2小时有效期为20个自然日，以此类推。
+            </p>
+            <p>
+                2.2.3 若您在套餐次数使用完毕后仍继续单独购买该单项服务的，应按该价格标准续费执行。
+            </p>
+
+            <h4>三、签约及付款方式</h4>
+
+            <h5>3.1 签约方式</h5>
+
+            <p>
+                3.1.1 合同形式：您可通过永恒情书提供的合同浏览协议的全部内容，在您充分阅读并理解协议内容，签名确认后，视为接受本协议的全部内容，本协议在您签名确认后生效。
+            </p>
+
+            <h5>3.2 付款方式</h5>
+
+            <p>
+                确定选购的套餐后，请您尽快付清选购套餐所对应的服务费用，在您付清款项之前，很遗憾无法为您正式启动服务。
+            </p>
+
+            <h4>四、权利与义务</h4>
+
+            <h5>4.1 在您选择永恒情书时，您有权：</h5>
+            <p>
+                4.1.1 有权要求按照协议指派与套餐级别相符的服务人员，并有权无条件在同等价位的服务人员中申请更换服务人员（一个套餐仅限一次），若永恒情书未能及时为您更换的，将额外赠送60分钟的免费咨询服务。
+            </p>
+            <p>
+                4.1.2 有权按照此协议约定的服务内容享受乙方提供的服务，并提出宝贵意见。
+            </p>
+            <p>
+                4.1.3 有权根据您自身的实际情况，在服务有效时间内自由安排咨询的时间。
+            </p>
+            <h5>4.2 与此同时，在您选择永恒情书时，您必须：</h5>
+            <p>
+                4.2.1 必须按照约定预付相应的服务费用；
+            </p>
+            <p>
+                4.2.2 必须提供真实的个人健康信息及情感信息，包括但不限于您自身及对象的健康状况、婚姻史或情感史、年龄、心理重大疾病等可能影响永恒情书正确提供情感咨询服务或者与永恒情书提供服务的价值取向有冲突的信息；
+            </p>
+            <p>
+                4.2.3 必须严格按照协议约定的方式使用永恒情书产品，否则应对您自身行为所产生的不利后果负责。
+            </p>
+            <h5>4.3 在为您提供服务时，永恒情书有权：</h5>
+            <p>
+                4.3.1 有权按照协议约定向您收取相应的服务费用。
+            </p>
+            <p>
+                4.3.2 遇到突然情况时（如指派的服务人员已离职、生病或出现意外情况或家里出现无法准时上班原因或其他客观无法继续服务的），有权为您临时调整一对一跟踪服务的服务人员，但在此之前，永恒情书有义务提前告知您这一消息，同时在指派具体的服务人员方面会听取您的宝贵意见。
+            </p>
+            <p>
+                4.3.3 为了保障服务质量，有权根据实际需要在提供服务的过程中进行录音，但同时永恒情书有义务对录音内容及您的所有信息进行严格保密，并在服务全部履行完毕后定期消除。
+            </p>
+            <p>
+                4.3.4 若发现您提供了虚假的个人健康信息或在服务过程中有充分合理的事由认为您的实际健康情况与所提供的健康信息不一致的，永恒情书有权进一步要求您提供真实的健康情况证明，若证明显示您的实际健康状况不适合继续接受永恒情书服务的，永恒情书有权中止服务或终止服务。
+            </p>
+            <h4>五、注意事项</h4>
+
+            <h5>5.1 提前预约</h5>
+            <p>
+                本协议中一对一跟踪服务均采用提前预约的方式，因此您须主动通过服务微信进行预约，永恒情书平台将根据您的预约提前为您安排服务人员与具体行程，在您确认行程无误后，视为此次预约成功。
+            </p>
+            <h5>5.2 临时变更</h5>
+            <p>
+                预约成功后，若您临时有事需要取消或更换时间的，应至少提前12个小时通知永恒情书，否则当天的咨询次数将照常计算。
+            </p>
+            <h5>5.3 爽约后果</h5>
+            <p>
+                预约当天若永恒情书连续3次主动通过电话\微信等方式联系您，您出现关机、拒绝回复、失联等爽约行为的，视为您完成此次咨询服务。若预约当天永恒情书服务人员未能准时出现的，经您反馈核实后，永恒情书将额外赠送60分钟的免费咨询服务。
+            </p>
+            <h5>5.4 咨询服务有效期届满（若有）</h5>
+            <p>
+                因咨询业务众多，服务人员对个案情感咨询问题的连续跟踪成本较大，您务必在产品的服务有效时间内使用完毕一对一跟踪服务的次数，若您出现怀孕、生产、出国旅游等客观原因导致暂时无法咨询的，可提前向永恒情书申请延期，延期时间最长不超过30日（一个套餐仅限申请延期一次）。若您在服务有效时间届满应有未使用的咨询次数，未使用的服务费用将不再退还。
+            </p>
+            <h4>六、免责条款</h4>
+            <p>
+                6.1 您在接受永恒情书提供的情感咨询服务过程中，应以心理健康、心智成熟的态度为自己负责。您在接受永恒情书服务的过程中发生任何情绪抑郁、自残或者自杀等突发过激行为及突发过激行为可能对外造成的损失，永恒情书对此不承担任何责任。
+            </p>
+            <h4>七、保密约定</h4>
+            <p>
+                7.1 在服务过程中，本协议和收费依据服务内容等双方均有义务永久保密，保密协议不受服务终止而废除，将终身有效。如有一方在未征求对方同意的情况下，不慎泄密，由此造成对方损失和人身伤害的，违约方必须向守约方赔偿其因此遭受的实际损失。
+            </p>
+            <p>
+                7.2 永恒情书承诺对于服务过程中获取的您的个人信息、隐私等一概严格保密；但由于您自身原因或者非乙方原因导致您的个人信息及隐私泄漏的，永恒情书对此不承担任何责任。
+            </p>
+            <h4>八、解除与终止</h4>
+            <p>
+                8.1 协议生效后，您可以单方提出解除合同，但永恒情书有权视履约情况扣除部分的服务费，具体如下：
+            </p>
+            <p>
+                8.1.1 协议生效后，但您尚未进行预约咨询的，永恒情书将收取总咨询服务费用（不含幸福卫士费用）的20%作为手续费后，本协议终止；
+            </p>
+            <p>
+                8.1.2 协议生效且您已预约咨询过，已提供咨询服务对应的服务费用不予退还，永恒情书收取剩余咨询服务费（不含幸福卫士费用）的20%作为手续费后，本协议终止。
+            </p>
+            <p>
+                8.1.3 基于知识产权保护，幸福卫士系统开通后，无论何种原因造成协议解除或终止，费用不予退还，您在系统权限开通的有效期限内，仍可以继续使用。
+            </p>
+            <h4>九、商业贿赂</h4>
+            <p>
+                9.1 您不得向与其有实际或者潜在业务关系的乙方员工和/或家属提供任何的酬金、礼物或者其他有形或无形的利益，此行为将视为商业贿赂行为（在商业交往中按照商业惯例赠送的小额礼品除外），一经发现，永恒情书有权解除协议，并不退回剩余服务费。
+            </p>
+            <p>
+                9.2 若您发现永恒情书员工存在有商业贿赂行为并向永恒情书举报的，一经查实，永恒情书承诺为您免费提供本协议项下的所有服务。
+            </p>
+            <h4>十、其他事项</h4>
+            <p>
+                10.1 如因本协议的履行事宜发生争执或出现本协议意料之外的情形，您应首先联系永恒情书客服，双方应本着友好协商的原则解决。如协商不成，您可依据本协议的约定直接向广州仲裁委员会申请仲裁。
+            </p>
+            <p>
+                10.2 本协议经甲方确认后即时生效。符合本协议3.1款约定的生效条件的，以该款约定为准。
+            </p>
+
+            <div class="signName">
+                <label>甲方：</label><label>乙方：</label>
+            </div>
+            <div class="signName">
+                <label id="sign">代表签字：</label><label>代表签字：</label>
+            </div>
+            <div class="signName">
+                <label id="affirmTime"></label><label id="createTime"></label>
+                <div class="gsz"><img src="http://h.ishsls.com/yhqs_h5/purchase/imgg/gzfuben.png"/></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/config.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/init.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/moment.min.js' charset='utf-8'></script>
+<script src="http://h.ishsls.com/yhqs_h5/purchase/js/js.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    function getQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+
+    function paid(purchaseId){
+        var price = 0;
+
+        $.ajax({
+            url: '/api/1.0/payment/price/' + purchaseId,
+            type: 'GET',
+            dataType: 'json',
+            async: false,
+            success: function(res){
+                if(res.success){
+                    price = res.result;
+                }else{
+                    alert(res.msg);
+                }
+            },
+            error: function(response){
+                console.error(response);
+            }
+        });
+
+        return price;
+    };
+
+    $(function(){
+        var purchaseId = getQueryString('purchaseId');
+
+        if(purchaseId !== undefined && purchaseId !== ''){
+            $.ajax({
+                url: '/api/1.0/agreement/purchaseId/' + purchaseId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(res){
+                    if(res.success){
+                        var price = paid(purchaseId);
+
+                        if(res.result.client !== undefined){
+                            $('#client').val(res.result.client);
+                            $('#sign').append(res.result.client);
+                        }
+                        if(res.result.phone !== undefined){
+                            $('#phone').val(res.result.phone);
+                        }
+                        if(res.result.address !== undefined){
+                            $("#address").val(res.result.address);
+                        }
+                        if(res.result.idCard !== undefined){
+                            $('#idCard').val(res.result.idCard);
+                        }
+                        if(res.result.wechat !== undefined){
+                            $('#wechat').val(res.result.wechat);
+                        }
+                        if(res.result.email !== undefined){
+                            $('#email').val(res.result.email);
+                        }
+                        if(res.result.emergencyContact !== undefined){
+                            $('#emergencyContact').val(res.result.emergencyContact);
+                        }
+                        if(res.result.company !== undefined){
+                            $('#company').val(res.result.company);
+                        }
+                        if(res.result.licenseNumber !== undefined){
+                            $('#licenseNumber').val(res.result.licenseNumber);
+                        }
+                        if(res.result.legalPerson !== undefined){
+                            $('#legalPerson').val(res.result.legalPerson);
+                        }
+                        if(res.result.companyAddress !== undefined){
+                            $('#companyAddress').val(res.result.companyAddress);
+                        }
+                        if(res.result.companyPhone !== undefined){
+                            $('#companyPhone').val(res.result.companyPhone);
+                        }
+                        if(res.result.companyEmail !== undefined){
+                            $('#companyEmail').val(res.result.companyEmail);
+                        }
+                        if(res.result.companyWebsite !== undefined){
+                            $('#companyWebsite').val(res.result.companyWebsite);
+                        }
+                        if(res.result.createTime !== undefined){
+                            $('#createTime').text('日期:' + moment(res.result.createTime).format('YYYY年MM月DD日'));
+                        }else{
+                            $('#createTime').text('日期: 年 月 日');
+                        }
+                        if(res.result.affirmTime !== undefined){
+                            $('#affirmTime').text('日期:' + moment(res.result.affirmTime).format('YYYY年MM月DD日'));
+                        }else{
+                            $('#affirmTime').text('日期: 年 月 日');
+                        }
+
+                        if(res.result.services !== undefined && res.result.services.length > 0){
+                            var html = '';
+
+                            for(var i = 0; i < res.result.services.length; i++){
+                                html += '<tr>'
+                                     + '<td colspan="1">(' + (i+1) + ').'
+                                     + res.result.services[i].description
+                                     + '</td>'
+                                     + '<td colspan="1">' + '共'
+                                     + res.result.services[i].time
+                                     + '次</td>'
+                                     + '</tr>';
+                            }
+                            html += '<tr>'
+                                 + '<td colspan="2">'
+                                 + '您实际应缴纳的金额：'
+                                 + res.result.price
+                                 + '  您已支付的金额：' + price + '元'
+                                 + '</td>'
+                                 + '</tr>';
+
+                            $('#service').append(html);
+                        }
+                    }else{
+                        alert(res.msg);
+                    }
+                },
+                error: function(response){
+                    console.error(response);
+                }
+            });
+        };
+    });
+</script>
+</html>

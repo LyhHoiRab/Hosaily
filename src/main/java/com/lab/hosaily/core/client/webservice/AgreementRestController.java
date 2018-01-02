@@ -2,8 +2,10 @@ package com.lab.hosaily.core.client.webservice;
 
 import com.lab.hosaily.core.client.entity.Agreement;
 import com.lab.hosaily.core.client.service.AgreementService;
+import com.lab.hosaily.core.course.entity.Media;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Response;
+import com.sun.tools.corba.se.idl.ExceptionEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +74,22 @@ public class AgreementRestController{
         try{
             Agreement agreement = agreementService.getByPurchaseId(purchaseId);
 
-            return new Response<Agreement>("查询成功",agreement);
+            return new Response<Agreement>("查询成功", agreement);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 协议确认
+     */
+    @RequestMapping(value = "/affirm/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response affirm(@PathVariable("id") String id){
+        try{
+            agreementService.affirm(id);
+
+            return new Response("协议确认成功", null);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

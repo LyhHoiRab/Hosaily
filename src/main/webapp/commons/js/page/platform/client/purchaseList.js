@@ -1,4 +1,4 @@
-app.controller('purchaseListController', function($scope, $http, $state, $stateParams){
+app.controller('purchaseListController', function($scope, $http, $state, $stateParams, $modal){
     //查询列表
     $scope.organizationId = $stateParams.organizationId;
     $scope.accountId      = $stateParams.accountId;
@@ -92,6 +92,18 @@ app.controller('purchaseListController', function($scope, $http, $state, $stateP
         $state.go('purchaseEdit', {'id':id, 'accountId':$scope.accountId, 'organizationId':$scope.organizationId});
     };
 
+    $scope.openModal = function(id){
+        var modalInstance = $modal.open({
+            templateUrl: 'modal',
+            controller: modalInstanceCtrl,
+            resolve: {
+                qrcodeString : function(){
+                    return 'http://b35fe28b.ngrok.io/page/h5/goPay?purchaseId=' + id;
+                }
+            }
+        });
+    };
+
     $scope.$watch('pagingOptions', function(newVal, oldVal){
         if(newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize)){
             $scope.getData();
@@ -133,7 +145,7 @@ app.controller('purchaseListController', function($scope, $http, $state, $stateP
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="purchaseEdit(row.getProperty(\'id\'))">[修改]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="purchaseEdit(row.getProperty(\'id\'))">[修改]</a><a ng-click="openModal(row.getProperty(\'id\'))">[支付链接二维码]</a></span></div>'
         }]
     };
 
@@ -142,3 +154,11 @@ app.controller('purchaseListController', function($scope, $http, $state, $stateP
     $scope.getState();
     $scope.getPurchaseState();
 });
+
+var modalInstanceCtrl = function($scope, $modalInstance, qrcodeString){
+    $scope.cancel = function(){
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.qrcodeString = qrcodeString;
+};

@@ -6,6 +6,7 @@ import com.rab.babylon.core.base.entity.Update;
 import com.rab.babylon.core.consts.entity.UsingState;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *  购买记录
@@ -20,6 +21,8 @@ public class Purchase implements Create, Update{
     private String organizationId;
     //协议
     private Agreement agreement;
+    //支付记录
+    private List<Payment> payments;
     //下单时间
     private Date orderTime;
     //流程状态
@@ -89,6 +92,14 @@ public class Purchase implements Create, Update{
 
     public void setPurchaseState(PurchaseState purchaseState) {
         this.purchaseState = purchaseState;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
     }
 
     @Override

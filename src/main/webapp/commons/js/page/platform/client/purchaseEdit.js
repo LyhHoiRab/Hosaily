@@ -16,6 +16,7 @@ app.controller('purchaseEditController', function($scope, $http, $state, $stateP
         accountId        : $stateParams.accountId,
         client           : '',
         phone            : '',
+        address          : '',
         idCard           : '',
         wechat           : '',
         email            : '',
