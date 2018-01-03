@@ -102,7 +102,7 @@ public class RecordDao {
     /**
      * 分页查询
      */
-    public Page<Record> page(PageRequest pageRequest, String userName, String num, String outGoingNum, String sim, String userType, String organizationId){
+    public Page<Record> page(PageRequest pageRequest, String userName, String num, String outGoingNum, String sim, String userType, String organizationId, String fileType){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -126,6 +126,9 @@ public class RecordDao {
             }
             if(!StringUtils.isBlank(organizationId)){
                 criteria.and(Restrictions.like("organizationId", organizationId));
+            }
+            if(!StringUtils.isBlank(fileType)){
+                criteria.and(Restrictions.like("fileType", fileType));
             }
 
 

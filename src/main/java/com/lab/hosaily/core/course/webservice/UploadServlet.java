@@ -78,38 +78,57 @@ public class UploadServlet extends HttpServlet {
 
 
                     if (filename.endsWith(".db")) {
-                        System.out.println("db文件上传start!");
+//                        System.out.println("db文件上传start!");
 //                        String uploadPath = "E://test//";
-            String uploadPath = "/opt/project/hsl_api/luyin/";
-                        File file = new File(uploadPath);
-                        if (!file.exists()) {
-                            file.mkdir();
-                        }
-                        is = item.getInputStream(); // 得到上传文件的InputStream对象
-                        // 将路径和上传文件名组合成完整的服务端路径
-                        String outFilePath = uploadPath + filename;
-                        // 如果服务器已经存在和上传文件同名的文件，则输出提示信息
-                        if (new File(outFilePath).exists()) {
-                            new File(outFilePath).delete();
-                        }
-                        // 开始上传文件
-                        if (!outFilePath.equals("")) {
-                            // 用FileOutputStream打开服务端的上传文件
-                            FileOutputStream fos = new FileOutputStream(outFilePath);
-                            byte[] buffer = new byte[8192]; // 每次读8K字节
-                            int count = 0;
-                            // 开始读取上传文件的字节，并将其输出到服务端的上传文件输出流中
-                            while ((count = is.read(buffer)) > 0) {
-                                fos.write(buffer, 0, count); // 向服务端文件写入字节流
-                            }
-                            fos.close(); // 关闭FileOutputStream对象
-                            is.close(); // InputStream对象
-                            out.println("db文件上传成功!");
-                        }
+////            String uploadPath = "/opt/project/hsl_api/luyin/";
+//                        File file = new File(uploadPath);
+//                        if (!file.exists()) {
+//                            file.mkdir();
+//                        }
+//                        is = item.getInputStream(); // 得到上传文件的InputStream对象
+//                        // 将路径和上传文件名组合成完整的服务端路径
+//                        String outFilePath = uploadPath + filename;
+//                        // 如果服务器已经存在和上传文件同名的文件，则输出提示信息
+//                        if (new File(outFilePath).exists()) {
+//                            new File(outFilePath).delete();
+//                        }
+//                        // 开始上传文件
+//                        if (!outFilePath.equals("")) {
+//                            // 用FileOutputStream打开服务端的上传文件
+//                            FileOutputStream fos = new FileOutputStream(outFilePath);
+//                            byte[] buffer = new byte[8192]; // 每次读8K字节
+//                            int count = 0;
+//                            // 开始读取上传文件的字节，并将其输出到服务端的上传文件输出流中
+//                            while ((count = is.read(buffer)) > 0) {
+//                                fos.write(buffer, 0, count); // 向服务端文件写入字节流
+//                            }
+//                            fos.close(); // 关闭FileOutputStream对象
+//                            is.close(); // InputStream对象
+//                            out.println("db文件上传成功!");
+//                        }
+
+
+                        //上传路径
+//                        13e641322d9c097d047afff4e298872a_EnMicroMsg.db
+                        System.out.println("db文件上传start!");
+                        String filePath = UpyunUtils.RECORD_WX_DB_DIR + filename;
+                        System.out.println(filePath);
+                        //上传
+                        boolean result = UpyunUtils.writerFile(filePath, item.getInputStream(), true, null);
+                        System.out.println("AAAAAAAAAAAAAAA: " + result);
+                        String[] paramArr = filename.split("_");
+                        String outFilePath = "http://kuliao.b0.upaiyun.com" + filePath;
+                        System.out.println("AAAAAAAAAAAAAAA: " + outFilePath);
+                        Record record = new Record();
+                        record.setCreateTime(new Date());
+                        record.setFileType("db");
+                        record.setUidMd5(paramArr[0]);
+                        recordService.save(record);
+                        out.println("db文件上传成功!");
                     } else {
                         //上传路径
                         System.out.println("mp3文件上传start!");
-                        String filePath = UpyunUtils.MEI_RONG_ASK_LU_YIN_DIR + filename;
+                        String filePath = UpyunUtils.RECORD_LU_YIN_DIR + filename;
                         System.out.println(filePath);
                         //上传
                         boolean result = UpyunUtils.writerFile(filePath, item.getInputStream(), true, null);
@@ -132,6 +151,7 @@ public class UploadServlet extends HttpServlet {
                         System.out.println("Format To Date:" + date);
                         record.setCreateTime(date);
                         record.setPath(outFilePath);
+                        record.setFileType("mp3");
                         recordService.save(record);
                         out.println("文件上传成功!");
                     }

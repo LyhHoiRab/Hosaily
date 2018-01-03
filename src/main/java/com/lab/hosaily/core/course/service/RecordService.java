@@ -30,5 +30,5 @@ public interface RecordService {
     /**
      * 分页查询
      */
-    Page<Record> page(PageRequest pageRequest, String userName, String num, String outGoingNum, String sim, String userType, String organizationId);
+    Page<Record> page(PageRequest pageRequest, String userName, String num, String outGoingNum, String sim, String userType, String organizationId, String fileType);
 }

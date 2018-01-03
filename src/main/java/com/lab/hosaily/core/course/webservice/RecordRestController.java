@@ -75,10 +75,10 @@ public class RecordRestController {
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Record>> page(Long pageNum, Long pageSize, String userName, String num, String outGoingNum, String sim, String userType, String organizationId){
+    public Response<Page<Record>> page(Long pageNum, Long pageSize, String userName, String num, String outGoingNum, String sim, String userType, String organizationId, String fileType){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Record> page = recordService.page(pageRequest, userName, num, outGoingNum, sim, userType, organizationId);
+            Page<Record> page = recordService.page(pageRequest, userName, num, outGoingNum, sim, userType, organizationId, fileType);
 
             return new Response<Page<Record>>("查询成功", page);
         }catch(Exception e){

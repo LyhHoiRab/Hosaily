@@ -100,11 +100,11 @@ public class RecordServiceImpl implements RecordService {
      * 分页查询
      */
     @Override
-    public Page<Record> page(PageRequest pageRequest, String userName, String num, String outGoingNum, String sim, String userType, String organizationId){
+    public Page<Record> page(PageRequest pageRequest, String userName, String num, String outGoingNum, String sim, String userType, String organizationId, String fileType){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return recordDao.page(pageRequest, userName, num, outGoingNum, sim, userType, organizationId);
+            return recordDao.page(pageRequest, userName, num, outGoingNum, sim, userType, organizationId, fileType);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
