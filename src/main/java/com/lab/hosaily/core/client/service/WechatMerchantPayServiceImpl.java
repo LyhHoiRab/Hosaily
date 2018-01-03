@@ -58,7 +58,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
             String appId = "wx0d7797805ed0d9b3";
             String mchId = "1492968172";
             String appKey = "7W80cW9zmjGTnodn4BEZwVvkU8BtJar8";
-            String notifyUrl = "http://wx.ishsls.com/api/1.0/wechatMerchantPay/callback";
+            String notifyUrl = "http://www.klpua.com/api/1.0/wechatMerchantPay/callback";
 
             //购买记录
             Purchase purchase = purchaseDao.getById(purchaseId);
@@ -145,7 +145,6 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
             if(response != null && response.getReturnCode().equalsIgnoreCase("SUCCESS")){
                 if(response.getResultCode().equalsIgnoreCase("SUCCESS")){
                     //TODO 验证签名
-
                     String paymentId = response.getOutTradeNo();
                     //支付记录
                     Payment payment = paymentDao.getById(paymentId);

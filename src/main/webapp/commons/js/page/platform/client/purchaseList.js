@@ -98,7 +98,8 @@ app.controller('purchaseListController', function($scope, $http, $state, $stateP
             controller: modalInstanceCtrl,
             resolve: {
                 qrcodeString : function(){
-                    return 'http://b35fe28b.ngrok.io/page/h5/goPay?purchaseId=' + id;
+                    return 'http://ell.ishsls.com/page/h5/goPay?purchaseId=' + id;
+                    //return 'http://5542abc1.ngrok.io/page/h5/goPay?purchaseId=' + id;
                 }
             }
         });

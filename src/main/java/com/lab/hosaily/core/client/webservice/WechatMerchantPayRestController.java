@@ -47,8 +47,6 @@ public class WechatMerchantPayRestController{
     @RequestMapping(value = "/callback", method = {RequestMethod.POST, RequestMethod.GET}, produces = MediaType.APPLICATION_XML_VALUE)
     public String callback(HttpServletRequest request, HttpServletResponse response){
         try{
-            logger.info("==> wechatMerchantPay callback <==");
-
             String xml = XMLUtils.read(request.getInputStream());
 
             return wechatMerchantPayService.callback(xml);

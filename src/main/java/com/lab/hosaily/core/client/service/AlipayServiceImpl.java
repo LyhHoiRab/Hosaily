@@ -54,15 +54,20 @@ public class AlipayServiceImpl implements AlipayService{
             Assert.notNull(totalFee, "支付金额不能为空");
 
             //TODO 根据企业ID查询支付账号信息
-            String appId = "2016082100306752";
+            //沙箱
+//            String appId = "2016082100306752";
+            //永恒情书
+            String appId = "2017102309477484";
             String privateKey = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCFk732mgoE2CQu1UJCAbwGE+hf0Bm1VtEkuyDtqyuATeq+Sk22ZKY1WctUN+DYRkgf2I9Fy8nI4rKUbWtcngr7+DZeXtUOKvPLVhlOW+JQJeJNJzeM4T4Yg3AIyOOf1DqMTSCHgKXpQp64c9v6hEY7v4tdupJSYCXaRZXRt34WOPPIQEh6e050u/jNWISraps60zzYaeH80cyIcsEWnvygrk9bvX0lUL49DOTYbC34I1oj53P6bhJdkvIFS6OejI2k/JUGHKXj3Y0SJCesz5JPjJtK68KIFshvqV5ozQVYkDRebm+IIdDBcQfOIeVu8U7teVGDiWAWb2CKTzXqXw/NAgMBAAECggEAazq46jeqB02Dbl0f/WDrEW31wsSJfrsc1YGq41/fYfYqlWuMivitPHLC+O6KftOcnoP4L61yZOMnPGPCJe1xH+iXrJYwLllosDiDxBWazYA79Heg7mT6ti79RvANWobCIVLg5CXwChrC04uecbKxttEDDdDyGVK50EjABkRo4WjZzPzURtEaGjOziqNYmRP7kHGbDfyRjOQrt4wr162AY3G6gWXT/jG7Sl/op7uz1tpPVNDb2GFDqW+KzHZChi7gK3s9dcEW33L8OkL80TclbkMlH116WdGtkILGKGRWxSaWL7RHwp67DamqtfB8Da1F+Zo5fM2RCGHVYU1TiFNuQQKBgQC7nKW+Vyb0fxIZdOH2Wg4rrIgV0ykt7XGWtrb3B2D5ociJ6VYViVMIl5MdLbqNxLYlW6Xk6z1QwOoloDVAeL0J98eMYqYCyDbhqP7Q/tJXhIFmdfP3YRWJA6Z7Q/ety4jG9g1PHrL7TD7GiVDJC4E3Y9sOHXpaBpFnKhfuedsliQKBgQC2RL0DjlhxsInHEAYJ0w51vkk6Waj+Xc6qVP/KKFgfT6mqsCvWkskywCetBbclWez1BcLnSxNii+UgOelD1nV45stR/lGQn9Tl6dN3xHXkue6gYys6f94WzLdnGCF1wHI9O6OgvkOqD5m+PT1SKCngmKI6hx9zu2YgNe/NorfLJQKBgARZ7b4sZ0rkZ5cPju4XyJxatA1NiHb4Oto0AqpYEXe4uN35+3UkajiYy2Cx3tHK7i6PoZldm150GvokbRfBtSC2DnrDDvahjiRNtxtBzb8Z46ZstevW5Jj47LOPL/9n6RQ0QLrFC4GokwwnwyfmjGiseDgrltrfrB+oakWtrdeBAoGAeQQwnwDO1kVJZSLNb45zRlfeFODc5G5yPgOLhbS9taRV2V9469GvxoNwlF98F0+alaCKpLjjGQYbTgdFSmZEvs415q29iBGm8DQM1LNbN08AEftmA0RMt8SabNfHt3/cGa3UWXCaSnprMLVGVpsWGuocpFF834FoMDC/lD/aWgUCgYB6MSwnqw5/Q2NuKG9pWmDwsRQl2CuDtGZ6MqxSkoOfiR0DFa8IgsrIOnsVgjbBa2eJ73xTzYGU3gRWs4BsAsy9FBVuDdNFaioIu8FENInVPuvd/5MMVh1PrkQ2l7xz4jXjLqQZbOJOwSkfctkfhaywgOOlJI8x3IQZHoNNZ0bFEQ==";
-            String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8qHy88srmdlrQl37tSPZmIpz0uJ5fOfbVds/cMktknRNqiPUc2khQeVba2t/JC8Xak0J/iTqWHPkiRpv5CTBTduCwOPb7UYz7uBdrKept5rg5iyDoxxY610VRt+li2gaT0RuVPQyrvIju5AUqypZoyaiWCnMFQvFGYqWJ+Fmwfjkzy9ZGUoAIXQuH3mjxWqf6vIE/+AEqApKFOuI8w0NR5CPa8vDv787JVFILQ1MBaLnQtG1t4TDTUV9m1tn7TwJ5OPAsf26ERmljDLP3XgF+AGesmOhmsdl7hy8vxoIRzGbLQxgRlhjSu8YRXeqh9deIiJ73fSo50it9GjnMbd2uQIDAQAB";
+//            String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8qHy88srmdlrQl37tSPZmIpz0uJ5fOfbVds/cMktknRNqiPUc2khQeVba2t/JC8Xak0J/iTqWHPkiRpv5CTBTduCwOPb7UYz7uBdrKept5rg5iyDoxxY610VRt+li2gaT0RuVPQyrvIju5AUqypZoyaiWCnMFQvFGYqWJ+Fmwfjkzy9ZGUoAIXQuH3mjxWqf6vIE/+AEqApKFOuI8w0NR5CPa8vDv787JVFILQ1MBaLnQtG1t4TDTUV9m1tn7TwJ5OPAsf26ERmljDLP3XgF+AGesmOhmsdl7hy8vxoIRzGbLQxgRlhjSu8YRXeqh9deIiJ73fSo50it9GjnMbd2uQIDAQAB";
+            String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh8aEZ7mjfCUk1bgau+4OBuzlYwUJQjqsycOUE012FnWG6iJXsmz1G/FY10sj56jhkvfljBWA5IdSQiaorK64WErdiPWnAfSVeFISs5I9ojDYKrD7QlIdKsTpMUNgqQa9DctTWeMdU80uRp+cICNs2VD/8FOQO1USLn4PwjPR5yO7TG7h/t7g7I5gQuafIalnapT5D1KwPvJtokDSt/5RC9SrwaH/mjH7M3TBavwX9zlhQBfDG6H00GRnXLN0wKdW9AGJGON3qqcQ2gQkj4lYyowfKfsdv8vrvVq4h2PwOm9ttERp1erO77DdVM/B0iDVcD/J2Yawun5vAqm2VDSSvwIDAQAB";
             String signType = "RSA2";
             String format = "JSON";
             String charset = "UTF-8";
-            String api = "https://openapi.alipaydev.com/gateway.do";
-            String returnUrl = "http://9435845f.ngrok.io/api/1.0/alipay/return";
-            String notifyUrl = "http://9435845f.ngrok.io/api/1.0/alipay/callback";
+//            String api = "https://openapi.alipaydev.com/gateway.do";
+            String api = "https://openapi.alipay.com/gateway.do";
+            String returnUrl = "http://www.klpua.com/api/1.0/alipay/return";
+            String notifyUrl = "http://www.klpua.com/api/1.0/alipay/callback";
 
             //创建支付记录
             Payment payment = new Payment();
@@ -128,7 +133,7 @@ public class AlipayServiceImpl implements AlipayService{
             Purchase purchase = purchaseDao.getById(payment.getPurchaseId());
 
             //TODO 根据企业ID查询支付账号信息
-            String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8qHy88srmdlrQl37tSPZmIpz0uJ5fOfbVds/cMktknRNqiPUc2khQeVba2t/JC8Xak0J/iTqWHPkiRpv5CTBTduCwOPb7UYz7uBdrKept5rg5iyDoxxY610VRt+li2gaT0RuVPQyrvIju5AUqypZoyaiWCnMFQvFGYqWJ+Fmwfjkzy9ZGUoAIXQuH3mjxWqf6vIE/+AEqApKFOuI8w0NR5CPa8vDv787JVFILQ1MBaLnQtG1t4TDTUV9m1tn7TwJ5OPAsf26ERmljDLP3XgF+AGesmOhmsdl7hy8vxoIRzGbLQxgRlhjSu8YRXeqh9deIiJ73fSo50it9GjnMbd2uQIDAQAB";
+            String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh8aEZ7mjfCUk1bgau+4OBuzlYwUJQjqsycOUE012FnWG6iJXsmz1G/FY10sj56jhkvfljBWA5IdSQiaorK64WErdiPWnAfSVeFISs5I9ojDYKrD7QlIdKsTpMUNgqQa9DctTWeMdU80uRp+cICNs2VD/8FOQO1USLn4PwjPR5yO7TG7h/t7g7I5gQuafIalnapT5D1KwPvJtokDSt/5RC9SrwaH/mjH7M3TBavwX9zlhQBfDG6H00GRnXLN0wKdW9AGJGON3qqcQ2gQkj4lYyowfKfsdv8vrvVq4h2PwOm9ttERp1erO77DdVM/B0iDVcD/J2Yawun5vAqm2VDSSvwIDAQAB";
             String charset = "UTF-8";
             String signType = "RSA2";
 

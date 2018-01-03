@@ -205,6 +205,21 @@
 			}
 		};
 
+		//参数0提示支付宝 其他参数为提示微信
+		function openZheTips(num){
+			if(num == 0){
+				num = '支付宝支付请在手机浏览器中打开支付';
+			}else{
+				num = '微信支付请在微信中打开支付';
+			}
+			var str = '<div class="zheTips"><div class="textLoca"><div class="text">'+num+'<img src="http://h.ishsls.com/yhqs_h5/purchase/img/614760366167123783.png"/></div></div></div>';
+			$('.page').append(str);
+
+			$('.zheTips').click(function(){
+				$(this).remove();
+			});
+		};
+
 		$(function(){
 			agreement();
 
@@ -212,8 +227,17 @@
 				var isWeChatPay = $('.lfetText.payChecked').html().indexOf("微信") >= 0;
 
 				if(isWeChatPay){
+					if(!isWeiXin()){
+						openZheTips(1);
+						return;
+					}
+
 					wechatPay();
 				}else{
+					if(isWeiXin()){
+						openZheTips(0);
+						return;
+					}
 					alipay();
 				}
 			});
