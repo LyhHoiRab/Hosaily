@@ -57,6 +57,8 @@
             <groupId>org.alipay</groupId>
             <artifactId>alipay</artifactId>
             <version>${alipay.version}</version>
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/alipay-20170307171631.jar</systemPath>-->
         </dependency>
 
         <!-- test -->

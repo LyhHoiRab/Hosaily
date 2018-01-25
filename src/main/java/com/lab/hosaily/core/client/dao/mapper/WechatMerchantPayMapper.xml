@@ -166,7 +166,7 @@
                  prepay_id = #{prepayId, jdbcType=VARCHAR},
              </if>
              <if test="isSuccess != null">
-                 is_success = #{isSuccess, jdbcTyp=BOOLEAN},
+                 is_success = #{isSuccess, jdbcType=BOOLEAN},
              </if>
              <if test="msg != null">
                  msg = #{msg, jdbcType=VARCHAR},

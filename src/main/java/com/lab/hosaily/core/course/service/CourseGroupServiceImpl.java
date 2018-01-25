@@ -148,7 +148,7 @@ public class CourseGroupServiceImpl implements CourseGroupService{
 
             Course course = courseDao.getCourseById(courseId);
 
-            if(course.getAuthorization()){
+            if(!course.getAuthorization()){
                 return true;
             }
 

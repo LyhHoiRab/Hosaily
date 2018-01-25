@@ -148,7 +148,8 @@ public class AlipayServiceImpl implements AlipayService{
                 //简单验证
                 if(alipay != null
                         && alipay.getTotalAmount().equals(totalFee)
-                        && alipay.getAppId().equals(appid)){
+                        && alipay.getAppId().equals(appid)
+                        && AlipayStatus.valueOf(status).equals(AlipayStatus.TRADE_SUCCESS)){
 
                     //更新支付记录
                     if(payment.getState().equals(PayState.UNCONFIRMED)){

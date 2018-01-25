@@ -146,6 +146,7 @@ public class WechatMerchantPayUtils{
 
             sb.append((i == 0 ? "" : "&") + key + "=" + value);
         }
+        sb.append("&key=" + wechatMerchantPay.getKey());
 
         params.put("sign", MD5Utils.encrypt(sb.toString()).toUpperCase());
         return params;
