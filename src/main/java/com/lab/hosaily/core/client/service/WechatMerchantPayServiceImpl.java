@@ -1,7 +1,9 @@
 package com.lab.hosaily.core.client.service;
 
+import com.lab.hosaily.commons.response.wechat.AccessTokenResponse;
 import com.lab.hosaily.commons.response.wechat.WechatMerchantPayCallbackResponse;
 import com.lab.hosaily.commons.response.wechat.WechatMerchantPayResponse;
+import com.lab.hosaily.commons.utils.WeChatUtils;
 import com.lab.hosaily.commons.utils.WechatMerchantPayUtils;
 import com.lab.hosaily.core.account.dao.WeChatAccountDao;
 import com.lab.hosaily.core.account.entity.WeChatAccount;
@@ -50,12 +52,13 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
      */
     @Override
     @Transactional(readOnly = false)
-    public Map<String, String> prepay(String purchaseId, Double totalFee){
+    public Map<String, String> prepay(String purchaseId, Double totalFee, String code){
         try{
             Assert.notNull(totalFee, "支付金额不能为空");
 
             //TODO 根据企业ID查询支付账号信息
             String appId = "wx0d7797805ed0d9b3";
+            String appSecret = "e501dada14c76fb852bc7efa1a5543c7";
             String mchId = "1492968172";
             String appKey = "7W80cW9zmjGTnodn4BEZwVvkU8BtJar8";
             String notifyUrl = "http://www.klpua.com/api/1.0/wechatMerchantPay/callback";
@@ -73,14 +76,25 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
             paymentDao.saveOrUpdate(payment);
 
             //查询微信账户
-            WeChatAccount account = weChatAccountDao.getByAccountIdAndAppId(purchase.getAccountId(), appId);
+            String openId = "";
+            if(!StringUtils.isBlank(purchase.getAccountId())){
+                WeChatAccount account = weChatAccountDao.getByAccountIdAndAppId(purchase.getAccountId(), appId);
+                openId = account.getOpenId();
+            }else if(!StringUtils.isBlank(code)){
+                AccessTokenResponse token = WeChatUtils.getAccessToken(code, appId, appSecret);
+                openId = token.getOpenId();
+            }
+
+            if(StringUtils.isBlank(openId)){
+                throw new ServiceException("未知用户");
+            }
 
             //创建微信商户支付记录
             WechatMerchantPay wechatMerchantPay = new WechatMerchantPay();
             wechatMerchantPay.setAppId(appId);
             wechatMerchantPay.setMchId(mchId);
             wechatMerchantPay.setKey(appKey);
-            wechatMerchantPay.setOpenId(account.getOpenId());
+            wechatMerchantPay.setOpenId(openId);
             wechatMerchantPay.setNonceStr(UUIDGenerator.by32());
             wechatMerchantPay.setBody("永恒情书服务支付");
             wechatMerchantPay.setOutTradeNo(payment.getId());

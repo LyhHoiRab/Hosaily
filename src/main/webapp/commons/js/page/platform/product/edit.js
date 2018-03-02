@@ -2,6 +2,7 @@ app.controller('productEditController', function($scope, $http, $state, $statePa
     //下拉
     $scope.states        = {};
     $scope.organizations = [];
+    $scope.types         = {};
 
     //实体
     $scope.product = {
@@ -21,7 +22,8 @@ app.controller('productEditController', function($scope, $http, $state, $statePa
             name        : '',
             description : '',
             time        : 0,
-            unitPrice   : 0
+            unitPrice   : 0,
+            type        : ''
         };
 
         $scope.product.services.push(service);
@@ -89,6 +91,19 @@ app.controller('productEditController', function($scope, $http, $state, $statePa
         });
     };
 
+    $scope.getType = function(){
+        $http({
+            url: '/api/1.0/serviceType/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.types = res.result;
+            }
+        }).error(function(response){
+            $scope.types = {};
+        });
+    };
+
     $scope.getOrganization = function(){
         $http({
             url: '/api/1.0/organization/list',
@@ -110,6 +125,7 @@ app.controller('productEditController', function($scope, $http, $state, $statePa
 
     //初始化
     $scope.getState();
+    $scope.getType();
     $scope.getOrganization();
     $scope.getById();
 });

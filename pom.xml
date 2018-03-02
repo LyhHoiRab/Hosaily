@@ -16,6 +16,7 @@
         <project.jdk.source>1.7</project.jdk.source>
         <project.jdk.target>1.7</project.jdk.target>
 
+        <alipay.version>20170307171631</alipay.version>
         <aspectj.version>1.7.4</aspectj.version>
         <assertj.version>1.5.0</assertj.version>
         <babylon.version>1.0.2</babylon.version>
@@ -29,6 +30,7 @@
         <httpclient.version>4.3.5</httpclient.version>
         <junit.version>4.11</junit.version>
         <logback.version>1.1.1</logback.version>
+        <lombok.version>1.16.18</lombok.version>
         <mybatis.version>3.2.7</mybatis.version>
         <mybatis-spring.version>1.2.2</mybatis-spring.version>
         <mysql.version>5.0.8</mysql.version>
@@ -40,7 +42,7 @@
         <upyun.version>3.13</upyun.version>
         <velocity.version>1.7</velocity.version>
         <velocity-tools.version>2.0</velocity-tools.version>
-        <alipay.version>20170307171631</alipay.version>
+        <yunpian.version>1.2.6</yunpian.version>
     </properties>
 
     <dependencies>
@@ -266,6 +268,21 @@
             <groupId>com.upyun</groupId>
             <artifactId>java-sdk</artifactId>
             <version>3.13</version>
+        </dependency>
+
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- 云片 -->
+        <dependency>
+            <groupId>com.yunpian.sdk</groupId>
+            <artifactId>yunpian-java-sdk</artifactId>
+            <version>${yunpian.version}</version>
         </dependency>
     </dependencies>
 

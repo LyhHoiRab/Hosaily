@@ -32,6 +32,9 @@ public class ServiceDao{
                 Date now = new Date();
 
                 for(Service service : services){
+                    Assert.notNull(service, "服务信息不能为空");
+                    Assert.notNull(service.getType(), "服务类型不能为空");
+
                     service.setId(UUIDGenerator.by32());
                     service.setMasterId(masterId);
                     service.setCreateTime(now);

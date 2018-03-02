@@ -96,22 +96,23 @@
 			$('#yyd').change(function(){
 				var isChecked = $(this).is(':checked');
 				if(isChecked){
-					$.ajax({
-						url: '/api/1.0/agreement/affirm/' + $('#agreementId').val(),
-						type: 'GET',
-						dataType: 'json',
-						success: function(res){
-							if(res.success){
-								$('.btnPay').addClass('btnPay_on');
-								$('.goPay').append('<div class="zhezhu"></div>');
-							}else{
-								alert(res.msg);
-							}
-						},
-						error: function(response){
-							console.error(response);
-						}
-					});
+//					$.ajax({
+//						url: '/api/1.0/agreement/affirm/' + $('#agreementId').val(),
+//						type: 'GET',
+//						dataType: 'json',
+//						success: function(res){
+//							if(res.success){
+//								$('.btnPay').addClass('btnPay_on');
+//								$('.goPay').append('<div class="zhezhu"></div>');
+//							}else{
+//								alert(res.msg);
+//							}
+//						},
+//						error: function(response){
+//							console.error(response);
+//						}
+//					});
+					$('.btnPay').addClass('btnPay_on');
 				}else{
 					$('.btnPay').removeClass('btnPay_on');
 				}

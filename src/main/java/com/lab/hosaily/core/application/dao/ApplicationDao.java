@@ -99,7 +99,7 @@ public class ApplicationDao{
 
             Criteria criteria = new Criteria();
             criteria.and(Restrictions.eq("a.isDelete", false));
-            criteria.setLimit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             if(!StringUtils.isBlank(name)){
                 criteria.and(Restrictions.like("a.name", name));

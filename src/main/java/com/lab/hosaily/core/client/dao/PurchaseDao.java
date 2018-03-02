@@ -38,10 +38,11 @@ public class PurchaseDao{
 
             if(StringUtils.isBlank(purchase.getId())){
                 Assert.hasText(purchase.getOrganizationId(), "企业ID不能为空");
-                Assert.hasText(purchase.getAccountId(), "账户ID不能为空");
+//                Assert.hasText(purchase.getAccountId(), "账户ID不能为空");
                 Assert.notNull(purchase.getAgreement(), "协议信息不能为空");
 
                 purchase.setId(UUIDGenerator.by32());
+                purchase.setState(UsingState.NORMAL);
                 purchase.setOrderTime(new Date());
                 purchase.setCreateTime(new Date());
                 mapper.save(purchase);

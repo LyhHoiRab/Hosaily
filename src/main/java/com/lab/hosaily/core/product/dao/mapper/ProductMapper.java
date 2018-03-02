@@ -31,6 +31,11 @@ public interface ProductMapper{
     List<Product> findByParams(@Param("params") Criteria criteria);
 
     /**
+     * 查询ID
+     */
+    List<String> findIdByParams(@Param("params") Criteria criteria);
+
+    /**
      * 查询数量
      */
     Long countByParams(@Param("params") Criteria criteria);

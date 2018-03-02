@@ -46,6 +46,7 @@ public class PurchaseServiceImpl implements PurchaseService{
             Assert.notNull(purchase.getAgreement(), "协议信息不能为空");
 
             //保存购买记录
+            purchase.setState(UsingState.NORMAL);
             purchaseDao.saveOrUpdate(purchase);
             //保存协议
             Agreement agreement = purchase.getAgreement();

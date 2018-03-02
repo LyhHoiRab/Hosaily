@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.product.entity;
 
+import com.lab.hosaily.core.product.consts.ServiceType;
 import com.rab.babylon.core.base.entity.Create;
 import com.rab.babylon.core.base.entity.Update;
 
@@ -23,6 +24,8 @@ public class Service implements Create, Update{
     private Date createTime;
     //更新时间
     private Date updateTime;
+    //服务类型
+    private ServiceType type;
 
     public Service(){
 
@@ -74,6 +77,14 @@ public class Service implements Create, Update{
 
     public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public ServiceType getType() {
+        return type;
+    }
+
+    public void setType(ServiceType type) {
+        this.type = type;
     }
 
     @Override

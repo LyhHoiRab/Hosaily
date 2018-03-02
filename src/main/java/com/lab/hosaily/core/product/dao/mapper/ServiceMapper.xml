@@ -9,6 +9,7 @@
         <result column="description"    property="description"  javaType="java.lang.String"/>
         <result column="time"           property="time"         javaType="java.lang.Integer"/>
         <result column="unit_price"     property="unitPrice"    javaType="java.lang.Double"/>
+        <result column="type"           property="type"         typeHandler="serviceTypeHandler"/>
         <result column="create_time"    property="createTime"   javaType="java.util.Date"/>
         <result column="update_time"    property="updateTime"   javaType="java.util.Date"/>
     </resultMap>
@@ -22,7 +23,8 @@
                description,
                time,
                unit_price,
-               create_time
+               create_time,
+               type
         ) VALUES
         <foreach collection="services" item="service" separator=",">
             (
@@ -32,7 +34,8 @@
                 #{service.description, jdbcType=VARCHAR},
                 #{service.time,        jdbcType=INTEGER},
                 #{service.unitPrice,   jdbcType=DOUBLE},
-                #{service.createTime,  jdbcType=TIMESTAMP}
+                #{service.createTime,  jdbcType=TIMESTAMP},
+                #{service.type,        typeHandler=serviceTypeHandler}
             )
         </foreach>
     </insert>

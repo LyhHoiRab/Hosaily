@@ -1,0 +1,211 @@
+<ol class="breadcrumb">
+    <li>
+        <span>下单管理</span>
+    </li><!-- item -->
+    <li>
+        <a ui-sref="purchase">订单管理</a>
+    </li><!-- item -->
+    <li>
+        <span ng-show="purchase.id">
+            修改订单
+        </span>
+        <span ng-show="!purchase.id">
+            添加订单
+        </span>
+    </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+    <div class="container-fluid">
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">客户名称</span>
+                <input type="text" class="form-control" placeholder="客户名称" ng-model="agreement.client">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">客户联系方式</span>
+                <input type="text" class="form-control" placeholder="客户联系方式" ng-model="agreement.phone">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">客户地址</span>
+                <input type="text" class="form-control" placeholder="客户地址" ng-model="agreement.address">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">身份证</span>
+                <input type="text" class="form-control" placeholder="身份证" ng-model="agreement.idCard">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">微信号</span>
+                <input type="text" class="form-control" placeholder="微信号" ng-model="agreement.wechat">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">邮箱</span>
+                <input type="text" class="form-control" placeholder="邮箱" ng-model="agreement.email">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">紧急联系人</span>
+                <input type="text" class="form-control" placeholder="紧急联系人" ng-model="agreement.emergencyContact">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">公司名称</span>
+                <input type="text" class="form-control" placeholder="公司名称" ng-model="agreement.company">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">营业执照注册号</span>
+                <input type="text" class="form-control" placeholder="营业执照注册号" ng-model="agreement.licenseNumber">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">法定代表人</span>
+                <input type="text" class="form-control" placeholder="法定代表人" ng-model="agreement.legalPerson">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">公司地址</span>
+                <input type="text" class="form-control" placeholder="公司地址" ng-model="agreement.companyAddress">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">公司联系电话</span>
+                <input type="text" class="form-control" placeholder="公司联系电话" ng-model="agreement.companyPhone">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">公司邮箱</span>
+                <input type="text" class="form-control" placeholder="公司邮箱" ng-model="agreement.companyEmail">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">公司网址</span>
+                <input type="text" class="form-control" placeholder="公司网址" ng-model="agreement.companyWebsite">
+            </div>
+        </div><!-- item -->
+
+        <!--<div class="row-group">-->
+            <!--<div class="input-group">-->
+                <!--<span class="input-group-addon">状态</span>-->
+                <!--<select class="form-control" ng-model="state" ng-options="key as value for (key, value) in states">-->
+                    <!--<option value="">请选择</option>-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!-- item -->
+
+        <div class="row-group" ng-show="products.length > 0">
+            <div class="input-group">
+                <span class="input-group-addon">套餐</span>
+                <select class="form-control" ng-model="product" ng-options="product as product.name for product in products">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">套餐价格</span>
+                <input type="number" class="form-control" placeholder="套餐价格" ng-model="agreement.retail" readonly="readonly">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">售价</span>
+                <input type="number" class="form-control" placeholder="售价" ng-model="agreement.price">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">有效期(月)</span>
+                <input type="number" class="form-control" placeholder="有效期(月)" ng-model="agreement.duration">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group" ng-show="agreement.services.length > 0">
+            <div class="item-group">
+                <div class="row" ng-repeat="item in agreement.services">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">名称</span>
+                            <input type="text" class="form-control" placeholder="名称" ng-model="item.name">
+                        </div>
+                    </div><!-- item -->
+
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">描述</span>
+                            <input type="text" class="form-control" placeholder="描述" ng-model="item.description">
+                        </div>
+                    </div><!-- item -->
+
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">服务次数</span>
+                            <input type="number" class="form-control" placeholder="服务次数" ng-model="item.time">
+                        </div>
+                    </div><!-- item -->
+
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">单价</span>
+                            <input type="number" class="form-control" placeholder="单价" ng-model="item.unitPrice">
+                        </div>
+                    </div><!-- item -->
+
+                    <!--<div class="col-xs-12">-->
+                        <!--<a href="javascript:;" ng-click="serviceDelete(item.id)">[删除]</a>-->
+                    <!--</div>-->
+                    <!-- item -->
+                </div><!-- row -->
+            </div><!-- item group -->
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="button-group">
+                <!--<button type="button" class="btn" ng-click="serviceAdd()">-->
+                    <!--<i class="fa fa-plus"></i>-->
+                    <!--添加服务-->
+                <!--</button>-->
+
+                <button type="button" class="btn" ng-click="submit()">
+                    <i class="fa fa-check"></i>
+                    提交
+                </button>
+            </div>
+        </div><!-- item -->
+    </div><!-- container -->
+</div><!-- table info -->

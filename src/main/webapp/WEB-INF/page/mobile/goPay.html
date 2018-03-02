@@ -96,34 +96,53 @@
 			$('#yyd').change(function(){
 				var isChecked = $(this).is(':checked');
 				if(isChecked){
-					$.ajax({
-						url: '/api/1.0/agreement/affirm/' + $('#agreementId').val(),
-						type: 'GET',
-						dataType: 'json',
-						success: function(res){
-							if(res.success){
-								btnPayClick();
-							}else{
-								alert(res.msg);
-							}
-						},
-						error: function(response){
-							console.error(response);
-						}
-					});
+//					$.ajax({
+//						url: '/api/1.0/agreement/affirm/' + $('#agreementId').val(),
+//						type: 'GET',
+//						dataType: 'json',
+//						success: function(res){
+//							if(res.success){
+//								btnPayClick();
+//							}else{
+//								alert(res.msg);
+//							}
+//						},
+//						error: function(response){
+//							console.error(response);
+//						}
+//					});
+					btnPayClick();
 				}else{
+					$('#yyd').attr("checked", false);
 					$('.btnPay').removeClass('btnPay_on');
+					$('.btnPay').unbind('click');
 				}
 			});
 
+			//判断是否微信客户端
+			function isWeiXin(){
+				var ua = window.navigator.userAgent.toLowerCase();
+				if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+					return true;
+				}else{
+					return false;
+				}
+			};
+
 			function openXys(){
 				var purchaseId = getQueryString('purchaseId');
+
 				location.href = '/page/h5/agreement?purchaseId=' + purchaseId;
 			};
 
 			function openPay(){
 				var purchaseId = getQueryString('purchaseId');
-				location.href = '/page/h5/pay?purchaseId=' + purchaseId;
+
+				if(isWeiXin()){
+					location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=http://df93b80d.ngrok.io/page/h5/pay?purchaseId=' + purchaseId + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+				}else{
+					location.href = '/page/h5/pay?purchaseId=' + purchaseId;
+				}
 			};
 
 			function init(){
@@ -143,6 +162,10 @@
 
 								if(res.result.affirmTime){
 									btnPayClick();
+								}else{
+									$('#yyd').attr("checked", false);
+									$('.btnPay').removeClass('btnPay_on');
+									$('.btnPay').unbind('click');
 								}
 							}else{
 								alert(res.msg);
@@ -158,7 +181,7 @@
 			function btnPayClick(){
 				$('#yyd').attr("checked", true);
 				$('.btnPay').addClass('btnPay_on');
-				$('.goPay').append('<div class="zhezhu"></div>');
+//				$('.goPay').append('<div class="zhezhu"></div>');
 
 				$('.btnPay').bind('click', function(){
 					openPay();

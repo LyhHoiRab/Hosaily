@@ -1,11 +1,17 @@
 package com.lab.hosaily.core.page.controller;
 
 import com.lab.hosaily.commons.consts.SessionConsts;
+import com.lab.hosaily.commons.utils.URLUtils;
 import com.lab.hosaily.core.account.entity.Attention;
 import com.lab.hosaily.core.account.service.AttentionService;
 import com.lab.hosaily.core.account.service.UserService;
+import com.lab.hosaily.core.application.entity.Application;
+import com.lab.hosaily.core.application.service.ApplicationService;
+import com.lab.hosaily.core.client.consts.PurchaseState;
 import com.lab.hosaily.core.client.dao.PaymentDao;
 import com.lab.hosaily.core.client.entity.Payment;
+import com.lab.hosaily.core.client.entity.Purchase;
+import com.lab.hosaily.core.client.service.PurchaseService;
 import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.course.entity.Customization;
 import com.lab.hosaily.core.course.entity.Level;
@@ -16,11 +22,14 @@ import com.lab.hosaily.core.course.service.PostService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.core.account.entity.User;
 import com.rab.babylon.core.consts.entity.UsingState;
+import com.sun.tools.internal.ws.processor.model.Model;
+import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,7 +65,7 @@ public class PageController{
     private CustomizationService customizationService;
 
     @Autowired
-    private PaymentDao paymentDao;
+    private PurchaseService purchaseService;
 
     /**
      * 首页
@@ -321,9 +330,14 @@ public class PageController{
      * 支付页面
      */
     @RequestMapping(value = "/pay", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView pay(String purchaseId, ModelMap content){
+    public ModelAndView pay(String purchaseId, String code, ModelMap content){
         try{
+            Purchase purchase = purchaseService.getById(purchaseId);
+            purchase.setPurchaseState(PurchaseState.AGREEMENT);
+            purchaseService.update(purchase);
+
             content.put("purchaseId", purchaseId);
+            content.put("code", code);
 
             return new ModelAndView("pay", content);
         }catch(Exception e){

@@ -7,7 +7,7 @@ public interface WechatMerchantPayService{
     /**
      * 客户预支付
      */
-    Map<String, String> prepay(String purchaseId, Double totalFee);
+    Map<String, String> prepay(String purchaseId, Double totalFee, String code);
 
     /**
      * 回调

@@ -27,6 +27,10 @@ public class Purchase implements Create, Update{
     private Date orderTime;
     //流程状态
     private PurchaseState purchaseState;
+    //销售账户ID
+    private String salesAccountId;
+    //销售用户ID
+    private String salesUserId;
     //状态
     private UsingState state;
     //创建时间
@@ -100,6 +104,22 @@ public class Purchase implements Create, Update{
 
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
+    }
+
+    public String getSalesAccountId() {
+        return salesAccountId;
+    }
+
+    public void setSalesAccountId(String salesAccountId) {
+        this.salesAccountId = salesAccountId;
+    }
+
+    public String getSalesUserId() {
+        return salesUserId;
+    }
+
+    public void setSalesUserId(String salesUserId) {
+        this.salesUserId = salesUserId;
     }
 
     @Override

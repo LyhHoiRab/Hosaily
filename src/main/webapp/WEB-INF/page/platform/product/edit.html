@@ -63,28 +63,37 @@
                     <div class="col-xs-12">
                         <div class="input-group">
                             <span class="input-group-addon">名称</span>
-                            <input type="text" class="form-control" placeholder="名称" ng-model="item.name" value="{{item.name}}">
+                            <input type="text" class="form-control" placeholder="名称" ng-model="item.name">
                         </div>
                     </div><!-- item -->
 
                     <div class="col-xs-12">
                         <div class="input-group">
                             <span class="input-group-addon">描述</span>
-                            <input type="text" class="form-control" placeholder="描述" ng-model="item.description" value="{{item.description}}">
+                            <input type="text" class="form-control" placeholder="描述" ng-model="item.description">
                         </div>
                     </div><!-- item -->
 
                     <div class="col-xs-12">
                         <div class="input-group">
                             <span class="input-group-addon">服务次数</span>
-                            <input type="number" class="form-control" placeholder="服务次数" ng-model="item.time" value="{{item.time}}">
+                            <input type="number" class="form-control" placeholder="服务次数" ng-model="item.time">
                         </div>
                     </div><!-- item -->
 
                     <div class="col-xs-12">
                         <div class="input-group">
                             <span class="input-group-addon">单价</span>
-                            <input type="number" class="form-control" placeholder="单价" ng-model="item.unitPrice" value="{{item.unitPrice}}">
+                            <input type="number" class="form-control" placeholder="单价" ng-model="item.unitPrice">
+                        </div>
+                    </div><!-- item -->
+
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">服务类型</span>
+                            <select class="form-control" ng-model="item.type" ng-options="key as value for (key, value) in types">
+                                <option value="">请选择</option>
+                            </select>
                         </div>
                     </div><!-- item -->
 

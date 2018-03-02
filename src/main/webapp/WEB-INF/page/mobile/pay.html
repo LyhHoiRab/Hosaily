@@ -93,13 +93,17 @@
 		function wechatPay(){
 			var price = $('#price').val();
 			var purchaseId = getQueryString('purchaseId');
+			var code = getQueryString('code');
 
 			if(price !== undefined && price > 0){
+				var url = 'http://59ba05cb.ngrok.io/api/1.0/wechatMerchantPay/prepay/purchaseId/price';
+				var code = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=" + url + "&response_type=code&scope=snsapi_base#wechat_redirect";
+
 				//预支付
 				$.ajax({
 					url: '/api/1.0/wechatMerchantPay/prepay',
 					type: 'POST',
-					data: {'purchaseId':purchaseId, 'totalFee':price},
+					data: {'purchaseId':purchaseId, 'totalFee':price, 'code':code},
 					dataType: 'json',
 					success: function(res){
 						if(res.success){

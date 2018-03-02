@@ -105,6 +105,7 @@ public class ProductDao{
             Criteria criteria = new Criteria();
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
             criteria.sort(Restrictions.asc("p.createTime"));
+            criteria.groupBy(Restrictions.groupBy("p.id"));
 
             if(state != null){
                 criteria.and(Restrictions.eq("p.state", state.getId()));
@@ -122,8 +123,17 @@ public class ProductDao{
                 criteria.and(Restrictions.eq("p.organizationId", organizationId));
             }
 
-            List<Product> list = mapper.findByParams(criteria);
+            List<Product> list = null;
+            List<String> ids = mapper.findIdByParams(criteria);
             Long count = mapper.countByParams(criteria);
+
+            if(ids != null && !ids.isEmpty()){
+                criteria.clear();
+                criteria.and(Restrictions.in("p.id", ids));
+                criteria.sort(Restrictions.asc("p.createTime"));
+
+                list = mapper.findByParams(criteria);
+            }
 
             return new Page<Product>(list, pageRequest, count);
         }catch(Exception e){

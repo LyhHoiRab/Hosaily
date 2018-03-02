@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,13 +27,10 @@ public class WechatMerchantPayRestController{
     @Autowired
     private WechatMerchantPayService wechatMerchantPayService;
 
-    /**
-     * 预支付
-     */
     @RequestMapping(value = "/prepay", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Map<String, String>> prepay(String purchaseId, Double totalFee){
+    public Response<Map<String, String>> prepay(String purchaseId, Double totalFee, String code){
         try{
-            Map<String, String> params = wechatMerchantPayService.prepay(purchaseId, totalFee);
+            Map<String, String> params = wechatMerchantPayService.prepay(purchaseId, totalFee, code);
 
             return new Response<Map<String, String>>("预支付成功", params);
         }catch(Exception e){

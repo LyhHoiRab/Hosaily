@@ -30,5 +30,7 @@
     <typeAlias type="com.lab.hosaily.core.client.utils.PayStateHandler"                     alias="payStateHandler"/>
     <typeAlias type="com.lab.hosaily.core.client.utils.PayTypeHandler"                      alias="payTypeHandler"/>
     <typeAlias type="com.lab.hosaily.core.client.utils.AlipayStatusHandler"                 alias="alipayStatusHandler"/>
+    <typeAlias type="com.lab.hosaily.core.product.utils.ServiceTypeHandler"                 alias="serviceTypeHandler"/>
+    <typeAlias type="com.lab.hosaily.core.client.utils.AppointmentStateHandler"             alias="appointmentStateHandler"/>
   </typeAliases>
 </configuration>

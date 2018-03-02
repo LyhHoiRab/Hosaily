@@ -117,7 +117,7 @@ public class LevelDao{
             criteria.and(Restrictions.eq("l.isDelete", false));
             criteria.groupBy(Restrictions.groupBy("l.id"));
             criteria.sort(Restrictions.desc("p.price"));
-            criteria.setLimit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
+            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
 
             if(state != null){
                 criteria.and(Restrictions.eq("l.state", state.getId()));

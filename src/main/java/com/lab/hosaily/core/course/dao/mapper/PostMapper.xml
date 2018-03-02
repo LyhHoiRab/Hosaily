@@ -55,9 +55,9 @@
 
     <sql id="WHERE_COLUMN">
         <where>
-            <if test="params.andCreiterions != null and params.andCreiterions.size > 0">
-                <foreach collection="params.andCreiterions" item="criterion" separator="AND">
-                    <trim prefix="(" suffix=")">
+            <if test="params.andCriterions != null and params.andCriterions.size > 0">
+                <foreach collection="params.andCriterions" item="criterion">
+                    <trim prefix="AND (" suffix=")">
                         <choose>
                             <when test="criterion.noValue">
                                 ${criterion.property} ${criterion.operator}
@@ -66,7 +66,7 @@
                                 ${criterion.property} ${criterion.operator} #{criterion.value}
                             </when>
                             <when test="criterion.betweenValue">
-                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                                ${criterion.property} $criterion.operator} #{criterion.value} AND #{criterion.secondValue}
                             </when>
                             <when test="criterion.listValue">
                                 ${criterion.property} ${criterion.operator}
@@ -74,8 +74,8 @@
                                     #{item}
                                 </foreach>
                             </when>
-                            <when test="criterion.criterionValue">
-                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                            <when test="criterion.andCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="AND">
                                     <trim prefix="(" suffix=")">
                                         <choose>
                                             <when test="item.noValue">
@@ -89,8 +89,31 @@
                                             </when>
                                             <when test="item.listValue">
                                                 ${item.property} ${item.operator}
-                                                <foreach collection="item.value" item="listItem" open="(" close=")" separator=",">
-                                                    #{listItem}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                    #{itemValue}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                            <when test="criterion.orCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="OR">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                    #{itemValue}
                                                 </foreach>
                                             </when>
                                         </choose>
@@ -102,9 +125,9 @@
                 </foreach>
             </if>
 
-            <if test="params.orCreiterions != null and params.orCreiterions.size > 0">
-                <foreach collection="params.orCreiterions" item="criterion" separator="OR">
-                    <trim prefix="(" suffix=")">
+            <if test="params.orCriterions != null and params.orCriterions.size > 0">
+                <foreach collection="params.orCriterions" item="criterion">
+                    <trim prefix="OR (" suffix=")">
                         <choose>
                             <when test="criterion.noValue">
                                 ${criterion.property} ${criterion.operator}
@@ -113,7 +136,7 @@
                                 ${criterion.property} ${criterion.operator} #{criterion.value}
                             </when>
                             <when test="criterion.betweenValue">
-                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                                ${criterion.property} $criterion.operator} #{criterion.value} AND #{criterion.secondValue}
                             </when>
                             <when test="criterion.listValue">
                                 ${criterion.property} ${criterion.operator}
@@ -121,8 +144,8 @@
                                     #{item}
                                 </foreach>
                             </when>
-                            <when test="criterion.criterionValue">
-                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="criterion.operator">
+                            <when test="criterion.andCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="AND">
                                     <trim prefix="(" suffix=")">
                                         <choose>
                                             <when test="item.noValue">
@@ -136,8 +159,31 @@
                                             </when>
                                             <when test="item.listValue">
                                                 ${item.property} ${item.operator}
-                                                <foreach collection="item.value" item="listItem" open="(" close=")" separator=",">
-                                                    #{listItem}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                    #{itemValue}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                            <when test="criterion.orCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="OR">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                    #{itemValue}
                                                 </foreach>
                                             </when>
                                         </choose>
