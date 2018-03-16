@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.client.dao;
 
+import com.lab.hosaily.core.client.consts.AppointmentState;
 import com.lab.hosaily.core.client.dao.mapper.AppointmentMapper;
 import com.lab.hosaily.core.client.entity.Appointment;
 import com.rab.babylon.commons.security.exception.DataAccessException;
@@ -41,6 +42,7 @@ public class AppointmentDao{
 
                 appointment.setId(UUIDGenerator.by32());
                 appointment.setCreateTime(new Date());
+                appointment.setState(AppointmentState.REGISTER);
                 mapper.save(appointment);
             }else{
                 appointment.setUpdateTime(new Date());
@@ -66,7 +68,7 @@ public class AppointmentDao{
         }
     }
 
-    public Page<Appointment> page(PageRequest pageRequest, String organizationId, String name, String wechat, String phone, Sex sex, String type){
+    public Page<Appointment> page(PageRequest pageRequest, String organizationId, AppointmentState state, String name, String wechat, String phone, Sex sex, String type){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -91,6 +93,9 @@ public class AppointmentDao{
             }
             if(sex != null){
                 criteria.and(Restrictions.eq("sex", sex.getId()));
+            }
+            if(state != null){
+                criteria.and(Restrictions.eq("state", state.getId()));
             }
 
             List<Appointment> list = mapper.findByParams(criteria);

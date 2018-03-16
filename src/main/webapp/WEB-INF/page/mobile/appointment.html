@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>免费预约</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/sm.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/sm-extend.min.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/ui-box.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/style.css"/>
+</head>
+<body>
+<div class="page">
+    <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100">
+        <div class="logo"><img src="http://h.ishsls.com/yhqs_h5/appointment/img/logo.png"/></div>
+        <div class="freeTalk">
+            <img src="http://h.ishsls.com/yhqs_h5/appointment/img/freeTalk.png"/>
+        </div>
+        <div class="tips">
+            <p><img src="http://h.ishsls.com/yhqs_h5/appointment/img/22.png"/>预约资料将进行隐私加密</p>
+            <p><img src="http://h.ishsls.com/yhqs_h5/appointment/img/11.png"/>预约成功将第一时间与您联系</p>
+        </div>
+    </div>
+</div>
+</body>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/config.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/init.js' charset='utf-8'></script>
+<script type="text/javascript">
+    function getQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    };
+
+    $('.freeTalk img').click(function(){
+        var organizationId = getQueryString('organizationId');
+
+        location.href = '${basePath}/page/h5/appointment/detail?organizationId=' + organizationId;
+    })
+</script>
+</html>

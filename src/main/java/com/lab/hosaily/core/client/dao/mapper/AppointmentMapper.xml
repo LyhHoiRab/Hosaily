@@ -11,7 +11,7 @@
         <result column="sex"             property="sex"            typeHandler="sexHandler"/>
         <result column="phone"           property="phone"          javaType="java.lang.String"/>
         <result column="type"            property="type"           javaType="java.lang.String"/>
-        <result column="explain"         property="explain"        javaType="java.lang.String"/>
+        <result column="description"     property="description"    javaType="java.lang.String"/>
         <result column="state"           property="state"          typeHandler="appointmentStateHandler"/>
         <result column="remark"          property="remark"         javaType="java.lang.String"/>
         <result column="create_time"     property="createTime"     javaType="java.util.Date"/>
@@ -172,7 +172,7 @@
                sex,
                phone,
                type,
-               explain,
+               description,
                state,
                remark,
                create_time
@@ -184,8 +184,8 @@
                #{sex,             typeHandler=sexHandler},
                #{phone,           jdbcType=VARCHAR},
                #{type,            jdbcType=VARCHAR},
-               #{explain,         jdbcType=VARCHAR},
-               #{state,           typeHandler=appointmentHandler},
+               #{description,     jdbcType=VARCHAR},
+               #{state,           typeHandler=appointmentStateHandler},
                #{remark,          jdbcType=VARCHAR},
                #{createTime,      jdbcType=TIMESTAMP}
           )
@@ -212,17 +212,17 @@
              <if test="type != null and type != ''">
                  type = #{type, jdbcType=VARCHAR},
              </if>
-             <if test="explain != null and explain != ''">
-                 explain = #{explain, jdbcType=VARCHAR},
+             <if test="description != null and description != ''">
+                 description = #{description, jdbcType=VARCHAR},
              </if>
              <if test="state != null">
-                 state = #{state, typeHandler=appointmentState},
+                 state = #{state, typeHandler=appointmentStateHandler},
              </if>
              <if test="remark != null and remark != ''">
                  remark = #{remark, jdbcType=VARCHAR},
              </if>
              <if test="updateTime != null">
-                 update_tiem = #{updateTime, jdbcType=TIMESTAMP},
+                 update_time = #{updateTime, jdbcType=TIMESTAMP},
              </if>
          </set>
           WHERE id = #{id}

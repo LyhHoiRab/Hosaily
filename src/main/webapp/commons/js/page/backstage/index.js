@@ -754,8 +754,6 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
-                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
-                    basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/record/add.js'
@@ -771,8 +769,6 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
         resolve: {
             deps: ['$ocLazyLoad', function($ocLazyLoad){
                 return $ocLazyLoad.load([
-                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
-                    basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
                     basePath + '/commons/js/utils.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
@@ -958,6 +954,82 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                     basePath + '/commons/js/utils.js',
                     basePath + '/commons/js/plugin/json2/json2.js',
                     basePath + '/commons/js/page/backstage/webResource/edit.js'
+                ]);
+            }]
+        }
+    }).state('appointment', {
+        url: '/appointment',
+        templateUrl: '/page/backstage/appointment',
+        controller: 'appointmentController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/appointment/index.js'
+                ]);
+            }]
+        }
+    }).state('appointment.list', {
+        url: '/appointment/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/appointment/list/' + $stateParams.organizationId;
+        },
+        controller: 'appointmentListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/appointment/list.js'
+                ]);
+            }]
+        }
+    }).state('appointmentEdit', {
+        url: '/appointment/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/appointment/edit/' + $stateParams.id;
+        },
+        controller: 'appointmentEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/appointment/edit.js'
+                ]);
+            }]
+        }
+    }).state('sales', {
+        url: '/sales',
+        templateUrl: '/page/backstage/sales',
+        controller: 'salesController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/sales/index.js'
+                ]);
+            }]
+        }
+    }).state('salesEdit', {
+        url: '/sales/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/sales/edit/' + $stateParams.id;
+        },
+        controller: 'salesEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/sales/edit.js'
                 ]);
             }]
         }

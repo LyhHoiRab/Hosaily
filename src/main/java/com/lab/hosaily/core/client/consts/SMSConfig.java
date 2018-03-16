@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum SMSConfig{
 
-    NINE_LAB(0, "九研美尚", "aa0791acb6e280103d83f283e7eef954", "九研美尚");
+    NINE_LAB(0, "九研美尚", "aa0791acb6e280103d83f283e7eef954", "九研美尚"),
+    YHQS(0, "永恒情书", "aa0791acb6e280103d83f283e7eef954", "永恒情书");
 
     @Getter
     private int id;

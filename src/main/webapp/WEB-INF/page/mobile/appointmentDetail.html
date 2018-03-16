@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>选择预约类型</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/sm.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/sm-extend.min.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/ui-box.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/style.css"/>
+</head>
+<body>
+<div class="page">
+    <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100">
+        <div class="title_b">
+						<span>
+							选择预约类型
+							<div class="ld">·</div>
+							<div class="rd">·</div>
+						</span>
+            <div class="line-dashed line-left"></div>
+            <div class="line-dashed line-right"></div>
+        </div>
+        <div class="typeForm">
+            <div class="type">小三分离</div>
+            <div class="type">家庭暴力</div>
+            <div class="type">婚姻修复</div>
+            <div class="type">婆媳相处</div>
+            <div class="type">亲子教育</div>
+            <div class="type">魅力提升</div>
+            <div class="clear"></div>
+            <div class="textarea_type">
+                <textarea placeholder="简要说明（选填）"></textarea>
+                <img class="bt" src="http://h.ishsls.com/yhqs_h5/appointment/img/border.png"/>
+                <img class="bb" src="http://h.ishsls.com/yhqs_h5/appointment/img/border.png"/>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="title_c">
+						<span>
+							注：确认无误后，点击跳入下一页面
+							<div class="lcd">·</div>
+							<div class="rcd">·</div>
+						</span>
+            <div class="line-dashed lineC-dashed line-left lc"></div>
+            <div class="line-dashed lineC-dashed line-right rc"></div>
+        </div>
+        <div class="btn">下一步</div>
+    </div>
+</div>
+</body>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/config.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/init.js' charset='utf-8'></script>
+<script type="text/javascript" src="${basePath}/commons/js/plugin/json2/json2.js"></script>
+<script type="text/javascript">
+	function getQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    };
+
+    var organizationId = getQueryString("organizationId");
+	
+    var lineWidth = $('.title_b span').width()/2;
+    $('.line-left,.line-right').css('width','calc(45% - '+lineWidth+'px) !important');
+    
+    var lineCWidth = $('.title_c span').width()/2;
+    $('.lc,.rc').css('width','calc(45% - '+lineCWidth+'px) !important');
+
+    //切换类型
+    $('.type').click(function(){
+    	var isOn = $(this).hasClass('type_on');
+    	if(isOn){
+    		$(this).removeClass('type_on');
+    	}else{
+    		$(this).addClass('type_on');
+    	}
+        
+    })
+
+    //点击完成提交
+    $('.btn').click(function(){
+        var text = $('.textarea_type textarea').val();
+        var type = $('.type_on').html();
+        var typeArr = $('.type_on');
+        if(type == null || type == undefined || type == ''){
+            toast('请选择预约类型！',2000);
+            return;
+        }else{
+        	type = '';
+        	for (var i = 0;i<typeArr.length;i++) {
+	        	type += ',' + $(typeArr[i]).html();
+	        }
+        	type = type.replace(',','');
+        }
+        var obj_res = {
+            'type':type,
+            'description':text
+        };
+        localStorage.setItem('obj_res',JSON.stringify(obj_res));	//存储信息
+        
+        location.href = '${basePath}/page/h5/appointment/info?organizationId=' + organizationId;
+        
+//      var obj_res = JSON.parse(localStorage.getItem('obj_res'));
+//
+//      $.ajax({
+//          type:"post",
+//          url:"/api/1.0/appointment",
+//          data: JSON.stringify({
+//              name:obj_res.name,
+//              phone:obj_res.phone,
+//              sex:obj_res.sex,
+//              wechat:obj_res.wechat,
+//              organizationId:obj_res.organizationId,
+//              description:text,
+//              type:type
+//          }),
+//          contentType: 'application/json',
+//          success:function (res) {
+//              if(res.success){
+//                  location.href = '${basePath}/page/h5/appointment/complete';
+//              }else{
+//                  toast(res.msg);
+//              }
+//          },
+//          error:function (response) {
+//              console.error(response);
+//          }
+//      });
+
+    })
+
+</script>
+</html>

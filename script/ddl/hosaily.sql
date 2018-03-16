@@ -485,15 +485,3 @@ CREATE TABLE `purchase` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-
-
-    //文件类型
-    private String fileType;
-
-    //微信uid_MD5码
-    private String uidMD5;
-
-    ALTER TABLE record ADD file_type VARCHAR(50);
-    ALTER TABLE record ADD uid_md5 VARCHAR(50);

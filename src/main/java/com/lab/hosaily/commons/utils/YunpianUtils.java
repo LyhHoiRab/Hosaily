@@ -1,8 +1,14 @@
 package com.lab.hosaily.commons.utils;
 
+import com.lab.hosaily.commons.response.yunpian.YunpianResponse;
 import com.rab.babylon.commons.utils.HttpClientUtils;
+import com.rab.babylon.commons.utils.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -34,7 +40,7 @@ public class YunpianUtils{
     /**
      * 智能匹配模板
      */
-    public static void sendSms(String apikey, String text, String mobile){
+    public static YunpianResponse sendSms(String apikey, String text, String mobile){
         if(StringUtils.isBlank(apikey)){
             throw new IllegalArgumentException("云片API key不能为空");
         }
@@ -51,6 +57,24 @@ public class YunpianUtils{
         params.put("text", text);
         params.put("mobile", mobile);
 
-//        CloseableHttpClient client = HttpClientUtils.
+        try(CloseableHttpClient client = HttpClientUtils.createHttpClient()){
+            HttpPost post = HttpClientUtils.getPost(URI_SEND_SMS, params);
+            HttpResponse response = client.execute(post);
+
+            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                String json = EntityUtils.toString(response.getEntity(), CHARSET);
+                YunpianResponse result = ObjectUtils.deserialize(json, YunpianResponse.class);
+
+                if(result.getCode() == 0){
+                    return result;
+                }else{
+                    throw new RuntimeException(result.getMsg());
+                }
+            }
+
+            throw new RuntimeException(EntityUtils.toString(response.getEntity(), CHARSET));
+        }catch(Exception e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 }

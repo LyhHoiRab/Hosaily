@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.client.service;
 
+import com.lab.hosaily.core.client.consts.AppointmentState;
 import com.lab.hosaily.core.client.entity.Appointment;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
@@ -13,10 +14,15 @@ public interface AppointmentService{
 
     Appointment getById(String id);
 
-    Page<Appointment> page(PageRequest pageRequest, String organizationId, String name, String wechat, String phone, Sex sex, String type);
+    Page<Appointment> page(PageRequest pageRequest, String organizationId, AppointmentState state, String name, String wechat, String phone, Sex sex, String type);
 
     /**
      * 发送验证码
      */
     void sendCaptcha(String phone);
+
+    /**
+     * 校验验证码
+     */
+    Boolean validateCaptcha(String phone, String captcha);
 }

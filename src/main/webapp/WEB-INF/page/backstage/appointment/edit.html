@@ -1,0 +1,91 @@
+<ol class="breadcrumb">
+    <li>
+        <span>推广管理</span>
+    </li><!-- item -->
+    <li>
+        <a ui-sref="appointment">预约管理</a>
+    </li><!-- item -->
+    <li>
+    <span>预约处理</span>
+    </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+    <div class="container-fluid">
+
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">名称</span>
+                <input type="text" class="form-control" placeholder="名称" ng-model="appointment.name" readonly="readonly">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">微信</span>
+                <input type="text" class="form-control" placeholder="微信" ng-model="appointment.wechat" readonly="readonly">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">性别</span>
+                <select class="form-control" ng-model="appointment.sex" ng-options="key as value for (key, value) in sexs" disabled="disabled">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">联系方式</span>
+                <input type="text" class="form-control" placeholder="联系方式" ng-model="appointment.phone" readonly="readonly">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">类型</span>
+                <input type="text" class="form-control" placeholder="类型" ng-model="appointment.type" readonly="readonly">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">说明</span>
+                <input type="text" class="form-control" placeholder="说明" ng-model="appointment.description" readonly="readonly">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">状态</span>
+                <select class="form-control" ng-model="appointment.state" ng-options="key as value for (key, value) in states" disabled="disabled">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="input-group">
+                <span class="input-group-addon">备注</span>
+                <input type="text" class="form-control" placeholder="备注" ng-model="appointment.remark" ng-readonly="appointment.state == 1">
+            </div>
+        </div><!-- item -->
+
+        <div class="row-group">
+            <div class="button-group">
+                <button type="button" class="btn" ng-click="submit()">
+                    <i class="fa fa-check"></i>
+                    提交
+                </button>
+                <button type="button" class="btn" ng-click="reset()">
+                    <i class="fa fa-close"></i>
+                    重置
+                </button>
+            </div>
+        </div><!-- item -->
+    </div><!-- container -->
+</div><!-- table info -->
+

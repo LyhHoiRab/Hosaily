@@ -345,4 +345,56 @@ public class PageController{
             throw new ApplicationException(e.getMessage(), e);
         }
     }
+
+    /**
+     * 预约首页
+     */
+    @RequestMapping(value = "/appointment", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView appointment(ModelMap content){
+        try{
+            return new ModelAndView("appointment", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 预约基本资料填写
+     */
+    @RequestMapping(value = "/appointment/info", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView appointmentInfo(ModelMap content){
+        try{
+            return new ModelAndView("appointmentInfo", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 预约详情填写
+     */
+    @RequestMapping(value = "/appointment/detail", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView appointmentDetail(ModelMap content){
+        try{
+            return new ModelAndView("appointmentDetail", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 预约完成页
+     */
+    @RequestMapping(value = "/appointment/complete", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView appointmentComplete(ModelMap content){
+        try{
+            return new ModelAndView("appointmentComplete", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 }

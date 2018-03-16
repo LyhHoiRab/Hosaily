@@ -20,7 +20,7 @@ public class Appointment implements Create, Update{
     private Sex sex;
     private String phone;
     private String type;
-    private String explain;
+    private String description;
     private AppointmentState state;
     private String remark;
     private Date createTime;

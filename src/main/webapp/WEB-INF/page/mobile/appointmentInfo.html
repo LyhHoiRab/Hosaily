@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>填写基本信息</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/sm.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/sm-extend.min.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/ui-box.css">
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/appointment/css/style.css"/>
+</head>
+<body>
+<div class="page">
+    <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100">
+        <div class="title_b">
+						<span>
+							填写基本信息
+							<div class="ld">·</div>
+							<div class="rd">·</div>
+						</span>
+            <div class="line-dashed line-left"></div>
+            <div class="line-dashed line-right"></div>
+        </div>
+        <div class="form">
+            <div class="ub line-info">
+                <div class="info-lable">
+                    <label>姓名</label>
+                </div>
+                <div class="info-input">
+                    <input type="text" id="name" value="" />
+                </div>
+            </div>
+            <div class="ub line-info">
+                <div class="info-lable">
+                    <label>微信号</label>
+                </div>
+                <div class="info-input">
+                    <input type="text" id="wechatId" value="" />
+                </div>
+            </div>
+            <div class="ub line-info">
+                <div class="info-lable">
+                    <label>性别</label>
+                </div>
+                <div class="info-input">
+                    <input type="text" id="" value="" readonly="readonly" />
+                    <img class="male sex" src="http://h.ishsls.com/yhqs_h5/appointment/img/male.png"/>
+                    <img class="female sex" src="http://h.ishsls.com/yhqs_h5/appointment/img/female.png"/>
+                    <img class="sexmale sexfemale" src="http://h.ishsls.com/yhqs_h5/appointment/img/checked.png"/>
+                </div>
+            </div>
+            <div class="ub line-info">
+                <div class="info-lable">
+                    <label>联系电话</label>
+                </div>
+                <div class="info-input">
+                    <input type="text" id="phone" value="" />
+                </div>
+            </div>
+            <div class="ub line-info">
+                <div class="info-input">
+                    <input type="text" id="code" value="" />
+                </div>
+                <div class="info-lable" id="getCode">
+                    <label>立即验证</label>
+                </div>
+            </div>
+        </div>
+        <div class="title_c">
+						<span>
+							注：确认资料填写无误后，点击完成
+							<div class="lcd">·</div>
+							<div class="rcd">·</div>
+						</span>
+            <div class="line-dashed lineC-dashed line-left lc"></div>
+            <div class="line-dashed lineC-dashed line-right rc"></div>
+        </div>
+        <div class="btn">完成</div>
+    </div>
+</div>
+</body>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/config.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/appointment/js/init.js' charset='utf-8'></script>
+<script type="text/javascript">
+    function getQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    };
+
+    var organizationId = getQueryString("organizationId");
+
+    var lineWidth = $('.title_b span').width()/2;
+    $('.line-left,.line-right').css('width','calc(45% - '+lineWidth+'px) !important');
+    
+    var lineCWidth = $('.title_c span').width()/2;
+    $('.lc,.rc').css('width','calc(45% - '+lineCWidth+'px) !important');
+
+
+    //性别切换
+    $('.sex').click(function () {
+        var index = $(this).index();
+        if(index == 1){
+            $('.sexmale').removeClass('sexfemale');
+        }else{
+            $('.sexmale').addClass('sexfemale');
+        }
+    })
+
+    //点击立即验证按钮
+    $('#getCode').click(function () {
+        var str = $('#getCode label').html();
+        var phone = $('#phone').val();
+        if(str == '立即验证'){
+            if(!ifMob(phone)){
+                toast('联系电话格式不正确！',2000);
+                return;
+            }
+            clockI(phone);
+        }
+    })
+
+    //点击下一步
+    $('.btn').click(function(){
+        var name = $('#name').val();			//姓名
+        var wechatId = $('#wechatId').val();	//微信号
+        var phone = $('#phone').val();			//联系电话
+        var code = $('#code').val();			//验证码
+        var sex = 0;							//性别 0为女；1为男
+        var obj_res = {};
+        var isFemale = $('.sexmale').hasClass('sexfemale');
+        if(isFemale){
+            sex = 0;
+        }else{
+            sex = 1;
+        }
+        if(!ifNull(name)){
+            toast('姓名不能为空！',2000);
+            return;
+        }
+        if(!ifNull(wechatId)){
+            toast('微信号不能为空！',2000);
+            return;
+        }
+        if(!ifMob(phone)){
+            toast('联系电话格式不正确！',2000);
+            return;
+        }
+        if(!ifNull(code)){
+            toast('验证码不能为空！',2000);
+            return;
+        }
+        //校验验证码
+        $.ajax({
+            type:"post",
+            url:"/api/1.0/appointment/captcha/validate",
+            data:{
+                phone:phone,
+                captcha:code
+            },
+            success:function (res) {
+                if(res.success){
+                    if(res.result){
+                    	complete(name,phone,sex,wechatId,organizationId);
+                    }else{
+                        toast('验证码不正确');
+                    }
+                }else{
+                    toast(res.msg);
+                }
+            },
+            error:function (response) {
+                console.error(response);
+            }
+        });
+    });
+
+    //倒计时60s才可再次点击
+    var clock_i;
+    var sec = 60;
+    var code_net = '';
+    function clockI (mob) {
+        //此处获取验证码请求
+        getCodeHttp(mob);
+
+        clock_i = setInterval(function () {
+            if(sec == 1){
+                $('#getCode label').html('立即验证');
+                clearInterval(clock_i);
+                sec = 60;
+                return;
+            }
+            sec = sec - 1;
+            $('#getCode label').html(sec + 's');
+        },1000);
+    }
+
+    //此处获取验证码请求
+    function getCodeHttp (phone) {
+        $.ajax({
+            type:"post",
+            url:"/api/1.0/appointment/captcha/send",
+            data:{
+                phone:phone
+            },
+            success:function (res) {
+                if(!res.success){
+                    toast(res.msg);
+                }
+                if(res.success){
+                	toast('验证码已发送！',2000);
+                }
+            },
+            error:function (response) {
+                console.error(response);
+            }
+        });
+    }
+    
+    function complete (name,phone,sex,wechat,organizationId) {
+        var obj_res = JSON.parse(localStorage.getItem('obj_res'));
+        $.ajax({
+            type:"post",
+            url:"/api/1.0/appointment",
+            data: JSON.stringify({
+                name:name,
+                phone:phone,
+                sex:sex,
+                wechat:wechat,
+                organizationId:organizationId,
+                description:obj_res.text,
+                type:obj_res.type
+            }),
+            contentType: 'application/json',
+            success:function (res) {
+                if(res.success){
+                    location.href = '${basePath}/page/h5/appointment/complete';
+                }else{
+                    toast(res.msg);
+                }
+            },
+            error:function (response) {
+                console.error(response);
+            }
+        });
+        
+    }
+</script>
+</html>

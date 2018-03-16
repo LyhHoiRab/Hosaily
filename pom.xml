@@ -279,11 +279,11 @@
         </dependency>
 
         <!-- 云片 -->
-        <dependency>
-            <groupId>com.yunpian.sdk</groupId>
-            <artifactId>yunpian-java-sdk</artifactId>
-            <version>${yunpian.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.yunpian.sdk</groupId>-->
+            <!--<artifactId>yunpian-java-sdk</artifactId>-->
+            <!--<version>${yunpian.version}</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <profiles>

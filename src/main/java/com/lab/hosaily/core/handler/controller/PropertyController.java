@@ -1,11 +1,9 @@
 package com.lab.hosaily.core.handler.controller;
 
+import com.lab.hosaily.core.client.consts.AppointmentState;
 import com.lab.hosaily.core.client.consts.PurchaseState;
 import com.lab.hosaily.core.course.consts.MediaType;
-import com.lab.hosaily.core.handler.utils.handler.MediaTypeEditor;
-import com.lab.hosaily.core.handler.utils.handler.PurchaseStateEditor;
-import com.lab.hosaily.core.handler.utils.handler.SexEditor;
-import com.lab.hosaily.core.handler.utils.handler.UsingStateEditor;
+import com.lab.hosaily.core.handler.utils.handler.*;
 import com.rab.babylon.core.consts.entity.Sex;
 import com.rab.babylon.core.consts.entity.UsingState;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -44,5 +42,10 @@ public class PropertyController{
     @InitBinder
     public void initPurchaseStateBinder(WebDataBinder binder){
         binder.registerCustomEditor(PurchaseState.class, new PurchaseStateEditor());
+    }
+
+    @InitBinder
+    public void initAppointmentStateBinder(WebDataBinder binder){
+        binder.registerCustomEditor(AppointmentState.class, new AppointmentStateEditor());
     }
 }

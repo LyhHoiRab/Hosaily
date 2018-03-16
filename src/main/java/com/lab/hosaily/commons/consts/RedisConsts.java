@@ -5,6 +5,9 @@ public class RedisConsts{
     //用户信息缓存时间
     public static final Integer USER_EFFECTIVE_SECOND = SessionConsts.EFFECTIVE_SECOND;
 
+    //验证码缓存时间
+    public static final Integer CAPTCHA_EFFECTIVE_SECOND = 300;
+
     //用户信息缓存前缀
     public static final String USER_INFO = "user:info:";
 
@@ -16,4 +19,7 @@ public class RedisConsts{
 
     //网站资源目录缓存
     public static final String WEB_RESOURCE = "web:resource";
+
+    //手机验证码缓存前缀
+    public static final String CAPTCHA_PHONE = "captcha:phone:";
 }
