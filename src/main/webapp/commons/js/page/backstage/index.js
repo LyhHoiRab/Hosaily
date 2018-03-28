@@ -839,6 +839,208 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 ]);
             }]
         }
+
+
+    }).state('project', {
+        url: '/project',
+        templateUrl: '/page/backstage/project',
+        controller: 'projectController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/project/index.js'
+                ]);
+            }]
+        }
+    }).state('project.list', {
+        url: '/project/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/project/list/' + $stateParams.organizationId;
+        },
+        controller: 'projectListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/project/list.js'
+                ]);
+            }]
+        }
+    }).state('projectAdd', {
+        url: '/project/add',
+        templateUrl: '/page/backstage/project/add',
+        controller: 'projectAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/project/add.js'
+                ]);
+            }]
+        }
+    }).state('projectEdit', {
+        url: '/project/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/project/edit/' + $stateParams.id;
+        },
+        controller: 'projectEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/project/edit.js'
+                ]);
+            }]
+        }
+
+
+    }).state('question', {
+        url: '/question',
+        templateUrl: '/page/backstage/question',
+        controller: 'questionController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/question/index.js'
+                ]);
+            }]
+        }
+    }).state('question.list', {
+        url: '/question/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/question/list/' + $stateParams.organizationId;
+        },
+        controller: 'questionListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/question/list.js'
+                ]);
+            }]
+        }
+    }).state('questionAdd', {
+        url: '/question/add',
+        templateUrl: '/page/backstage/question/add',
+        controller: 'questionAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/question/add.js'
+                ]);
+            }]
+        }
+    }).state('questionEdit', {
+        url: '/question/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/question/edit/' + $stateParams.id;
+        },
+        controller: 'questionEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/question/edit.js'
+                ]);
+            }]
+        }
+
+
+    }).state('option', {
+        url: '/option',
+        templateUrl: '/page/backstage/option',
+        controller: 'optionController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/option/index.js'
+                ]);
+            }]
+        }
+    }).state('option.list', {
+        url: '/option/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/option/list/' + $stateParams.organizationId;
+        },
+        controller: 'optionListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/option/list.js'
+                ]);
+            }]
+        }
+    }).state('optionAdd', {
+        url: '/option/add',
+        templateUrl: '/page/backstage/option/add',
+        controller: 'optionAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/option/add.js'
+                ]);
+            }]
+        }
+    }).state('optionEdit', {
+        url: '/option/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/option/edit/' + $stateParams.id;
+        },
+        controller: 'optionEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/option/edit.js'
+                ]);
+            }]
+        }
+
+
+
+
+
     }).state('courseGroup', {
         url: '/courseGroup',
         templateUrl: '/page/backstage/courseGroup',

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lab.hosaily.core.course.dao.mapper.OptionMapper">
+
+    <resultMap id="question_option" type="com.lab.hosaily.core.course.entity.Option">
+        <result column="id"        property="id"        javaType="java.lang.String"/>
+        <result column="title"        property="title"        javaType="java.lang.String"/>
+        <!--<result column="question_id"        property="questionId"        javaType="java.lang.String"/>-->
+        <!--<result column="nest_question_id"        property="nestQuestionId"        javaType="java.lang.String"/>-->
+        <result column="question_option" property="questionOption" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime"  javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime"  javaType="java.util.Date"/>
+        <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
+        <association property="project" resultMap="project" columnPrefix="p_"/>
+        <association property="question" resultMap="question" columnPrefix="q_"/>
+        <association property="nestQuestion" resultMap="nestQuestion" columnPrefix="n_"/>
+    </resultMap>
+
+    <resultMap id="project" type="com.lab.hosaily.core.course.entity.Project">
+        <id column="id" property="id" javaType="java.lang.String"/>
+        <result column="title" property="title" javaType="java.lang.String"/>
+
+    </resultMap>
+
+    <resultMap id="question" type="com.lab.hosaily.core.course.entity.Question">
+        <id column="id" property="id" javaType="java.lang.String"/>
+        <result column="title" property="title" javaType="java.lang.String"/>
+    </resultMap>
+
+    <resultMap id="nestQuestion" type="com.lab.hosaily.core.course.entity.Question">
+        <id column="id" property="id" javaType="java.lang.String"/>
+        <result column="title" property="title" javaType="java.lang.String"/>
+    </resultMap>
+
+    <sql id="WHERE_COLUMN">
+        <where>
+            <if test="params.andCriterions != null and params.andCriterions.size > 0">
+                <foreach collection="params.andCriterions" item="criterion">
+                    <trim prefix="AND (" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} $criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.andCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="AND">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                    #{itemValue}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                            <when test="criterion.orCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="OR">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                    #{itemValue}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+
+            <if test="params.orCriterions != null and params.orCriterions.size > 0">
+                <foreach collection="params.orCriterions" item="criterion">
+                    <trim prefix="OR (" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} $criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.andCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="AND">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                    #{itemValue}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                            <when test="criterion.orCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="OR">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                    #{itemValue}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <insert id="save">
+        INSERT
+          INTO question_option (
+              id,
+              title,
+              project_id,
+              question_id,
+              nest_question_id,
+              question_option,
+              create_time,
+              organization_id
+          ) VALUE (
+              #{id,        jdbcType=VARCHAR},
+              #{title,        jdbcType=VARCHAR},
+              #{project.id,        jdbcType=VARCHAR},
+              #{question.id,        jdbcType=VARCHAR},
+              #{nestQuestion.id,        jdbcType=VARCHAR},
+              #{questionOption,        jdbcType=VARCHAR},
+              #{createTime,  jdbcType=TIMESTAMP},
+              #{organizationId,        jdbcType=VARCHAR}
+          )
+    </insert>
+
+    <update id="update">
+        UPDATE question_option
+         <set>
+             <if test="title != null and title != ''">
+                 title = #{title, jdbcType=VARCHAR},
+             </if>
+             <if test="project != null and project.id != ''">
+                 project_id = #{project.id, jdbcType=VARCHAR},
+             </if>
+             <if test="question != null and question.id != ''">
+                 question_id = #{question.id, jdbcType=VARCHAR},
+             </if>
+             <if test="nestQuestion != null and nestQuestion.id != ''">
+                 nest_question_id = #{nestQuestion.id, jdbcType=VARCHAR},
+             </if>
+             <if test="questionOption != null and questionOption != ''">
+                 question_option = #{questionOption, jdbcType=VARCHAR},
+             </if>
+             <if test="organizationId != null and organizationId != ''">
+                 organization_id = #{organizationId, jdbcType=VARCHAR},
+             </if>
+             <if test="updateTime != null">
+                 update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+         </set>
+          WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+          FROM question_option
+         WHERE id = #{id}
+    </delete>
+
+    <select id="getByParams" resultMap="question_option">
+        SELECT o.*,
+        q.id AS q_id,
+        q.title AS q_title,
+        n.id AS n_id,
+        n.title AS n_title,
+        p.id AS p_id,
+        p.title AS p_title
+          FROM question_option o
+        LEFT JOIN question q
+        ON o.question_id = q.id
+        LEFT JOIN question n
+        ON o.nest_question_id = n.id
+        LEFT JOIN project p
+        ON o.project_id = p.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+    <select id="findByParams" resultMap="question_option">
+        SELECT o.*,
+        q.id AS q_id,
+        q.title AS q_title,
+        n.id AS n_id,
+        n.title AS n_title,
+        p.id AS p_id,
+        p.title AS p_title
+        FROM question_option o
+        LEFT JOIN question q
+        ON o.question_id = q.id
+        LEFT JOIN question n
+        ON o.nest_question_id = n.id
+        LEFT JOIN project p
+        ON o.project_id = p.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+    <select id="countByParams" resultType="java.lang.Long">
+        SELECT COUNT(*)
+          FROM question_option o
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+</mapper>

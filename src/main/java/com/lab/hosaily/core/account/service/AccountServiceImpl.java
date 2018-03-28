@@ -88,6 +88,8 @@ public class AccountServiceImpl implements AccountService{
 
             //验签
             String sign = SHAUtils.bySHA1(rawData + sessionKey);
+            System.out.println("sign: " + sign);
+            System.out.println("signature: " + signature);
             //验签成功
             if(sign.equalsIgnoreCase(signature)){
                 //解密用户信息

@@ -1,0 +1,86 @@
+<ol class="breadcrumb">
+    <li>
+        <span>咨询管理</span>
+    </li><!-- item -->
+    <li>
+        <span>标签管理</span>
+    </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="search-bar">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-md-3">
+                <div class="input-group">
+                    <span class="input-group-addon">title</span>
+                    <input type="text" class="form-control" placeholder="title" ng-model="title">
+                </div>
+            </div><!-- item -->
+
+            <div class="col-xs-12 col-md-3">
+                <div class="input-group">
+                    <span class="input-group-addon">测试项目名称</span>
+                    <select class="form-control" ng-model="projectId" ng-options="project.id as project.title for project in projects" ng-change="selectQuestion()">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div><!-- item -->
+
+            <div class="col-xs-12 col-md-3">
+                <div class="input-group">
+                    <span class="input-group-addon">题目名称</span>
+                    <select class="form-control" ng-model="questionId" ng-options="question.id as question.title for question in questions">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div><!-- item -->
+
+            <div class="col-xs-12 col-md-3">
+                <div class="input-group">
+                    <span class="input-group-addon">选项</span>
+                    <select class="form-control" ng-model="questionOption" ng-options="questionOption for questionOption in options">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div><!-- item -->
+
+            <!--<div class="col-xs-12 col-md-3">-->
+                <!--<div class="input-group">-->
+                    <!--<span class="input-group-addon">使用者类型</span>-->
+                    <!--<select class="form-control" ng-model="userType" ng-options="userType for userType in userTypes">-->
+                        <!--<option value="">请选择</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>&lt;!&ndash; item &ndash;&gt;-->
+
+        </div>
+    </div><!-- container -->
+
+    <div class="container-fluid">
+        <button type="button" class="btn" ng-click="search()">
+            <i class="fa fa-search"></i>
+            搜索
+        </button><!-- item -->
+
+        <button type="button" class="btn" ng-click="reset()">
+            <i class="fa fa-retweet"></i>
+            重置
+        </button><!-- item -->
+
+        <button type="button" class="btn" ng-click="refresh()">
+            <i class="fa fa-refresh"></i>
+            刷新
+        </button><!-- item -->
+
+        <button type="button" class="btn" ui-sref="optionAdd">
+            <i class="fa fa-plus"></i>
+            添加
+        </button><!-- item -->
+    </div><!-- container -->
+</div><!-- search bar -->
+
+<div class="table-bar">
+    <div clas="container">
+        <div class="gridStyle" ng-grid="gridOptions"></div><!-- table -->
+    </div><!-- container -->
+</div><!-- table bar -->

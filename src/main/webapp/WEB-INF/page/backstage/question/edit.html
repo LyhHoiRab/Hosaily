@@ -1,0 +1,95 @@
+<ol class="breadcrumb">
+  <li>
+    <span>系统设置</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="question">问题录入管理</a>
+  </li><!-- item -->
+  <li>
+    <span>
+      #if($id)
+        修改问题录入管理
+      #else
+        添加问题录入管理
+      #end
+    </span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">题目内容</span>
+        <input type="text" class="form-control" placeholder="title" ng-model="question.title" value="{{question.title}}">
+      </div>
+    </div><!-- item -->
+
+    <!--<div class="row-group">-->
+      <!--<div class="input-group">-->
+        <!--<span class="input-group-addon">projectId</span>-->
+        <!--<input type="text" class="form-control" placeholder="projectId" ng-model="question.projectId" value="{{question.projectId}}">-->
+      <!--</div>-->
+    <!--</div>&lt;!&ndash; item &ndash;&gt;-->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">测试项目名称</span>
+        <select class="form-control" ng-model="question.project.id" ng-options="project.id as project.title for project in projects">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">题目编号</span>
+        <input type="text" class="form-control" placeholder="num" ng-model="question.num" value="{{question.num}}">
+      </div>
+    </div><!-- item -->
+
+    <!--<div class="row-group">-->
+      <!--<div class="input-group">-->
+        <!--<span class="input-group-addon">使用者类型</span>-->
+        <!--&lt;!&ndash;<input type="text" class="form-control" placeholder="使用者类型" ng-model="question.userType" value="{{question.userType}}">&ndash;&gt;-->
+        <!--<select class="form-control" ng-model="question.userType" ng-options="userType for userType in userTypes">-->
+          <!--<option value="">请选择</option>-->
+        <!--</select>-->
+      <!--</div>-->
+    <!--</div>&lt;!&ndash; item &ndash;&gt;-->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">是否是最终答案</span>
+        <select class="form-control" ng-model="question.isResult" ng-options="isResult for isResult in isResults">
+          <!--<option value="N">N</option>-->
+          <!--<option value="Y">Y</option>-->
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">企业</span>
+        <select class="form-control" ng-model="question.organizationId" ng-options="organization.id as organization.name for organization in organizations">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div><!-- container -->
+</div><!-- table info -->

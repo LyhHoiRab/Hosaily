@@ -26,6 +26,10 @@ public class UpyunUtils{
     public final static String USER_HEAD_DIR = "/user/head/";
     //导师头像目录
     public final static String ADVISOR_HEAD_DIR = "/advisor/head/";
+
+    //导师头像目录
+    public final static String EMOTION_TEST_DIR = "/emotion/test/";
+
     //录音目录
     public final static String RECORD_LU_YIN_DIR = "/record/luyin/";
     //wxdb目录

@@ -1,0 +1,169 @@
+<ol class="breadcrumb">
+  <li>
+    <span>系统设置</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="project">测试项目管理</a>
+  </li><!-- item -->
+  <li>
+    <span>
+      #if($id)
+        修改测试项目管理
+      #else
+        添加测试项目管理
+      #end
+    </span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+
+
+    <div class="row-group">
+      <div class="img-group">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{{project.imgUrl}}" ng-model="project.imgUrl">
+          </div><!-- item -->
+
+          <div class="col-md-6">
+            <input type="file" nv-file-select uploader="uploader">
+            <div class="button-group">
+              <button type="button" class="btn" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                <i class="fa fa-upload"></i>
+                上传
+              </button>
+              <button type="button" class="btn" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                <i class="fa fa-trash-o"></i>
+                移除
+              </button>
+            </div><!-- button group -->
+          </div><!-- item -->
+        </div>
+      </div><!-- img group -->
+    </div><!-- item -->
+
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">测试项目名称</span>
+        <input type="text" class="form-control" placeholder="title" ng-model="project.title" value="{{project.title}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">项目编号</span>
+        <input type="text" class="form-control" placeholder="num" ng-model="project.num" value="{{project.num}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">价格</span>
+        <input type="text" class="form-control" placeholder="price" ng-model="project.price" value="{{project.price}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">原价</span>
+        <input type="text" class="form-control" placeholder="originalPrice" ng-model="project.originalPrice" value="{{project.originalPrice}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">测试介绍</span>
+        <!--<input type="text" class="form-control" placeholder="summry" ng-model="project.summry" value="{{project.summry}}">-->
+        <textarea class="form-control" placeholder="summry" ng-model="project.summry" value="{{project.summry}}"></textarea>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">测试须知</span>
+        <!--<input type="text" class="form-control" placeholder="needKonw" ng-model="project.needKonw" value="{{project.needKonw}}">-->
+        <textarea class="form-control" placeholder="needKonw" ng-model="project.needKonw" value="{{project.needKonw}}"></textarea>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">题目数量</span>
+        <input type="text" class="form-control" placeholder="questionCount" ng-model="project.questionCount" value="{{project.questionCount}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">已测数</span>
+        <input type="text" class="form-control" placeholder="completedCount" ng-model="project.completedCount" value="{{project.completedCount}}">
+      </div>
+    </div><!-- item -->
+
+    <!--<div class="row-group">-->
+      <!--<div class="input-group">-->
+        <!--<span class="input-group-addon">是否分享免费</span>-->
+        <!--<input type="text" class="form-control" placeholder="shareEnable" ng-model="project.shareEnable" value="{{project.shareEnable}}">-->
+      <!--</div>-->
+    <!--</div>&lt;!&ndash; item &ndash;&gt;-->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">是否分享免费</span>
+        <select class="form-control" ng-model="project.shareEnable" ng-options="shareEnable for shareEnable in shareEnables">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">排序编号</span>
+        <input type="text" class="form-control" placeholder="order" ng-model="project.order" value="{{project.order}}">
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">时间限制(分钟)</span>
+        <input type="text" class="form-control" placeholder="timeLimit" ng-model="project.timeLimit" value="{{project.timeLimit}}">
+      </div>
+    </div><!-- item -->
+
+    <!--<div class="row-group">-->
+      <!--<div class="input-group">-->
+        <!--<span class="input-group-addon">使用者类型</span>-->
+        <!--&lt;!&ndash;<input type="text" class="form-control" placeholder="使用者类型" ng-model="project.userType" value="{{project.userType}}">&ndash;&gt;-->
+        <!--<select class="form-control" ng-model="project.userType" ng-options="userType for userType in userTypes">-->
+          <!--<option value="">请选择</option>-->
+        <!--</select>-->
+      <!--</div>-->
+    <!--</div>&lt;!&ndash; item &ndash;&gt;-->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">企业</span>
+        <select class="form-control" ng-model="project.organizationId" ng-options="organization.id as organization.name for organization in organizations">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div><!-- container -->
+</div><!-- table info -->

@@ -1,0 +1,115 @@
+<ol class="breadcrumb">
+  <li>
+    <span>系统设置</span>
+  </li><!-- item -->
+  <li>
+    <a ui-sref="option">选项管理</a>
+  </li><!-- item -->
+  <li>
+    <span>
+      #if($id)
+        修改选项管理
+      #else
+        添加选项管理
+      #end
+    </span>
+  </li><!-- item -->
+</ol><!-- 面包屑 -->
+
+<div class="table-info">
+  <div class="container-fluid">
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">选项内容</span>
+        <input type="text" class="form-control" placeholder="title" ng-model="option.title" value="{{option.title}}">
+      </div>
+    </div><!-- item -->
+
+    <!--<div class="row-group">-->
+      <!--<div class="input-group">-->
+        <!--<span class="input-group-addon">questionId</span>-->
+        <!--<input type="text" class="form-control" placeholder="questionId" ng-model="option.questionId" value="{{option.questionId}}">-->
+      <!--</div>-->
+    <!--</div>&lt;!&ndash; item &ndash;&gt;-->
+
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">测试项目</span>
+        <select class="form-control" ng-model="option.project.id" ng-options="project.id as project.title for project in projects" ng-change="selectQuestion()">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">问题</span>
+        <select class="form-control" ng-model="option.question.id" ng-options="question.id as question.title for question in questions">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+
+    <!--<div class="row-group">-->
+      <!--<div class="input-group">-->
+        <!--<span class="input-group-addon">nestQuestionId</span>-->
+        <!--<input type="text" class="form-control" placeholder="nestQuestionId" ng-model="option.nestQuestionId" value="{{option.nestQuestionId}}">-->
+      <!--</div>-->
+    <!--</div>&lt;!&ndash; item &ndash;&gt;-->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">下一道问题</span>
+        <select class="form-control" ng-model="option.nestQuestion.id" ng-options="question.id as question.title for question in questions">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">选项</span>
+        <select class="form-control" ng-model="option.questionOption" ng-options="questionOption for questionOption in options">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+    <!--<div class="row-group">-->
+      <!--<div class="input-group">-->
+        <!--<span class="input-group-addon">使用者类型</span>-->
+        <!--&lt;!&ndash;<input type="text" class="form-control" placeholder="使用者类型" ng-model="option.userType" value="{{option.userType}}">&ndash;&gt;-->
+        <!--<select class="form-control" ng-model="option.userType" ng-options="userType for userType in userTypes">-->
+          <!--<option value="">请选择</option>-->
+        <!--</select>-->
+      <!--</div>-->
+    <!--</div>&lt;!&ndash; item &ndash;&gt;-->
+
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">企业</span>
+        <select class="form-control" ng-model="option.organizationId" ng-options="organization.id as organization.name for organization in organizations">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
+
+    <div class="row-group">
+      <div class="button-group">
+        <button type="button" class="btn" ng-click="submit()">
+          <i class="fa fa-check"></i>
+          提交
+        </button>
+        <button type="button" class="btn" ng-click="reset()">
+          <i class="fa fa-close"></i>
+          重置
+        </button>
+      </div>
+    </div><!-- item -->
+  </div><!-- container -->
+</div><!-- table info -->
