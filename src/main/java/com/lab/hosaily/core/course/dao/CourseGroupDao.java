@@ -78,6 +78,21 @@ public class CourseGroupDao{
     }
 
     /**
+     * 添加课程
+     */
+    public void addCourse(String id, List<Course> courses){
+        try{
+            Assert.hasText(id, "课程组ID不能为空");
+            Assert.notEmpty(courses, "课程数组不能为空");
+
+            mapper.addCourse(id, courses);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 用户授权
      */
     public void authorization(String accountId, List<CourseGroup> groups){

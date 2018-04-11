@@ -3,7 +3,9 @@ package com.lab.hosaily.core.course.service;
 import com.lab.hosaily.commons.utils.FileNameUtils;
 import com.lab.hosaily.commons.utils.UpyunUtils;
 import com.lab.hosaily.core.course.dao.CourseDao;
+import com.lab.hosaily.core.course.dao.CourseGroupDao;
 import com.lab.hosaily.core.course.entity.Course;
+import com.lab.hosaily.core.course.entity.CourseGroup;
 import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +32,9 @@ public class CourseServiceImpl implements CourseService{
     @Autowired
     private CourseDao courseDao;
 
+    @Autowired
+    private CourseGroupDao courseGroupDao;
+
     /**
      * 保存记录
      */
@@ -39,8 +45,13 @@ public class CourseServiceImpl implements CourseService{
             Assert.notNull(course, "课程信息不能为空");
             Assert.notNull(course.getType(), "课程层级类型不能为空");
             Assert.notNull(course.getKind(), "课程类型不能为空");
-
+            //保存
             courseDao.saveOrUpdate(course);
+            //添加到默认的课程组
+            CourseGroup group = courseGroupDao.getById("514e9897024c429cbb9997bf90121c3e");
+            if(group != null && course.getOrganizationId().equals(group.getOrganizationId())){
+                courseGroupDao.addCourse(group.getId(), Arrays.asList(course));
+            }
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

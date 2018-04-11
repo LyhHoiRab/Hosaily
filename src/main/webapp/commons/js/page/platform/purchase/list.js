@@ -24,7 +24,7 @@ app.controller('purchaseListController', function($scope, $http, $state, $stateP
             resolve: {
                 qrcodeString : function(){
                     //return 'http://ell.ishsls.com/page/h5/goPay?purchaseId=' + id;
-                    return 'http://df93b80d.ngrok.io/page/h5/goPay?purchaseId=' + id;
+                    return 'http://' + location.host +'/page/h5/goPay?purchaseId=' + id;
                 }
             }
         });
