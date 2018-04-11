@@ -23,7 +23,6 @@ app.controller('questionAddController', function($scope, $state, $http, $statePa
     };
 
     $scope.submit = function(){
-        alert($scope.question.project.id);
         $http({
             url: '/api/1.0/question',
             method: 'POST',

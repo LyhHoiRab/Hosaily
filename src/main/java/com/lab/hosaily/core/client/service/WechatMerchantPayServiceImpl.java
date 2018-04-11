@@ -39,7 +39,7 @@ import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
-public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
+public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
 
     private static Logger logger = LoggerFactory.getLogger(WechatMerchantPayServiceImpl.class);
 
@@ -69,8 +69,8 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
      */
     @Override
     @Transactional(readOnly = false)
-    public Map<String, String> prepay(String purchaseId, Double totalFee, String code){
-        try{
+    public Map<String, String> prepay(String purchaseId, Double totalFee, String code) {
+        try {
             Assert.notNull(totalFee, "支付金额不能为空");
 
             //TODO 根据企业ID查询支付账号信息
@@ -94,15 +94,15 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
 
             //查询微信账户
             String openId = "";
-            if(!StringUtils.isBlank(purchase.getAccountId())){
+            if (!StringUtils.isBlank(purchase.getAccountId())) {
                 WeChatAccount account = weChatAccountDao.getByAccountIdAndAppId(purchase.getAccountId(), appId);
                 openId = account.getOpenId();
-            }else if(!StringUtils.isBlank(code)){
+            } else if (!StringUtils.isBlank(code)) {
                 AccessTokenResponse token = WeChatUtils.getAccessToken(code, appId, appSecret);
                 openId = token.getOpenId();
             }
 
-            if(StringUtils.isBlank(openId)){
+            if (StringUtils.isBlank(openId)) {
                 throw new ServiceException("未知用户");
             }
 
@@ -123,14 +123,14 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
 
             //提交预支付
             WechatMerchantPayResponse response = WechatMerchantPayUtils.prepay(wechatMerchantPay);
-            if(response.getReturnCode().equalsIgnoreCase("SUCCESS")){
-                if(response.getResultCode().equalsIgnoreCase("SUCCESS")){
+            if (response.getReturnCode().equalsIgnoreCase("SUCCESS")) {
+                if (response.getResultCode().equalsIgnoreCase("SUCCESS")) {
                     payment.setState(PayState.UNCONFIRMED);
                     wechatMerchantPay.setPrepayId(response.getPrepayId());
-                }else{
+                } else {
                     throw new ServiceException(response.getReturnMsg());
                 }
-            }else{
+            } else {
                 throw new ServiceException(response.getReturnMsg());
             }
 
@@ -139,7 +139,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
             //保存微信商户支付记录
             wechatMerchantPayDao.saveOrUpdate(wechatMerchantPay);
 
-            if(!StringUtils.isBlank(wechatMerchantPay.getPrepayId())){
+            if (!StringUtils.isBlank(wechatMerchantPay.getPrepayId())) {
                 //生成网页支付参数
 //                Map<String, String> params = new HashMap<String, String>();
 //                params.put("appId", wechatMerchantPay.getAppId());
@@ -154,7 +154,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
             }
 
             throw new ServiceException(String.format("微信支付失败:%s", response.getReturnMsg()));
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -166,13 +166,13 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
      */
     @Override
     @Transactional(readOnly = false)
-    public Map<String, String> xcxPrepay(String projectId, String accountId, Double totalFee, String code){
-        try{
+    public Map<String, String> xcxPrepay(String projectId, String accountId, Double totalFee, String code) {
+        try {
             Assert.notNull(totalFee, "支付金额不能为空");
 
             //TODO 根据企业ID查询支付账号信息
-            String appId = "wx0d7797805ed0d9b3";
-            String appSecret = "e501dada14c76fb852bc7efa1a5543c7";
+            String appId = "wx616f17701a2c0d19";
+            String appSecret = "677ee85fb1bddde5863ae40ff44aa7e9";
             String mchId = "1492968172";
             String appKey = "7W80cW9zmjGTnodn4BEZwVvkU8BtJar8";
             String notifyUrl = "http://www.klpua.com/api/1.0/xcxPay/callback";
@@ -183,6 +183,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
             //创建支付记录
             Payment payment = new Payment();
 //            payment.setPurchaseId(purchaseId);
+            payment.setPurchaseId(projectId);
             payment.setState(PayState.APPLY);
             payment.setPayTime(new Date());
             payment.setPrice(totalFee);
@@ -209,7 +210,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
 //                openId = token.getOpenId();
 //            }
 
-            if(StringUtils.isBlank(openId)){
+            if (StringUtils.isBlank(openId)) {
                 throw new ServiceException("未知用户");
             }
 
@@ -230,25 +231,24 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
             wechatMerchantPay.setMsg("xcx:" + accountId + ";" + projectId);
 
 //            创建测试项目购买未激活记录
-            AccountProject accountProject = new AccountProject();
-            accountProject.setAccountId(accountId);
-            accountProject.setProjectId(projectId);
-            accountProject.setState(UsingState.INACTIVE);
-            accountProject.setStatus(ProjectStatus.PROJECT_UNDONE);
-            accountProjectDao.saveOrUpdate(accountProject);
-
+//            AccountProject accountProject = new AccountProject();
+//            accountProject.setAccountId(accountId);
+//            accountProject.setProjectId(projectId);
+//            accountProject.setState(UsingState.INACTIVE);
+//            accountProject.setStatus(ProjectStatus.PROJECT_UNDONE);
+//            accountProjectDao.saveOrUpdate(accountProject);
 
 
             //提交预支付
             WechatMerchantPayResponse response = WechatMerchantPayUtils.prepay(wechatMerchantPay);
-            if(response.getReturnCode().equalsIgnoreCase("SUCCESS")){
-                if(response.getResultCode().equalsIgnoreCase("SUCCESS")){
+            if (response.getReturnCode().equalsIgnoreCase("SUCCESS")) {
+                if (response.getResultCode().equalsIgnoreCase("SUCCESS")) {
                     payment.setState(PayState.UNCONFIRMED);
                     wechatMerchantPay.setPrepayId(response.getPrepayId());
-                }else{
+                } else {
                     throw new ServiceException(response.getReturnMsg());
                 }
-            }else{
+            } else {
                 throw new ServiceException(response.getReturnMsg());
             }
 
@@ -257,7 +257,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
             //保存微信商户支付记录
             wechatMerchantPayDao.saveOrUpdate(wechatMerchantPay);
 
-            if(!StringUtils.isBlank(wechatMerchantPay.getPrepayId())){
+            if (!StringUtils.isBlank(wechatMerchantPay.getPrepayId())) {
                 //生成网页支付参数
 //                Map<String, String> params = new HashMap<String, String>();
 //                params.put("appId", wechatMerchantPay.getAppId());
@@ -272,7 +272,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
             }
 
             throw new ServiceException(String.format("微信支付失败:%s", response.getReturnMsg()));
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -283,16 +283,16 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
      */
     @Override
     @Transactional(readOnly = false)
-    public String callback(String xml){
-        try{
+    public String callback(String xml) {
+        try {
             Assert.hasText(xml, "微信商户支付回调XML信息不能为空");
 
             //结果回复
             Map<String, String> params = new HashMap<String, String>();
 
             WechatMerchantPayCallbackResponse response = WechatMerchantPayUtils.toWechatMerchantPayCallbackResponse(xml);
-            if(response != null && response.getReturnCode().equalsIgnoreCase("SUCCESS")){
-                if(response.getResultCode().equalsIgnoreCase("SUCCESS")){
+            if (response != null && response.getReturnCode().equalsIgnoreCase("SUCCESS")) {
+                if (response.getResultCode().equalsIgnoreCase("SUCCESS")) {
                     //TODO 验证签名
                     String paymentId = response.getOutTradeNo();
                     //支付记录
@@ -301,15 +301,15 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
                     WechatMerchantPay pay = wechatMerchantPayDao.getByOutTradeNo(paymentId);
 
                     //简单验证
-                    if(payment != null
+                    if (payment != null
                             && pay != null
                             && pay.getTotalFee() == response.getTotalFee()
                             && pay.getAppId().equals(response.getAppId())
                             && pay.getMchId().equals(response.getMchId())
-                            && pay.getOpenId().equals(response.getOpenId())){
+                            && pay.getOpenId().equals(response.getOpenId())) {
 
                         //更新支付记录
-                        if(payment.getState().equals(PayState.UNCONFIRMED)){
+                        if (payment.getState().equals(PayState.UNCONFIRMED)) {
                             payment.setState(PayState.PAID);
                             payment.setAffirmTime(new Date());
                             paymentDao.saveOrUpdate(payment);
@@ -318,89 +318,98 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
                         pay.setIsSuccess(true);
                         wechatMerchantPayDao.saveOrUpdate(pay);
 
+                        params.put("return_code", "SUCCESS");
+                        params.put("return_msg", "OK");
+                    }
+                } else {
+                    params.put("return_code", "FAIL");
+                    params.put("return_msg", response.getErrCodeDes());
+                }
+            } else {
+                params.put("return_code", "FAIL");
+                params.put("return_msg", response.getReturnMsg());
+            }
 
-//                        更新account_project状态
+            return WechatMerchantPayUtils.toXml(params);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+
+    /**
+     * 回调
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public String xcxCallback(String xml) {
+        try {
+            Assert.hasText(xml, "微信商户支付回调XML信息不能为空");
+
+            //结果回复
+            Map<String, String> params = new HashMap<String, String>();
+
+            WechatMerchantPayCallbackResponse response = WechatMerchantPayUtils.toWechatMerchantPayCallbackResponse(xml);
+            if (response != null && response.getReturnCode().equalsIgnoreCase("SUCCESS")) {
+                if (response.getResultCode().equalsIgnoreCase("SUCCESS")) {
+                    //TODO 验证签名
+                    String paymentId = response.getOutTradeNo();
+                    //支付记录
+                    Payment payment = paymentDao.getById(paymentId);
+                    //微信商户支付记录
+                    WechatMerchantPay pay = wechatMerchantPayDao.getByOutTradeNo(paymentId);
+
+                    //简单验证
+                    if (payment != null
+                            && pay != null
+                            && pay.getTotalFee() == response.getTotalFee()
+                            && pay.getAppId().equals(response.getAppId())
+                            && pay.getMchId().equals(response.getMchId())
+                            && pay.getOpenId().equals(response.getOpenId())) {
+
+                        //更新支付记录
+                        if (payment.getState().equals(PayState.UNCONFIRMED)) {
+                            payment.setState(PayState.PAID);
+                            payment.setAffirmTime(new Date());
+                            paymentDao.saveOrUpdate(payment);
+                        }
+                        //更新微信商户支付记录
+                        pay.setIsSuccess(true);
+                        wechatMerchantPayDao.saveOrUpdate(pay);
+
+                        //                        更新account_project状态
                         String accountProjectMsg = pay.getMsg();
                         String[] xcxAJArr = accountProjectMsg.split(":");
                         String[] aJArr = xcxAJArr[1].split(";");
-                        AccountProject accountProject = accountProjectDao.getByAccountIdAndProjectId(aJArr[0], aJArr[1]);
+//                        AccountProject accountProject = accountProjectDao.getByAccountIdAndProjectId(aJArr[0], aJArr[1]);
+//                        accountProject.setState(UsingState.NORMAL);
+//                        accountProjectDao.saveOrUpdate(accountProject);
+
+
+                        //            创建测试项目购买未激活记录
+                        AccountProject accountProject = new AccountProject();
+                        accountProject.setAccountId(aJArr[0]);
+                        accountProject.setProjectId(aJArr[1]);
                         accountProject.setState(UsingState.NORMAL);
+                        accountProject.setStatus(ProjectStatus.PROJECT_UNDONE);
                         accountProjectDao.saveOrUpdate(accountProject);
 
                         params.put("return_code", "SUCCESS");
                         params.put("return_msg", "OK");
                     }
-                }else{
+                } else {
+
                     params.put("return_code", "FAIL");
                     params.put("return_msg", response.getErrCodeDes());
                 }
-            }else{
+            } else {
                 params.put("return_code", "FAIL");
                 params.put("return_msg", response.getReturnMsg());
             }
 
             return WechatMerchantPayUtils.toXml(params);
-        }catch(Exception e){
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-
-    /**
-     * 回调
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public String xcxCallback(String xml){
-        try{
-            Assert.hasText(xml, "微信商户支付回调XML信息不能为空");
-
-            //结果回复
-            Map<String, String> params = new HashMap<String, String>();
-
-            WechatMerchantPayCallbackResponse response = WechatMerchantPayUtils.toWechatMerchantPayCallbackResponse(xml);
-            if(response != null && response.getReturnCode().equalsIgnoreCase("SUCCESS")){
-                if(response.getResultCode().equalsIgnoreCase("SUCCESS")){
-                    //TODO 验证签名
-                    String paymentId = response.getOutTradeNo();
-                    //支付记录
-                    Payment payment = paymentDao.getById(paymentId);
-                    //微信商户支付记录
-                    WechatMerchantPay pay = wechatMerchantPayDao.getByOutTradeNo(paymentId);
-
-                    //简单验证
-                    if(payment != null
-                            && pay != null
-                            && pay.getTotalFee() == response.getTotalFee()
-                            && pay.getAppId().equals(response.getAppId())
-                            && pay.getMchId().equals(response.getMchId())
-                            && pay.getOpenId().equals(response.getOpenId())){
-
-                        //更新支付记录
-                        if(payment.getState().equals(PayState.UNCONFIRMED)){
-                            payment.setState(PayState.PAID);
-                            payment.setAffirmTime(new Date());
-                            paymentDao.saveOrUpdate(payment);
-                        }
-                        //更新微信商户支付记录
-                        pay.setIsSuccess(true);
-                        wechatMerchantPayDao.saveOrUpdate(pay);
-
-                        params.put("return_code", "SUCCESS");
-                        params.put("return_msg", "OK");
-                    }
-                }else{
-                    params.put("return_code", "FAIL");
-                    params.put("return_msg", response.getErrCodeDes());
-                }
-            }else{
-                params.put("return_code", "FAIL");
-                params.put("return_msg", response.getReturnMsg());
-            }
-
-            return WechatMerchantPayUtils.toXml(params);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -410,14 +419,14 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService{
      * 查询JSAPI支付参数
      */
     @Override
-    public Map<String, String> getJsapi(String outTradeNo){
-        try{
+    public Map<String, String> getJsapi(String outTradeNo) {
+        try {
             Assert.hasText(outTradeNo, "支付记录ID不能为空");
 
             WechatMerchantPay pay = wechatMerchantPayDao.getByOutTradeNo(outTradeNo);
 
             return WechatMerchantPayUtils.getJsapiParams(pay);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }

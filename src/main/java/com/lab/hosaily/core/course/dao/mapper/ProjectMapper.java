@@ -30,10 +30,20 @@ public interface ProjectMapper {
      */
     Project getByParams(@Param("params") Criteria criteria);
 
+
+    Project getByProjectIdAndAccountId(@Param("projectId") String projectId, @Param("accountId") String accountId);
+
+    /**
+     * 根据条件查询单条记录
+     */
+    Project getByParamsById(@Param("params") Criteria criteria);
+
     /**
      * 根据条件查询多条记录
      */
     List<Project> findByParams(@Param("params") Criteria criteria);
+
+    List<Project> findAllByParams(@Param("params") Criteria criteria);
 
 
     List<Project> findByParamsByPage(@Param("accountId") String accountId, @Param("offset") Long offset, @Param("pageSize") Long pageSize);

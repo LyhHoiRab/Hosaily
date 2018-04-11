@@ -33,7 +33,7 @@ app.controller('optionEditController', function($scope, $state, $stateParams, $h
             }
         }).success(function(res, status, headers, config){
             if(res.success){
-                alert(res.msg);
+                // alert(res.msg);
                 $state.go('option');
             }else{
                 alert(res.msg);
@@ -101,21 +101,20 @@ app.controller('optionEditController', function($scope, $state, $stateParams, $h
 
 
     $scope.selectQuestion = function(){
-        // alert($scope.option.project.id);
         $http({
             url: '/api/1.0/question/list',
             method: 'POST',
             data: $.param({
                 'state' : 0,
                 'projectId' : $scope.option.project.id,
-                'organizationId' : $scope.option.organizationId
+                'organizationId' : 'ad748e6d57be453f920f2953ddf0bb70'
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).success(function(res, status, headers, config){
             if(res.success){
-                alert(res.result);
+                // alert(res.result);
                 $scope.questions = res.result;
             }
         }).error(function(response){
@@ -125,7 +124,6 @@ app.controller('optionEditController', function($scope, $state, $stateParams, $h
     }
 
     $scope.getQuestion = function(){
-        // alert($scope.option.project);
         $http({
             url: '/api/1.0/question/list',
             method: 'POST',

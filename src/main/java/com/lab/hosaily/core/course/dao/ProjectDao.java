@@ -37,9 +37,10 @@ public class ProjectDao {
     public void saveOrUpdate(Project project) {
         try {
             if (StringUtils.isBlank(project.getId())) {
-                Assert.hasText(project.getOrganizationId(), "企业ID不能为空");
+//                Assert.hasText(project.getOrganizationId(), "企业ID不能为空");
                 project.setId(UUIDGenerator.by32());
                 project.setCreateTime(new Date());
+                project.setOrganizationId("ad748e6d57be453f920f2953ddf0bb70");
                 mapper.save(project);
             } else {
                 project.setUpdateTime(new Date());
@@ -74,13 +75,34 @@ public class ProjectDao {
 
             Criteria criteria = new Criteria();
             criteria.and(Restrictions.eq("p.id", id));
+//            criteria.and(Restrictions.eq("ap.projectId", projectId));
 
-            return mapper.getByParams(criteria);
+            return mapper.getByParamsById(criteria);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
     }
+
+
+    /**
+     * 根据ID查询标签
+     */
+    public Project getByProjectIdAndAccountId(String projectId, String accountId) {
+        try {
+//            Assert.hasText(projectId, "标签id不能为空");
+//
+//            Criteria criteria = new Criteria();
+//            criteria.and(Restrictions.eq("p.id", projectId));
+//            criteria.and(Restrictions.eq("ap.accountId", accountId));
+
+            return mapper.getByProjectIdAndAccountId(projectId, accountId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
 
     /**
      * 查询列表
@@ -101,7 +123,6 @@ public class ProjectDao {
     public Page<Project> page(PageRequest pageRequest, String num, String title, String organizationId, String status, String accountId) {
         try {
             Assert.notNull(pageRequest, "分页信息不能为空");
-            System.out.println("DaoDaoDaoDaoDaoDaoDaoDaoDaoDaoDaoDaoDaoDaoDao: " + status);
             Criteria criteria = new Criteria();
             criteria.sort(Restrictions.asc("p.order"));
             if (!StringUtils.isBlank(num)) {
@@ -128,7 +149,7 @@ public class ProjectDao {
                 criteria.and(Restrictions.eq("ap.state", UsingState.NORMAL));
                 count = mapper.countByParams(criteria);
                 list = mapper.findByParams(criteria);
-            } else if(ProjectStatus.PROJECT_ALL.equals(status)){
+            } else if (ProjectStatus.PROJECT_ALL.equals(status)) {
 //                    查找所有测试项目，包含购买信息和测试结果
                 System.out.println("查找所有测试项目，包含购买信息和测试结果");
                 if (!StringUtils.isBlank(accountId)) {
@@ -140,10 +161,12 @@ public class ProjectDao {
                     count = mapper.countByParams(criteria);
                     list = mapper.findByParams(criteria);
                 }
-            }else{
+            } else {
                 System.out.println("查找所有测试项目，包含购买信息和测试结果22222");
+//                count = mapper.countByParams(criteria);
+//                list = mapper.findByParams(criteria);
                 count = mapper.countByParams(criteria);
-                list = mapper.findByParams(criteria);
+                list = mapper.findByParamsByPage(accountId, pageRequest.getOffset(), pageRequest.getPageSize());
             }
             return new Page<Project>(list, pageRequest, count);
         } catch (Exception e) {
@@ -159,25 +182,9 @@ public class ProjectDao {
     public List<Project> list(String nickname, String name, UsingState state, String organizationId, String organizationToken) {
         try {
             Criteria criteria = new Criteria();
-//            criteria.sort(Restrictions.asc("p.sort"));
-//
-//            if(!StringUtils.isBlank(nickname)){
-//                criteria.and(Restrictions.like("a.nickname", nickname));
-//            }
-//            if(!StringUtils.isBlank(name)){
-//                criteria.and(Restrictions.like("a.name", name));
-//            }
-//            if(state != null){
-//                criteria.and(Restrictions.eq("a.state", state.getId()));
-//            }
-//            if(!StringUtils.isBlank(organizationId)){
-//                criteria.and(Restrictions.eq("a.organizationId", organizationId));
-//            }
-//            if(!StringUtils.isBlank(organizationToken)){
-//                criteria.and(Restrictions.eq("o.token", organizationToken));
-//            }
-
-            return mapper.findByParams(criteria);
+            criteria.sort(Restrictions.asc("p.order"));
+//            criteria.and(Restrictions.eq("p.state", UsingState.NORMAL));
+            return mapper.findAllByParams(criteria);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

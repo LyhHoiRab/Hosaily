@@ -180,6 +180,12 @@
     <update id="update">
         UPDATE account_project
          <set>
+             <if test="status != null and status != ''">
+                 status = #{status, jdbcType=VARCHAR},
+             </if>
+             <if test="resultId != null and resultId != ''">
+                 result_id = #{resultId, jdbcType=VARCHAR},
+             </if>
              <if test="state != null">
                  state = #{state, typeHandler=usingStateHandler},
              </if>

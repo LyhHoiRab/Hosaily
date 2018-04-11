@@ -53,6 +53,8 @@ public class XcxAccount implements Create, Update{
     //经度
     private Double longitude;
 
+
+
     public XcxAccount(){
 
     }

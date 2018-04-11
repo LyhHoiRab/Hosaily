@@ -30,18 +30,19 @@ public class QuestionDao {
     /**
      * 保存或更新
      */
-    public void saveOrUpdate(Question question){
-        try{
-            if(StringUtils.isBlank(question.getId())){
-                Assert.hasText(question.getOrganizationId(), "企业ID不能为空");
+    public void saveOrUpdate(Question question) {
+        try {
+            if (StringUtils.isBlank(question.getId())) {
+//                Assert.hasText(question.getOrganizationId(), "企业ID不能为空");
                 question.setId(UUIDGenerator.by32());
                 question.setCreateTime(new Date());
+                question.setOrganizationId("ad748e6d57be453f920f2953ddf0bb70");
                 mapper.save(question);
-            }else{
+            } else {
                 question.setUpdateTime(new Date());
                 mapper.update(question);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -50,12 +51,12 @@ public class QuestionDao {
     /**
      * 删除标签
      */
-    public void delete(String id){
-        try{
+    public void delete(String id) {
+        try {
             Assert.hasText(id, "标签id不能为空");
 
             mapper.delete(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -64,15 +65,15 @@ public class QuestionDao {
     /**
      * 根据ID查询标签
      */
-    public Question getById(String id){
-        try{
+    public Question getById(String id) {
+        try {
             Assert.hasText(id, "标签id不能为空");
 
             Criteria criteria = new Criteria();
             criteria.and(Restrictions.eq("q.id", id));
 
             return mapper.getByParams(criteria);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -81,11 +82,11 @@ public class QuestionDao {
     /**
      * 查询列表
      */
-    public List<Question> list(UsingState state){
-        try{
+    public List<Question> list(UsingState state) {
+        try {
             Criteria criteria = new Criteria();
             return mapper.findByParams(criteria);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -94,23 +95,23 @@ public class QuestionDao {
     /**
      * 分页查询
      */
-    public Page<Question> page(PageRequest pageRequest, String num, String title, String projectId, String organizationId){
-        try{
+    public Page<Question> page(PageRequest pageRequest, String num, String title, String projectId, String organizationId) {
+        try {
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
             criteria.sort(Restrictions.asc("p.num"));
             criteria.sort(Restrictions.asc("q.num"));
-            if(!StringUtils.isBlank(num)){
+            if (!StringUtils.isBlank(num)) {
                 criteria.and(Restrictions.like("q.num", num));
             }
-            if(!StringUtils.isBlank(title)){
+            if (!StringUtils.isBlank(title)) {
                 criteria.and(Restrictions.like("q.title", title));
             }
-            if(!StringUtils.isBlank(projectId)){
+            if (!StringUtils.isBlank(projectId)) {
                 criteria.and(Restrictions.like("q.projectId", projectId));
             }
-            if(!StringUtils.isBlank(organizationId)){
+            if (!StringUtils.isBlank(organizationId)) {
                 criteria.and(Restrictions.like("q.organizationId", organizationId));
             }
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
@@ -119,7 +120,7 @@ public class QuestionDao {
             List<Question> list = mapper.findByParams(criteria);
 
             return new Page<Question>(list, pageRequest, count);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -128,29 +129,13 @@ public class QuestionDao {
     /**
      * 查询列表
      */
-    public List<Question> list(String nickname, String name, UsingState state, String organizationId, String organizationToken){
-        try{
+    public List<Question> list(String projectId, String organizationId) {
+        try {
             Criteria criteria = new Criteria();
-//            criteria.sort(Restrictions.asc("p.sort"));
-//
-//            if(!StringUtils.isBlank(nickname)){
-//                criteria.and(Restrictions.like("a.nickname", nickname));
-//            }
-//            if(!StringUtils.isBlank(name)){
-//                criteria.and(Restrictions.like("a.name", name));
-//            }
-//            if(state != null){
-//                criteria.and(Restrictions.eq("a.state", state.getId()));
-//            }
-//            if(!StringUtils.isBlank(organizationId)){
-//                criteria.and(Restrictions.eq("a.organizationId", organizationId));
-//            }
-//            if(!StringUtils.isBlank(organizationToken)){
-//                criteria.and(Restrictions.eq("o.token", organizationToken));
-//            }
-
+            criteria.and(Restrictions.like("q.projectId", projectId));
+            criteria.and(Restrictions.like("q.organizationId", organizationId));
             return mapper.findByParams(criteria);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -160,13 +145,13 @@ public class QuestionDao {
     /**
      * 查询列表
      */
-    public Question getFirstQuestion(String projectId, String num, UsingState state, String organizationId, String questionId){
-        try{
+    public Question getFirstQuestion(String projectId, String num, UsingState state, String organizationId, String questionId) {
+        try {
             Criteria criteria = new Criteria();
             criteria.and(Restrictions.eq("q.projectId", projectId));
             criteria.and(Restrictions.eq("q.num", 1));
             return mapper.getByParams(criteria);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -175,13 +160,13 @@ public class QuestionDao {
     /**
      * 查询列表
      */
-    public Question getNextQuestion(String projectId, String num, UsingState state, String organizationId, String questionId){
-        try{
+    public Question getNextQuestion(String projectId, String num, UsingState state, String organizationId, String questionId) {
+        try {
             Criteria criteria = new Criteria();
             criteria.and(Restrictions.eq("q.id", questionId));
 //            criteria.and(Restrictions.eq("q.num", 1));
             return mapper.getByParams(criteria);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }

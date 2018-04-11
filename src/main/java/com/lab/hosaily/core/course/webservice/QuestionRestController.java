@@ -109,9 +109,9 @@ public class QuestionRestController {
      * 查询列表
      */
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<Question>> list(String nickname, String name, UsingState state, String organizationId, String organizationToken){
+    public Response<List<Question>> list(String projectId, String organizationId){
         try{
-            List<Question> list = questionService.list(nickname, name, state, organizationId, organizationToken);
+            List<Question> list = questionService.list(projectId, organizationId);
 
             return new Response<List<Question>>("查询成功", list);
         }catch(Exception e){

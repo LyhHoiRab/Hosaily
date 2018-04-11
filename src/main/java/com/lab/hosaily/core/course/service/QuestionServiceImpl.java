@@ -29,12 +29,12 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     @Transactional(readOnly = false)
-    public void save(Question question){
-        try{
+    public void save(Question question) {
+        try {
             Assert.notNull(question, "标签信息不能为空");
 
             questionDao.saveOrUpdate(question);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -45,13 +45,13 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     @Transactional(readOnly = false)
-    public void update(Question question){
-        try{
+    public void update(Question question) {
+        try {
             Assert.notNull(question, "标签信息不能为空");
             Assert.hasText(question.getId(), "标签sim不能为空");
 
             questionDao.saveOrUpdate(question);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -62,12 +62,12 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     @Transactional(readOnly = false)
-    public void delete(String id){
-        try{
+    public void delete(String id) {
+        try {
             Assert.hasText(id, "帖子ID不能为空");
 
             questionDao.delete(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -77,12 +77,12 @@ public class QuestionServiceImpl implements QuestionService {
      * 根据ID查询记录
      */
     @Override
-    public Question getById(String id){
-        try{
+    public Question getById(String id) {
+        try {
             Assert.hasText(id, "标签信息不能为空");
 
             return questionDao.getById(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -92,12 +92,12 @@ public class QuestionServiceImpl implements QuestionService {
      * 分页查询
      */
     @Override
-    public Page<Question> page(PageRequest pageRequest, String num, String title, String projectId, String organizationId){
-        try{
+    public Page<Question> page(PageRequest pageRequest, String num, String title, String projectId, String organizationId) {
+        try {
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             return questionDao.page(pageRequest, num, title, projectId, organizationId);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -107,10 +107,10 @@ public class QuestionServiceImpl implements QuestionService {
      * 查询列表
      */
     @Override
-    public List<Question> list(String nickname, String name, UsingState state, String organizationId, String organizationToken){
-        try{
-            return questionDao.list(nickname, name, state, organizationId, organizationToken);
-        }catch(Exception e){
+    public List<Question> list(String projectId, String organizationId) {
+        try {
+            return questionDao.list(projectId, organizationId);
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -118,11 +118,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question getFirstQuestion(String projectId, String num, UsingState state, String organizationId, String questionId) {
-        try{
-//            Assert.hasText(id, "标签信息不能为空");
-
+        try {
             return questionDao.getFirstQuestion(projectId, num, state, organizationId, questionId);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -130,11 +128,11 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question getNextQuestion(String projectId, String num, UsingState state, String organizationId, String questionId) {
-        try{
+        try {
 //            Assert.hasText(id, "标签信息不能为空");
 
             return questionDao.getNextQuestion(projectId, num, state, organizationId, questionId);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }

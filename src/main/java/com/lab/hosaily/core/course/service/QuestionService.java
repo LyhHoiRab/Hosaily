@@ -38,7 +38,7 @@ public interface QuestionService {
     /**
      * 查询列表
      */
-    List<Question> list(String nickname, String name, UsingState state, String organizationId, String organizationToken);
+    List<Question> list(String projectId, String organizationId);
 
 
 

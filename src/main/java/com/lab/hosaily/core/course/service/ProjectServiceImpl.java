@@ -39,8 +39,8 @@ public class ProjectServiceImpl implements ProjectService {
      */
     @Override
     @Transactional(readOnly = false)
-    public void save(Project project){
-        try{
+    public void save(Project project) {
+        try {
             Assert.notNull(project, "标签信息不能为空");
 
 
@@ -60,7 +60,7 @@ public class ProjectServiceImpl implements ProjectService {
 //            accountProjectDao.saveOrUpdate(accountProject1);
 
             projectDao.saveOrUpdate(project);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -71,13 +71,13 @@ public class ProjectServiceImpl implements ProjectService {
      */
     @Override
     @Transactional(readOnly = false)
-    public void update(Project project){
-        try{
+    public void update(Project project) {
+        try {
             Assert.notNull(project, "标签信息不能为空");
             Assert.hasText(project.getId(), "标签sim不能为空");
 
             projectDao.saveOrUpdate(project);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -88,12 +88,12 @@ public class ProjectServiceImpl implements ProjectService {
      */
     @Override
     @Transactional(readOnly = false)
-    public void delete(String id){
-        try{
+    public void delete(String id) {
+        try {
             Assert.hasText(id, "帖子ID不能为空");
 
             projectDao.delete(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -103,27 +103,33 @@ public class ProjectServiceImpl implements ProjectService {
      * 根据ID查询记录
      */
     @Override
-    public Project getById(String id){
-        try{
+    public Project getById(String id) {
+        try {
             Assert.hasText(id, "标签信息不能为空");
 
             return projectDao.getById(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public Project getByProjectIdAndAccountId(String projectId, String accountId) {
+        Assert.hasText(projectId, "projectId不能为空");
+        Assert.hasText(accountId, "accountId不能为空");
+        return projectDao.getByProjectIdAndAccountId(projectId, accountId);
     }
 
     /**
      * 分页查询
      */
     @Override
-    public Page<Project> page(PageRequest pageRequest, String num, String title, String organizationId, String status, String accountId){
-        try{
+    public Page<Project> page(PageRequest pageRequest, String num, String title, String organizationId, String status, String accountId) {
+        try {
             Assert.notNull(pageRequest, "分页信息不能为空");
-            System.out.println("implimplimplimplimplimplimplimpl");
             return projectDao.page(pageRequest, num, title, organizationId, status, accountId);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -133,10 +139,10 @@ public class ProjectServiceImpl implements ProjectService {
      * 查询列表
      */
     @Override
-    public List<Project> list(String nickname, String name, UsingState state, String organizationId, String organizationToken){
-        try{
+    public List<Project> list(String nickname, String name, UsingState state, String organizationId, String organizationToken) {
+        try {
             return projectDao.list(nickname, name, state, organizationId, organizationToken);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -147,8 +153,8 @@ public class ProjectServiceImpl implements ProjectService {
      * 上传图片
      */
     @Override
-    public String upload(CommonsMultipartFile file){
-        try{
+    public String upload(CommonsMultipartFile file) {
+        try {
             Assert.notNull(file, "上传文件不能为空");
 
             //文件名称
@@ -165,7 +171,7 @@ public class ProjectServiceImpl implements ProjectService {
             boolean result = UpyunUtils.upload(uploadPath, file);
 
             return result ? UpyunUtils.URL + uploadPath : "";
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -176,10 +182,17 @@ public class ProjectServiceImpl implements ProjectService {
     public void summitResult(AccountProject accountProject) {
 
         AccountProject oldAccountProject = accountProjectDao.getByAccountIdAndProjectId(accountProject.getAccountId(), accountProject.getProjectId());
-        if(null != oldAccountProject){
+
+        if (null != oldAccountProject) {
             oldAccountProject.setResultId(accountProject.getResultId());
             oldAccountProject.setStatus(accountProject.getStatus());
+            accountProjectDao.saveOrUpdate(oldAccountProject);
+            Project project = projectDao.getById(accountProject.getProjectId());
+            project.setCompletedCount((Integer.parseInt(project.getCompletedCount()) + 1) + "");
+        } else {
+            accountProjectDao.saveOrUpdate(accountProject);
         }
-        accountProjectDao.saveOrUpdate(accountProject);
+
+
     }
 }

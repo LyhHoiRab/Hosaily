@@ -234,8 +234,9 @@
     <select id="getByParams" resultMap="question">
         SELECT q.*,
         p.id AS p_id,
-        p.title AS p_title,
-        (SELECT question_id FROM question_option WHERE nest_question_id =q.id) AS pre_question_id
+        p.title AS p_title
+--         ,
+--         (SELECT question_id FROM question_option WHERE nest_question_id =q.id) AS pre_question_id
 --         ,
 --         o.id AS o_id,
 --         o.title AS o_title,
@@ -254,8 +255,9 @@
     <select id="findByParams" resultMap="question">
         SELECT q.*,
         p.id AS p_id,
-        p.title AS p_title,
-        (SELECT question_id FROM question_option WHERE nest_question_id =q.id) AS pre_question_id
+        p.title AS p_title
+--         ,
+--         (SELECT question_id FROM question_option WHERE nest_question_id =q.id) AS pre_question_id
 --         ,
 --         o.id AS o_id,
 --         o.title AS o_title,

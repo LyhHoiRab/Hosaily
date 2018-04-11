@@ -22,7 +22,7 @@ import java.util.Date;
 
 @Service
 @Transactional(readOnly = true)
-public class PostServiceImp implements PostService{
+public class PostServiceImp implements PostService {
 
     private static Logger logger = LoggerFactory.getLogger(PostServiceImp.class);
 
@@ -34,12 +34,12 @@ public class PostServiceImp implements PostService{
      */
     @Override
     @Transactional(readOnly = false)
-    public void save(Course post){
-        try{
+    public void save(Course post) {
+        try {
             Assert.notNull(post, "帖子信息不能为空");
 
             postDao.saveOrUpdate(post);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -50,13 +50,13 @@ public class PostServiceImp implements PostService{
      */
     @Override
     @Transactional(readOnly = false)
-    public void update(Course post){
-        try{
+    public void update(Course post) {
+        try {
             Assert.notNull(post, "帖子信息不能为空");
             Assert.hasText(post.getId(), "帖子ID不能为空");
 
             postDao.saveOrUpdate(post);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -67,12 +67,12 @@ public class PostServiceImp implements PostService{
      */
     @Override
     @Transactional(readOnly = false)
-    public void delete(String id){
-        try{
+    public void delete(String id) {
+        try {
             Assert.hasText(id, "帖子ID不能为空");
 
             postDao.delete(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -82,12 +82,12 @@ public class PostServiceImp implements PostService{
      * 根据ID查询
      */
     @Override
-    public Course getById(String id){
-        try{
+    public Course getById(String id) {
+        try {
             Assert.hasText(id, "帖子ID不能为空");
 
             return postDao.getById(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -97,12 +97,12 @@ public class PostServiceImp implements PostService{
      * 分页查询
      */
     @Override
-    public Page<Course> page(PageRequest pageRequest, String advisor, UsingState state, String advisorId, String organizationId, String organizationToken, String tagName){
-        try{
+    public Page<Course> page(PageRequest pageRequest, String advisor, UsingState state, String advisorId, String organizationId, String organizationToken, String tagName) {
+        try {
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             return postDao.page(pageRequest, advisor, state, advisorId, organizationId, organizationToken, tagName);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -112,8 +112,8 @@ public class PostServiceImp implements PostService{
      * 上传图片
      */
     @Override
-    public String upload(CommonsMultipartFile file){
-        try{
+    public String upload(CommonsMultipartFile file) {
+        try {
             Assert.notNull(file, "上传文件不能为空");
 
             //文件名称
@@ -130,7 +130,7 @@ public class PostServiceImp implements PostService{
             boolean result = UpyunUtils.upload(uploadPath, file);
 
             return result ? UpyunUtils.URL + uploadPath : "";
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }

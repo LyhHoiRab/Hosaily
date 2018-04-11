@@ -274,6 +274,38 @@
         </if>
     </select>
 
+
+    <!--<select id="getByParams" resultMap="project">-->
+        <!--SELECT p.*,-->
+        <!--ap.status AS status,-->
+        <!--ap.result_id AS result_id-->
+        <!--FROM project p-->
+        <!--LEFT JOIN account_project ap-->
+        <!--ON p.id = ap.project_id-->
+        <!--<if test="params != null">-->
+            <!--<include refid="WHERE_COLUMN"/>-->
+        <!--</if>-->
+    <!--</select>-->
+
+
+    <select id="getByParamsById" resultMap="project">
+        SELECT p.*
+        FROM project p
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+    <select id="getByProjectIdAndAccountId" resultMap="project">
+        SELECT p.*,
+        (SELECT ap.status FROM account_project ap WHERE ap.`project_id` = p.`id` AND ap.`account_id` = #{accountId} AND ap.`state` = 0) AS status
+        ,(SELECT ap.`result_id` FROM account_project ap WHERE ap.`project_id` = p.`id` AND ap.`account_id` = #{accountId} AND ap.`state` = 0) AS result_id
+        FROM project p
+        WHERE p.id = #{projectId}
+
+    </select>
+
+
     <select id="findByParams" resultMap="project">
         SELECT p.*,
         ap.status AS status,
@@ -299,10 +331,31 @@
 
 
 
+    <select id="findAllByParams" resultMap="project">
+        SELECT p.*
+        FROM project p
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+
+
     <select id="findByParamsByPage"  resultMap="project">
         SELECT p.*,
         (SELECT ap.status FROM account_project ap WHERE ap.`project_id` = p.`id` AND ap.`account_id` = #{accountId} AND ap.`state` = 0) AS status
-        ,(SELECT ap.`result_id` FROM account_project ap WHERE ap.`project_id` = p.`id` AND ap.`account_id` = #{accountId} AND ap.`state` = 0) AS result_id FROM project p
+        ,(SELECT ap.`result_id` FROM account_project ap WHERE ap.`project_id` = p.`id` AND ap.`account_id` = #{accountId} AND ap.`state` = 0) AS result_id FROM project p order by `order`
         LIMIT #{offset}, #{pageSize}
     </select>
 

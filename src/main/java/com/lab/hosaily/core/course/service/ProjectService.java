@@ -27,6 +27,11 @@ public interface ProjectService {
     Project getById(String id);
 
     /**
+     * 根据ID查询记录
+     */
+    Project getByProjectIdAndAccountId(String projectId, String accountId);
+
+    /**
      * 删除
      */
     void delete(String id);
