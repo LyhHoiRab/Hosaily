@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.course.webservice;
 
+import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.course.entity.CourseGroup;
 import com.lab.hosaily.core.course.service.CourseGroupService;
 import com.rab.babylon.commons.security.exception.ApplicationException;

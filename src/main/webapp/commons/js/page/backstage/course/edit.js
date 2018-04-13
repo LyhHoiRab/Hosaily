@@ -4,7 +4,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
     $scope.advisors       = [];
     $scope.organizations  = [];
     $scope.authorizations = {'false':'否', 'true':'是'};
-    //$scope.tags     = [];
+    $scope.tags           = [];
     //$scope.levels   = [];
 
     var uploader = $scope.uploader = new FileUploader({
@@ -47,7 +47,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         sort           : 0,
         advisor        : {},
         organizationId : '',
-        //tag          : [],
+        tag            : [],
         //level        : [],
         children       : [],
         authorization  : ''
@@ -67,7 +67,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         $scope.course.view           = 0;
         $scope.course.sort           = 0;
         $scope.course.advisor        = {};
-        //$scope.course.tag           = [];
+        $scope.course.tag            = [];
         $scope.course.organizationId = '';
         $scope.course.authorization  = '';
     };
@@ -161,7 +161,8 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
             url: '/api/1.0/tag/list',
             method: 'POST',
             data: $.param({
-                'state': 0
+                'state': 0,
+                'organizationId' : $scope.course.organizationId
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -202,7 +203,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
     $scope.$watch('course.organizationId', function(newVal, oldVal){
         if(newVal !== oldVal){
             $scope.getAdvisor();
-            //$scope.getTag();
+            $scope.getTag();
         }
     }, true);
 
@@ -211,6 +212,6 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
     //$scope.getAdvisor();
     $scope.getState();
     //$scope.getLevel();
-    //$scope.getTag();
+    // $scope.getTag();
     $scope.getCourseById();
 });
