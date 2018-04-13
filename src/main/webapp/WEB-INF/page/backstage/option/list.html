@@ -20,7 +20,7 @@
             <div class="col-xs-12 col-md-3">
                 <div class="input-group">
                     <span class="input-group-addon">测试项目名称</span>
-                    <select class="form-control" ng-model="projectId" ng-options="project.id as project.title for project in projects" ng-change="selectQuestion()">
+                    <select class="form-control" ng-model="projectId" ng-options="project.id as project.num + '.' + project.title for project in projects" ng-change="selectQuestion()">
                         <option value="">请选择</option>
                     </select>
                 </div>
@@ -29,7 +29,7 @@
             <div class="col-xs-12 col-md-3">
                 <div class="input-group">
                     <span class="input-group-addon">题目名称</span>
-                    <select class="form-control" ng-model="questionId" ng-options="question.id as question.title for question in questions">
+                    <select class="form-control" ng-model="questionId" ng-options="question.id as question.num + '.' + question.title for question in questions">
                         <option value="">请选择</option>
                     </select>
                 </div>

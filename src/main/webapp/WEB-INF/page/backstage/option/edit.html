@@ -47,7 +47,7 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">问题</span>
-        <select class="form-control" ng-model="option.question.id" ng-options="question.id as  + question.num + '.' + question.title for question in questions">
+        <select class="form-control" ng-model="option.question.id" ng-options="question.id as question.num + '.' + question.title for question in questions">
           <option value="">请选择</option>
         </select>
       </div>
@@ -64,7 +64,7 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">下一道问题</span>
-        <select class="form-control" ng-model="option.nestQuestion.id" ng-options="question.id as + question.num + '.' + question.title for question in questions">
+        <select class="form-control" ng-model="option.nestQuestion.id" ng-options="question.id as question.num + '.' + question.title for question in questions">
           <option value="">请选择</option>
         </select>
       </div>
