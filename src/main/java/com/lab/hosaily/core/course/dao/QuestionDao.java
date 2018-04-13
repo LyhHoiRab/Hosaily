@@ -132,6 +132,7 @@ public class QuestionDao {
     public List<Question> list(String projectId, String organizationId) {
         try {
             Criteria criteria = new Criteria();
+            criteria.sort(Restrictions.asc("q.num"));
             criteria.and(Restrictions.like("q.projectId", projectId));
             criteria.and(Restrictions.like("q.organizationId", organizationId));
             return mapper.findByParams(criteria);
@@ -163,6 +164,7 @@ public class QuestionDao {
     public Question getNextQuestion(String projectId, String num, UsingState state, String organizationId, String questionId) {
         try {
             Criteria criteria = new Criteria();
+//            criteria.sort(Restrictions.asc("q.num"));
             criteria.and(Restrictions.eq("q.id", questionId));
 //            criteria.and(Restrictions.eq("q.num", 1));
             return mapper.getByParams(criteria);

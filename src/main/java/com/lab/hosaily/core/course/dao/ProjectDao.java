@@ -182,7 +182,7 @@ public class ProjectDao {
     public List<Project> list(String nickname, String name, UsingState state, String organizationId, String organizationToken) {
         try {
             Criteria criteria = new Criteria();
-            criteria.sort(Restrictions.asc("p.order"));
+            criteria.sort(Restrictions.asc("p.num"));
 //            criteria.and(Restrictions.eq("p.state", UsingState.NORMAL));
             return mapper.findAllByParams(criteria);
         } catch (Exception e) {
