@@ -87,10 +87,10 @@ public class ProjectRestController {
      * 分页查询
      */
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Project>> page(Long pageNum, Long pageSize, String num, String title, String organizationId, String status, String accountId) {
+    public Response<Page<Project>> page(Long pageNum, Long pageSize, String num, String title, String organizationId, String status, String accountId, String state) {
         try {
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Project> page = projectService.page(pageRequest, num, title, organizationId, status, accountId);
+            Page<Project> page = projectService.page(pageRequest, num, title, organizationId, status, accountId, state);
             return new Response<Page<Project>>("查询成功", page);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

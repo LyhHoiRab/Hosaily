@@ -1,6 +1,7 @@
 app.controller('projectAddController', function($scope, $state, FileUploader, $http, $stateParams){
     // $scope.userTypes        = ["情感分析师","情感导师"];
     $scope.shareEnables        = ["Y","N"];
+    $scope.states        = {};
 
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/project/upload',
@@ -35,6 +36,7 @@ app.controller('projectAddController', function($scope, $state, FileUploader, $h
         originalPrice : '',
         summry : '',
         needKonw : '',
+        state          : '',
         questionCount : '',
         completedCount : '',
         shareEnable : '',
@@ -58,6 +60,7 @@ app.controller('projectAddController', function($scope, $state, FileUploader, $h
         $scope.project.order  = '';
         $scope.project.timeLimit  = '';
         $scope.project.organizationId  = '';
+        $scope.project.state          = '';
     };
 
     $scope.submit = function(){
@@ -99,5 +102,19 @@ app.controller('projectAddController', function($scope, $state, FileUploader, $h
         });
     };
 
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
+        });
+    };
+
     $scope.getOrganization();
+    $scope.getState();
 });

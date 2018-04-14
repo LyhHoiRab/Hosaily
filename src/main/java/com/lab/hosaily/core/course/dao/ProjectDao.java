@@ -120,10 +120,11 @@ public class ProjectDao {
     /**
      * 分页查询
      */
-    public Page<Project> page(PageRequest pageRequest, String num, String title, String organizationId, String status, String accountId) {
+    public Page<Project> page(PageRequest pageRequest, String num, String title, String organizationId, String status, String accountId, String state) {
         try {
             Assert.notNull(pageRequest, "分页信息不能为空");
             Criteria criteria = new Criteria();
+            criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
             criteria.sort(Restrictions.asc("p.order"));
             if (!StringUtils.isBlank(num)) {
                 criteria.and(Restrictions.like("p.num", num));
@@ -165,8 +166,11 @@ public class ProjectDao {
                 System.out.println("查找所有测试项目，包含购买信息和测试结果22222");
 //                count = mapper.countByParams(criteria);
 //                list = mapper.findByParams(criteria);
+                if(!StringUtils.isBlank(state)){
+                    criteria.and(Restrictions.eq("p.state", state));
+                }
                 count = mapper.countByParams(criteria);
-                list = mapper.findByParamsByPage(accountId, pageRequest.getOffset(), pageRequest.getPageSize());
+                list = mapper.findByParamsByPage(accountId, criteria);
             }
             return new Page<Project>(list, pageRequest, count);
         } catch (Exception e) {
