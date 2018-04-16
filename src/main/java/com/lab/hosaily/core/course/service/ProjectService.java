@@ -39,7 +39,7 @@ public interface ProjectService {
     /**
      * 分页查询
      */
-    Page<Project> page(PageRequest pageRequest, String num, String title, String organizationId, String status, String accountId);
+    Page<Project> page(PageRequest pageRequest, String num, String title, String organizationId, String status, String accountId, String state);
 
     /**
      * 查询列表

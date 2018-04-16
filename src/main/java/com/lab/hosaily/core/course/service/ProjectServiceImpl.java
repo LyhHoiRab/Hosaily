@@ -125,10 +125,10 @@ public class ProjectServiceImpl implements ProjectService {
      * 分页查询
      */
     @Override
-    public Page<Project> page(PageRequest pageRequest, String num, String title, String organizationId, String status, String accountId) {
+    public Page<Project> page(PageRequest pageRequest, String num, String title, String organizationId, String status, String accountId, String state) {
         try {
             Assert.notNull(pageRequest, "分页信息不能为空");
-            return projectDao.page(pageRequest, num, title, organizationId, status, accountId);
+            return projectDao.page(pageRequest, num, title, organizationId, status, accountId, state);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

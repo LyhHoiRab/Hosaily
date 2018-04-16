@@ -4,6 +4,7 @@ app.controller('projectListController', function($scope, $http, $stateParams){
     $scope.organizationId  = $stateParams.organizationId;
     $scope.list = [];
     $scope.organizations = [];
+    $scope.states        = {};
     $scope.selected = [];
     $scope.total = 0;
     $scope.pagingOptions = {
@@ -15,6 +16,7 @@ app.controller('projectListController', function($scope, $http, $stateParams){
     $scope.reset = function(){
         // $scope.num           = '';
         // $scope.userType = '';
+        $scope.state          = '';
     };
 
     $scope.search = function(){
@@ -48,6 +50,7 @@ app.controller('projectListController', function($scope, $http, $stateParams){
                 'pageSize': pageSize,
                 'num':num,
                 'title':title,
+                'state'          : $scope.state,
                 'organizationId' : $scope.organizationId
             }),
             headers: {
@@ -62,6 +65,20 @@ app.controller('projectListController', function($scope, $http, $stateParams){
             $scope.list = [];
             $scope.total = 0;
             console.error(response);
+        });
+    };
+
+
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
         });
     };
 
@@ -118,6 +135,10 @@ app.controller('projectListController', function($scope, $http, $stateParams){
             field: 'order',
             displayName: '排序编号'
         },{
+            field: 'state',
+            displayName: '状态',
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{states[COL_FIELD]}}</span></div>'
+        },{
             //     field: 'createTime',
             //     displayName: '创建时间',
             //     cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
@@ -133,4 +154,5 @@ app.controller('projectListController', function($scope, $http, $stateParams){
 
     //初始化数据
     $scope.getData();
+    $scope.getState();
 });

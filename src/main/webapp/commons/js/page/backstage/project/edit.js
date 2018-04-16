@@ -3,6 +3,7 @@ app.controller('projectEditController', function($scope, $state, FileUploader, $
     $scope.id = $stateParams.id;
     $scope.organizations = [];
     $scope.shareEnables        = ["Y","N"];
+    $scope.states        = {};
 
     var uploader = $scope.uploader = new FileUploader({
         url: '/api/1.0/project/upload',
@@ -37,6 +38,7 @@ app.controller('projectEditController', function($scope, $state, FileUploader, $
         price : '',
         originalPrice : '',
         summry : '',
+        state          : '',
         needKonw : '',
         questionCount : '',
         completedCount : '',
@@ -51,7 +53,7 @@ app.controller('projectEditController', function($scope, $state, FileUploader, $
         $scope.project.title         = '';
         $scope.project.num  = '';
         $scope.project.price  = '';
-
+        $scope.project.state          = '';
         $scope.project.originalPrice  = '';
         $scope.project.summry  = '';
         $scope.project.needKonw  = '';
@@ -119,6 +121,20 @@ app.controller('projectEditController', function($scope, $state, FileUploader, $
         });
     };
 
+    $scope.getState = function(){
+        $http({
+            url: '/api/1.0/usingState/list',
+            method: 'GET'
+        }).success(function(res, status, headers, config){
+            if(res.success){
+                $scope.states = res.result;
+            }
+        }).error(function(response){
+            $scope.states = [];
+        });
+    };
+
     $scope.getById();
+    $scope.getState();
     $scope.getOrganization();
 });

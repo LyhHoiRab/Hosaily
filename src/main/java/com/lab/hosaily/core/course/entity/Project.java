@@ -2,6 +2,7 @@ package com.lab.hosaily.core.course.entity;
 
 import com.rab.babylon.core.base.entity.Create;
 import com.rab.babylon.core.base.entity.Update;
+import com.rab.babylon.core.consts.entity.UsingState;
 
 import java.util.Date;
 
@@ -27,6 +28,8 @@ public class Project implements Create, Update {
     private String timeLimit;
 
     private String imgUrl;
+    //状态
+    private UsingState state;
 
 
     //创建时间
@@ -182,5 +185,13 @@ public class Project implements Create, Update {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public UsingState getState() {
+        return state;
+    }
+
+    public void setState(UsingState state) {
+        this.state = state;
     }
 }

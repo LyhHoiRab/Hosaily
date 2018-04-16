@@ -133,6 +133,15 @@
       </div>
     </div><!-- item -->
 
+    <div class="row-group">
+      <div class="input-group">
+        <span class="input-group-addon">状态</span>
+        <select class="form-control" ng-model="project.state" ng-options="key as value for (key, value) in states">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div><!-- item -->
+
     <!--<div class="row-group">-->
       <!--<div class="input-group">-->
         <!--<span class="input-group-addon">使用者类型</span>-->

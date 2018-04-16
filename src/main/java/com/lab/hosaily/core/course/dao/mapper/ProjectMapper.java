@@ -46,7 +46,7 @@ public interface ProjectMapper {
     List<Project> findAllByParams(@Param("params") Criteria criteria);
 
 
-    List<Project> findByParamsByPage(@Param("accountId") String accountId, @Param("offset") Long offset, @Param("pageSize") Long pageSize);
+    List<Project> findByParamsByPage(@Param("accountId") String accountId, @Param("params") Criteria criteria);
 
     /**
      * 根据条件查询记录数量
