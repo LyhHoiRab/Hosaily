@@ -189,6 +189,7 @@ public class ProjectServiceImpl implements ProjectService {
             accountProjectDao.saveOrUpdate(oldAccountProject);
             Project project = projectDao.getById(accountProject.getProjectId());
             project.setCompletedCount((Integer.parseInt(project.getCompletedCount()) + 1) + "");
+            projectDao.saveOrUpdate(project);
         } else {
             accountProjectDao.saveOrUpdate(accountProject);
         }

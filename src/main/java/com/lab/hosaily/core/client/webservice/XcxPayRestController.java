@@ -51,4 +51,34 @@ public class XcxPayRestController {
             throw new ApplicationException(e.getMessage(), e);
         }
     }
+
+
+
+    @RequestMapping(value = "/course/prepay", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Map<String, String>> coursePrepay(String courseId, String accountId, Double totalFee, String code){
+        try{
+            Map<String, String> params = wechatMerchantPayService.xcxCoursePrepay(courseId, accountId, totalFee, code);
+
+            return new Response<Map<String, String>>("预支付成功", params);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 支付回调
+     */
+    @RequestMapping(value = "/course/callback", method = {RequestMethod.POST, RequestMethod.GET}, produces = MediaType.APPLICATION_XML_VALUE)
+    public String courseCallback(HttpServletRequest request, HttpServletResponse response){
+        try{
+            String xml = XMLUtils.read(request.getInputStream());
+
+            return wechatMerchantPayService.xcxCourseCallback(xml);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
 }

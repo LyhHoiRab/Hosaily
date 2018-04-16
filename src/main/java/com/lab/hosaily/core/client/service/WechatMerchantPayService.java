@@ -28,4 +28,8 @@ public interface WechatMerchantPayService{
      * 查询JSAPI支付参数
      */
     Map<String, String> getJsapi(String outTradeNo);
+
+
+    Map<String, String> xcxCoursePrepay(String courseId, String accountId, Double totalFee, String code);
+    String xcxCourseCallback(String xml);
 }

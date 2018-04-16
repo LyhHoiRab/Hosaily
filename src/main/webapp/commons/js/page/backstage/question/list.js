@@ -1,4 +1,4 @@
-app.controller('questionListController', function($scope, $http, $stateParams){
+app.controller('questionListController', function($scope, $http, $state, $stateParams){
     // $scope.userTypes        = ["情感分析师","情感导师"];
     // $scope.userType;
     $scope.oprojects = [];
@@ -30,6 +30,10 @@ app.controller('questionListController', function($scope, $http, $stateParams){
     $scope.edit = function(id){
         $state.go('questionEdit', {'id' : id});  
     };
+
+    // $scope.edit = function(id){
+    //     $state.go('advisorEdit', {'id' : id});
+    // };
 
     $scope.add = function(){
         $state.go('questionAdd', {'organizationId' : $scope.organizationId});
@@ -121,16 +125,8 @@ app.controller('questionListController', function($scope, $http, $stateParams){
             field: 'preQuestionId',
             displayName: '上一题问题'
         },{
-            //     field: 'createTime',
-            //     displayName: '创建时间',
-            //     cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
-            // },{
-            //     field: 'updateTime',
-            //     displayName: '更新时间',
-            //     cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
-            // },{
             displayName: '操作',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ui-sref="questionEdit({id:\'{{row.getProperty(\'id\')}}\'})">[修改]</a><a href="javascript:;" ng-click="delete(row.getProperty(\'id\'))">[删除]</a></span></div>'
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a><a ng-click="delete(row.getProperty(\'id\'))">[删除]</a></span></div>'
         }]
     };
 
