@@ -19,9 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -201,6 +199,34 @@ public class CourseServiceImpl implements CourseService{
             boolean result = UpyunUtils.upload(uploadPath, file);
 
             return result ? UpyunUtils.URL + uploadPath : "";
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据账户ID和企业ID查询
+     */
+    @Override
+    public List<Course> findByAccountIdAndOrganizationId(String accountId, String organizationId){
+        try{
+            Assert.hasText(accountId, "账户ID不能为空");
+            Assert.hasText(organizationId, "企业ID不能为空");
+
+            List<CourseGroup> groups = courseGroupDao.list(accountId, null, organizationId, null, UsingState.NORMAL, null);
+            List<Course> courses = courseDao.listByCourse(null, null, UsingState.NORMAL, accountId, organizationId, null);
+
+            Set<Course> target = new HashSet<Course>();
+            target.addAll(courses);
+
+            if(groups != null && !groups.isEmpty()){
+                for(CourseGroup group : groups){
+                    target.addAll(group.getCourse());
+                }
+            }
+
+            return new ArrayList<Course>(target);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

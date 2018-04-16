@@ -60,4 +60,9 @@ public interface CourseService{
      * 上传图片
      */
     String upload(CommonsMultipartFile file);
+
+    /**
+     * 根据账户ID和企业ID查询
+     */
+    List<Course> findByAccountIdAndOrganizationId(String accountId, String organizationId);
 }

@@ -4,7 +4,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader, $ht
     $scope.advisors       = [];
     $scope.organizations  = [];
     $scope.authorizations = {'false':'否', 'true':'是'};
-    //$scope.tags     = [];
+    $scope.tags           = [];
     //$scope.levels   = [];
 
     var uploader = $scope.uploader = new FileUploader({
@@ -46,8 +46,8 @@ app.controller('courseAddController', function($scope, $state, FileUploader, $ht
         sort           : 0,
         advisor        : {},
         organizationId : '',
-        authorization  : ''
-        //tag          : [],
+        authorization  : '',
+        tag            : [],
         //level        : []
     };
 
@@ -63,7 +63,7 @@ app.controller('courseAddController', function($scope, $state, FileUploader, $ht
         $scope.course.advisor        = {};
         $scope.course.organizationId = '';
         $scope.course.authorization  = '';
-        //$scope.course.tag           = [];
+        $scope.course.tag            = [];
         //$scope.course.level         = [];
     };
 
@@ -124,7 +124,8 @@ app.controller('courseAddController', function($scope, $state, FileUploader, $ht
             url: '/api/1.0/tag/list',
             method: 'POST',
             data: $.param({
-                'state': 0
+                'state': 0,
+                'organizationId' : $scope.course.organizationId
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -180,14 +181,14 @@ app.controller('courseAddController', function($scope, $state, FileUploader, $ht
     $scope.$watch('course.organizationId', function(newVal, oldVal){
         if(newVal !== oldVal){
             $scope.getAdvisor();
-            //$scope.getTag();
+            $scope.getTag();
         }
     }, true);
 
     //初始化数据
     $scope.getOrganization();
-    //$scope.getAdvisor();
+    // $scope.getAdvisor();
     $scope.getState();
-    //$scope.getLevel();
-    //$scope.getTag();
+    // $scope.getLevel();
+    // $scope.getTag();
 });

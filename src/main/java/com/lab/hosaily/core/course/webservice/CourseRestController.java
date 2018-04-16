@@ -178,4 +178,14 @@ public class CourseRestController{
             throw new ApplicationException(e.getMessage(), e);
         }
     }
+
+    /**
+     * 根据账户ID和企业ID查询
+     */
+    @RequestMapping(value = "/find", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<Course>> findByAccountIdAndOrganizationId(String accountId, String organizationId){
+        List<Course> list = courseService.findByAccountIdAndOrganizationId(accountId, organizationId);
+
+        return new Response<List<Course>>("查询成功", list);
+    }
 }
