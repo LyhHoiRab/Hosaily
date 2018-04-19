@@ -135,6 +135,15 @@ app.controller('purchaseListController', function($scope, $http, $state, $stateP
             displayName: '下单时间',
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
+            field: 'agreement.client',
+            displayName: '客户名称'
+        },{
+            field: 'agreement.phone',
+            displayName: '客户联系电话'
+        },{
+            field: 'agreement.wechat',
+            displayName: '客户微信'
+        },{
             field: 'purchaseState',
             displayName: '流程状态',
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{purchaseStates[COL_FIELD]}}</span></div>'

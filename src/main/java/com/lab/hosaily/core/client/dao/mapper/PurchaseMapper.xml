@@ -18,6 +18,9 @@
 
     <resultMap id="agreement" type="com.lab.hosaily.core.client.entity.Agreement">
         <id     column="id"             property="id"           javaType="java.lang.String"/>
+        <result column="client"         property="client"       javaType="java.lang.String"/>
+        <result column="phone"          property="phone"        javaType="java.lang.String"/>
+        <result column="wechat"         property="wechat"       javaType="java.lang.String"/>
     </resultMap>
 
     <resultMap id="service" type="com.lab.hosaily.core.product.entity.Service">
@@ -226,7 +229,10 @@
 
     <select id="getByParams" resultMap="purchase">
         SELECT p.*,
-               a.id AS a_id,
+               a.id     AS a_id,
+               a.client AS a_client,
+               a.phone  AS a_phone,
+               a.wechat AS a_wechat,
                s.id AS s_id
           FROM purchase p
      LEFT JOIN agreement a
@@ -240,7 +246,10 @@
 
     <select id="findIdByParams" resultType="java.lang.String">
         SELECT p.id,
-               a.id AS a_id,
+               a.id     AS a_id,
+               a.client AS a_client,
+               a.phone  AS a_phone,
+               a.wechat AS a_wechat,
                s.id AS s_id
           FROM purchase p
      LEFT JOIN agreement a
@@ -272,8 +281,11 @@
 
     <select id="findByParams" resultMap="purchase">
         SELECT p.*,
-               a.id AS a_id,
-               s.id AS s_id
+               a.id     AS a_id,
+               a.client AS a_client,
+               a.phone  AS a_phone,
+               a.wechat AS a_wechat,
+               s.id     AS s_id
           FROM purchase p
      LEFT JOIN agreement a
             ON a.purchase_id = p.id
