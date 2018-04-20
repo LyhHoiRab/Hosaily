@@ -112,12 +112,15 @@ public class AgreementServiceImpl implements AgreementService{
 
             //更新协议
             Agreement agreement = agreementDao.getById(id);
-            agreement.setAffirmTime(new Date());
-            agreementDao.saveOrUpdate(agreement);
-            //更新购买记录状态
-            Purchase purchase = purchaseDao.getById(agreement.getPurchaseId());
-            purchase.setPurchaseState(PurchaseState.AGREEMENT);
-            purchaseDao.saveOrUpdate(purchase);
+
+            if(agreement.getAffirmTime() == null){
+                agreement.setAffirmTime(new Date());
+                agreementDao.saveOrUpdate(agreement);
+                //更新购买记录状态
+                Purchase purchase = purchaseDao.getById(agreement.getPurchaseId());
+                purchase.setPurchaseState(PurchaseState.AGREEMENT);
+                purchaseDao.saveOrUpdate(purchase);
+            }
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

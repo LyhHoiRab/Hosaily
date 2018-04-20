@@ -13,9 +13,12 @@ import com.lab.hosaily.core.account.entity.WeChatAccount;
 import com.lab.hosaily.core.account.entity.XcxAccount;
 import com.lab.hosaily.core.client.consts.PayState;
 import com.lab.hosaily.core.client.consts.PayType;
+import com.lab.hosaily.core.client.consts.PurchaseState;
+import com.lab.hosaily.core.client.dao.AgreementDao;
 import com.lab.hosaily.core.client.dao.PaymentDao;
 import com.lab.hosaily.core.client.dao.PurchaseDao;
 import com.lab.hosaily.core.client.dao.WechatMerchantPayDao;
+import com.lab.hosaily.core.client.entity.Agreement;
 import com.lab.hosaily.core.client.entity.Payment;
 import com.lab.hosaily.core.client.entity.Purchase;
 import com.lab.hosaily.core.client.entity.WechatMerchantPay;
@@ -70,6 +73,9 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
     @Autowired
     private AccountCourseDao accountCourseDao;
 
+    @Autowired
+    private AgreementDao agreementDao;
+
     /**
      * 预支付
      */
@@ -100,15 +106,17 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
 
             //查询微信账户
             String openId = "";
-            if (!StringUtils.isBlank(purchase.getAccountId())) {
+            if(!StringUtils.isBlank(purchase.getAccountId())){
                 WeChatAccount account = weChatAccountDao.getByAccountIdAndAppId(purchase.getAccountId(), appId);
                 openId = account.getOpenId();
-            } else if (!StringUtils.isBlank(code)) {
+
+            }else if(!StringUtils.isBlank(code)){
                 AccessTokenResponse token = WeChatUtils.getAccessToken(code, appId, appSecret);
                 openId = token.getOpenId();
+
             }
 
-            if (StringUtils.isBlank(openId)) {
+            if(StringUtils.isBlank(openId)){
                 throw new ServiceException("未知用户");
             }
 
@@ -129,14 +137,14 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
 
             //提交预支付
             WechatMerchantPayResponse response = WechatMerchantPayUtils.prepay(wechatMerchantPay);
-            if (response.getReturnCode().equalsIgnoreCase("SUCCESS")) {
-                if (response.getResultCode().equalsIgnoreCase("SUCCESS")) {
+            if(response.getReturnCode().equalsIgnoreCase("SUCCESS")){
+                if(response.getResultCode().equalsIgnoreCase("SUCCESS")){
                     payment.setState(PayState.UNCONFIRMED);
                     wechatMerchantPay.setPrepayId(response.getPrepayId());
-                } else {
+                }else{
                     throw new ServiceException(response.getReturnMsg());
                 }
-            } else {
+            }else{
                 throw new ServiceException(response.getReturnMsg());
             }
 
@@ -307,15 +315,15 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
                     WechatMerchantPay pay = wechatMerchantPayDao.getByOutTradeNo(paymentId);
 
                     //简单验证
-                    if (payment != null
+                    if(payment != null
                             && pay != null
                             && pay.getTotalFee() == response.getTotalFee()
                             && pay.getAppId().equals(response.getAppId())
                             && pay.getMchId().equals(response.getMchId())
-                            && pay.getOpenId().equals(response.getOpenId())) {
+                            && pay.getOpenId().equals(response.getOpenId())){
 
                         //更新支付记录
-                        if (payment.getState().equals(PayState.UNCONFIRMED)) {
+                        if(payment.getState().equals(PayState.UNCONFIRMED)){
                             payment.setState(PayState.PAID);
                             payment.setAffirmTime(new Date());
                             paymentDao.saveOrUpdate(payment);
@@ -326,18 +334,30 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
 
                         params.put("return_code", "SUCCESS");
                         params.put("return_msg", "OK");
+
+                        Agreement agreement = agreementDao.getByPurchaseId(payment.getPurchaseId());
+                        Purchase purchase = purchaseDao.getById(payment.getPurchaseId());
+                        double paid = paymentDao.priceByPurchaseId(payment.getPurchaseId(), null, PayState.PAID);
+
+                        if(paid >= agreement.getPrice()){
+                            purchase.setPurchaseState(PurchaseState.PAID);
+                            purchaseDao.saveOrUpdate(purchase);
+                        }else{
+                            purchase.setPurchaseState(PurchaseState.PAYING);
+                            purchaseDao.saveOrUpdate(purchase);
+                        }
                     }
-                } else {
+                }else{
                     params.put("return_code", "FAIL");
                     params.put("return_msg", response.getErrCodeDes());
                 }
-            } else {
+            }else{
                 params.put("return_code", "FAIL");
                 params.put("return_msg", response.getReturnMsg());
             }
 
             return WechatMerchantPayUtils.toXml(params);
-        } catch (Exception e) {
+        }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }

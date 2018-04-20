@@ -61,7 +61,7 @@ public class WeChatUtils{
 
             HttpResponse response = client.execute(get);
             if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-                String json = EntityUtils.toString(response.getEntity());
+                String json = EntityUtils.toString(response.getEntity(), "UTF-8");
 
                 if(!StringUtils.isBlank(json)){
                     return ObjectUtils.deserialize(json, AccessTokenResponse.class);

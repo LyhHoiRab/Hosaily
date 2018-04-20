@@ -108,7 +108,7 @@
         <div class="cus_content">
 
             <div class="fmPic">
-                <img src="http://h.ishsls.com/yhqs_h5/purchase/imgg/fm.png"/>
+                <img src="http://h.ishsls.com/yhqs_h5/purchase/imgg/fm.jpg"/>
             </div>
 
             <h3 class="title_xys">永恒情书•服务协议</h3>
@@ -172,7 +172,7 @@
                     <div class="ub-f1"><input type="text" id="companyWebsite"></div>
                 </div>
 
-                <div class="gsz"><img src="http://h.ishsls.com/yhqs_h5/purchase/imgg/gzfuben.png"/></div>
+                <div class="gsz"><img src="http://h.ishsls.com/yhqs_h5/purchase/imgg/gzfuben.png.png" width="159" height="159"/></div>
                 <div class="clear"></div>
             </div>
 
@@ -184,7 +184,7 @@
             </p>
             <h5>1.2 永恒情书</h5>
             <p>
-                “永恒情书”是指永恒情书平台，是猴赛雷（广州）文化传媒有限公司旗下的女性情感咨询品牌。本协议中提及的应由“永恒情书”行使的权利或履行的义务，由“永恒情书”平台内部负责相关业务范围的职能部门履行，本协议由猴赛雷（广州）文化传媒有限公司代表“永恒情书”与您签署。
+                “永恒情书”是指永恒情书平台，是广州永恒情书教育咨询有限公司旗下的女性情感咨询品牌。本协议中提及的应由“永恒情书”行使的权利或履行的义务，由“永恒情书”平台内部负责相关业务范围的职能部门履行，本协议由广州永恒情书教育咨询有限公司代表“永恒情书”与您签署。
             </p>
             <h5>1.3永恒情书官网</h5>
             <p>
@@ -218,7 +218,7 @@
             </p>
             <h5>1.9 微信留言咨询</h5>
             <p>
-                常规套餐中一对一跟踪服务的服务形式之一。在您付费确定套餐所对应的服务有效时间内，若您遇到情感方面紧急情况，可以通过微信不限次地向指定服务人员寻求咨询帮助，工作时间（10：00-22：00）内实时回复，工作时间外需要提前预约。
+                常规套餐中一对一跟踪服务的服务形式之一。在您付费确定套餐所对应的服务有效时间内，若您遇到情感方面紧急情况，可以通过微信不限次地向指定服务人员寻求咨询帮助，工作时间（周一至周六 13：00-21：00）2小时内回复，工作时间外需要提前预约。
             </p>
             <h5>1.10 服务有效期</h5>
             <p>
@@ -230,7 +230,7 @@
 
             <table id="service">
                 <tr><td colspan="2"><h4>服务项目</h4></td></tr>
-                <tr><td colspan="2">您选择的产品为：  基础咨询套餐</td></tr>
+                <tr><td colspan="2">您选择的产品为：  <span id="nameType"></span></td></tr>
                 <tr id="oneToOne"><td colspan="2"><span class="redText">1.一对一跟踪服务 </span><b>（首次咨询时间以永恒请书系统内实际显示时间为准）</b></td></tr>
                 <!--
                 <tr><td colspan="1">（1）.电话咨询指导（60分钟/次），单价为1000 元/次</td><td colspan="1">共  4  次</td></tr>
@@ -339,10 +339,10 @@
                 8.1 协议生效后，您可以单方提出解除合同，但永恒情书有权视履约情况扣除部分的服务费，具体如下：
             </p>
             <p>
-                8.1.1 协议生效后，但您尚未进行预约咨询的，永恒情书将收取总咨询服务费用（不含幸福卫士费用）的20%作为手续费后，本协议终止；
+                8.1.1 协议生效后，但您尚未进行预约咨询的，永恒情书将收取总咨询服务费用（不含幸福卫士费用）的25%作为手续费后，本协议终止；
             </p>
             <p>
-                8.1.2 协议生效且您已预约咨询过，已提供咨询服务对应的服务费用不予退还，永恒情书收取剩余咨询服务费（不含幸福卫士费用）的20%作为手续费后，本协议终止。
+                8.1.2 协议生效且您已预约咨询过，已提供咨询服务对应的服务费用不予退还，永恒情书收取剩余咨询服务费（不含幸福卫士费用）的25%作为手续费后，本协议终止。
             </p>
             <p>
                 8.1.3 基于知识产权保护，幸福卫士系统开通后，无论何种原因造成协议解除或终止，费用不予退还，您在系统权限开通的有效期限内，仍可以继续使用。
@@ -370,7 +370,7 @@
             </div>
             <div class="signName">
                 <label id="affirmTime"></label><label id="createTime"></label>
-                <div class="gsz"><img src="http://h.ishsls.com/yhqs_h5/purchase/imgg/gzfuben.png"/></div>
+                <div class="gsz"><img src="http://h.ishsls.com/yhqs_h5/purchase/imgg/gzfuben.png.png" width="159" height="159"/></div>
             </div>
         </div>
     </div>
@@ -388,6 +388,29 @@
         if(r!=null)return  unescape(r[2]); return null;
     }
 
+    function paid(purchaseId){
+        var price = 0;
+
+        $.ajax({
+            url: '/api/1.0/payment/price/' + purchaseId,
+            type: 'GET',
+            dataType: 'json',
+            async: false,
+            success: function(res){
+                if(res.success){
+                    price = res.result;
+                }else{
+                    alert(res.msg);
+                }
+            },
+            error: function(response){
+                console.error(response);
+            }
+        });
+
+        return price;
+    };
+
     $(function(){
         var purchaseId = getQueryString('purchaseId');
 
@@ -398,6 +421,14 @@
                 dataType: 'json',
                 success: function(res){
                     if(res.success){
+                        var price = paid(purchaseId);
+
+                        if(res.result.retail >= 5800){
+                            $('#nameType').html('基础婚姻咨询套餐');
+                        }else{
+                            $('#nameType').html('基础恋爱咨询套餐');
+                        }
+
                         if(res.result.client !== undefined){
                             $('#client').val(res.result.client);
                             $('#sign').append(res.result.client);
@@ -452,19 +483,28 @@
                             $('#affirmTime').text('日期: 年 月 日');
                         }
 
-                        console.log(res.result);
-
                         if(res.result.services !== undefined && res.result.services.length > 0){
                             var oneToOne = '';
                             var videoLearningPermission = '';
 
+                            oneToOne += '<tr>'
+                                + '<td colspan="1">'
+                                + '服务有效期'
+                                + '</td>'
+                                + '<td collapse="1">'
+                                + '自首次咨询之日起计 '
+                                + res.result.duration
+                                + ' 个月'
+                                + '</td>'
+                                + '</tr>';
+
                             for(var i = 0; i < res.result.services.length; i++){
                                 if(res.result.services[i].type == 0){
                                     oneToOne += '<tr>'
-                                            + '<td colspan="1">'
-                                            + res.result.services[i].description
-                                            + '</td>'
-                                            + '<td colspan="1">';
+                                        + '<td colspan="1">'
+                                        + res.result.services[i].description
+                                        + '</td>'
+                                        + '<td colspan="1">';
 
                                     if(res.result.services[i].time >= 0){
                                         oneToOne += '共' + res.result.services[i].time + '次';
@@ -473,13 +513,13 @@
                                     }
 
                                     oneToOne += '</td>'
-                                            + '</tr>';
+                                        + '</tr>';
                                 }else if(res.result.services[i].type == 1){
                                     videoLearningPermission += '<tr>'
-                                            + '<td colspan="1">'
-                                            + res.result.services[i].description
-                                            + '</td>'
-                                            + '<td colspan="1">';
+                                        + '<td colspan="1">'
+                                        + res.result.services[i].description
+                                        + '</td>'
+                                        + '<td colspan="1">';
 
                                     if(res.result.services[i].time >= 0){
                                         videoLearningPermission += '共' + res.result.services[i].time + '次';
@@ -488,7 +528,7 @@
                                     }
 
                                     videoLearningPermission += '</td>'
-                                            + '</tr>';
+                                        + '</tr>';
                                 }
                             }
 
@@ -497,12 +537,12 @@
 
                             var html = '';
                             html += '<tr>'
-                                    + '<td colspan="2">'
-                                    + '您实际应缴纳的金额：'
-                                    + res.result.price
-                                    + '  您已支付的金额：' + price + '元'
-                                    + '</td>'
-                                    + '</tr>';
+                                + '<td colspan="2">'
+                                + '您实际应缴纳的金额：'
+                                + res.result.price
+                                + '  您已支付的金额：' + price + '元'
+                                + '</td>'
+                                + '</tr>';
 
                             $('#service').append(html);
                         }

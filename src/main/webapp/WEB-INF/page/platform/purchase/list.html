@@ -51,7 +51,7 @@
             下单
         </button><!-- item -->
     </div><!-- container -->
-</div><!-- search bar -->
+</div><!- search bar -->
 
 <div class="table-bar">
     <div clas="container">
@@ -64,8 +64,11 @@
         <h3>支付链接二维码</h3>
     </div><!-- model header -->
 
-    <div class="modal-body">
-        <qrcode data="{{qrcodeString}}" size="150" download></qrcode>
+    <div class="modal-body" style="position:relative;">
+        <img src="/commons/img/2.png" width="400">
+        <div style="padding:5px;padding-bottom:0;background:#fff;position:absolute;left:160px;top:340px;">
+            <qrcode data="{{qrcodeString}}" size="100" download></qrcode>
+        </div>
     </div><!-- modal body -->
 
     <div class="modal-footer">

@@ -30,8 +30,8 @@
 					<div class="cus_content">
 						
 						<div class="payBanner">
-							<img src="http://h.ishsls.com/yhqs_h5/purchase/img/clubPic.png"/>
-							<div class="bgText">常规咨询套餐&nbsp;￥&nbsp;<span class="price" id="totalFee">0</span>元</div>
+							<img src="http://h.ishsls.com/yhqs_h5/purchase/img/banner.png"/>
+							<div class="bgText"><span id="nameType"></span>&nbsp;￥&nbsp;<span class="price" id="totalFee">0</span>元</div>
 						</div>
 						
 						<div class="lineS ub">
@@ -96,8 +96,8 @@
 			var code = getQueryString('code');
 
 			if(price !== undefined && price > 0){
-				var url = 'http://59ba05cb.ngrok.io/api/1.0/wechatMerchantPay/prepay/purchaseId/price';
-				var code = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=" + url + "&response_type=code&scope=snsapi_base#wechat_redirect";
+				// var url = 'http://' + 'ell.ishsls.com' + '/api/1.0/wechatMerchantPay/prepay/purchaseId/price';
+				// var code = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=" + url + "&response_type=code&scope=snsapi_base#wechat_redirect";
 
 				//预支付
 				$.ajax({
@@ -119,8 +119,11 @@
 									},
 									function(res){
 										if(res.err_msg == "get_brand_wcpay_request:ok" ){
-											location.href = '/page/h5/pay?purchaseId=' + purchaseId;
-										}
+											// location.href = '/page/h5/pay?purchaseId=' + purchaseId;
+											location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=http://' + 'ell.ishsls.com' + '/page/h5/pay?purchaseId=' + purchaseId + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+										}else if(res.err_msg == 'get_brand_wcpay_request:cancel'){
+                                            location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=http://' + 'ell.ishsls.com' + '/page/h5/pay?purchaseId=' + purchaseId + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+                                        }
 									}
 								);
 							};
@@ -189,7 +192,13 @@
 						if(res.success){
 							var price = paid(purchaseId);
 							var totalFee = res.result.price;
-							var hasToPay = totalFee - price;
+							var hasToPay = parseFloat(totalFee - price).toFixed(2);
+
+                            if(res.result.retail >= 5800){
+                                $('#nameType').html('基础婚姻咨询套餐');
+                            }else{
+                                $('#nameType').html('基础恋爱咨询套餐');
+                            }
 
 							$('#totalFee').text(totalFee);
 							$('#paid').text(price);

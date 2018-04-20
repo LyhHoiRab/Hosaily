@@ -8,13 +8,12 @@ import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.lab.hosaily.core.client.consts.AlipayStatus;
 import com.lab.hosaily.core.client.consts.PayState;
 import com.lab.hosaily.core.client.consts.PayType;
+import com.lab.hosaily.core.client.consts.PurchaseState;
+import com.lab.hosaily.core.client.dao.AgreementDao;
 import com.lab.hosaily.core.client.dao.AlipayDao;
 import com.lab.hosaily.core.client.dao.PaymentDao;
 import com.lab.hosaily.core.client.dao.PurchaseDao;
-import com.lab.hosaily.core.client.entity.Alipay;
-import com.lab.hosaily.core.client.entity.Payment;
-import com.lab.hosaily.core.client.entity.Purchase;
-import com.lab.hosaily.core.client.entity.WechatMerchantPay;
+import com.lab.hosaily.core.client.entity.*;
 import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.commons.utils.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +42,9 @@ public class AlipayServiceImpl implements AlipayService{
 
     @Autowired
     private PurchaseDao purchaseDao;
+
+    @Autowired
+    private AgreementDao agreementDao;
 
     /**
      * 支付
@@ -161,6 +163,17 @@ public class AlipayServiceImpl implements AlipayService{
                     alipay.setStatus(AlipayStatus.valueOf(status));
                     alipay.setTradeNo(tradeNo);
                     alipayDao.saveOrUpdate(alipay);
+
+                    Agreement agreement = agreementDao.getByPurchaseId(payment.getPurchaseId());
+                    double paid = paymentDao.priceByPurchaseId(payment.getPurchaseId(), null, PayState.PAID);
+
+                    if(paid >= agreement.getPrice()){
+                        purchase.setPurchaseState(PurchaseState.PAID);
+                        purchaseDao.saveOrUpdate(purchase);
+                    }else{
+                        purchase.setPurchaseState(PurchaseState.PAYING);
+                        purchaseDao.saveOrUpdate(purchase);
+                    }
 
                     return "success";
                 }

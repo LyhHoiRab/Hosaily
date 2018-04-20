@@ -9,8 +9,10 @@ import com.lab.hosaily.core.application.entity.Application;
 import com.lab.hosaily.core.application.service.ApplicationService;
 import com.lab.hosaily.core.client.consts.PurchaseState;
 import com.lab.hosaily.core.client.dao.PaymentDao;
+import com.lab.hosaily.core.client.entity.Agreement;
 import com.lab.hosaily.core.client.entity.Payment;
 import com.lab.hosaily.core.client.entity.Purchase;
+import com.lab.hosaily.core.client.service.AgreementService;
 import com.lab.hosaily.core.client.service.PurchaseService;
 import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.course.entity.Customization;
@@ -66,6 +68,9 @@ public class PageController{
 
     @Autowired
     private PurchaseService purchaseService;
+
+    @Autowired
+    private AgreementService agreementService;
 
     /**
      * 首页
@@ -333,8 +338,10 @@ public class PageController{
     public ModelAndView pay(String purchaseId, String code, ModelMap content){
         try{
             Purchase purchase = purchaseService.getById(purchaseId);
-            purchase.setPurchaseState(PurchaseState.AGREEMENT);
-            purchaseService.update(purchase);
+//            purchase.setPurchaseState(PurchaseState.AGREEMENT);
+//            purchaseService.update(purchase);
+
+            agreementService.affirm(purchase.getAgreement().getId());
 
             content.put("purchaseId", purchaseId);
             content.put("code", code);

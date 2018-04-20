@@ -1,87 +1,257 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>支付中心</title>
-		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchasecss/sm.css">
-		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchasecss/sm-extend.min.css">
-		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchasecss/common.css">
-		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchasecss/ui-box.css" />
-		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchasecss/style.css"/>
-		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchasecss/goPay.css"/>
-		<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchasecss/pay.css"/>
-	</head>
-	<body>
-		<div class="page">
-				<div class="ub head">
-					<div class="logoDiv">
-						<a href="javascript:history.go(-1)"><span class="icon icon-left"></span></a>
-					</div>
-					<div class="ub ub-f1 headText">
-						<div class="title_50">套餐支付</div>
-					</div>
-				</div>
-				<div class="content infinite-scroll infinite-scroll-bottom" data-distance="100">
-					<div class="cus_content">
-						
-						<div class="payBanner">
-							<img src="img/clubPic.png"/>
-							<div class="bgText">常规咨询套餐&nbsp;￥&nbsp;<span class="price">38900</span>元</div>
-						</div>
-						
-						<div class="lineS ub">
-							<div class="lfetText">请选择支付方式</div>
-							<div class="ub-f1"></div>
-							<div class="rightText"></div>
-						</div>
-						<div class="lineS ub payLine">
-							<div class="lfetText"><img src="img/alipayIcon.jpg"/>&nbsp;&nbsp;支付宝支付</div>
-							<div class="ub-f1"></div>
-							<div class="rightText"><span class="icon icon-check"></span></div>
-						</div>
-						<div class="lineS ub lineBottom payLine">
-							<div class="lfetText payChecked"><img src="img/wechatPayIcon.jpg"/>&nbsp;&nbsp;微信支付</div>
-							<div class="ub-f1"></div>
-							<div class="rightText payChecked"><span class="icon icon-check"></span></div>
-						</div>
-						
-						<div class="goPay">
-							<label class="tips">因单笔支付金额限制，现支持分笔支付。</label>
-							<div class="input"><input type="tel" name="" id="" value="20000" readonly="readonly" /></div>
-							
-							<div class="btnPay">去付款</div>
-							<div class="mark">备注：已支付0元，还需支付38900元</div>
-						</div>
-						
-						
-			        </div> 	
-		      </div>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>支付中心</title>
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/sm.css">
+	<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/sm-extend.min.css">
+	<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/common.css">
+	<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/ui-box.css" />
+	<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/goPay.css"/>
+	<link rel="stylesheet" type="text/css" href="http://h.ishsls.com/yhqs_h5/purchase/css/pay.css"/>
+</head>
+<body>
+<div class="page">
+	<div class="ub head">
+		<div class="logoDiv">
+			<!--<a href="javascript:history.go(-1)"><span class="icon icon-left"></span></a>-->
 		</div>
-	</body>
-	<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchasejs/zepto.min.js' charset='utf-8'></script>
-	<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchasejs/config.js' charset='utf-8'></script>
-	<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchasejs/sm.min.js' charset='utf-8'></script>
-	<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchasejs/init.js' charset='utf-8'></script>
-	<script src="http://h.ishsls.com/yhqs_h5/purchasejs/js.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript">
-		$('.payLine').click(function () {
-			$(this).find('.lfetText,.rightText').addClass('payChecked').parent().siblings().find('.lfetText,.rightText').removeClass('payChecked');
-		})
-		
-		 //判断是否微信客户端
-	    function isWeiXin(){
-		    var ua = window.navigator.userAgent.toLowerCase();
-		    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
-		        return true;
-		    }else{
-		        return false;
-		    }
-		}
+		<div class="ub ub-f1 headText">
+			<div class="title_50">套餐支付</div>
+		</div>
+	</div>
+	<div class="content infinite-scroll infinite-scroll-bottom" data-distance="100">
+		<div class="cus_content">
 
-	</script>
+			<div class="payBanner">
+				<img src="http://h.ishsls.com/yhqs_h5/purchase/img/banner.png"/>
+				<div class="bgText"><span id="nameType"></span>&nbsp;￥&nbsp;<span class="price" id="totalFee">0</span>元</div>
+			</div>
+
+			<div class="lineS ub">
+				<div class="lfetText">请选择支付方式</div>
+				<div class="ub-f1"></div>
+				<div class="rightText"></div>
+			</div>
+			<div class="lineS ub payLine">
+				<div class="lfetText"><img src="http://h.ishsls.com/yhqs_h5/purchase/img/alipayIcon.jpg"/>&nbsp;&nbsp;支付宝支付</div>
+				<div class="ub-f1"></div>
+				<div class="rightText"><span class="icon icon-check"></span></div>
+			</div>
+			<div class="lineS ub lineBottom payLine">
+				<div class="lfetText payChecked"><img src="http://h.ishsls.com/yhqs_h5/purchase/img/wechatPayIcon.jpg"/>&nbsp;&nbsp;微信支付</div>
+				<div class="ub-f1"></div>
+				<div class="rightText payChecked"><span class="icon icon-check"></span></div>
+			</div>
+
+			<div class="goPay">
+				<label class="tips">因单笔支付金额限制，现支持分笔支付。</label>
+				<div class="input"><input type="number" name="price" id="price" value=""></div>
+
+				<div class="btnPay btnPay_on">确认付款</div>
+				<div class="mark">备注：已支付<span id="paid">0</span>元，还需支付<span id="hasToPay">0</span>元</div>
+			</div>
+
+
+		</div>
+	</div>
+</div>
+</body>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/config.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/init.js' charset='utf-8'></script>
+<script src="http://h.ishsls.com/yhqs_h5/purchase/js/js.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $('.payLine').click(function(){
+        $(this).find('.lfetText,.rightText').addClass('payChecked').parent().siblings().find('.lfetText,.rightText').removeClass('payChecked');
+    });
+
+    function getQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    };
+
+    //判断是否微信客户端
+    function isWeiXin(){
+        var ua = window.navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
+    //微信支付
+    function wechatPay(){
+        var price = $('#price').val();
+        var purchaseId = getQueryString('purchaseId');
+        var code = getQueryString('code');
+
+        if(price !== undefined && price > 0){
+            // var url = 'http://' + 'ell.ishsls.com' + '/api/1.0/wechatMerchantPay/prepay/purchaseId/price';
+            // var code = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=" + url + "&response_type=code&scope=snsapi_base#wechat_redirect";
+
+            //预支付
+            $.ajax({
+                url: '/api/1.0/wechatMerchantPay/prepay',
+                type: 'POST',
+                data: {'purchaseId':purchaseId, 'totalFee':price, 'code':code},
+                dataType: 'json',
+                success: function(res){
+                    if(res.success){
+                        function onBridgeReady(){
+                            WeixinJSBridge.invoke(
+                                'getBrandWCPayRequest', {
+                                    "appId"      : res.result['appId'],
+                                    "timeStamp"  : res.result['timeStamp'],
+                                    "nonceStr"   : res.result['nonceStr'],
+                                    "package"    : res.result['package'],
+                                    "signType"   : res.result['signType'],
+                                    "paySign"    : res.result['paySign']
+                                },
+                                function(res){
+                                    if(res.err_msg == "get_brand_wcpay_request:ok" ){
+                                        // location.href = '/page/h5/pay?purchaseId=' + purchaseId;
+                                        location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=http://' + 'ell.ishsls.com' + '/page/h5/pay?purchaseId=' + purchaseId + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+                                    }
+                                }
+                            );
+                        };
+                        if(typeof WeixinJSBridge == "undefined"){
+                            if(document.addEventListener){
+                                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                            }else if(document.attachEvent){
+                                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                            }
+                        }else{
+                            onBridgeReady();
+                        }
+                    }else{
+                        alert(res.msg);
+                    }
+                },
+                error: function(response){
+                    console.error(response);
+                }
+            });
+        }
+    };
+
+    //支付宝支付
+    function alipay(){
+        var price = $('#price').val();
+        var purchaseId = getQueryString('purchaseId');
+
+        location.href = '/api/1.0/alipay/pay?purchaseId=' + purchaseId + "&totalFee=" + price;
+    };
+
+    //已付金额
+    function paid(purchaseId){
+        var price = 0;
+        $.ajax({
+            url: '/api/1.0/payment/price/' + purchaseId,
+            type: 'GET',
+            dataType: 'json',
+            async: false,
+            success: function(res){
+                if(res.success){
+                    price = res.result;
+                }else{
+                    alert(res.msg);
+                }
+            },
+            error: function(response){
+                console.error(response);
+            }
+        });
+
+        return price;
+    };
+
+    //协议详情
+    function agreement(){
+        var purchaseId = getQueryString('purchaseId');
+
+        if(purchaseId !== undefined && purchaseId !== ''){
+            $.ajax({
+                url: '/api/1.0/agreement/purchaseId/' + purchaseId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(res){
+                    if(res.success){
+                        var price = paid(purchaseId);
+                        var totalFee = res.result.price;
+                        var hasToPay = parseFloat(totalFee - price).toFixed(2);
+
+                        if(res.result.retail >= 5800){
+                            $('#nameType').html('基础婚姻咨询套餐');
+                        }else{
+                            $('#nameType').html('基础恋爱咨询套餐');
+                        }
+
+                        $('#totalFee').text(totalFee);
+                        $('#paid').text(price);
+                        $('#hasToPay').text(hasToPay);
+
+                        if(totalFee == paid){
+                            $('#price').attr('readonly', 'readonly');
+                        }
+                    }else{
+                        alert(res.msg);
+                    }
+                },
+                error: function(response){
+                    console.error(response);
+                }
+            });
+        }
+    };
+
+    //参数0提示支付宝 其他参数为提示微信
+    function openZheTips(num){
+        if(num == 0){
+            num = '支付宝支付请在手机浏览器中打开支付';
+        }else{
+            num = '微信支付请在微信中打开支付';
+        }
+        var str = '<div class="zheTips"><div class="textLoca"><div class="text">'+num+'<img src="http://h.ishsls.com/yhqs_h5/purchase/img/614760366167123783.png"/></div></div></div>';
+        $('.page').append(str);
+
+        $('.zheTips').click(function(){
+            $(this).remove();
+        });
+    };
+
+    $(function(){
+        agreement();
+
+        $('.btnPay').click(function(){
+            var isWeChatPay = $('.lfetText.payChecked').html().indexOf("微信") >= 0;
+
+            if(isWeChatPay){
+                if(!isWeiXin()){
+                    openZheTips(1);
+                    return;
+                }
+
+                wechatPay();
+            }else{
+                if(isWeiXin()){
+                    openZheTips(0);
+                    return;
+                }
+                alipay();
+            }
+        });
+    });
+</script>
 </html>

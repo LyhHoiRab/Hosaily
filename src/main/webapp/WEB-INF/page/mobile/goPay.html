@@ -30,20 +30,20 @@
 					<div class="cus_content">
 						
 						<div class="payBanner">
-							<img src="http://h.ishsls.com/yhqs_h5/purchase/img/clubPic.png"/>
-							<div class="bgText">常规咨询套餐&nbsp;￥&nbsp;<span class="price" id="price">0</span>元</div>
+							<img src="http://h.ishsls.com/yhqs_h5/purchase/img/banner.png"/>
+							<div class="bgText"><span id="nameType"></span>&nbsp;￥&nbsp;<span class="price" id="price">0</span>元</div>
 						</div>
 						
-						<div class="lineS ub">
-							<div class="lfetText">需求类型</div>
-							<div class="ub-f1"></div>
-							<div class="rightText">挽回/维护恋情</div>
-						</div>
-						<div class="lineS ub lineBottom">
-							<div class="lfetText">永恒情书权限</div>
-							<div class="ub-f1"></div>
-							<div class="rightText">男女版</div>
-						</div>
+						<!--<div class="lineS ub">-->
+							<!--<div class="lfetText">需求类型</div>-->
+							<!--<div class="ub-f1"></div>-->
+							<!--<div class="rightText">挽回/维护恋情</div>-->
+						<!--</div>-->
+						<!--<div class="lineS ub lineBottom">-->
+							<!--<div class="lfetText">永恒情书权限</div>-->
+							<!--<div class="ub-f1"></div>-->
+							<!--<div class="rightText">男女版</div>-->
+						<!--</div>-->
 						
 						<div class="lineS ub">
 							<div class="lfetText">客户信息</div>
@@ -51,7 +51,7 @@
 							<div class="rightText"></div>
 						</div>
 						<div class="lineS ub">
-							<div class="lfetText">用户姓名</div>
+							<div class="lfetText">用户昵称</div>
 							<div class="ub-f1"></div>
 							<div class="rightText" id="client"></div>
 						</div>
@@ -139,7 +139,7 @@
 				var purchaseId = getQueryString('purchaseId');
 
 				if(isWeiXin()){
-					location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=http://df93b80d.ngrok.io/page/h5/pay?purchaseId=' + purchaseId + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+					location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=http://' + 'ell.ishsls.com' + '/page/h5/pay?purchaseId=' + purchaseId + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
 				}else{
 					location.href = '/page/h5/pay?purchaseId=' + purchaseId;
 				}
@@ -159,6 +159,12 @@
 								$('#client').html(res.result.client);
 								$('#phone').html(res.result.phone);
 								$('#agreementId').val(res.result.id);
+
+                                if(res.result.retail >= 5800){
+                                    $('#nameType').html('基础婚姻咨询套餐');
+                                }else{
+                                    $('#nameType').html('基础恋爱咨询套餐');
+                                }
 
 								if(res.result.affirmTime){
 									btnPayClick();

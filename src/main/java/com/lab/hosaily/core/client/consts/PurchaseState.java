@@ -11,7 +11,7 @@ public enum PurchaseState{
     AGREEMENT(1, "确认协议"),
 
     @SerializedName("2")
-    PAYING(2, "等待付款"),
+    PAYING(2, "付款中"),
 
     @SerializedName("3")
     PAID(3, "已付款"),
