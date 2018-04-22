@@ -166,10 +166,11 @@
                                     $('#nameType').html('基础恋爱咨询套餐');
                                 }
 
-								if(res.result.affirmTime){
+								if(res.result.affirmTime !== undefined){
 									btnPayClick();
 								}else{
-									$('#yyd').attr("checked", false);
+									// $('#yyd').attr("checked", false);
+									$('#yyd').removeAttribute("checked");
 									$('.btnPay').removeClass('btnPay_on');
 									$('.btnPay').unbind('click');
 								}

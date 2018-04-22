@@ -21,6 +21,7 @@
         <result column="client"         property="client"       javaType="java.lang.String"/>
         <result column="phone"          property="phone"        javaType="java.lang.String"/>
         <result column="wechat"         property="wechat"       javaType="java.lang.String"/>
+        <result column="price"          property="price"        javaType="java.lang.Double"/>
     </resultMap>
 
     <resultMap id="service" type="com.lab.hosaily.core.product.entity.Service">
@@ -233,6 +234,7 @@
                a.client AS a_client,
                a.phone  AS a_phone,
                a.wechat AS a_wechat,
+               a.price  AS a_price,
                s.id AS s_id
           FROM purchase p
      LEFT JOIN agreement a
@@ -250,6 +252,7 @@
                a.client AS a_client,
                a.phone  AS a_phone,
                a.wechat AS a_wechat,
+               a.price  AS a_price,
                s.id AS s_id
           FROM purchase p
      LEFT JOIN agreement a
@@ -285,6 +288,7 @@
                a.client AS a_client,
                a.phone  AS a_phone,
                a.wechat AS a_wechat,
+               a.price  AS a_price,
                s.id     AS s_id
           FROM purchase p
      LEFT JOIN agreement a

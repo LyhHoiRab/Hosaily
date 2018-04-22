@@ -2,10 +2,8 @@ package com.lab.hosaily.core.client.webservice;
 
 import com.lab.hosaily.core.client.entity.Agreement;
 import com.lab.hosaily.core.client.service.AgreementService;
-import com.lab.hosaily.core.course.entity.Media;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Response;
-import com.sun.tools.corba.se.idl.ExceptionEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

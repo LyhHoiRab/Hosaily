@@ -112,7 +112,7 @@ public class PurchaseDao{
 
             Criteria criteria = new Criteria();
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
-            criteria.sort(Restrictions.asc("p.orderTime"));
+            criteria.sort(Restrictions.desc("p.orderTime"));
             criteria.groupBy(Restrictions.groupBy("p.id"));
 
             if(state != null){
@@ -138,7 +138,7 @@ public class PurchaseDao{
 
             if(ids != null && !ids.isEmpty()){
                 criteria.clear();
-                criteria.sort(Restrictions.asc("p.orderTime"));
+                criteria.sort(Restrictions.desc("p.orderTime"));
                 criteria.and(Restrictions.in("p.id", ids));
 
                 list = mapper.findByParams(criteria);

@@ -1,16 +1,9 @@
 package com.lab.hosaily.core.page.controller;
 
 import com.lab.hosaily.commons.consts.SessionConsts;
-import com.lab.hosaily.commons.utils.URLUtils;
 import com.lab.hosaily.core.account.entity.Attention;
 import com.lab.hosaily.core.account.service.AttentionService;
 import com.lab.hosaily.core.account.service.UserService;
-import com.lab.hosaily.core.application.entity.Application;
-import com.lab.hosaily.core.application.service.ApplicationService;
-import com.lab.hosaily.core.client.consts.PurchaseState;
-import com.lab.hosaily.core.client.dao.PaymentDao;
-import com.lab.hosaily.core.client.entity.Agreement;
-import com.lab.hosaily.core.client.entity.Payment;
 import com.lab.hosaily.core.client.entity.Purchase;
 import com.lab.hosaily.core.client.service.AgreementService;
 import com.lab.hosaily.core.client.service.PurchaseService;
@@ -24,14 +17,11 @@ import com.lab.hosaily.core.course.service.PostService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.core.account.entity.User;
 import com.rab.babylon.core.consts.entity.UsingState;
-import com.sun.tools.internal.ws.processor.model.Model;
-import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller

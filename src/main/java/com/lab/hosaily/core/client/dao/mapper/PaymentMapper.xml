@@ -273,4 +273,31 @@
             </if>
         </if>
     </select>
+
+    <select id="priceByPurchaseIds" resultType="java.util.Map">
+        SELECT IFNULL(SUM(price), 0) AS paid,
+               purchase_id           AS purchaseId
+          FROM payment
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.groups != null and params.groups.size > 0">
+                GROUP BY
+                <foreach collection="params.groups" item="group" separator=",">
+                    ${group.property}
+                </foreach>
+            </if>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
 </mapper>

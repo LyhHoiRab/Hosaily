@@ -1,7 +1,9 @@
 package com.lab.hosaily.core.client.service;
 
+import com.lab.hosaily.core.client.consts.PayState;
 import com.lab.hosaily.core.client.consts.PurchaseState;
 import com.lab.hosaily.core.client.dao.AgreementDao;
+import com.lab.hosaily.core.client.dao.PaymentDao;
 import com.lab.hosaily.core.client.dao.PurchaseDao;
 import com.lab.hosaily.core.client.entity.Agreement;
 import com.lab.hosaily.core.client.entity.Purchase;
@@ -18,7 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,6 +38,9 @@ public class PurchaseServiceImpl implements PurchaseService{
 
     @Autowired
     private ServiceDao serviceDao;
+
+    @Autowired
+    private PaymentDao paymentDao;
 
     /**
      * 保存
@@ -123,7 +130,30 @@ public class PurchaseServiceImpl implements PurchaseService{
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return purchaseDao.page(pageRequest, purchaseState, state, accountId, organizationId, price);
+            Page<Purchase> page = purchaseDao.page(pageRequest, purchaseState, state, accountId, organizationId, price);
+
+            if(page.getContent() != null && !page.getContent().isEmpty()){
+                //查询已付金额
+                List<String> purchaseIds = new ArrayList<String>();
+                for(Purchase purchase : page.getContent()){
+                    if(!StringUtils.isBlank(purchase.getId())){
+                        purchaseIds.add(purchase.getId());
+                    }
+                }
+
+                List<Map<String, Object>> paids = paymentDao.priceByPurchaseIds(purchaseIds, null, PayState.PAID);
+                for(Purchase purchase : page.getContent()){
+                    for(Map<String, Object> entry : paids){
+                        String purchaseId = (String) entry.get("purchaseId");
+                        if(purchase.getId().equals(purchaseId)){
+                            purchase.setPaid((Double) entry.get("paid"));
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return page;
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

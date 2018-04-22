@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PaymentMapper{
@@ -39,4 +40,9 @@ public interface PaymentMapper{
      * 查询金额
      */
     Double priceByPurchaseId(@Param("params") Criteria criteria);
+
+    /**
+     * 查询金额
+     */
+    List<Map<String, Object>> priceByPurchaseIds(@Param("params") Criteria criteria);
 }

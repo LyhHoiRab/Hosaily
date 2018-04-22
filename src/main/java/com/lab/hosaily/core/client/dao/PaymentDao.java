@@ -19,6 +19,7 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class PaymentDao{
@@ -160,6 +161,31 @@ public class PaymentDao{
             Double price = mapper.priceByPurchaseId(criteria);
 
             return (price == null ? 0 : price);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 查询金额
+     */
+    public List<Map<String, Object>> priceByPurchaseIds(List<String> purchaseIds, PayType type, PayState state){
+        try{
+            Assert.notEmpty(purchaseIds, "购买记录ID不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.in("purchaseId", purchaseIds));
+            criteria.groupBy(Restrictions.groupBy("purchaseId"));
+
+            if(type != null){
+                criteria.and(Restrictions.eq("type", type.getId()));
+            }
+            if(state != null){
+                criteria.and(Restrictions.eq("state", state.getId()));
+            }
+
+            return mapper.priceByPurchaseIds(criteria);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

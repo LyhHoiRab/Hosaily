@@ -148,13 +148,11 @@ app.controller('purchaseListController', function($scope, $http, $state, $stateP
             displayName: '流程状态',
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{purchaseStates[COL_FIELD]}}</span></div>'
         },{
-            field: 'state',
-            displayName: '状态',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{states[COL_FIELD]}}</span></div>'
+            field: 'agreement.price',
+            displayName: '售价'
         },{
-            field: 'createTime',
-            displayName: '创建时间',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
+            field: 'paid',
+            displayName: '已付金额'
         },{
             displayName: '操作',
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a ng-click="edit(row.getProperty(\'id\'))">[修改]</a><a ng-click="openModal(row.getProperty(\'id\'))">[支付链接二维码]</a></span></div>'

@@ -35,7 +35,7 @@ public class AgreementDao{
                 Assert.hasText(agreement.getPurchaseId(), "购买记录ID不能为空");
 //                Assert.hasText(agreement.getAccountId(), "账户ID不能为空");
                 Assert.hasText(agreement.getClient(), "客户名称不能为空");
-                Assert.hasText(agreement.getPhone(), "联系电话不能为空");
+//                Assert.hasText(agreement.getPhone(), "联系电话不能为空");
                 Assert.hasText(agreement.getWechat(), "微信不能为空");
 
                 agreement.setId(UUIDGenerator.by32());

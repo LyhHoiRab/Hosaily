@@ -4,7 +4,6 @@ import com.lab.hosaily.commons.utils.URLUtils;
 import com.lab.hosaily.core.application.entity.WebResource;
 import com.lab.hosaily.core.application.service.WebResourceService;
 import com.lab.hosaily.core.page.consts.CommonsPathConsts;
-import com.rab.babylon.commons.utils.UserAgentUtils;
 import eu.bitwalker.useragentutils.DeviceType;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 public class CommonsInterceptor extends HandlerInterceptorAdapter{
 

@@ -37,6 +37,8 @@ public class Purchase implements Create, Update{
     private Date createTime;
     //更新时间
     private Date updateTime;
+    //已付金额
+    private Double paid;
 
     public Purchase(){
 
@@ -120,6 +122,14 @@ public class Purchase implements Create, Update{
 
     public void setSalesUserId(String salesUserId) {
         this.salesUserId = salesUserId;
+    }
+
+    public Double getPaid(){
+        return paid;
+    }
+
+    public void setPaid(Double paid){
+        this.paid = paid;
     }
 
     @Override
