@@ -31,7 +31,9 @@
 
 			<div class="payBanner">
 				<img src="http://h.ishsls.com/yhqs_h5/purchase/img/banner.png"/>
-				<div class="bgText"><span id="nameType"></span>&nbsp;￥&nbsp;<span class="price" id="price">0</span>元</div>
+				<div class="bgText">
+					<span id="nameType"></span>￥<span class="price" id="price">0</span>元&nbsp;/&nbsp;已支付￥<span class="price" id="paid">0</span>元
+				</div>
 			</div>
 
 			<!--<div class="lineS ub">-->
@@ -159,6 +161,7 @@
                         $('#client').html(res.result.client);
                         $('#phone').html(res.result.phone);
                         $('#agreementId').val(res.result.id);
+                        $('#paid').html(res.result.paid);
 
                         if(res.result.retail >= 5800){
                             $('#nameType').html('基础婚姻咨询套餐');
@@ -166,10 +169,11 @@
                             $('#nameType').html('基础恋爱咨询套餐');
                         }
 
-                        if(res.result.affirmTime){
+                        if(res.result.affirmTime !== undefined){
                             btnPayClick();
                         }else{
-                            $('#yyd').attr("checked", false);
+                            // $('#yyd').attr("checked", false);
+                            $('#yyd').removeAttribute("checked");
                             $('.btnPay').removeClass('btnPay_on');
                             $('.btnPay').unbind('click');
                         }

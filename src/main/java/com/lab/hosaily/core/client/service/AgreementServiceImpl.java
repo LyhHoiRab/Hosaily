@@ -1,7 +1,9 @@
 package com.lab.hosaily.core.client.service;
 
+import com.lab.hosaily.core.client.consts.PayState;
 import com.lab.hosaily.core.client.consts.PurchaseState;
 import com.lab.hosaily.core.client.dao.AgreementDao;
+import com.lab.hosaily.core.client.dao.PaymentDao;
 import com.lab.hosaily.core.client.dao.PurchaseDao;
 import com.lab.hosaily.core.client.entity.Agreement;
 import com.lab.hosaily.core.client.entity.Purchase;
@@ -30,6 +32,9 @@ public class AgreementServiceImpl implements AgreementService{
 
     @Autowired
     private PurchaseDao purchaseDao;
+
+    @Autowired
+    private PaymentDao paymentDao;
 
     /**
      * 保存
@@ -94,7 +99,12 @@ public class AgreementServiceImpl implements AgreementService{
         try{
             Assert.hasText(purchaseId, "购买记录ID不能为空");
 
-            return agreementDao.getByPurchaseId(purchaseId);
+            Agreement agreement = agreementDao.getByPurchaseId(purchaseId);
+
+            Double paid = paymentDao.priceByPurchaseId(purchaseId, null, PayState.PAID);
+            agreement.setPaid(paid);
+
+            return agreement;
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

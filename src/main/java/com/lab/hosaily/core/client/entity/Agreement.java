@@ -65,6 +65,8 @@ public class Agreement implements Create, Update{
     private Double price;
     //有效期(月)
     private Integer duration;
+    //已付金额
+    private Double paid;
 
     public Agreement(){
 
@@ -260,6 +262,14 @@ public class Agreement implements Create, Update{
 
     public void setAddress(String address){
         this.address = address;
+    }
+
+    public Double getPaid(){
+        return paid;
+    }
+
+    public void setPaid(Double paid){
+        this.paid = paid;
     }
 
     @Override

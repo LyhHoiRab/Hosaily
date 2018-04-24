@@ -499,6 +499,7 @@
                c.state,
                c.organization_id,
                c.authorization,
+               c.price,
                a.id           AS a_id,
                a.nickname     AS a_nickname,
                a.name         AS a_name,

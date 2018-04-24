@@ -31,5 +31,6 @@ public interface WechatMerchantPayService{
 
 
     Map<String, String> xcxCoursePrepay(String courseId, String accountId, Double totalFee, String code);
+
     String xcxCourseCallback(String xml);
 }
