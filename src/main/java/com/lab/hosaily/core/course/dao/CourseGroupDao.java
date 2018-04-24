@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -220,6 +221,34 @@ public class CourseGroupDao{
 
             //旧数据中过度
             return mapper.hasCourse(accountId, courseId) || mapper.accountCourse(accountId, courseId);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * VIP授权
+     */
+    public void authorizationByVIP(String accountId){
+        try{
+            Assert.hasText(accountId, "授权的账户ID不能为空");
+
+            String groupId = "514e9897024c429cbb9997bf90121c3e";
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("ag.accountId", accountId));
+            criteria.and(Restrictions.eq("g.id", groupId));
+
+            List<CourseGroup> groups = mapper.findByParams(criteria);
+
+            //授权
+            if(groups == null || groups.isEmpty()){
+                CourseGroup group = new CourseGroup();
+                group.setId(groupId);
+
+                mapper.addAccount(accountId, Arrays.asList(group));
+            }
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
