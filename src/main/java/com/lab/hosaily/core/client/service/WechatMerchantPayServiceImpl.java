@@ -23,6 +23,7 @@ import com.lab.hosaily.core.client.entity.Payment;
 import com.lab.hosaily.core.client.entity.Purchase;
 import com.lab.hosaily.core.client.entity.WechatMerchantPay;
 import com.lab.hosaily.core.course.dao.AccountProjectDao;
+import com.lab.hosaily.core.course.dao.CourseGroupDao;
 import com.lab.hosaily.core.course.entity.AccountProject;
 import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.sell.dao.AccountCourseDao;
@@ -75,6 +76,9 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
 
     @Autowired
     private AgreementDao agreementDao;
+
+    @Autowired
+    private CourseGroupDao courseGroupDao;
 
     /**
      * 预支付
@@ -597,6 +601,161 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
                         accountCourse.setState(UsingState.NORMAL);
                         accountCourseDao.saveOrUpdate(accountCourse);
 
+
+                        params.put("return_code", "SUCCESS");
+                        params.put("return_msg", "OK");
+                    }
+                } else {
+
+                    params.put("return_code", "FAIL");
+                    params.put("return_msg", response.getErrCodeDes());
+                }
+            } else {
+                params.put("return_code", "FAIL");
+                params.put("return_msg", response.getReturnMsg());
+            }
+
+            return WechatMerchantPayUtils.toXml(params);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+
+
+
+
+    /**
+     * 预支付
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Map<String, String> xcxVipPrepay(String accountId, Double totalFee, String code) {
+        try {
+            Assert.notNull(totalFee, "支付金额不能为空");
+
+            //TODO 根据企业ID查询支付账号信息
+            String appId = "wx616f17701a2c0d19";
+            String appSecret = "677ee85fb1bddde5863ae40ff44aa7e9";
+            String mchId = "1492968172";
+            String appKey = "7W80cW9zmjGTnodn4BEZwVvkU8BtJar8";
+            String notifyUrl = "http://www.klpua.com/api/1.0/xcxPay/course/callback";
+
+//            //购买记录
+//            Purchase purchase = purchaseDao.getById(purchaseId);
+
+            //创建支付记录
+            Payment payment = new Payment();
+//            payment.setPurchaseId(purchaseId);
+            payment.setPurchaseId("vip");
+            payment.setState(PayState.APPLY);
+            payment.setPayTime(new Date());
+            payment.setPrice(totalFee);
+            payment.setType(PayType.WECHAT_MERCHANT);
+            paymentDao.saveOrUpdate(payment);
+            //查询微信账户
+            String openId = "";
+            Account account = accountDao.getById(accountId);
+            XcxAccount xcxAccount = xcxAccountDao.getByOpenIdOrUnionId(appId, account.getWeChat(), account.getWeChat());
+            openId = xcxAccount.getOpenId();
+            if (StringUtils.isBlank(openId)) {
+                throw new ServiceException("未知用户");
+            }
+
+            //创建微信商户支付记录
+            WechatMerchantPay wechatMerchantPay = new WechatMerchantPay();
+            wechatMerchantPay.setAppId(appId);
+            wechatMerchantPay.setMchId(mchId);
+            wechatMerchantPay.setKey(appKey);
+            wechatMerchantPay.setOpenId(openId);
+            wechatMerchantPay.setNonceStr(UUIDGenerator.by32());
+            wechatMerchantPay.setBody("永恒情书服务支付");
+            wechatMerchantPay.setOutTradeNo(payment.getId());
+            wechatMerchantPay.setTradeType("JSAPI");
+            wechatMerchantPay.setNotifyUrl(notifyUrl);
+            wechatMerchantPay.setSignType("MD5");
+            wechatMerchantPay.setTotalFee(new Double(totalFee * 100).intValue());
+            wechatMerchantPay.setOutTradeNo(payment.getId());
+            wechatMerchantPay.setMsg("xcx:" + accountId + ";" + "vip");
+
+            //提交预支付
+            WechatMerchantPayResponse response = WechatMerchantPayUtils.prepay(wechatMerchantPay);
+            if (response.getReturnCode().equalsIgnoreCase("SUCCESS")) {
+                if (response.getResultCode().equalsIgnoreCase("SUCCESS")) {
+                    payment.setState(PayState.UNCONFIRMED);
+                    wechatMerchantPay.setPrepayId(response.getPrepayId());
+                } else {
+                    throw new ServiceException(response.getReturnMsg());
+                }
+            } else {
+                throw new ServiceException(response.getReturnMsg());
+            }
+
+            //更新支付状态
+            paymentDao.saveOrUpdate(payment);
+            //保存微信商户支付记录
+            wechatMerchantPayDao.saveOrUpdate(wechatMerchantPay);
+
+            if (!StringUtils.isBlank(wechatMerchantPay.getPrepayId())) {
+                return WechatMerchantPayUtils.getJsapiParams(wechatMerchantPay);
+            }
+
+            throw new ServiceException(String.format("微信支付失败:%s", response.getReturnMsg()));
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+
+
+    /**
+     * 回调
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public String xcxVipCallback(String xml) {
+        try {
+            Assert.hasText(xml, "微信商户支付回调XML信息不能为空");
+
+            //结果回复
+            Map<String, String> params = new HashMap<String, String>();
+
+            WechatMerchantPayCallbackResponse response = WechatMerchantPayUtils.toWechatMerchantPayCallbackResponse(xml);
+            if (response != null && response.getReturnCode().equalsIgnoreCase("SUCCESS")) {
+                if (response.getResultCode().equalsIgnoreCase("SUCCESS")) {
+                    //TODO 验证签名
+                    String paymentId = response.getOutTradeNo();
+                    //支付记录
+                    Payment payment = paymentDao.getById(paymentId);
+                    //微信商户支付记录
+                    WechatMerchantPay pay = wechatMerchantPayDao.getByOutTradeNo(paymentId);
+
+                    //简单验证
+                    if (payment != null
+                            && pay != null
+                            && pay.getTotalFee() == response.getTotalFee()
+                            && pay.getAppId().equals(response.getAppId())
+                            && pay.getMchId().equals(response.getMchId())
+                            && pay.getOpenId().equals(response.getOpenId())) {
+
+                        //更新支付记录
+                        if (payment.getState().equals(PayState.UNCONFIRMED)) {
+                            payment.setState(PayState.PAID);
+                            payment.setAffirmTime(new Date());
+                            paymentDao.saveOrUpdate(payment);
+                        }
+                        //更新微信商户支付记录
+                        pay.setIsSuccess(true);
+                        wechatMerchantPayDao.saveOrUpdate(pay);
+
+                        //                        更新account_project状态
+                        String accountProjectMsg = pay.getMsg();
+                        String[] xcxAJArr = accountProjectMsg.split(":");
+                        String[] aJArr = xcxAJArr[1].split(";");
+                        //            加入vip
+                        courseGroupDao.authorizationByVIP(aJArr[0]);
 
                         params.put("return_code", "SUCCESS");
                         params.put("return_msg", "OK");

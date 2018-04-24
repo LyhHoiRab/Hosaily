@@ -53,7 +53,7 @@ public class XcxPayRestController {
     }
 
 
-
+//课程购买
     @RequestMapping(value = "/course/prepay", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Map<String, String>> coursePrepay(String courseId, String accountId, Double totalFee, String code){
         try{
@@ -80,5 +80,38 @@ public class XcxPayRestController {
             throw new ApplicationException(e.getMessage(), e);
         }
     }
+
+
+
+
+
+//vip购买
+    @RequestMapping(value = "/vip/prepay", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Map<String, String>> vipPrepay(String accountId, Double totalFee, String code){
+        try{
+            Map<String, String> params = wechatMerchantPayService.xcxVipPrepay(accountId, totalFee, code);
+
+            return new Response<Map<String, String>>("预支付成功", params);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 支付回调
+     */
+    @RequestMapping(value = "/vip/callback", method = {RequestMethod.POST, RequestMethod.GET}, produces = MediaType.APPLICATION_XML_VALUE)
+    public String vipCallback(HttpServletRequest request, HttpServletResponse response){
+        try{
+            String xml = XMLUtils.read(request.getInputStream());
+
+            return wechatMerchantPayService.xcxVipCallback(xml);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
 
 }
