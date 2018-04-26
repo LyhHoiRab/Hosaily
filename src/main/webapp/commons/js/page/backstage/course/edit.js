@@ -3,7 +3,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
     $scope.states         = {};
     $scope.advisors       = [];
     $scope.organizations  = [];
-    $scope.authorizations = {'false':'否', 'true':'是'};
+    $scope.authorizations = {};
     $scope.tags           = [];
     //$scope.levels   = [];
 
@@ -45,7 +45,9 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         likes          : 0,
         view           : 0,
         sort           : 0,
-        advisor        : {},
+        advisor        : {
+            id : ''
+        },
         organizationId : '',
         tag            : [],
         //level        : [],
@@ -137,6 +139,10 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         });
     };
 
+    $scope.getAuthorizations = function(){
+        $scope.authorizations = {false:'否', true:'是'};
+    };
+
     $scope.getOrganization = function(){
         $http({
             url: '/api/1.0/organization/list',
@@ -204,6 +210,7 @@ app.controller('courseEditController', function($scope, $state, $stateParams, Fi
         if(newVal !== oldVal){
             $scope.getAdvisor();
             $scope.getTag();
+            $scope.getAuthorizations();
         }
     }, true);
 

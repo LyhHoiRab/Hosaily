@@ -82,7 +82,7 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">导师</span>
-        <select class="form-control" ng-model="course.advisor" ng-options="advisor as advisor.name for advisor in advisors">
+        <select class="form-control" ng-model="course.advisor.id" ng-options="advisor.id as advisor.name for advisor in advisors">
           <option value="">请选择</option>
         </select>
       </div>
@@ -101,9 +101,12 @@
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">标签</span>
-        <select class="form-control" ng-model="course.tag" ng-options="tag as tag.name for tag in tags">
-          <option value="">请选择</option>
-        </select>
+        <ui-select class="form-control" multiple ng-model="course.tag" theme="bootstrap">
+          <ui-select-match placeholder="请选择">{{$item.name}}</ui-select-match>
+          <ui-select-choices repeat="tag in tags" value="{{$item.id}}">
+            <small>{{tag.name}}</small>
+          </ui-select-choices>
+        </ui-select>
       </div>
     </div>
 

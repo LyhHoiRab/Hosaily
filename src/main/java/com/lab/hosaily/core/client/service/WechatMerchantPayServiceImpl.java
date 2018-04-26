@@ -22,8 +22,10 @@ import com.lab.hosaily.core.client.entity.Agreement;
 import com.lab.hosaily.core.client.entity.Payment;
 import com.lab.hosaily.core.client.entity.Purchase;
 import com.lab.hosaily.core.client.entity.WechatMerchantPay;
+import com.lab.hosaily.core.course.dao.AccountLevelDao;
 import com.lab.hosaily.core.course.dao.AccountProjectDao;
 import com.lab.hosaily.core.course.dao.CourseGroupDao;
+import com.lab.hosaily.core.course.entity.AccountLevel;
 import com.lab.hosaily.core.course.entity.AccountProject;
 import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.sell.dao.AccountCourseDao;
@@ -79,6 +81,9 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
 
     @Autowired
     private CourseGroupDao courseGroupDao;
+
+    @Autowired
+    private AccountLevelDao accountLevelDao;
 
     /**
      * 预支付
@@ -474,8 +479,8 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
             Assert.notNull(totalFee, "支付金额不能为空");
 
             //TODO 根据企业ID查询支付账号信息
-            String appId = "wx616f17701a2c0d19";
-            String appSecret = "677ee85fb1bddde5863ae40ff44aa7e9";
+            String appId = "wx5c1252ff3262c920";
+            String appSecret = "f94b3a4d8167a740a850e2b2b9d75f88";
             String mchId = "1492968172";
             String appKey = "7W80cW9zmjGTnodn4BEZwVvkU8BtJar8";
             String notifyUrl = "http://www.klpua.com/api/1.0/xcxPay/course/callback";
@@ -636,8 +641,8 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
             Assert.notNull(totalFee, "支付金额不能为空");
 
             //TODO 根据企业ID查询支付账号信息
-            String appId = "wx616f17701a2c0d19";
-            String appSecret = "677ee85fb1bddde5863ae40ff44aa7e9";
+            String appId = "wx5c1252ff3262c920";
+            String appSecret = "f94b3a4d8167a740a850e2b2b9d75f88";
             String mchId = "1492968172";
             String appKey = "7W80cW9zmjGTnodn4BEZwVvkU8BtJar8";
             String notifyUrl = "http://www.klpua.com/api/1.0/xcxPay/course/callback";
@@ -755,7 +760,12 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
                         String[] xcxAJArr = accountProjectMsg.split(":");
                         String[] aJArr = xcxAJArr[1].split(";");
                         //            加入vip
-                        courseGroupDao.authorizationByVIP(aJArr[0]);
+//                        courseGroupDao.authorizationByVIP(aJArr[0]);
+                        //添加会员记录
+                        String accountId = aJArr[0];
+                        AccountLevel accountLevel = new AccountLevel();
+                        accountLevel.setAccountId(accountId);
+                        accountLevelDao.saveOrUpdate(accountLevel);
 
                         params.put("return_code", "SUCCESS");
                         params.put("return_msg", "OK");

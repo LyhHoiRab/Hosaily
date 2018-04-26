@@ -8,12 +8,13 @@ import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
 import com.rab.babylon.core.consts.entity.Sex;
-import org.bouncycastle.ocsp.Req;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "/api/1.0/appointment")
@@ -27,6 +28,25 @@ public class AppointmentRestController{
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Appointment> save(@RequestBody Appointment appointment){
         try{
+            appointmentService.save(appointment);
+
+            return new Response<Appointment>("保存成功", appointment);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Appointment> save(String name, String phone, Integer sex, String organizationId, HttpServletResponse response){
+        try{
+            response.setHeader("Access-Control-Allow-Origin", "*");
+
+            Appointment appointment = new Appointment();
+            appointment.setName(name);
+            appointment.setPhone(phone);
+            appointment.setSex(Sex.getById(sex));
+            appointment.setOrganizationId(organizationId);
             appointmentService.save(appointment);
 
             return new Response<Appointment>("保存成功", appointment);

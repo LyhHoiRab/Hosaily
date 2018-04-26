@@ -27,7 +27,7 @@
                                 ${criterion.property} ${criterion.operator} #{criterion.value}
                             </when>
                             <when test="criterion.betweenValue">
-                                ${criterion.property} $criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
                             </when>
                             <when test="criterion.listValue">
                                 ${criterion.property} ${criterion.operator}

@@ -1,7 +1,9 @@
 package com.lab.hosaily.core.course.service;
 
+import com.lab.hosaily.core.course.dao.AccountLevelDao;
 import com.lab.hosaily.core.course.dao.CourseDao;
 import com.lab.hosaily.core.course.dao.CourseGroupDao;
+import com.lab.hosaily.core.course.entity.AccountLevel;
 import com.lab.hosaily.core.course.entity.Course;
 import com.lab.hosaily.core.course.entity.CourseGroup;
 import com.rab.babylon.commons.security.exception.DataAccessException;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,6 +32,9 @@ public class CourseGroupServiceImpl implements CourseGroupService{
 
     @Autowired
     private CourseDao courseDao;
+
+    @Autowired
+    private AccountLevelDao accountLevelDao;
 
     /**
      * 保存
@@ -150,6 +156,19 @@ public class CourseGroupServiceImpl implements CourseGroupService{
 
             if(!course.getAuthorization()){
                 return true;
+            }
+
+            //会员检测
+            AccountLevel accountLevel = accountLevelDao.getByAccountId(accountId);
+            if(accountLevel != null){
+                //有效
+                if(accountLevel.getEndTime().after(new Date())){
+                    return true;
+                }
+
+                //更新会员为无效
+                accountLevel.setIsValid(false);
+                accountLevelDao.saveOrUpdate(accountLevel);
             }
 
             return courseGroupDao.hasCourse(accountId, courseId);
