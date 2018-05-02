@@ -7,14 +7,18 @@ import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
+import com.rab.babylon.commons.utils.UUIDGenerator;
 import com.rab.babylon.core.consts.entity.Sex;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.rmic.iiop.IDLGenerator;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 @RestController
 @RequestMapping(value = "/api/1.0/appointment")
@@ -38,18 +42,23 @@ public class AppointmentRestController{
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Appointment> save(String name, String phone, Integer sex, String organizationId, HttpServletResponse response){
+    public Response save(String name, String phone, Integer sex, String organizationId, String description, String url, String type, HttpServletResponse response){
         try{
             response.setHeader("Access-Control-Allow-Origin", "*");
 
-            Appointment appointment = new Appointment();
-            appointment.setName(name);
-            appointment.setPhone(phone);
-            appointment.setSex(Sex.getById(sex));
-            appointment.setOrganizationId(organizationId);
-            appointmentService.save(appointment);
+            if(!appointmentService.exist(organizationId, null, null, null, phone, null, null, null, url, new Date())){
+                Appointment appointment = new Appointment();
+                appointment.setName(name);
+                appointment.setPhone(phone);
+                appointment.setSex(Sex.getById(sex));
+                appointment.setOrganizationId(organizationId);
+                appointment.setDescription(description);
+                appointment.setUrl(url);
+                appointment.setType(type);
+                appointmentService.save(appointment);
+            }
 
-            return new Response<Appointment>("保存成功", appointment);
+            return new Response<Appointment>("保存成功", null);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
@@ -81,10 +90,10 @@ public class AppointmentRestController{
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Appointment>> page(Long pageNum, Long pageSize, String organizationId, AppointmentState state, String name, String wechat, String phone, Sex sex, String type){
+    public Response<Page<Appointment>> page(Long pageNum, Long pageSize, String organizationId, AppointmentState state, String name, String wechat, String phone, Sex sex, String type, String description, Date minTime, Date maxTime){
         try{
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Appointment> page = appointmentService.page(pageRequest, organizationId, state, name, wechat, phone, sex, type);
+            Page<Appointment> page = appointmentService.page(pageRequest, organizationId, state, name, wechat, phone, sex, type, description, minTime, maxTime);
 
             return new Response<Page<Appointment>>("查询成功", page);
         }catch(Exception e){
@@ -111,6 +120,20 @@ public class AppointmentRestController{
             Boolean result = appointmentService.validateCaptcha(phone, captcha);
 
             return new Response("验证成功", result);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/export", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void export(HttpServletResponse response, String organizationId, AppointmentState state, String name, String wechat, String phone, Sex sex, String type, String description, Date minTime, Date maxTime){
+        try{
+            XSSFWorkbook book = appointmentService.export(organizationId, state, name, wechat, phone, sex, type, description, minTime, maxTime);
+
+            response.setHeader("Content-disposition", "attachment; filename=" + UUIDGenerator.by32() + ".xlsx");
+            response.setContentType("application/xlsx;charset=UTF-8");
+            book.write(response.getOutputStream());
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

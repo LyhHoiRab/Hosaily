@@ -19,7 +19,7 @@ public class PropertyController{
 
     @InitBinder
     public void initDateBinder(WebDataBinder binder){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         sdf.setLenient(false);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
     }

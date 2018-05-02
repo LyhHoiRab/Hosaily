@@ -4,6 +4,10 @@ app.controller('appointmentListController', function($scope, $http, $state, $sta
     $scope.organizationId  = $stateParams.organizationId;
     $scope.name            = '';
     $scope.phont           = '';
+    $scope.type            = '';
+    $scope.descirption     = '';
+    $scope.minTime         = '';
+    $scope.maxTime         = '';
 
     //下拉
     $scope.states = {};
@@ -27,6 +31,10 @@ app.controller('appointmentListController', function($scope, $http, $state, $sta
         $scope.state          = '';
         $scope.name           = '';
         $scope.phone          = '';
+        $scope.type           = '';
+        $scope.description    = '';
+        $scope.minTime        = '';
+        $scope.maxTime        = '';
     };
 
     $scope.search = function(){
@@ -36,6 +44,42 @@ app.controller('appointmentListController', function($scope, $http, $state, $sta
 
     $scope.refresh = function(){
         $scope.getData();
+    };
+
+    $scope.print = function(){
+        $http({
+            url: '/api/1.0/appointment/export',
+            method: 'POST',
+            data: $.param({
+                'pageNum'        : $scope.pagingOptions.currentPage,
+                'pageSize'       : $scope.pagingOptions.pageSize,
+                'phone'          : $scope.phone,
+                'name'           : $scope.name,
+                'state'          : $scope.state,
+                'organizationId' : $scope.organizationId,
+                'type'           : $scope.type,
+                'description'    : $scope.description,
+                'minTime'        : $scope.minTime ? moment($scope.minTime).format('YYYY-MM-DD hh:mm:ss') : $scope.minTime,
+                'maxTime'        : $scope.maxTime ? moment($scope.maxTime).format('YYYY-MM-DD hh:mm:ss') : $scope.maxTime
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            responseType: 'arraybuffer'
+        }).success(function(data){
+            console.log(data);
+
+            var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+            var objectUrl = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            document.body.appendChild(a);
+            a.setAttribute('style', 'display:none');
+            a.setAttribute('href', objectUrl);
+            a.click();
+            URL.revokeObjectURL(objectUrl);
+        }).error(function(response){
+            console.error(response);
+        });
     };
 
     $scope.getData = function(){
@@ -48,7 +92,11 @@ app.controller('appointmentListController', function($scope, $http, $state, $sta
                 'phone'          : $scope.phone,
                 'name'           : $scope.name,
                 'state'          : $scope.state,
-                'organizationId' : $scope.organizationId
+                'organizationId' : $scope.organizationId,
+                'type'           : $scope.type,
+                'description'    : $scope.description,
+                'minTime'        : $scope.minTime ? moment($scope.minTime).format('YYYY-MM-DD hh:mm:ss') : $scope.minTime,
+                'maxTime'        : $scope.maxTime ? moment($scope.maxTime).format('YYYY-MM-DD hh:mm:ss') : $scope.maxTime
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -137,16 +185,16 @@ app.controller('appointmentListController', function($scope, $http, $state, $sta
             field: 'description',
             displayName: '说明'
         },{
+            field: 'url',
+            displayName: '来源',
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="{{COL_FIELD}}" target="_blank">{{COL_FIELD}}</a></span></div>'
+        },{
             field: 'state',
             displayName: '状态',
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{states[COL_FIELD]}}</span></div>'
         },{
             field: 'createTime',
-            displayName: '创建时间',
-            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
-        },{
-            field: 'updateTime',
-            displayName: '更新时间',
+            displayName: '预约时间',
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>'
         },{
             displayName: '操作',

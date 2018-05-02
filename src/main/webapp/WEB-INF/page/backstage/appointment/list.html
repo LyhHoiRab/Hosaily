@@ -32,6 +32,34 @@
                     </select>
                 </div>
             </div><!-- item -->
+
+            <div class="col-xs-12 col-md-3">
+                <div class="input-group">
+                    <span class="input-group-addon">说明</span>
+                    <input type="text" class="form-control" placeholder="说明" ng-model="description">
+                </div>
+            </div><!-- item -->
+
+            <div class="col-xs-12 col-md-3">
+                <div class="input-group">
+                    <span class="input-group-addon">类型</span>
+                    <input type="text" class="form-control" placeholder="类型" ng-model="type">
+                </div>
+            </div><!-- item -->
+
+            <div class="col-xs-12 col-md-3">
+                <div class="input-group">
+                    <span class="input-group-addon">预约时间(不早于)</span>
+                    <input type="date" class="form-control" placeholder="预约时间(不早于)" ng-model="minTime">
+                </div>
+            </div><!-- item -->
+
+            <div class="col-xs-12 col-md-3">
+                <div class="input-group">
+                    <span class="input-group-addon">预约时间(不晚于)</span>
+                    <input type="date" class="form-control" placeholder="预约时间(不晚于)" ng-model="maxTime">
+                </div>
+            </div><!-- item -->
         </div>
     </div><!-- container -->
 
@@ -49,6 +77,11 @@
         <button type="button" class="btn" ng-click="refresh()">
             <i class="fa fa-refresh"></i>
             刷新
+        </button><!-- item -->
+
+        <button type="button" class="btn" ng-click="print()">
+            <i class="fa fa-print"></i>
+            打印
         </button><!-- item -->
     </div><!-- container -->
 </div><!-- search bar -->

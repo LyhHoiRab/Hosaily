@@ -12,6 +12,7 @@
         <result column="phone"           property="phone"          javaType="java.lang.String"/>
         <result column="type"            property="type"           javaType="java.lang.String"/>
         <result column="description"     property="description"    javaType="java.lang.String"/>
+        <result column="url"             property="url"            javaType="java.lang.String"/>
         <result column="state"           property="state"          typeHandler="appointmentStateHandler"/>
         <result column="remark"          property="remark"         javaType="java.lang.String"/>
         <result column="create_time"     property="createTime"     javaType="java.util.Date"/>
@@ -173,6 +174,7 @@
                phone,
                type,
                description,
+               url,
                state,
                remark,
                create_time
@@ -185,6 +187,7 @@
                #{phone,           jdbcType=VARCHAR},
                #{type,            jdbcType=VARCHAR},
                #{description,     jdbcType=VARCHAR},
+               #{url,             jdbcType=VARCHAR},
                #{state,           typeHandler=appointmentStateHandler},
                #{remark,          jdbcType=VARCHAR},
                #{createTime,      jdbcType=TIMESTAMP}
@@ -214,6 +217,9 @@
              </if>
              <if test="description != null and description != ''">
                  description = #{description, jdbcType=VARCHAR},
+             </if>
+             <if test="url != null and url != ''">
+                 url = #{url, jdbcType=VARCHAR},
              </if>
              <if test="state != null">
                  state = #{state, typeHandler=appointmentStateHandler},

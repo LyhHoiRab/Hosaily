@@ -1187,6 +1187,7 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                     basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
                     basePath + '/commons/js/plugin/ng-grid/theme.css',
                     basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/moment/moment.min.js',
                     basePath + '/commons/js/page/backstage/appointment/list.js'
                 ]);
             }]

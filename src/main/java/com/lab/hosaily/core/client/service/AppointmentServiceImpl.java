@@ -1,6 +1,7 @@
 package com.lab.hosaily.core.client.service;
 
 import com.lab.hosaily.commons.consts.RedisConsts;
+import com.lab.hosaily.commons.utils.ExcelUtils;
 import com.lab.hosaily.commons.utils.RandomStringUtils;
 import com.lab.hosaily.commons.utils.YunpianUtils;
 import com.lab.hosaily.core.client.consts.AppointmentState;
@@ -14,6 +15,7 @@ import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.utils.RedisUtils;
 import com.rab.babylon.core.consts.entity.Sex;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ import org.springframework.util.Assert;
 import redis.clients.jedis.ShardedJedisPool;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -80,11 +82,21 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
 
     @Override
-    public Page<Appointment> page(PageRequest pageRequest, String organizationId, AppointmentState state, String name, String wechat, String phone, Sex sex, String type){
+    public Page<Appointment> page(PageRequest pageRequest, String organizationId, AppointmentState state, String name, String wechat, String phone, Sex sex, String type, String description, Date minTime, Date maxTime){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return appointmentDao.page(pageRequest, organizationId, state, name, wechat, phone, sex, type);
+            return appointmentDao.page(pageRequest, organizationId, state, name, wechat, phone, sex, type, description, minTime, maxTime);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public boolean exist(String organizationId, AppointmentState state, String name, String wechat, String phone, Sex sex, String type, String description, String url, Date createTime){
+        try{
+            return appointmentDao.existByParams(organizationId, state, name, wechat, phone, sex, type, description, url, createTime);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -135,6 +147,33 @@ public class AppointmentServiceImpl implements AppointmentService{
             }
 
             return false;
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 导出Excel
+     */
+    @Override
+    public XSSFWorkbook export(String organizationId, AppointmentState state, String name, String wechat, String phone, Sex sex, String type, String description, Date minTime, Date maxTime){
+        try{
+            //正文内容
+            List<Appointment> list = appointmentDao.find(organizationId, state, name, wechat, phone, sex, type, description, minTime, maxTime);
+            //标题
+            Map<String, String> map = new LinkedHashMap<String, String>();
+            map.put("名称", "name");
+            map.put("微信号", "wechat");
+            map.put("联系方式", "phone");
+            map.put("性别", "sex");
+            map.put("类型", "type");
+            map.put("说明", "description");
+            map.put("来源", "url");
+            map.put("状态", "state");
+            map.put("登记时间", "createTime");
+
+            return ExcelUtils.write(map, list);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

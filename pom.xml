@@ -33,7 +33,8 @@
         <lombok.version>1.16.18</lombok.version>
         <mybatis.version>3.2.7</mybatis.version>
         <mybatis-spring.version>1.2.2</mybatis-spring.version>
-        <mysql.version>5.0.8</mysql.version>
+        <mysql.version>5.1.38</mysql.version>
+        <poi.version>3.9</poi.version>
         <redis.version>2.7.3</redis.version>
         <servlet-api.version>3.0.1</servlet-api.version>
         <spring.version>4.1.5.RELEASE</spring.version>
@@ -292,6 +293,13 @@
             <!--<artifactId>yunpian-java-sdk</artifactId>-->
             <!--<version>${yunpian.version}</version>-->
         <!--</dependency>-->
+
+        <!-- poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
     </dependencies>
 
     <profiles>
