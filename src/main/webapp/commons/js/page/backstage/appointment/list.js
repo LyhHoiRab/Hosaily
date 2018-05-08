@@ -18,8 +18,8 @@ app.controller('appointmentListController', function($scope, $http, $state, $sta
     $scope.selected = [];
     $scope.total = 0;
     $scope.pagingOptions = {
-        pageSizes: [10, 50, 100, 200],
-        pageSize: 10,
+        pageSizes: [30, 50, 100, 200],
+        pageSize: 30,
         currentPage: 1
     };
 

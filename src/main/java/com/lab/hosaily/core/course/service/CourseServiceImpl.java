@@ -209,13 +209,13 @@ public class CourseServiceImpl implements CourseService{
      * 根据账户ID和企业ID查询
      */
     @Override
-    public List<Course> findByAccountIdAndOrganizationId(String accountId, String organizationId){
+    public List<Course> findByAccountIdAndOrganizationToken(String accountId, String organizationToken){
         try{
             Assert.hasText(accountId, "账户ID不能为空");
-            Assert.hasText(organizationId, "企业ID不能为空");
+            Assert.hasText(organizationToken, "企业Token不能为空");
 
-            List<CourseGroup> groups = courseGroupDao.list(accountId, null, organizationId, null, UsingState.NORMAL, null);
-            List<Course> courses = courseDao.listByCourse(null, null, UsingState.NORMAL, accountId, organizationId, null);
+            List<CourseGroup> groups = courseGroupDao.list(accountId, null, null, organizationToken, UsingState.NORMAL, null);
+            List<Course> courses = courseDao.listByCourse(null, null, UsingState.NORMAL, accountId, null, organizationToken);
 
             Set<Course> target = new HashSet<Course>();
             target.addAll(courses);

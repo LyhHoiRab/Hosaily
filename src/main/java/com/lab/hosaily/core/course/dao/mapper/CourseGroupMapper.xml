@@ -13,8 +13,10 @@
     </resultMap>
 
     <resultMap id="course" type="com.lab.hosaily.core.course.entity.Course">
-        <id     column="id"    property="id"    javaType="java.lang.String"/>
-        <result column="title" property="title" javaType="java.lang.String"/>
+        <id     column="id"      property="id"      javaType="java.lang.String"/>
+        <result column="title"   property="title"   javaType="java.lang.String"/>
+        <result column="cover"   property="cover"   javaType="java.lang.String"/>
+        <result column="summary" property="summary" javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -251,8 +253,10 @@
 
     <select id="getByParams" resultMap="group">
         SELECT g.*,
-               c.id    AS c_id,
-               c.title AS c_title
+               c.id      AS c_id,
+               c.title   AS c_title,
+               c.summary AS c_summary,
+               c.cover   AS c_cover
           FROM groups g
      LEFT JOIN organization o
             ON o.id = g.organization_id
@@ -307,8 +311,10 @@
 
     <select id="findByParams" resultMap="group">
         SELECT g.*,
-               c.id    AS c_id,
-               c.title AS c_title
+               c.id      AS c_id,
+               c.title   AS c_title,
+               c.summary AS c_summary,
+               c.cover   AS c_cover
           FROM groups g
      LEFT JOIN organization o
             ON o.id = g.organization_id

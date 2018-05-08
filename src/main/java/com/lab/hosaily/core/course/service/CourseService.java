@@ -64,5 +64,5 @@ public interface CourseService{
     /**
      * 根据账户ID和企业ID查询
      */
-    List<Course> findByAccountIdAndOrganizationId(String accountId, String organizationId);
+    List<Course> findByAccountIdAndOrganizationToken(String accountId, String organizationToken);
 }

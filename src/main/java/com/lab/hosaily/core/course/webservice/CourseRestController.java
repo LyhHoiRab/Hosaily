@@ -180,11 +180,11 @@ public class CourseRestController{
     }
 
     /**
-     * 根据账户ID和企业ID查询
+     * 根据账户ID和企业Token查询
      */
     @RequestMapping(value = "/find", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<Course>> findByAccountIdAndOrganizationId(String accountId, String organizationId){
-        List<Course> list = courseService.findByAccountIdAndOrganizationId(accountId, organizationId);
+    public Response<List<Course>> findByAccountIdAndOrganizationToken(String accountId, String organizationToken){
+        List<Course> list = courseService.findByAccountIdAndOrganizationToken(accountId, organizationToken);
 
         return new Response<List<Course>>("查询成功", list);
     }
