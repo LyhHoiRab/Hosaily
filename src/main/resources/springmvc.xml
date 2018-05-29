@@ -91,6 +91,12 @@
 
   <!-- 拦截器 -->
   <mvc:interceptors>
+    <!-- 跨域拦截器 -->
+    <mvc:interceptor>
+      <mvc:mapping path="/**"/>
+      <bean class="com.lab.hosaily.commons.interceptor.CorsInterceptor"/>
+    </mvc:interceptor>
+
     <!-- 登录拦截器 -->
     <mvc:interceptor>
       <mvc:mapping path="/**"/>
