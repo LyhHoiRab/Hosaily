@@ -1,6 +1,7 @@
 package com.lab.hosaily.core.course.service;
 
 import com.lab.hosaily.commons.utils.FileNameUtils;
+import com.lab.hosaily.commons.utils.ProjectStatus;
 import com.lab.hosaily.commons.utils.UpyunUtils;
 import com.lab.hosaily.core.course.dao.AccountProjectDao;
 import com.lab.hosaily.core.course.dao.ProjectDao;
@@ -181,18 +182,28 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(readOnly = false)
     public void summitResult(AccountProject accountProject) {
 
-        AccountProject oldAccountProject = accountProjectDao.getByAccountIdAndProjectId(accountProject.getAccountId(), accountProject.getProjectId());
-
-        if (null != oldAccountProject) {
-            oldAccountProject.setResultId(accountProject.getResultId());
-            oldAccountProject.setStatus(accountProject.getStatus());
-            accountProjectDao.saveOrUpdate(oldAccountProject);
-            Project project = projectDao.getById(accountProject.getProjectId());
-            project.setCompletedCount((Integer.parseInt(project.getCompletedCount()) + 1) + "");
-            projectDao.saveOrUpdate(project);
-        } else {
+//        AccountProject oldAccountProject = accountProjectDao.getByAccountIdAndProjectId(accountProject.getAccountId(), accountProject.getProjectId());
+//        if(ProjectStatus.PROJECT_DONE.equals(accountProject.getStatus())){
+//            if(null != oldAccountProject){
+//
+//            }else{
+//                accountProjectDao.saveOrUpdate(accountProject);
+//            }
+//        }
+//
+//
+//
+//
+//        if (null != oldAccountProject) {
+//            oldAccountProject.setResultId(accountProject.getResultId());
+//            oldAccountProject.setStatus(accountProject.getStatus());
+//            accountProjectDao.saveOrUpdate(oldAccountProject);
+//            Project project = projectDao.getById(accountProject.getProjectId());
+//            project.setCompletedCount((Integer.parseInt(project.getCompletedCount()) + 1) + "");
+//            projectDao.saveOrUpdate(project);
+//        } else {
             accountProjectDao.saveOrUpdate(accountProject);
-        }
+//        }
 
 
     }

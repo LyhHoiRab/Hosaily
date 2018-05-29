@@ -4,11 +4,13 @@ import com.lab.hosaily.commons.utils.ProjectStatus;
 import com.lab.hosaily.core.course.entity.AccountProject;
 import com.lab.hosaily.core.course.entity.Project;
 import com.lab.hosaily.core.course.service.ProjectService;
+import com.lab.hosaily.core.course.utils.handler.HttpClientUtil;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
 import com.rab.babylon.core.consts.entity.UsingState;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/1.0/project")
@@ -103,13 +108,17 @@ public class ProjectRestController {
      * 分页查询
      */
     @RequestMapping(value = "/summitResult", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<String> summitResult(String accountId, String projectId, String questionId) {
+    public Response<String> summitResult(String accountId, String projectId, String questionId, String status) {
         try {
             AccountProject accountProject = new AccountProject();
             accountProject.setAccountId(accountId);
             accountProject.setProjectId(projectId);
             accountProject.setResultId(questionId);
-            accountProject.setStatus(ProjectStatus.PROJECT_DONE);
+            if(ProjectStatus.PROJECT_UNDONE.equals(status)) {
+                accountProject.setStatus(ProjectStatus.PROJECT_UNDONE);
+            }else {
+                accountProject.setStatus(ProjectStatus.PROJECT_DONE);
+            }
             projectService.summitResult(accountProject);
             return new Response<String>("提交成功", "");
         } catch (Exception e) {
@@ -185,5 +194,72 @@ public class ProjectRestController {
             throw new ApplicationException(e.getMessage(), e);
         }
     }
+
+//
+//    /**
+//     * 查询列表
+//     */
+//    @RequestMapping(value = "/outCall", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public String outCall(String appId, String call1, String call2, String data) {
+//        try {
+////            /api/1.0/project/testTencentCall
+//            Map<String, Object> map = new HashMap<String, Object>();
+//            map.put("appId",appId);
+//            map.put("caller",call1);
+//            map.put("called",call2);
+//            map.put("data",data);
+//            map.put("Timeout",40);
+//            String result = HttpClientUtil.postRequest("http://118.89.202.21/ipcc/call/outCall",map);
+//            System.out.println(result);
+//            return result;
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//            throw new ApplicationException(e.getMessage(), e);
+//        }
+//    }
+//
+//    /**
+//     * 查询列表
+//     */
+//    @RequestMapping(value = "/transfer", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public String transfer(String appId, String callId, String called, String fileName, String data) {
+//        try {
+////            /api/1.0/project/testTencentCall
+//            Map<String, Object> map = new HashMap<String, Object>();
+//            map.put("appId",appId);
+//            map.put("callId",callId);
+//            map.put("called",called);
+////            map.put("fileName",fileName);
+//            map.put("data",data);
+////            map.put("Timeout",40);
+//            String result = HttpClientUtil.postRequest("http://118.89.202.21/ipcc/call/transfer",map);
+//            System.out.println(result);
+//            return result;
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//            throw new ApplicationException(e.getMessage(), e);
+//        }
+//    }
+//
+//
+//
+//    /**
+//     * 查询列表
+//     */
+//    @RequestMapping(value = "/disConnect", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public String disConnect(String appId, String callId) {
+//        try {
+////            /api/1.0/project/testTencentCall
+//            Map<String, Object> map = new HashMap<String, Object>();
+//            map.put("appId",appId);
+//            map.put("callId",callId);
+//            String result = HttpClientUtil.postRequest("http://118.89.202.21/ipcc/call/disConnect",map);
+//            System.out.println(result);
+//            return result;
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//            throw new ApplicationException(e.getMessage(), e);
+//        }
+//    }
 
 }

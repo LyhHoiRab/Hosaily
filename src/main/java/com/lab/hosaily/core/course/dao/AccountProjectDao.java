@@ -3,6 +3,7 @@ package com.lab.hosaily.core.course.dao;
 import com.lab.hosaily.commons.utils.ProjectStatus;
 import com.lab.hosaily.core.course.dao.mapper.AccountProjectMapper;
 import com.lab.hosaily.core.course.entity.AccountProject;
+import com.lab.hosaily.core.course.entity.Project;
 import com.rab.babylon.commons.security.exception.DataAccessException;
 import com.rab.babylon.commons.security.mybatis.Criteria;
 import com.rab.babylon.commons.security.mybatis.Restrictions;
@@ -29,6 +30,9 @@ public class AccountProjectDao {
     @Autowired
     private AccountProjectMapper mapper;
 
+    @Autowired
+    private ProjectDao projectDao;
+
     /**
      * 保存或更新
      */
@@ -39,8 +43,12 @@ public class AccountProjectDao {
                 accountProject.setCreateTime(new Date());
                 mapper.save(accountProject);
             } else {
+                System.out.println("saveOrUpdate: " + accountProject.getStatus());
                 accountProject.setUpdateTime(new Date());
                 mapper.update(accountProject);
+                Project project = projectDao.getById(accountProject.getProjectId());
+                project.setCompletedCount((Integer.parseInt(project.getCompletedCount()) + 1) + "");
+                projectDao.saveOrUpdate(project);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -66,5 +74,5 @@ public class AccountProjectDao {
             throw new DataAccessException(e.getMessage(), e);
         }
     }
-    
+
 }
