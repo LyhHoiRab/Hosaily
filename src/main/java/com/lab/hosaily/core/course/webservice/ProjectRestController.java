@@ -4,7 +4,6 @@ import com.lab.hosaily.commons.utils.ProjectStatus;
 import com.lab.hosaily.core.course.entity.AccountProject;
 import com.lab.hosaily.core.course.entity.Project;
 import com.lab.hosaily.core.course.service.ProjectService;
-import com.lab.hosaily.core.course.utils.handler.HttpClientUtil;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
