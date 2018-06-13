@@ -182,7 +182,15 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(readOnly = false)
     public void summitResult(AccountProject accountProject) {
 
-//        AccountProject oldAccountProject = accountProjectDao.getByAccountIdAndProjectId(accountProject.getAccountId(), accountProject.getProjectId());
+        AccountProject oldAccountProject = accountProjectDao.getByAccountIdAndProjectId(accountProject.getAccountId(), accountProject.getProjectId());
+        if(null != oldAccountProject){
+            oldAccountProject.setResultId(accountProject.getResultId());
+            oldAccountProject.setStatus(accountProject.getStatus());
+            accountProjectDao.saveOrUpdate(oldAccountProject);
+        }else{
+            accountProjectDao.saveOrUpdate(accountProject);
+        }
+
 //        if(ProjectStatus.PROJECT_DONE.equals(accountProject.getStatus())){
 //            if(null != oldAccountProject){
 //
@@ -202,7 +210,7 @@ public class ProjectServiceImpl implements ProjectService {
 //            project.setCompletedCount((Integer.parseInt(project.getCompletedCount()) + 1) + "");
 //            projectDao.saveOrUpdate(project);
 //        } else {
-            accountProjectDao.saveOrUpdate(accountProject);
+//            accountProjectDao.saveOrUpdate(accountProject);
 //        }
 
 
