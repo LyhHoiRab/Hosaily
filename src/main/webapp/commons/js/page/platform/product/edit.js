@@ -23,7 +23,8 @@ app.controller('productEditController', function($scope, $http, $state, $statePa
             description : '',
             time        : 0,
             unitPrice   : 0,
-            type        : ''
+            type        : '',
+            sort        : 0
         };
 
         $scope.product.services.push(service);

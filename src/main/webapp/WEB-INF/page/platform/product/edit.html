@@ -90,6 +90,13 @@
 
                     <div class="col-xs-12">
                         <div class="input-group">
+                            <span class="input-group-addon">排序</span>
+                            <input type="number" class="form-control" placeholder="排序" ng-model="item.sort">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12">
+                        <div class="input-group">
                             <span class="input-group-addon">服务类型</span>
                             <select class="form-control" ng-model="item.type" ng-options="key as value for (key, value) in types">
                                 <option value="">请选择</option>

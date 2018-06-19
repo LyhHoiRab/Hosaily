@@ -7,6 +7,7 @@
         <result column="master_id"      property="masterId"     javaType="java.lang.String"/>
         <result column="name"           property="name"         javaType="java.lang.String"/>
         <result column="description"    property="description"  javaType="java.lang.String"/>
+        <result column="sort"           property="sort"         javaType="java.lang.Integer"/>
         <result column="time"           property="time"         javaType="java.lang.Integer"/>
         <result column="unit_price"     property="unitPrice"    javaType="java.lang.Double"/>
         <result column="type"           property="type"         typeHandler="serviceTypeHandler"/>
@@ -24,7 +25,8 @@
                time,
                unit_price,
                create_time,
-               type
+               type,
+               sort
         ) VALUES
         <foreach collection="services" item="service" separator=",">
             (
@@ -35,7 +37,8 @@
                 #{service.time,        jdbcType=INTEGER},
                 #{service.unitPrice,   jdbcType=DOUBLE},
                 #{service.createTime,  jdbcType=TIMESTAMP},
-                #{service.type,        typeHandler=serviceTypeHandler}
+                #{service.type,        typeHandler=serviceTypeHandler},
+                #{service.sort,        jdbcType=INTEGER}
             )
         </foreach>
     </insert>

@@ -3,31 +3,38 @@
 
 <mapper namespace="com.lab.hosaily.core.client.dao.mapper.AgreementMapper">
     <resultMap id="agreement" type="com.lab.hosaily.core.client.entity.Agreement">
-        <id     column="id"                 property="id"               javaType="java.lang.String"/>
-        <result column="purchase_id"        property="purchaseId"       javaType="java.lang.String"/>
-        <result column="account_id"         property="accountId"        javaType="java.lang.String"/>
-        <result column="client"             property="client"           javaType="java.lang.String"/>
-        <result column="phone"              property="phone"            javaType="java.lang.String"/>
-        <result column="address"            property="address"          javaType="java.lang.String"/>
-        <result column="id_card"            property="idCard"           javaType="java.lang.String"/>
-        <result column="wechat"             property="wechat"           javaType="java.lang.String"/>
-        <result column="email"              property="email"            javaType="java.lang.String"/>
-        <result column="emergency_contact"  property="emergencyContact" javaType="java.lang.String"/>
-        <result column="company"            property="company"          javaType="java.lang.String"/>
-        <result column="license_number"     property="licenseNumber"    javaType="java.lang.String"/>
-        <result column="legal_person"       property="legalPerson"      javaType="java.lang.String"/>
-        <result column="company_address"    property="companyAddress"   javaType="java.lang.String"/>
-        <result column="company_phone"      property="companyPhone"     javaType="java.lang.String"/>
-        <result column="company_email"      property="companyEmail"     javaType="java.lang.String"/>
-        <result column="company_website"    property="companyWebsite"   javaType="java.lang.String"/>
-        <result column="affirm_time"        property="affirmTime"       javaType="java.util.Date"/>
-        <result column="version"            property="version"          javaType="java.lang.String"/>
-        <result column="retail"             property="retail"           javaType="java.lang.Double"/>
-        <result column="price"              property="price"            javaType="java.lang.Double"/>
-        <result column="duration"           property="duration"         javaType="java.lang.Integer"/>
-        <result column="state"              property="state"            typeHandler="usingStateHandler"/>
-        <result column="create_time"        property="createTime"       javaType="java.util.Date"/>
-        <result column="update_time"        property="updateTime"       javaType="java.util.Date"/>
+        <id     column="id"                  property="id"               javaType="java.lang.String"/>
+        <result column="purchase_id"         property="purchaseId"       javaType="java.lang.String"/>
+        <result column="account_id"          property="accountId"        javaType="java.lang.String"/>
+        <result column="client"              property="client"           javaType="java.lang.String"/>
+        <result column="phone"               property="phone"            javaType="java.lang.String"/>
+        <result column="address"             property="address"          javaType="java.lang.String"/>
+        <result column="id_card"             property="idCard"           javaType="java.lang.String"/>
+        <result column="wechat"              property="wechat"           javaType="java.lang.String"/>
+        <result column="email"               property="email"            javaType="java.lang.String"/>
+        <result column="emergency_contact"   property="emergencyContact" javaType="java.lang.String"/>
+        <result column="company"             property="company"          javaType="java.lang.String"/>
+        <result column="license_number"      property="licenseNumber"    javaType="java.lang.String"/>
+        <result column="legal_person"        property="legalPerson"      javaType="java.lang.String"/>
+        <result column="company_address"     property="companyAddress"   javaType="java.lang.String"/>
+        <result column="company_phone"       property="companyPhone"     javaType="java.lang.String"/>
+        <result column="company_email"       property="companyEmail"     javaType="java.lang.String"/>
+        <result column="company_website"     property="companyWebsite"   javaType="java.lang.String"/>
+        <result column="affirm_time"         property="affirmTime"       javaType="java.util.Date"/>
+        <result column="version"             property="version"          javaType="java.lang.Integer"/>
+        <result column="retail"              property="retail"           javaType="java.lang.Double"/>
+        <result column="price"               property="price"            javaType="java.lang.Double"/>
+        <result column="duration"            property="duration"         javaType="java.lang.Integer"/>
+        <result column="state"               property="state"            typeHandler="agreementStateHandler"/>
+        <result column="create_time"         property="createTime"       javaType="java.util.Date"/>
+        <result column="update_time"         property="updateTime"       javaType="java.util.Date"/>
+        <result column="autograph_url"       property="autographUrl"     javaType="java.lang.String"/>
+        <result column="service_id"          property="serviceId"        javaType="java.lang.String"/>
+        <result column="state"               property="state"            typeHandler="agreementStateHandler"/>
+        <result column="edit"                property="edit"             javaType="java.lang.Boolean"/>
+        <result column="name"                property="name"             javaType="java.lang.String"/>
+        <result column="client_head_img_url" property="clientHeadImgUrl" javaType="java.lang.String"/>
+        <result column="client_nickname"     property="clientNickname"   javaType="java.lang.String"/>
         <collection  property="services"  resultMap="service"   columnPrefix="s_"/>
     </resultMap>
 
@@ -39,6 +46,7 @@
         <result column="time"           property="time"         javaType="java.lang.Integer"/>
         <result column="unit_price"     property="unitPrice"    javaType="java.lang.Double"/>
         <result column="type"           property="type"         typeHandler="serviceTypeHandler"/>
+        <result column="sort"           property="sort"         javaType="java.lang.Integer"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -54,7 +62,7 @@
                                 ${criterion.property} ${criterion.operator} #{criterion.value}
                             </when>
                             <when test="criterion.betweenValue">
-                                ${criterion.property} $criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
                             </when>
                             <when test="criterion.listValue">
                                 ${criterion.property} ${criterion.operator}
@@ -124,7 +132,7 @@
                                 ${criterion.property} ${criterion.operator} #{criterion.value}
                             </when>
                             <when test="criterion.betweenValue">
-                                ${criterion.property} $criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
                             </when>
                             <when test="criterion.listValue">
                                 ${criterion.property} ${criterion.operator}
@@ -211,7 +219,12 @@
                create_time,
                retail,
                price,
-               duration
+               duration,
+               autograph_url,
+               service_id,
+               name,
+               client_head_img_url,
+               client_nickname
         ) VALUE (
                #{id,                jdbcType=VARCHAR},
                #{purchaseId,        jdbcType=VARCHAR},
@@ -231,12 +244,17 @@
                #{companyEmail,      jdbcType=VARCHAR},
                #{companyWebsite,    jdbcType=VARCHAR},
                #{affirmTime,        jdbcType=TIMESTAMP},
-               #{version,           jdbcType=VARCHAR},
-               #{state,             typeHandler=usingStateHandler},
+               (SELECT MAX(version) FROM contract),
+               #{state,             typeHandler=agreementStateHandler},
                #{createTime,        jdbcType=TIMESTAMP},
                #{retail,            jdbcType=DOUBLE},
                #{price,             jdbcType=DOUBLE},
-               #{duration,          jdbcType=INTEGER}
+               #{duration,          jdbcType=INTEGER},
+               #{autographUrl,      jdbcType=VARCHAR},
+               #{serviceId,         jdbcType=VARCHAR},
+               #{name,              jdbcType=VARCHAR},
+               #{clientHeadImgUrl,  jdbcType=VARCHAR},
+               #{clientNickname,    jdbcType=VARCHAR}
         )
     </insert>
 
@@ -295,10 +313,10 @@
                  affirm_time = #{affirmTime, jdbcType=TIMESTAMP},
              </if>
              <if test="version != null">
-                 version = #{version, jdbcType=VARCHAR},
+                 version = #{version, jdbcType=INTEGER},
              </if>
              <if test="state != null">
-                 state = #{state, typeHandler=usingStateHandler},
+                 state = #{state, typeHandler=agreementStateHandler},
              </if>
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
@@ -312,6 +330,24 @@
              <if test="duration != null and duration >= 0">
                  duration = #{duration, jdbcType=INTEGER},
              </if>
+             <if test="autographUrl != null">
+                 autograph_url = #{autographUrl, jdbcType=VARCHAR},
+             </if>
+             <if test="serviceId != null">
+                 service_id = #{serviceId, jdbcType=VARCHAR},
+             </if>
+             <if test="edit != null">
+                 edit = #{edit, jdbcType=BOOLEAN},
+             </if>
+             <if test="name != null">
+                 name = #{name, jdbcType=VARCHAR},
+             </if>
+             <if test="clientHeadImgUrl != null">
+                 client_head_img_url = #{clientHeadImgUrl, jdbcType=VARCHAR},
+             </if>
+             <if test="clientNickname != null">
+                 client_nickname = #{clientNickname, jdbcType=VARCHAR},
+             </if>
          </set>
           WHERE id = #{id}
     </update>
@@ -322,10 +358,45 @@
                s.description        AS s_description,
                s.time               AS s_time,
                s.unit_price         AS s_unit_price,
-               s.type               AS s_type
+               s.type               AS s_type,
+               s.sort               AS s_sort
           FROM agreement a
      LEFT JOIN service s
             ON s.master_id = a.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+    <select id="findByParams" resultMap="agreement">
+        SELECT *
+          FROM agreement
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.groups != null and params.groups.size > 0">
+                GROUP BY
+                <foreach collection="params.groups" item="group" separator=",">
+                    ${group.property}
+                </foreach>
+            </if>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+    <select id="countByParams" resultType="java.lang.Long">
+        SELECT COUNT(*)
+          FROM agreement
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
         </if>

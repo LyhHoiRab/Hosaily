@@ -12,7 +12,6 @@
     <setting name="aggressiveLazyLoading"     value="false"/>
     <setting name="multipleResultSetsEnabled" value="true"/>
     <setting name="useColumnLabel"            value="true"/>
-    <setting name="useGeneratedKeys"          value="true"/>
     <setting name="defaultStatementTimeout"   value="25000"/>
   </settings>
 
@@ -32,5 +31,6 @@
     <typeAlias type="com.lab.hosaily.core.client.utils.AlipayStatusHandler"                 alias="alipayStatusHandler"/>
     <typeAlias type="com.lab.hosaily.core.product.utils.ServiceTypeHandler"                 alias="serviceTypeHandler"/>
     <typeAlias type="com.lab.hosaily.core.client.utils.AppointmentStateHandler"             alias="appointmentStateHandler"/>
+    <typeAlias type="com.lab.hosaily.core.client.utils.AgreementStateHandler"               alias="agreementStateHandler"/>
   </typeAliases>
 </configuration>

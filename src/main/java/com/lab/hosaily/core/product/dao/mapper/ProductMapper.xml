@@ -22,6 +22,7 @@
         <result column="time"           property="time"         javaType="java.lang.Integer"/>
         <result column="unit_price"     property="unitPrice"    javaType="java.lang.Double"/>
         <result column="type"           property="type"         typeHandler="serviceTypeHandler"/>
+        <result column="sort"           property="sort"         javaType="java.lang.Integer"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -222,7 +223,8 @@
                s.description  AS s_description,
                s.time         AS s_time,
                s.unit_price   AS s_unit_price,
-               s.type         AS s_type
+               s.type         AS s_type,
+               s.sort         AS s_sort
           FROM product p
      LEFT JOIN service s
             ON s.master_id = p.id
@@ -239,7 +241,8 @@
                s.description  AS s_description,
                s.time         AS s_time,
                s.unit_price   AS s_unit_price,
-               s.type         AS s_type
+               s.type         AS s_type,
+               s.sort         AS s_sort
           FROM product p
      LEFT JOIN service s
             ON s.master_id = p.id

@@ -1,6 +1,12 @@
 package com.lab.hosaily.core.client.service;
 
+import com.lab.hosaily.core.client.consts.AgreementState;
 import com.lab.hosaily.core.client.entity.Agreement;
+import com.rab.babylon.commons.security.response.Page;
+import com.rab.babylon.commons.security.response.PageRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
+import java.util.List;
 
 public interface AgreementService{
 
@@ -28,4 +34,16 @@ public interface AgreementService{
      * 协议确认
      */
     void affirm(String id);
+
+    Page<Agreement> page(PageRequest pageRequest, String accountId, String serviceId, AgreementState state);
+
+    String create(String serviceId, String productId);
+
+    void fill(String id, String client, String phone, String address, String idCard, String wechat, String email, String emergencyContact, String accountId);
+
+    void sign(String id, CommonsMultipartFile file);
+
+    void backToEdit(String id);
+
+    void share(String id, String accountId);
 }

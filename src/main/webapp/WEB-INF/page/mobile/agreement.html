@@ -116,60 +116,60 @@
             <div class="proMsg">
                 <div class="ub">
                     <div>甲方（客户）：</div>
-                    <div class="ub-f1"><input type="text" id="client"></div>
+                    <div class="ub-f1"><input type="text" id="client" readonly></div>
                 </div>
                 <div class="ub">
                     <div>身份证号码：</div>
-                    <div class="ub-f1"><input type="text" id="idCard"></div>
+                    <div class="ub-f1"><input type="text" id="idCard" readonly></div>
                 </div>
                 <div class="ub">
                     <div>地址：</div>
-                    <div class="ub-f1"><input type="text" id="address"></div>
+                    <div class="ub-f1"><input type="text" id="address" readonly></div>
                 </div>
                 <div class="ub">
                     <div>联系电话：</div>
-                    <div class="ub-f1"><input type="text" id="phone"></div>
+                    <div class="ub-f1"><input type="text" id="phone" readonly></div>
                 </div>
                 <div class="ub">
                     <div>微信：</div>
-                    <div class="ub-f1"><input type="text" id="wechat"></div>
+                    <div class="ub-f1"><input type="text" id="wechat" readonly></div>
                 </div>
                 <div class="ub">
                     <div>邮箱：</div>
-                    <div class="ub-f1"><input type="text" id="email"></div>
+                    <div class="ub-f1"><input type="text" id="email" readonly></div>
                 </div>
                 <div class="ub">
                     <div>紧急联系人：</div>
-                    <div class="ub-f1"><input type="text" id="emergencyContact"></div>
+                    <div class="ub-f1"><input type="text" id="emergencyContact" readonly></div>
                 </div>
                 <div class="line"></div>
                 <div class="ub">
                     <div>乙方：</div>
-                    <div class="ub-f1"><input type="text" id="company"></div>
+                    <div class="ub-f1"><input type="text" id="company" readonly></div>
                 </div>
                 <div class="ub">
                     <div>营业执照注册号：</div>
-                    <div class="ub-f1"><input type="text" id="licenseNumber"></div>
+                    <div class="ub-f1"><input type="text" id="licenseNumber" readonly></div>
                 </div>
                 <div class="ub">
                     <div>法定代表人：</div>
-                    <div class="ub-f1"><input type="text" id="legalPerson"></div>
+                    <div class="ub-f1"><input type="text" id="legalPerson" readonly></div>
                 </div>
                 <div class="ub">
                     <div>地址：</div>
-                    <div class="ub-f1"><input type="text" id="companyAddress"></div>
+                    <div class="ub-f1"><input type="text" id="companyAddress" readonly></div>
                 </div>
                 <div class="ub">
                     <div>联系电话：</div>
-                    <div class="ub-f1"><input type="text" id="companyPhone"></div>
+                    <div class="ub-f1"><input type="text" id="companyPhone" readonly></div>
                 </div>
                 <div class="ub">
                     <div>邮箱：</div>
-                    <div class="ub-f1"><input type="text" id="companyEmail"></div>
+                    <div class="ub-f1"><input type="text" id="companyEmail" readonly></div>
                 </div>
                 <div class="ub">
                     <div> 网址：</div>
-                    <div class="ub-f1"><input type="text" id="companyWebsite"></div>
+                    <div class="ub-f1"><input type="text" id="companyWebsite" readonly></div>
                 </div>
 
                 <div class="gsz"><img src="http://h.ishsls.com/yhqs_h5/purchase/imgg/gzfuben.png.png" width="159" height="159"/></div>
@@ -362,13 +362,13 @@
                 10.2 本协议经甲方确认后即时生效。符合本协议3.1款约定的生效条件的，以该款约定为准。
             </p>
 
-            <div class="signName">
-                <label>甲方：</label><label>乙方：</label>
+            <div class="signName" style="position:relative">
+                <label>甲方：</label><label>乙方：</label><img id="autographUrl" style="position:absolute;width:111px;height:150px;">
             </div>
             <div class="signName">
                 <label id="sign">代表签字：</label><label>代表签字：</label>
             </div>
-            <div class="signName">
+            <div class="signName" style="padding-bottom:50px;">
                 <label id="affirmTime"></label><label id="createTime"></label>
                 <div class="gsz"><img src="http://h.ishsls.com/yhqs_h5/purchase/imgg/gzfuben.png.png" width="159" height="159"/></div>
             </div>
@@ -388,47 +388,51 @@
         if(r!=null)return  unescape(r[2]); return null;
     }
 
-    function paid(purchaseId){
-        var price = 0;
-
-        $.ajax({
-            url: '/api/1.0/payment/price/' + purchaseId,
-            type: 'GET',
-            dataType: 'json',
-            async: false,
-            success: function(res){
-                if(res.success){
-                    price = res.result;
-                }else{
-                    alert(res.msg);
-                }
-            },
-            error: function(response){
-                console.error(response);
-            }
-        });
-
-        return price;
-    };
+    // function paid(purchaseId){
+    //     var price = 0;
+    //
+    //     $.ajax({
+    //         url: '/api/1.0/payment/price/' + purchaseId,
+    //         type: 'GET',
+    //         dataType: 'json',
+    //         async: false,
+    //         success: function(res){
+    //             if(res.success){
+    //                 price = res.result;
+    //             }else{
+    //                 alert(res.msg);
+    //             }
+    //         },
+    //         error: function(response){
+    //             console.error(response);
+    //         }
+    //     });
+    //
+    //     return price;
+    // };
 
     $(function(){
-        var purchaseId = getQueryString('purchaseId');
+        // var purchaseId = getQueryString('purchaseId');
+        var id = getQueryString('id');
 
-        if(purchaseId !== undefined && purchaseId !== ''){
+        if(id !== undefined && id !== ''){
             $.ajax({
-                url: '/api/1.0/agreement/purchaseId/' + purchaseId,
+                url: '/api/1.0/agreement/' + id,
                 type: 'GET',
                 dataType: 'json',
                 success: function(res){
                     if(res.success){
-                        var price = paid(purchaseId);
+                        // var price = paid(purchaseId);
 
-                        if(res.result.retail >= 5800){
-                            $('#nameType').html('基础婚姻咨询套餐');
-                        }else{
-                            $('#nameType').html('基础恋爱咨询套餐');
+                        // if(res.result.retail >= 5800){
+                        //     $('#nameType').html('基础婚姻咨询套餐');
+                        // }else{
+                        //     $('#nameType').html('基础恋爱咨询套餐');
+                        // }
+
+                        if(res.result.name){
+                            $('#nameType').html(res.result.name);
                         }
-
                         if(res.result.client !== undefined){
                             $('#client').val(res.result.client);
                             $('#sign').append(res.result.client);
@@ -481,6 +485,11 @@
                             $('#affirmTime').text('日期:' + moment(res.result.affirmTime).format('YYYY年MM月DD日'));
                         }else{
                             $('#affirmTime').text('日期: 年 月 日');
+                        }
+                        if(res.result.autographUrl !== undefined && res.result.autographUrl !== '' && res.result.autographUrl !== null){
+                            $('#autographUrl').attr('src', res.result.autographUrl);
+                        }else{
+                            $('#autographUrl').hide();
                         }
 
                         if(res.result.services !== undefined && res.result.services.length > 0){
@@ -540,9 +549,7 @@
                                  + '<td colspan="2">'
                                  + '您实际应缴纳的金额：'
                                  + res.result.price
-                                 + '  您已支付的金额：' + price + '元'
-                                 + '</td>'
-                                 + '</tr>';
+                                 + '元';
 
                             $('#service').append(html);
                         }

@@ -2,6 +2,7 @@ package com.lab.hosaily.core.handler.controller;
 
 import com.lab.hosaily.core.client.consts.AppointmentState;
 import com.lab.hosaily.core.client.consts.PurchaseState;
+import com.lab.hosaily.core.client.entity.Agreement;
 import com.lab.hosaily.core.course.consts.MediaType;
 import com.lab.hosaily.core.handler.utils.handler.*;
 import com.rab.babylon.core.consts.entity.Sex;
@@ -47,5 +48,10 @@ public class PropertyController{
     @InitBinder
     public void initAppointmentStateBinder(WebDataBinder binder){
         binder.registerCustomEditor(AppointmentState.class, new AppointmentStateEditor());
+    }
+
+    @InitBinder
+    public void initAgreementStateBinder(WebDataBinder binder){
+        binder.registerCustomEditor(Agreement.class, new AgreementStateEditor());
     }
 }

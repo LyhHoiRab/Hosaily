@@ -1,36 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lab.hosaily.core.account.dao.mapper.UserMapper">
-    <resultMap id="user" type="com.rab.babylon.core.account.entity.User">
-        <id     column="id"           property="id"         javaType="java.lang.String"/>
-        <result column="account_id"   property="accountId"  javaType="java.lang.String"/>
-        <result column="advisor_id"   property="advisorId"  javaType="java.lang.String"/>
-        <result column="wechat"       property="wechat"     javaType="java.lang.String"/>
-        <result column="nickname"     property="nickname"   javaType="java.lang.String"/>
-        <result column="name"         property="name"       javaType="java.lang.String"/>
-        <result column="id_card"      property="idCard"     javaType="java.lang.String"/>
-        <result column="code"         property="code"       javaType="java.lang.Integer"/>
-        <result column="sex"          property="sex"        typeHandler="sexHandler"/>
-        <result column="birthday"     property="birthday"   javaType="java.util.Date"/>
-        <result column="phone"        property="phone"      javaType="java.lang.String"/>
-        <result column="position"     property="position"   javaType="java.lang.String"/>
-        <result column="head_img_url" property="headImgUrl" javaType="java.lang.String"/>
-        <result column="state"        property="state"      typeHandler="usingStateHandler"/>
-        <result column="is_delete"    property="isDelete"   javaType="java.lang.Boolean"/>
-        <result column="create_time"  property="createTime" javaType="java.util.Date"/>
-        <result column="update_time"  property="updateTime" javaType="java.util.Date"/>
-        <result column="delete_time"  property="deleteTime" javaType="java.util.Date"/>
-        <result column="has_role"     property="hasRole"    javaType="java.lang.Boolean"/>
-        <result column="role"         property="role"       javaType="java.lang.Integer"/>
-        <collection property="expands" resultMap="userExpand" columnPrefix="e_"/>
+<mapper namespace="com.lab.hosaily.core.client.dao.mapper.ContractMapper">
+    <resultMap id="contract" type="com.lab.hosaily.core.client.entity.Contract">
+        <id     column="id"              property="id"             javaType="java.lang.String"/>
+        <result column="version"         property="version"        javaType="java.lang.Integer"/>
+        <result column="create_time"     property="createTime"     javaType="java.util.Date"/>
+        <result column="update_time"     property="updateTime"     javaType="java.util.Date"/>
+        <collection property="regulations" resultMap="regulation" columnPrefix="r_"/>
     </resultMap>
 
-    <resultMap id="userExpand" type="com.rab.babylon.core.account.entity.UserExpand">
-        <id     column="id"           property="id"         javaType="java.lang.String"/>
-        <result column="user_id"      property="userId"     javaType="java.lang.String"/>
-        <result column="name"         property="name"       javaType="java.lang.String"/>
-        <result column="value"        property="value"      javaType="java.lang.String"/>
+    <resultMap id="regulation" type="com.lab.hosaily.core.client.entity.Regulation">
+        <id     column="id"              property="id"             javaType="java.lang.String"/>
+        <result column="parent_id"       property="parentId"       javaType="java.lang.String"/>
+        <result column="contract_id"     property="contractId"     javaType="java.lang.String"/>
+        <result column="title"           property="title"          javaType="java.lang.String"/>
+        <result column="content"         property="content"        javaType="java.lang.String"/>
+        <result column="level_up"        property="levelUp"        javaType="java.lang.Integer"/>
+        <result column="sort"            property="sort"           javaType="java.lang.Integer"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -179,144 +167,53 @@
 
     <insert id="save">
         INSERT
-          INTO user (
-              id,
-              account_id,
-              nickname,
-              name,
-              id_card,
-              sex,
-              birthday,
-              head_img_url,
-              phone,
-              position,
-              state,
-              is_delete,
-              create_time,
-              has_role,
-              advisor_id,
-              wechat
+          INTO contract (
+               id,
+               create_time
           ) VALUE (
-              #{id,         jdbcType=VARCHAR},
-              #{accountId,  jdbcType=VARCHAR},
-              #{nickname,   jdbcType=VARCHAR},
-              #{name,       jdbcType=VARCHAR},
-              #{idCard,     jdbcType=VARCHAR},
-              #{sex,        typeHandler=sexHandler},
-              #{birthday,   jdbcType=TIMESTAMP},
-              #{headImgUrl, jdbcType=VARCHAR},
-              #{phone,      jdbcType=VARCHAR},
-              #{position,   jdbcType=VARCHAR},
-              #{state,      typeHandler=usingStateHandler},
-              #{isDelete,   jdbcType=BOOLEAN},
-              #{createTime, jdbcType=TIMESTAMP},
-              #{hasRole,    jdbcType=BOOLEAN},
-              #{advisorId,  jdbcType=VARCHAR},
-              #{wechat,     jdbcType=VARCHAR}
+               #{id,              jdbcType=VARCHAR},
+               #{createTime,      jdbcType=TIMESTAMP}
           )
     </insert>
 
-    <update id="update">
-        UPDATE user
-         <set>
-             <if test="nickname != null and nickname != ''">
-                 nickname = #{nickname, jdbcType=VARCHAR},
-             </if>
-             <if test="name != null and name">
-                 name = #{name, jdbcType=VARCHAR},
-             </if>
-             <if test="idCard != null">
-                 id_card = #{idCard, jdbcType=VARCHAR},
-             </if>
-             <if test="sex != null">
-                 sex = #{sex, typeHandler=sexHandler},
-             </if>
-             <if test="birthday != null">
-                 birthday = #{birthday, jdbcType=TIMESTAMP},
-             </if>
-             <if test="state != null">
-                 state = #{state, typeHandler=usingStateHandler},
-             </if>
-             <if test="headImgUrl != null and headImgUrl != ''">
-                 head_img_url = #{headImgUrl, jdbcType=VARCHAR},
-             </if>
-             <if test="isDelete != null">
-                 is_delete = #{isDelete, jdbcType=BOOLEAN},
-             </if>
-             <if test="updateTime != null">
-                 update_time = #{updateTime, jdbcType=TIMESTAMP},
-             </if>
-             <if test="deleteTime != null">
-                 delete_time = #{deleteTime, jdbcType=TIMESTAMP},
-             </if>
-             <if test="phone != null and phone != ''">
-                 phone = #{phone, jdbcType=VARCHAR},
-             </if>
-             <if test="position != null and position != ''">
-                 position = #{position, jdbcType=VARCHAR},
-             </if>
-             <if test="hasRole != null">
-                 has_role = #{hasRole, jdbcType=BOOLEAN},
-             </if>
-             <if test="advisorId != null and advisorId != ''">
-                 advisor_id = #{advisorId, jdbcType=VARCHAR},
-             </if>
-             <if test="wechat != null">
-                 wechat = #{wechat, jdbcType=VARCHAR},
-             </if>
-         </set>
-          WHERE id = #{id}
-    </update>
-
-    <select id="getByParams" resultMap="user">
-        SELECT u.*,
-               e.id          AS e_id,
-               e.user_id     AS e_user_id,
-               e.name        AS e_name,
-               e.value       AS e_value,
-               e.description AS e_description
-          FROM account a
-     LEFT JOIN user u
-            ON u.account_id = a.id
-     LEFT JOIN user_expand e
-            ON e.user_id = u.id
-     LEFT JOIN wechat_account wa
-            ON (wa.open_id = a.wechat OR wa.union_id = a.wechat)
-     LEFT JOIN xcx_account xcx
-            ON (xcx.open_id = a.wechat OR xcx.union_id = a.wechat)
-     LEFT JOIN application ap
-            ON (ap.app_id = wa.app_id OR ap.app_id = xcx.app_id)
-     LEFT JOIN organization o
-            ON o.id = ap.organization_id
+    <select id="getByParams" resultMap="contract">
+        SELECT c.*,
+               r.id          AS r_id,
+               r.parent_id   AS r_parent_id,
+               r.contract_id AS r_contract_id,
+               r.title       AS r_title,
+               r.content     AS r_content,
+               r.level_up    AS r_level_up,
+               r.sort        AS r_sort
+          FROM contract c
+     LEFT JOIN regulation r
+            ON r.contract_id = c.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
         </if>
     </select>
 
-    <select id="findIdByParams" resultType="java.lang.String">
-        SELECT u.id
-          FROM account a
-     LEFT JOIN user u
-            ON u.account_id = a.id
-     LEFT JOIN user_expand e
-            ON e.user_id = u.id
-     LEFT JOIN wechat_account wa
-            ON (wa.open_id = a.wechat OR wa.union_id = a.wechat)
-     LEFT JOIN xcx_account xcx
-            ON (xcx.open_id = a.wechat OR xcx.union_id = a.wechat)
-     LEFT JOIN application ap
-            ON (ap.app_id = wa.app_id OR ap.app_id = xcx.app_id)
-     LEFT JOIN organization o
-            ON o.id = ap.organization_id
+    <select id="findByParams" resultMap="contract">
+        SELECT c.*,
+               r.id          AS r_id,
+               r.parent_id   AS r_parent_id,
+               r.contract_id AS r_contract_id,
+               r.title       AS r_title,
+               r.content     AS r_content,
+               r.level_up    AS r_level_up,
+               r.sort        AS r_sort
+          FROM contract c
+     LEFT JOIN regulation r
+            ON r.contract_id = c.id
         <if test="params != null">
             <include refid="WHERE_COLUMN"/>
-
-            <if test="params.groups != null and params.groups.size > 0">
-                GROUP BY
-                <foreach collection="params.groups" item="group" separator=",">
-                    ${group.property}
-                </foreach>
-            </if>
 
             <if test="params.sorts != null and params.sorts.size > 0">
                 ORDER BY
@@ -331,65 +228,11 @@
         </if>
     </select>
 
-    <select id="findByParams" resultMap="user">
-        SELECT u.*,
-               e.id          AS e_id,
-               e.user_id     AS e_user_id,
-               e.name        AS e_name,
-               e.value       AS e_value,
-               e.description AS e_description
-          FROM account a
-     LEFT JOIN user u
-            ON u.account_id = a.id
-     LEFT JOIN user_expand e
-            ON e.user_id = u.id
-     LEFT JOIN wechat_account wa
-            ON (wa.open_id = a.wechat OR wa.union_id = a.wechat)
-     LEFT JOIN xcx_account xcx
-            ON (xcx.open_id = a.wechat OR xcx.union_id = a.wechat)
-     LEFT JOIN application ap
-            ON (ap.app_id = wa.app_id OR ap.app_id = xcx.app_id)
-     LEFT JOIN organization o
-            ON o.id = ap.organization_id
-        <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
-
-            <if test="params.sorts != null and params.sorts.size > 0">
-                ORDER BY
-                <foreach collection="params.sorts" item="sort" separator=",">
-                    ${sort.property} ${sort.operator}
-                </foreach>
-            </if>
-        </if>
-    </select>
-
     <select id="countByParams" resultType="java.lang.Long">
         SELECT COUNT(*)
-          FROM (
-                    SELECT u.id
-                      FROM account a
-                 LEFT JOIN user u
-                        ON u.account_id = a.id
-                 LEFT JOIN user_expand e
-                        ON e.user_id = u.id
-                 LEFT JOIN wechat_account wa
-                        ON (wa.open_id = a.wechat OR wa.union_id = a.wechat)
-                 LEFT JOIN xcx_account xcx
-                        ON (xcx.open_id = a.wechat OR xcx.union_id = a.wechat)
-                 LEFT JOIN application ap
-                        ON (ap.app_id = wa.app_id OR ap.app_id = xcx.app_id)
-                 LEFT JOIN organization o
-                        ON o.id = ap.organization_id
-                    <if test="params != null">
-                        <include refid="WHERE_COLUMN"/>
-
-                        <if test="params.groups != null and params.groups.size > 0">
-                            GROUP BY
-                            <foreach collection="params.groups" item="group" separator=",">
-                                ${group.property}
-                            </foreach>
-                        </if>
-                    </if>
-        ) AS user
+          FROM contract
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
     </select>
 </mapper>

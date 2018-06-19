@@ -308,10 +308,25 @@ public class PageController{
     /**
      * 协议
      */
+//    @RequestMapping(value = "/agreement", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+//    public ModelAndView agreement(String purchaseId, ModelMap content){
+//        try{
+//            content.put("purchaseId", purchaseId);
+//
+//            return new ModelAndView("agreement", content);
+//        }catch(Exception e){
+//            logger.error(e.getMessage(), e);
+//            throw new ApplicationException(e.getMessage(), e);
+//        }
+//    }
+
+    /**
+     * 协议
+     */
     @RequestMapping(value = "/agreement", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView agreement(String purchaseId, ModelMap content){
+    public ModelAndView agreement(String id, ModelMap content){
         try{
-            content.put("purchaseId", purchaseId);
+            content.put("id", id);
 
             return new ModelAndView("agreement", content);
         }catch(Exception e){

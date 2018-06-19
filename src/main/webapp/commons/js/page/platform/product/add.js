@@ -22,7 +22,8 @@ app.controller('productAddController', function($scope, $http, $state, $statePar
             description : '',
             time        : 0,
             unitPrice   : 0,
-            type        : ''
+            type        : '',
+            sort        : 0
         };
 
         $scope.product.services.push(service);

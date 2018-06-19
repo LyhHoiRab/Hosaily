@@ -26,6 +26,8 @@ public class Service implements Create, Update{
     private Date updateTime;
     //服务类型
     private ServiceType type;
+    //排序
+    private Integer sort;
 
     public Service(){
 
@@ -85,6 +87,14 @@ public class Service implements Create, Update{
 
     public void setType(ServiceType type) {
         this.type = type;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 
     @Override

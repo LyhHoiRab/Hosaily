@@ -5,6 +5,8 @@ import com.rab.babylon.commons.security.mybatis.Criteria;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface AgreementMapper{
 
@@ -22,4 +24,8 @@ public interface AgreementMapper{
      * 查询
      */
     Agreement getByParams(@Param("params") Criteria criteria);
+
+    List<Agreement> findByParams(@Param("params") Criteria criteria);
+
+    Long countByParams(@Param("params") Criteria criteria);
 }

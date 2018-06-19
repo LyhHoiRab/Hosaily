@@ -26,6 +26,8 @@ public class UpyunUtils{
     public final static String USER_HEAD_DIR = "/user/head/";
     //导师头像目录
     public final static String ADVISOR_HEAD_DIR = "/advisor/head/";
+    //协议签名目录
+    public final static String AGREEMENT_SIGN = "/agreement/sign/";
 
     //导师头像目录
     public final static String EMOTION_TEST_DIR = "/emotion/test/";

@@ -55,7 +55,7 @@ public class ExcelUtils{
 
             for(int j = 0; j < titles.size(); j++){
                 //反射GET方法
-                Method getter = clazz.getMethod("get" + NameUtils.upperCaseToFirst(map.get(titles.get(j))));
+                Method getter = clazz.getMethod("get" + map.get(titles.get(j)));
                 getter.setAccessible(true);
                 Object value = getter.invoke(entry, (Object[]) null);
                 //赋值
