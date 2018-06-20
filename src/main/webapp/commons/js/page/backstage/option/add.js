@@ -1,8 +1,34 @@
-app.controller('optionAddController', function($scope, $state, $http, $stateParams){
+app.controller('optionAddController', function($scope, $state, FileUploader, $http, $stateParams){
     $scope.options        = ["A","B","C","D","E"];
     $scope.projects = [];
     $scope.questions = [];
     $scope.organizations = [];
+
+    var uploader = $scope.uploader = new FileUploader({
+        url: '/api/1.0/option/upload',
+        queueLimit: 1,
+        method: 'POST',
+        removeAfterUpload: true
+    });
+
+    uploader.filters.push({
+        name: 'imageFilter',
+        fn: function(item){
+            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+            return 'jpg|jpeg|png|bmp|gif|'.indexOf(type) !== -1;
+        }
+    });
+
+    uploader.onSuccessItem = function(item, response, status, headers){
+        $scope.option.imgUrl = response.result;
+    };
+
+    $scope.editor = {
+        allowedContent: true,
+        entitles: false,
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
+    };
+
     $scope.option = {
         id   : '',
         title        : '',
@@ -10,6 +36,7 @@ app.controller('optionAddController', function($scope, $state, $http, $statePara
         question : {},
         nestQuestion : {},
         questionOption : '',
+        imgUrl     : '/commons/img/level_default.jpg',
         organizationId : ''
     };
     

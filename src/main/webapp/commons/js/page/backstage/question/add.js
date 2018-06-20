@@ -1,8 +1,33 @@
-app.controller('questionAddController', function($scope, $state, $http, $stateParams){
+app.controller('questionAddController', function($scope, $state, FileUploader, $http, $stateParams){
     // $scope.userTypes        = ["情感分析师","情感导师"];
     $scope.isResults        = ["N","Y"];
     $scope.projects = [];
     $scope.organizations = [];
+
+    var uploader = $scope.uploader = new FileUploader({
+        url: '/api/1.0/question/upload',
+        queueLimit: 1,
+        method: 'POST',
+        removeAfterUpload: true
+    });
+
+    uploader.filters.push({
+        name: 'imageFilter',
+        fn: function(item){
+            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+            return 'jpg|jpeg|png|bmp|gif|'.indexOf(type) !== -1;
+        }
+    });
+
+    uploader.onSuccessItem = function(item, response, status, headers){
+        $scope.question.imgUrl = response.result;
+    };
+
+    $scope.editor = {
+        allowedContent: true,
+        entitles: false,
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
+    };
 
     $scope.question = {
         id   : '',
@@ -10,6 +35,7 @@ app.controller('questionAddController', function($scope, $state, $http, $statePa
         project : {},
         num : '',
         isResult : 'N',
+        imgUrl     : '/commons/img/level_default.jpg',
         organizationId : ''
     };
 

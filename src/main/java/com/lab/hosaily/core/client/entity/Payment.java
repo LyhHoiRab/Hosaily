@@ -31,8 +31,18 @@ public class Payment implements Create, Update{
     //更新时间
     private Date updateTime;
 
+    private String msg;
+
     public Payment(){
 
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public String getId() {

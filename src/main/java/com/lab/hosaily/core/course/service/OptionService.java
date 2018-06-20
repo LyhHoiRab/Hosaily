@@ -3,6 +3,7 @@ package com.lab.hosaily.core.course.service;
 import com.lab.hosaily.core.course.entity.Option;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.List;
 
@@ -38,5 +39,10 @@ public interface OptionService {
      * 查询列表
      */
     List<Option> list(String questionId);
+
+    /**
+     * 上传图片
+     */
+    String upload(CommonsMultipartFile file);
 
 }

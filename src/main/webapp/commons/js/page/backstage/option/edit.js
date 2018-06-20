@@ -1,9 +1,36 @@
-app.controller('optionEditController', function($scope, $state, $stateParams, $http){
+app.controller('optionEditController', function($scope, $state, FileUploader, $stateParams, $http){
     $scope.options        = ["A","B","C","D","E"];
     $scope.id = $stateParams.id;
     $scope.organizations = [];
     $scope.projects = [];
     $scope.questions = [];
+
+    var uploader = $scope.uploader = new FileUploader({
+        url: '/api/1.0/option/upload',
+        queueLimit: 1,
+        method: 'POST',
+        removeAfterUpload: true
+    });
+
+    uploader.filters.push({
+        name: 'imageFilter',
+        fn: function(item){
+            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+            return 'jpg|jpeg|png|bmp|gif|'.indexOf(type) !== -1;
+        }
+    });
+
+    uploader.onSuccessItem = function(item, response, status, headers){
+        $scope.option.imgUrl = response.result;
+
+    };
+
+    $scope.editor = {
+        allowedContent: true,
+        entitles: false,
+        customConfig: '/commons/js/plugin/ckeditor/config.js'
+    };
+
     $scope.option = {
         id   : $stateParams.id,
         title        : '',

@@ -12,6 +12,7 @@
         <result column="create_time" property="createTime"  javaType="java.util.Date"/>
         <result column="update_time" property="updateTime"  javaType="java.util.Date"/>
         <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
+        <result column="img_url"        property="imgUrl"        javaType="java.lang.String"/>
         <association property="project" resultMap="project" columnPrefix="p_"/>
         <association property="question" resultMap="question" columnPrefix="q_"/>
         <association property="nestQuestion" resultMap="nestQuestion" columnPrefix="n_"/>
@@ -187,6 +188,7 @@
               nest_question_id,
               question_option,
               create_time,
+              img_url,
               organization_id
           ) VALUE (
               #{id,        jdbcType=VARCHAR},
@@ -196,6 +198,7 @@
               #{nestQuestion.id,        jdbcType=VARCHAR},
               #{questionOption,        jdbcType=VARCHAR},
               #{createTime,  jdbcType=TIMESTAMP},
+              #{imgUrl,        jdbcType=VARCHAR},
               #{organizationId,        jdbcType=VARCHAR}
           )
     </insert>
@@ -217,6 +220,9 @@
              </if>
              <if test="questionOption != null and questionOption != ''">
                  question_option = #{questionOption, jdbcType=VARCHAR},
+             </if>
+             <if test="imgUrl != null and imgUrl != ''">
+                 img_url = #{imgUrl, jdbcType=VARCHAR},
              </if>
              <if test="organizationId != null and organizationId != ''">
                  organization_id = #{organizationId, jdbcType=VARCHAR},

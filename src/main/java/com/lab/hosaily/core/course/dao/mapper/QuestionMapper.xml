@@ -13,6 +13,7 @@
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
         <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
+        <result column="img_url"        property="imgUrl"        javaType="java.lang.String"/>
         <association property="project" resultMap="project" columnPrefix="p_"/>
         <!--<collection property="option" resultMap="option" columnPrefix="o_"/>-->
     </resultMap>
@@ -189,6 +190,7 @@
               num,
               is_result,
               create_time,
+              img_url,
               organization_id
           ) VALUE (
               #{id,        jdbcType=VARCHAR},
@@ -197,6 +199,7 @@
               #{num,        jdbcType=VARCHAR},
               #{isResult,        jdbcType=VARCHAR},
               #{createTime,  jdbcType=TIMESTAMP},
+              #{imgUrl,        jdbcType=VARCHAR},
               #{organizationId,        jdbcType=VARCHAR}
           )
     </insert>
@@ -215,6 +218,9 @@
             </if>
             <if test="isResult != null and isResult != ''">
                 is_result = #{isResult, jdbcType=VARCHAR},
+            </if>
+            <if test="imgUrl != null and imgUrl != ''">
+                img_url = #{imgUrl, jdbcType=VARCHAR},
             </if>
             <if test="organizationId != null and organizationId != ''">
                 organization_id = #{organizationId, jdbcType=VARCHAR},

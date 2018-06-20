@@ -395,44 +395,67 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
                     //微信商户支付记录
                     WechatMerchantPay pay = wechatMerchantPayDao.getByOutTradeNo(paymentId);
 
-                    //简单验证
-                    if (payment != null
-                            && pay != null
-                            && pay.getTotalFee() == response.getTotalFee()
-                            && pay.getAppId().equals(response.getAppId())
-                            && pay.getMchId().equals(response.getMchId())
-                            && pay.getOpenId().equals(response.getOpenId())) {
+//                    payment.setMsg("callback in; ");
+//                    paymentDao.saveOrUpdate(payment);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("callback in; ");
+                    try{
+                        //简单验证
+                        if (payment != null
+                                && pay != null
+                                && pay.getTotalFee() == response.getTotalFee()
+                                && pay.getAppId().equals(response.getAppId())
+                                && pay.getMchId().equals(response.getMchId())
+                                && pay.getOpenId().equals(response.getOpenId())) {
+                            sb.append("简单验证Success; ");
+                            //更新支付记录
+                            if (payment.getState().equals(PayState.UNCONFIRMED)) {
+                                payment.setState(PayState.PAID);
+                                payment.setAffirmTime(new Date());
+                                paymentDao.saveOrUpdate(payment);
+                                sb.append("更新支付记录Success; ");
+                            }else{
+//                                payment.setMsg(payment.getMsg() + "更新支付记录Fail; ");
+//                                paymentDao.saveOrUpdate(payment);
+                                sb.append("更新支付记录Fail; ");
+                            }
+                            //更新微信商户支付记录
+                            pay.setIsSuccess(true);
+                            wechatMerchantPayDao.saveOrUpdate(pay);
+                            sb.append("更新微信商户支付记录Success; ");
 
-                        //更新支付记录
-                        if (payment.getState().equals(PayState.UNCONFIRMED)) {
-                            payment.setState(PayState.PAID);
-                            payment.setAffirmTime(new Date());
-                            paymentDao.saveOrUpdate(payment);
-                        }
-                        //更新微信商户支付记录
-                        pay.setIsSuccess(true);
-                        wechatMerchantPayDao.saveOrUpdate(pay);
-
-                        //                        更新account_project状态
-                        String accountProjectMsg = pay.getMsg();
-                        String[] xcxAJArr = accountProjectMsg.split(":");
-                        String[] aJArr = xcxAJArr[1].split(";");
+                            //                        更新account_project状态
+                            String accountProjectMsg = pay.getMsg();
+                            String[] xcxAJArr = accountProjectMsg.split(":");
+                            String[] aJArr = xcxAJArr[1].split(";");
 //                        AccountProject accountProject = accountProjectDao.getByAccountIdAndProjectId(aJArr[0], aJArr[1]);
 //                        accountProject.setState(UsingState.NORMAL);
 //                        accountProjectDao.saveOrUpdate(accountProject);
 
 
-                        //            创建测试项目购买未激活记录
-                        AccountProject accountProject = new AccountProject();
-                        accountProject.setAccountId(aJArr[0]);
-                        accountProject.setProjectId(aJArr[1]);
-                        accountProject.setState(UsingState.NORMAL);
-                        accountProject.setStatus(ProjectStatus.PROJECT_UNDONE);
-                        accountProjectDao.saveOrUpdate(accountProject);
-
-                        params.put("return_code", "SUCCESS");
-                        params.put("return_msg", "OK");
+                            //            创建测试项目购买未激活记录
+                            AccountProject accountProject = new AccountProject();
+                            accountProject.setAccountId(aJArr[0]);
+                            accountProject.setProjectId(aJArr[1]);
+                            accountProject.setState(UsingState.NORMAL);
+                            accountProject.setStatus(ProjectStatus.PROJECT_UNDONE);
+                            accountProjectDao.saveOrUpdate(accountProject);
+                            sb.append("创建测试项目购买未激活记录Success; ");
+                            params.put("return_code", "SUCCESS");
+                            params.put("return_msg", "OK");
+                        }else{
+//                            payment.setMsg(payment.getMsg() + "简单验证Fail; ");
+//                            paymentDao.saveOrUpdate(payment);
+                            sb.append("简单验证Fail; ");
+                        }
+                    }catch(Exception e){
+                        logger.error(e.getMessage(), e);
+                        throw new ServiceException(e.getMessage(), e);
+                    }finally {
+                        payment.setMsg(sb.toString());
+                        paymentDao.saveOrUpdate(payment);
                     }
+
                 } else {
 
                     params.put("return_code", "FAIL");

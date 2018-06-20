@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -153,6 +154,20 @@ public class QuestionRestController {
             map.put("options", options);
             return new Response<Map<String, Object>>("查询成功", map);
         }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 上传图片
+     */
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<String> upload(@RequestParam("file") CommonsMultipartFile file) {
+        try {
+            String url = questionService.upload(file);
+            return new Response<String>("上传成功", url);
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);
         }

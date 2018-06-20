@@ -19,6 +19,32 @@
 <div class="table-info">
   <div class="container-fluid">
 
+
+    <div class="row-group">
+      <div class="img-group">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{{question.imgUrl}}" ng-model="question.imgUrl">
+          </div><!-- item -->
+
+          <div class="col-md-6">
+            <input type="file" nv-file-select uploader="uploader">
+            <div class="button-group">
+              <button type="button" class="btn" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                <i class="fa fa-upload"></i>
+                上传
+              </button>
+              <button type="button" class="btn" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                <i class="fa fa-trash-o"></i>
+                移除
+              </button>
+            </div><!-- button group -->
+          </div><!-- item -->
+        </div>
+      </div><!-- img group -->
+    </div><!-- item -->
+
+
     <div class="row-group">
       <div class="input-group">
         <span class="input-group-addon">题目内容</span>

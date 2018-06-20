@@ -16,6 +16,7 @@ public class Option implements Create, Update {
     private Question question;
     private Question nestQuestion;
     private String questionOption;
+    private String imgUrl;
 
     //创建时间
     private Date createTime;
@@ -23,6 +24,14 @@ public class Option implements Create, Update {
     private Date updateTime;
     //企业ID
     private String organizationId;
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
     public String getOrganizationId() {
         return organizationId;

@@ -4,6 +4,7 @@ import com.lab.hosaily.core.course.entity.Question;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.core.consts.entity.UsingState;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.List;
 
@@ -51,6 +52,11 @@ public interface QuestionService {
      * 根据ID查询记录
      */
     Question getNextQuestion(String projectId, String num, UsingState state, String organizationId, String questionId);
+
+    /**
+     * 上传图片
+     */
+    String upload(CommonsMultipartFile file);
 
 
 }

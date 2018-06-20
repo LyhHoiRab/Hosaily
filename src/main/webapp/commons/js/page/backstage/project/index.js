@@ -28,4 +28,6 @@ app.controller('projectController', function($scope, $http, $state){
 
     //初始化数据
     $scope.getOrganization();
+    $scope.toggle('ad748e6d57be453f920f2953ddf0bb70');
+
 });
