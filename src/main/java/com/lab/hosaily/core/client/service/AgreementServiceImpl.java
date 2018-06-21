@@ -64,9 +64,6 @@ public class AgreementServiceImpl implements AgreementService{
     @Autowired
     private ContractDao contractDao;
 
-    @Autowired
-    private RegulationDao regulationDao;
-
     /**
      * 保存
      */

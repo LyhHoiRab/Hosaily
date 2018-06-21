@@ -50,11 +50,14 @@ public class AppointmentRestController{
                 Appointment appointment = new Appointment();
                 appointment.setName(name);
                 appointment.setPhone(phone);
-                appointment.setSex(Sex.getById(sex));
                 appointment.setOrganizationId(organizationId);
                 appointment.setDescription(description);
                 appointment.setUrl(url);
                 appointment.setType(type);
+
+                if(sex != null){
+                    appointment.setSex(Sex.getById(sex));
+                }
                 appointmentService.save(appointment);
             }
 
