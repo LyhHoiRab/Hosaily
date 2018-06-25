@@ -208,7 +208,7 @@ public class AgreementServiceImpl implements AgreementService{
 
     @Override
     @Transactional(readOnly = false)
-    public String create(String serviceId, String productId){
+    public String create(String serviceId, String productId, Double price, Integer duration){
         try{
             Assert.hasText(serviceId, "销售ID不能为空");
             Assert.hasText(productId, "产品ID不能为空");
@@ -230,9 +230,9 @@ public class AgreementServiceImpl implements AgreementService{
             agreement.setCompanyEmail(organization.getCompanyEmail());
             agreement.setCompanyWebsite(organization.getCompanyWebsite());
             //设置服务
-            agreement.setPrice(product.getPrice());
+            agreement.setPrice(price == null || price < 0? product.getPrice() : price);
             agreement.setRetail(product.getPrice());
-            agreement.setDuration(product.getDuration());
+            agreement.setDuration(duration == null || duration < 0 ? product.getDuration() : duration);
             agreement.setName(product.getName());
             //保存协议
             agreementDao.saveOrUpdate(agreement);

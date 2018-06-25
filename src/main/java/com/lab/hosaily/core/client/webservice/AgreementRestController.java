@@ -112,9 +112,9 @@ public class AgreementRestController{
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<String> create(String serviceId, String productId){
+    public Response<String> create(String serviceId, String productId, Double price, Integer duration){
         try{
-            String id = agreementService.create(serviceId, productId);
+            String id = agreementService.create(serviceId, productId, price, duration);
 
             return new Response<String>("添加成功", id);
         }catch(Exception e){

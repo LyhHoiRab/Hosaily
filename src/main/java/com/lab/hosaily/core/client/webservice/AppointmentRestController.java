@@ -42,24 +42,37 @@ public class AppointmentRestController{
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response save(String name, String phone, Integer sex, String organizationId, String description, String url, String type, HttpServletResponse response){
+    public Response save(String name, String phone, Sex sex, String organizationId, String description, String url,
+                         String type, String wechat, HttpServletResponse response){
         try{
             response.setHeader("Access-Control-Allow-Origin", "*");
 
-            if(!appointmentService.exist(organizationId, null, null, null, phone, null, null, null, url, new Date())){
-                Appointment appointment = new Appointment();
-                appointment.setName(name);
-                appointment.setPhone(phone);
-                appointment.setOrganizationId(organizationId);
-                appointment.setDescription(description);
-                appointment.setUrl(url);
-                appointment.setType(type);
+//            if(!appointmentService.exist(organizationId, null, null, null, phone, null, null, null, url, new Date())){
+//                Appointment appointment = new Appointment();
+//                appointment.setName(name);
+//                appointment.setPhone(phone);
+//                appointment.setOrganizationId(organizationId);
+//                appointment.setDescription(description);
+//                appointment.setUrl(url);
+//                appointment.setType(type);
+//
+//                if(sex != null){
+//                    appointment.setSex(Sex.getById(sex));
+//                }
+//                appointmentService.save(appointment);
+//            }
 
-                if(sex != null){
-                    appointment.setSex(Sex.getById(sex));
-                }
-                appointmentService.save(appointment);
-            }
+            Appointment appointment = new Appointment();
+            appointment.setName(name);
+            appointment.setPhone(phone);
+            appointment.setOrganizationId(organizationId);
+            appointment.setDescription(description);
+            appointment.setUrl(url);
+            appointment.setType(type);
+            appointment.setWechat(wechat);
+            appointment.setSex(sex);
+
+            appointmentService.save(appointment);
 
             return new Response<Appointment>("保存成功", null);
         }catch(Exception e){

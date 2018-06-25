@@ -37,7 +37,7 @@ public interface AgreementService{
 
     Page<Agreement> page(PageRequest pageRequest, String accountId, String serviceId, AgreementState state);
 
-    String create(String serviceId, String productId);
+    String create(String serviceId, String productId, Double price, Integer duration);
 
     void fill(String id, String client, String phone, String address, String idCard, String wechat, String email, String emergencyContact, String accountId);
 

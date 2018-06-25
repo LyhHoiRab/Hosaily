@@ -26,12 +26,6 @@ public class AgreementServiceTest{
         String productId_3 = "e64c456c306c401b895f719f9b61b079";
         String productId_4 = "e926d101c23146c9ae7513747af481aa";
         String productId_5 = "fdd13cad703e4f938db5ecda01975757";
-
-        agreementService.create(serviceId, productId_1);
-        agreementService.create(serviceId, productId_2);
-        agreementService.create(serviceId, productId_3);
-        agreementService.create(serviceId, productId_4);
-        agreementService.create(serviceId, productId_5);
     }
 
     @Test
