@@ -5,6 +5,7 @@
     <resultMap id="payment" type="com.lab.hosaily.core.client.entity.Payment">
         <id     column="id"             property="id"           javaType="java.lang.String"/>
         <result column="purchase_id"    property="purchaseId"   javaType="java.lang.String"/>
+        <result column="msg"            property="msg"          javaType="java.lang.String"/>
         <result column="price"          property="price"        javaType="java.lang.Double"/>
         <result column="type"           property="type"         typeHandler="payTypeHandler"/>
         <result column="state"          property="state"        typeHandler="payStateHandler"/>
@@ -168,7 +169,8 @@
                state,
                pay_time,
                affirm_time,
-               create_time
+               create_time,
+               msg
         ) VALUE (
                #{id,          jdbcType=VARCHAR},
                #{purchaseId,  jdbcType=VARCHAR},
@@ -177,7 +179,8 @@
                #{state,       typeHandler=payStateHandler},
                #{payTime,     jdbcType=TIMESTAMP},
                #{affirmTime,  jdbcType=TIMESTAMP},
-               #{createTime,  jdbcType=TIMESTAMP}
+               #{createTime,  jdbcType=TIMESTAMP},
+               #{msg,  jdbcType=VARCHAR}
         )
     </insert>
 
@@ -201,6 +204,9 @@
              </if>
              <if test="updateTime != null">
                  update_time = #{updateTime, jdbcType=TIMESTAMP},
+             </if>
+             <if test="msg != null">
+                 msg = #{msg, jdbcType=VARCHAR},
              </if>
          </set>
           WHERE id = #{id}

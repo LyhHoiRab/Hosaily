@@ -211,6 +211,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
             payment.setPayTime(new Date());
             payment.setPrice(totalFee);
             payment.setType(PayType.WECHAT_MERCHANT);
+            payment.setMsg("情感测试; ");
             paymentDao.saveOrUpdate(payment);
 
             //查询微信账户
@@ -452,7 +453,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
                         logger.error(e.getMessage(), e);
                         throw new ServiceException(e.getMessage(), e);
                     }finally {
-                        payment.setMsg(sb.toString());
+                        payment.setMsg(payment.getMsg() + sb.toString());
                         paymentDao.saveOrUpdate(payment);
                     }
 
