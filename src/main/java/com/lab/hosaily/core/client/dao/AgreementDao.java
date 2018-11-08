@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
+import org.wah.doraemon.utils.DateUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -45,6 +46,21 @@ public class AgreementDao{
                 agreement.setUpdateTime(new Date());
                 mapper.update(agreement);
             }
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 状态回退
+     */
+    public void backToEdit(Agreement agreement){
+        try{
+            Assert.notNull(agreement, "合同信息不能为空");
+            Assert.hasText(agreement.getId(), "合同ID不能为空");
+
+            mapper.backToEdit(agreement);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
@@ -130,6 +146,35 @@ public class AgreementDao{
             Long total = mapper.countByParams(criteria);
 
             return new Page<Agreement>(list, pageRequest, total);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public List<Agreement> findInvalid(){
+        try{
+            Date now = DateUtils.lastTimeOfDate(new Date());
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("state", AgreementState.TAKE_EFFECT));
+            criteria.and(Restrictions.lt("deadline", now));
+
+            return mapper.findByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public void invalid(List<String> ids){
+        try{
+            Assert.notEmpty(ids, "失效的合同ID不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.in("id", ids));
+
+            mapper.updateState(AgreementState.NOT_EFFECT, criteria);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);

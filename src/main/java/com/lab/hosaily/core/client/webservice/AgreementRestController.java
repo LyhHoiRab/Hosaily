@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -176,5 +177,10 @@ public class AgreementRestController{
         String v = "<image class='bg' src='http://kuliao.b0.upaiyun.com/ellxy/ell_ht/%E5%90%88%E5%90%8C-%E5%90%AF%E5%8A%A8%E9%A1%B5.jpg'></image><button class='open' bindgetuserinfo=\"{{opentype?'login':''}}\" bindtap=\"{{opentype?'':'login'}}\" open-type='{{opentype}}'>立 即 开 启 </button>";
 
         return new Response<String>("查询成功", v);
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void effectiveCheck(){
+        agreementService.effectiveCheck();
     }
 }

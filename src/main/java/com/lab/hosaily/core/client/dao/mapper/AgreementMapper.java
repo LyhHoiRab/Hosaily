@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.client.dao.mapper;
 
+import com.lab.hosaily.core.client.consts.AgreementState;
 import com.lab.hosaily.core.client.entity.Agreement;
 import com.rab.babylon.commons.security.mybatis.Criteria;
 import org.apache.ibatis.annotations.Param;
@@ -21,6 +22,11 @@ public interface AgreementMapper{
     void update(Agreement agreement);
 
     /**
+     * 更新状态
+     */
+    void updateState(@Param("state") AgreementState state, @Param("params") Criteria criteria);
+
+    /**
      * 查询
      */
     Agreement getByParams(@Param("params") Criteria criteria);
@@ -28,4 +34,6 @@ public interface AgreementMapper{
     List<Agreement> findByParams(@Param("params") Criteria criteria);
 
     Long countByParams(@Param("params") Criteria criteria);
+
+    void backToEdit(Agreement agreement);
 }

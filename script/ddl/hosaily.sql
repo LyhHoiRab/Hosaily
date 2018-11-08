@@ -427,7 +427,7 @@ CREATE TABLE `product` (
   `organization_id` varchar(32) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   `price` double DEFAULT '0',
-  `duration` int(1) DEFAULT '0',
+  `duration` double(1) DEFAULT '0',
   `state` tinyint(1) NOT NULL,
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,

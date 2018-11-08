@@ -37,7 +37,9 @@ app.controller('advisorAddController', function($scope, $state, FileUploader, $h
         state          : '',
         sort           : '',
         headImgUrl     : '/commons/img/level_default.jpg',
-        organizationId : ''
+        organizationId : '',
+        honor          : '',
+        summary        : ''
     };
 
     $scope.reset = function(){
@@ -49,6 +51,8 @@ app.controller('advisorAddController', function($scope, $state, FileUploader, $h
         $scope.advisor.state          = '';
         $scope.advisor.sort           = '';
         $scope.advisor.organizationId = '';
+        $scope.advisor.honor          = '';
+        $scope.advisor.summary        = '';
     };
 
     $scope.submit = function(){

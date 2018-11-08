@@ -327,7 +327,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
                     //简单验证
                     if(payment != null
                             && pay != null
-                            && pay.getTotalFee() == response.getTotalFee()
+                            && pay.getTotalFee().equals(response.getTotalFee())
                             && pay.getAppId().equals(response.getAppId())
                             && pay.getMchId().equals(response.getMchId())
                             && pay.getOpenId().equals(response.getOpenId())){
@@ -404,7 +404,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
                         //简单验证
                         if (payment != null
                                 && pay != null
-                                && pay.getTotalFee() == response.getTotalFee()
+                                && pay.getTotalFee().equals(response.getTotalFee())
                                 && pay.getAppId().equals(response.getAppId())
                                 && pay.getMchId().equals(response.getMchId())
                                 && pay.getOpenId().equals(response.getOpenId())) {
@@ -602,7 +602,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
                     //简单验证
                     if (payment != null
                             && pay != null
-                            && pay.getTotalFee() == response.getTotalFee()
+                            && pay.getTotalFee().equals(response.getTotalFee())
                             && pay.getAppId().equals(response.getAppId())
                             && pay.getMchId().equals(response.getMchId())
                             && pay.getOpenId().equals(response.getOpenId())) {
@@ -764,7 +764,7 @@ public class WechatMerchantPayServiceImpl implements WechatMerchantPayService {
                     //简单验证
                     if (payment != null
                             && pay != null
-                            && pay.getTotalFee() == response.getTotalFee()
+                            && pay.getTotalFee().equals(response.getTotalFee())
                             && pay.getAppId().equals(response.getAppId())
                             && pay.getMchId().equals(response.getMchId())
                             && pay.getOpenId().equals(response.getOpenId())) {

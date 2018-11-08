@@ -6,7 +6,10 @@ import com.lab.hosaily.core.account.dao.UserDao;
 import com.lab.hosaily.core.client.consts.AgreementState;
 import com.lab.hosaily.core.client.consts.PayState;
 import com.lab.hosaily.core.client.consts.PurchaseState;
-import com.lab.hosaily.core.client.dao.*;
+import com.lab.hosaily.core.client.dao.AgreementDao;
+import com.lab.hosaily.core.client.dao.ContractDao;
+import com.lab.hosaily.core.client.dao.PaymentDao;
+import com.lab.hosaily.core.client.dao.PurchaseDao;
 import com.lab.hosaily.core.client.entity.Agreement;
 import com.lab.hosaily.core.client.entity.Contract;
 import com.lab.hosaily.core.client.entity.Purchase;
@@ -29,6 +32,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.wah.doraemon.utils.DateUtils;
+import org.wah.doraemon.utils.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,7 +73,7 @@ public class AgreementServiceImpl implements AgreementService{
      * 保存
      */
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public void save(Agreement agreement){
         try{
             Assert.notNull(agreement, "协议信息不能为空");
@@ -87,7 +92,7 @@ public class AgreementServiceImpl implements AgreementService{
      * 更新
      */
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public void update(Agreement agreement){
         try{
             Assert.notNull(agreement, "协议信息不能为空");
@@ -174,7 +179,7 @@ public class AgreementServiceImpl implements AgreementService{
      * 协议确认
      */
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public void affirm(String id){
         try{
             Assert.hasText(id, "协议ID不能为空");
@@ -207,7 +212,7 @@ public class AgreementServiceImpl implements AgreementService{
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public String create(String serviceId, String productId, Double price, Integer duration){
         try{
             Assert.hasText(serviceId, "销售ID不能为空");
@@ -247,7 +252,7 @@ public class AgreementServiceImpl implements AgreementService{
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public void fill(String id, String client, String phone, String address, String idCard, String wechat, String email, String emergencyContact, String accountId){
         try{
             Assert.hasText(accountId, "客户ID不能为空");
@@ -278,7 +283,7 @@ public class AgreementServiceImpl implements AgreementService{
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public void sign(String id, CommonsMultipartFile file){
         try{
             Assert.hasText(id, "协议ID不能为空");
@@ -301,11 +306,25 @@ public class AgreementServiceImpl implements AgreementService{
                 throw new ServiceException("签名上传失败");
             }
 
+            Date now = new Date();
             Agreement agreement = agreementDao.getById(id);
-            agreement.setAffirmTime(new Date());
+            agreement.setAffirmTime(now);
             agreement.setAutographUrl(UpyunUtils.URL + uploadPath);
             agreement.setEdit(false);
             agreement.setState(AgreementState.TAKE_EFFECT);
+            //设置失效时间
+            Double duration = agreement.getDuration();
+            //确认时间所在月份
+            Integer month = DateUtils.getMonthByDate(now);
+            //确认时间所在月份天数
+//            Integer days = DateUtils.getDaysByMonth(month);
+            //有效天数(一个月按30天计算)
+            Double effective = 30 * duration;
+            //计算失效时间
+            Date deadline = DateUtils.addDays(now, effective.intValue());
+            deadline = DateUtils.lastTimeOfDate(deadline);
+            agreement.setDeadline(deadline);
+
             agreementDao.saveOrUpdate(agreement);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
@@ -314,15 +333,17 @@ public class AgreementServiceImpl implements AgreementService{
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public void backToEdit(String id){
         try{
             Assert.hasText(id, "协议ID不能为空");
 
             Agreement agreement = agreementDao.getById(id);
-            agreement.setEdit(true);
+            agreement.setState(AgreementState.WAIT_FOR_FILL);
+            agreement.setAffirmTime(null);
+            agreement.setAutographUrl(null);
 
-            agreementDao.saveOrUpdate(agreement);
+            agreementDao.backToEdit(agreement);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -330,7 +351,7 @@ public class AgreementServiceImpl implements AgreementService{
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public void share(String id, String accountId){
         try{
             Assert.hasText(id, "协议ID不能为空");
@@ -354,6 +375,16 @@ public class AgreementServiceImpl implements AgreementService{
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void effectiveCheck(){
+        List<Agreement> list = agreementDao.findInvalid();
+
+        if(list != null && !list.isEmpty()){
+            agreementDao.invalid(ObjectUtils.properties(list, "id", String.class));
         }
     }
 }

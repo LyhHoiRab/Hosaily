@@ -11,6 +11,7 @@ import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.utils.FileUtils;
 import com.rab.babylon.core.consts.entity.UsingState;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class CourseServiceImpl implements CourseService{
             courseDao.saveOrUpdate(course);
             //添加到默认的课程组
             CourseGroup group = courseGroupDao.getById("514e9897024c429cbb9997bf90121c3e");
-            if(group != null && course.getOrganizationId().equals(group.getOrganizationId())){
+            if(group != null && StringUtils.isNotBlank(course.getOrganizationId()) && course.getOrganizationId().equals(group.getOrganizationId())){
                 courseGroupDao.addCourse(group.getId(), Arrays.asList(course));
             }
         }catch(Exception e){

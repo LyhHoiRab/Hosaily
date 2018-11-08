@@ -8,7 +8,13 @@ public enum ServiceType{
     ONE_TO_ONE(0, "一对一跟踪服务"),
 
     @SerializedName("1")
-    VIDEO_LEARNING_PERMISSION(1, "视频学习权限");
+    VIDEO_LEARNING_PERMISSION(1, "视频学习权限"),
+
+    @SerializedName("2")
+    ONLINE_COURSE(2, "老师在线课程"),
+
+    @SerializedName("3")
+    RESERVE(3, "后备");
 
     private int id;
     private String description;

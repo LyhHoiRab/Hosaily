@@ -7,7 +7,7 @@
         <result column="organization_id" property="organizationId"  javaType="java.lang.String"/>
         <result column="name"            property="name"            javaType="java.lang.String"/>
         <result column="price"           property="price"           javaType="java.lang.Double"/>
-        <result column="duration"        property="duration"        javaType="java.lang.Integer"/>
+        <result column="duration"        property="duration"        javaType="java.lang.Double"/>
         <result column="state"           property="state"           typeHandler="usingStateHandler"/>
         <result column="create_time"     property="createTime"      javaType="java.util.Date"/>
         <result column="update_time"     property="updateTime"      javaType="java.util.Date"/>
@@ -184,7 +184,7 @@
                #{organizationId,  jdbcType=VARCHAR},
                #{name,            jdbcType=VARCHAR},
                #{price,           jdbcType=DOUBLE},
-               #{duration,        jdbcType=INTEGER},
+               #{duration,        jdbcType=DOUBLE},
                #{state,           typeHandler=usingStateHandler},
                #{createTime,      jdbcType=TIMESTAMP}
         )
@@ -203,7 +203,7 @@
                  price = #{price, jdbcType=DOUBLE},
              </if>
              <if test="duration != null and duration >= 0">
-                 duration = #{duration, jdbcType=INTEGER},
+                 duration = #{duration, jdbcType=DOUBLE},
              </if>
              <if test="state != null">
                  state = #{state, typeHandler=usingStateHandler},

@@ -46,4 +46,6 @@ public interface AgreementService{
     void backToEdit(String id);
 
     void share(String id, String accountId);
+
+    void effectiveCheck();
 }

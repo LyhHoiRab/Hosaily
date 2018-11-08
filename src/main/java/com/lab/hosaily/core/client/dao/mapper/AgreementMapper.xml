@@ -21,16 +21,16 @@
         <result column="company_email"       property="companyEmail"     javaType="java.lang.String"/>
         <result column="company_website"     property="companyWebsite"   javaType="java.lang.String"/>
         <result column="affirm_time"         property="affirmTime"       javaType="java.util.Date"/>
+        <result column="deadline"            property="deadline"         javaType="java.util.Date"/>
         <result column="version"             property="version"          javaType="java.lang.Integer"/>
         <result column="retail"              property="retail"           javaType="java.lang.Double"/>
         <result column="price"               property="price"            javaType="java.lang.Double"/>
-        <result column="duration"            property="duration"         javaType="java.lang.Integer"/>
+        <result column="duration"            property="duration"         javaType="java.lang.Double"/>
         <result column="state"               property="state"            typeHandler="agreementStateHandler"/>
         <result column="create_time"         property="createTime"       javaType="java.util.Date"/>
         <result column="update_time"         property="updateTime"       javaType="java.util.Date"/>
         <result column="autograph_url"       property="autographUrl"     javaType="java.lang.String"/>
         <result column="service_id"          property="serviceId"        javaType="java.lang.String"/>
-        <result column="state"               property="state"            typeHandler="agreementStateHandler"/>
         <result column="edit"                property="edit"             javaType="java.lang.Boolean"/>
         <result column="name"                property="name"             javaType="java.lang.String"/>
         <result column="client_head_img_url" property="clientHeadImgUrl" javaType="java.lang.String"/>
@@ -214,6 +214,7 @@
                company_email,
                company_website,
                affirm_time,
+               deadline,
                version,
                state,
                create_time,
@@ -244,12 +245,13 @@
                #{companyEmail,      jdbcType=VARCHAR},
                #{companyWebsite,    jdbcType=VARCHAR},
                #{affirmTime,        jdbcType=TIMESTAMP},
+               #{deadline,          jdbcType=TIMESTAMP},
                (SELECT MAX(version) FROM contract),
                #{state,             typeHandler=agreementStateHandler},
                #{createTime,        jdbcType=TIMESTAMP},
                #{retail,            jdbcType=DOUBLE},
                #{price,             jdbcType=DOUBLE},
-               #{duration,          jdbcType=INTEGER},
+               #{duration,          jdbcType=DOUBLE},
                #{autographUrl,      jdbcType=VARCHAR},
                #{serviceId,         jdbcType=VARCHAR},
                #{name,              jdbcType=VARCHAR},
@@ -312,6 +314,9 @@
              <if test="affirmTime != null">
                  affirm_time = #{affirmTime, jdbcType=TIMESTAMP},
              </if>
+             <if test="deadline != null">
+                 deadline = #{deadline, jdbcType=TIMESTAMP},
+             </if>
              <if test="version != null">
                  version = #{version, jdbcType=INTEGER},
              </if>
@@ -328,7 +333,7 @@
                  price = #{price, jdbcType=DOUBLE},
              </if>
              <if test="duration != null and duration >= 0">
-                 duration = #{duration, jdbcType=INTEGER},
+                 duration = #{duration, jdbcType=DOUBLE},
              </if>
              <if test="autographUrl != null">
                  autograph_url = #{autographUrl, jdbcType=VARCHAR},
@@ -350,6 +355,22 @@
              </if>
          </set>
           WHERE id = #{id}
+    </update>
+
+    <update id="updateState">
+        UPDATE agreement
+           SET state = #{state, typeHander=agreementStateHandler}
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </update>
+
+    <update id="backToEdit">
+        UPDATE agreement
+           SET state = #{state, typeHandler=agreementStateHandler},
+               affirm_time = #{affirmTime, jdbcType=TIMESTAMP},
+               autograph_url = #{autographUrl, jdbcType=VARCHAR}
+         WHERE id = #{id}
     </update>
 
     <select id="getByParams" resultMap="agreement">

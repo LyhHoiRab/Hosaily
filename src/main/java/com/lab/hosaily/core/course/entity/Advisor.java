@@ -23,7 +23,7 @@ public class Advisor implements Create, Update{
     private String organizationId;
     //年龄
     private Integer age;
-    //简介
+    //介绍
     private String introduction;
     //头像
     private String headImgUrl;
@@ -37,6 +37,10 @@ public class Advisor implements Create, Update{
     private Date createTime;
     //更新时间
     private Date updateTime;
+    //荣誉
+    private String honor;
+    //简介
+    private String summary;
 
     public Advisor(){
 
@@ -148,5 +152,21 @@ public class Advisor implements Create, Update{
     @Override
     public void setUpdateTime(Date updateTime){
         this.updateTime = updateTime;
+    }
+
+    public String getHonor() {
+        return honor;
+    }
+
+    public void setHonor(String honor) {
+        this.honor = honor;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }

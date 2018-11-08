@@ -15,6 +15,8 @@
         <result column="state"           property="state"          typeHandler="usingStateHandler"/>
         <result column="create_time"     property="createTime"     javaType="java.util.Date"/>
         <result column="update_time"     property="updateTime"     javaType="java.util.Date"/>
+        <result column="honor"           property="honor"          javaType="java.lang.String"/>
+        <result column="summary"         property="summary"        javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="WHERE_COLUMN">
@@ -174,7 +176,9 @@
               state,
               sort,
               organization_id,
-              create_time
+              create_time,
+              honor,
+              summary
           ) VALUE (
               #{id,             jdbcType=VARCHAR},
               #{name,           jdbcType=VARCHAR},
@@ -186,7 +190,9 @@
               #{state,          typeHandler=usingStateHandler},
               #{sort,           jdbcType=INTEGER},
               #{organizationId, jdbcType=VARCHAR},
-              #{createTime,     jdbcType=TIMESTAMP}
+              #{createTime,     jdbcType=TIMESTAMP},
+              #{honor,          jdbcType=VARCHAR},
+              #{summary,        jdbcType=VARCHAR}
           )
     </insert>
 
@@ -222,6 +228,12 @@
              </if>
              <if test="organizationId != null and organizationId != ''">
                  organization_id = #{organizationId, jdbcType=VARCHAR},
+             </if>
+             <if test="honor != null">
+                 honor = #{honor, jdbcType=VARCHAR},
+             </if>
+             <if test="summary != null">
+                 summary = #{summary, jdbcType=VARCHAR},
              </if>
          </set>
           WHERE id = #{id}

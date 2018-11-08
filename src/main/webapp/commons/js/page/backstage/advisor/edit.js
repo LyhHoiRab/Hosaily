@@ -39,7 +39,9 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         state          : '',
         sort           : '',
         headImgUrl     : '',
-        organizationId : ''
+        organizationId : '',
+        honor          : '',
+        summary        : ''
     };
 
     $scope.reset = function(){
@@ -51,6 +53,8 @@ app.controller('advisorEditController', function($scope, $state, $stateParams, F
         $scope.advisor.state          = '';
         $scope.advisor.sort           = '';
         $scope.advisor.organizationId = '';
+        $scope.advisor.honor          = '';
+        $scope.advisor.summary        = '';
     };
 
     $scope.submit = function(){
