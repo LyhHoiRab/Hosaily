@@ -213,7 +213,7 @@ public class AgreementServiceImpl implements AgreementService{
 
     @Override
     @Transactional
-    public String create(String serviceId, String productId, Double price, Integer duration){
+    public String create(String serviceId, String productId, Double price, Integer duration, Double callUnitPrice, Integer callTimes){
         try{
             Assert.hasText(serviceId, "销售ID不能为空");
             Assert.hasText(productId, "产品ID不能为空");
@@ -242,7 +242,7 @@ public class AgreementServiceImpl implements AgreementService{
             //保存协议
             agreementDao.saveOrUpdate(agreement);
             //保存服务
-            serviceDao.save(agreement.getId(), product.getServices());
+            serviceDao.newSave(agreement.getId(), product.getServices(), callUnitPrice, callTimes);
 
             return agreement.getId();
         }catch(Exception e){

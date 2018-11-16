@@ -113,9 +113,14 @@ public class AgreementRestController{
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<String> create(String serviceId, String productId, Double price, Integer duration){
+    public Response<String> create(String serviceId, String productId, Double price, Integer duration, Double callUnitPrice, Integer callTimes){
         try{
-            String id = agreementService.create(serviceId, productId, price, duration);
+            System.out.println("callUnitPrice: " + callUnitPrice);
+            System.out.println("callTimes: " + callTimes);
+            String id = agreementService.create(serviceId, productId, price, duration, callUnitPrice, callTimes);
+
+
+//            92592c28d7364a558f096f13ce30c5fd    在线课程 不需要填咨询单价和咨询次数
 
             return new Response<String>("添加成功", id);
         }catch(Exception e){

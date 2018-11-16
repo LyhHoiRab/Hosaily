@@ -1,5 +1,6 @@
 package com.lab.hosaily.core.product.dao;
 
+import com.lab.hosaily.core.product.consts.ServiceType;
 import com.lab.hosaily.core.product.dao.mapper.ServiceMapper;
 import com.lab.hosaily.core.product.entity.Service;
 import com.rab.babylon.commons.security.exception.DataAccessException;
@@ -48,6 +49,49 @@ public class ServiceDao{
         }
     }
 
+
+    /**
+     * 保存
+     */
+    public void newSave(String masterId, List<Service> services, Double callUnitPrice, Integer callTimes){
+        try{
+            Assert.hasText(masterId, "Master ID不能为空");
+
+            if(services != null && !services.isEmpty()){
+                Date now = new Date();
+
+                for(Service service : services){
+                    Assert.notNull(service, "服务信息不能为空");
+                    Assert.notNull(service.getType(), "服务类型不能为空");
+
+                    System.out.println("AAAAAAAAAAAAAAAAA: " + service.getName());
+                    if(null != callUnitPrice && null != callTimes){
+                        if(ServiceType.ONE_TO_ONE.equals(service.getType())){
+                            if(service.getName().startsWith("电话咨询指导（")){
+                                System.out.println("BBBBBBBBBB: " + service.getName());
+//                                电话咨询指导（60分钟/次），单价为1200 元/次
+                                service.setName("电话咨询指导（60分钟/次），单价为¥" + callUnitPrice.intValue() + "元/次");
+                                service.setDescription("电话咨询指导（60分钟/次），单价为¥" + callUnitPrice.intValue() + "元/次");
+//                                aaaa: 电话咨询指导（60分钟/次），单价为1600 元/次
+                                service.setUnitPrice(callUnitPrice);
+                                service.setTime(callTimes);
+                            }
+                        }
+                    }
+
+                    service.setId(UUIDGenerator.by32());
+                    service.setMasterId(masterId);
+                    service.setCreateTime(now);
+                }
+
+                mapper.save(services);
+            }
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
     /**
      * 删除
      */
@@ -75,4 +119,11 @@ public class ServiceDao{
             throw new DataAccessException(e.getMessage(), e);
         }
     }
+
+
+//    public static void main(String[] args){
+//        Double asd = new Double("1111");
+//        System.out.println(asd);
+//        System.out.println(asd.intValue());
+//    }
 }
