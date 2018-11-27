@@ -4,9 +4,11 @@ import com.lab.hosaily.core.client.consts.AgreementState;
 import com.lab.hosaily.core.client.entity.Agreement;
 import com.lab.hosaily.core.client.service.AgreementService;
 import com.rab.babylon.commons.security.exception.ApplicationException;
+import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,6 +134,14 @@ public class AgreementRestController{
     @RequestMapping(value = "/fill", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response fillIn(String id, String client, String phone, String address, String idCard, String wechat, String email, String emergencyContact, String accountId){
         try{
+            Response response = new Response();
+            Agreement agreement = agreementService.getById(id);
+            if(!agreement.getState().equals(AgreementState.WAIT_FOR_FILL) && !agreement.getState().equals(AgreementState.WAIT_FOR_SIGN)){
+//                throw new ServiceException("只有合同状态为等待填写或等待签名的合同才可以提交填写资料！");
+                response.setSuccess(false);
+                response.setResult("只有合同状态为等待填写或等待签名的合同才可以提交填写资料！");
+                return response;
+            }
             agreementService.fill(id, client, phone, address, idCard, wechat, email, emergencyContact, accountId);
 
             return new Response("填写成功", null);
@@ -144,6 +154,14 @@ public class AgreementRestController{
     @RequestMapping(value = "/sign/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response sign(@PathVariable("id") String id, @RequestParam("file") CommonsMultipartFile file){
         try{
+            Response response = new Response();
+            Agreement agreement = agreementService.getById(id);
+            if(!agreement.getState().equals(AgreementState.WAIT_FOR_SIGN)){
+//                throw new ServiceException("只有合同状态为等待签名的合同才可以提交签名！");
+                response.setSuccess(false);
+                response.setResult("只有合同状态为等待签名的合同才可以提交签名！");
+                return response;
+            }
             agreementService.sign(id, file);
 
             return new Response("签名成功", null);
@@ -168,6 +186,20 @@ public class AgreementRestController{
     @RequestMapping(value = "/share", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response share(String id, String accountId){
         try{
+            Response response = new Response();
+            Agreement agreement = agreementService.getById(id);
+//            if (!agreement.getState().equals(AgreementState.CREATED)) {
+////                throw new ServiceException("只有合同状态为新创建的合同才可以绑定！");
+//                response.setSuccess(false);
+//                response.setResult("只有合同状态为新创建的合同才可以绑定！");
+//                return response;
+//            }
+
+
+            if(StringUtils.isNotBlank(agreement.getAccountId())){
+                throw new ServiceException("协议已分享");
+            }
+
             agreementService.share(id, accountId);
 
             return new Response("分享成功", null);
