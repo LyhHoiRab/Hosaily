@@ -28,6 +28,8 @@ public class UpyunUtils{
     public final static String ADVISOR_HEAD_DIR = "/advisor/head/";
     //协议签名目录
     public final static String AGREEMENT_SIGN = "/agreement/sign/";
+    //微信头像目录
+    public final static String WECHAT_HEAD_DIR = "/wechat/head/";
 
     //导师头像目录
     public final static String EMOTION_TEST_DIR = "/emotion/test/";

@@ -102,6 +102,69 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 ]);
             }]
         }
+    }).state('wechat', {
+        url: '/wechat',
+        templateUrl : '/page/backstage/wechat',
+        controller: 'wechatController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    //basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    //basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/wechat/index.js'
+                ]);
+            }]
+        }
+    }).state('wechat.list', {
+        url: '/wechat/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/wechat/list/' + $stateParams.organizationId;
+        },
+        controller: 'wechatListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/wechat/list.js'
+                ]);
+            }]
+        }
+    }).state('wechatAdd', {
+        url: '/wechat/add/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/wechat/add/' + $stateParams.organizationId;
+        },
+        controller: 'wechatAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/wechat/add.js'
+                ]);
+            }]
+        }
+    }).state('wechatEdit', {
+        url: '/wechat/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/wechat/edit/' + $stateParams.id;
+        },
+        controller: 'wechatEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/wechat/edit.js'
+                ]);
+            }]
+        }
     }).state('media', {
         url: '/media',
         templateUrl: '/page/backstage/media',

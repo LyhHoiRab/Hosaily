@@ -26,6 +26,7 @@ public class SalesRestController{
     public Response<Advisor> verifyAdvisor(@PathVariable("wechat") String wechat, String organizationToken){
         try{
             Advisor advisor = salesService.verifyAdvisor(wechat, organizationToken);
+
             return new Response<Advisor>("查询成功", advisor);
         }catch(Exception e){
             logger.error(e.getMessage(), e);

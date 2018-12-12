@@ -4,7 +4,7 @@ import com.lab.hosaily.core.application.entity.Application;
 
 import java.util.Map;
 
-public interface WechatService{
+public interface WechatAPIService{
 
     /**
      * 微信平台接入验证

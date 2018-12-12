@@ -485,3 +485,20 @@ CREATE TABLE `purchase` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `wechat`;
+CREATE TABLE `wechat` (
+  `id` varchar(32) NOT NULL,
+  `wxno` varchar(50) NOT NULL,
+  `head_img_url` varchar(255) DEFAULT NULL,
+  `nickname` varchar(50) DEFAULT NULL,
+  `advisor_id` varchar(32) DEFAULT NULL,
+  `organization_id` varchar(32) NOT NULL,
+  `state` tinyint(1) NOT NULL,
+  `remark` varchar(50) DEFAULT NULL,
+  `seller` varchar(20) DEFAULT NULL,
+  `qr` varchar(255) DEFAULT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

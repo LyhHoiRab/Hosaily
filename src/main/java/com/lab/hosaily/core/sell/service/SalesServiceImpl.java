@@ -5,6 +5,8 @@ import com.lab.hosaily.core.course.dao.AdvisorDao;
 import com.lab.hosaily.core.course.entity.Advisor;
 import com.lab.hosaily.core.organization.dao.OrganizationDao;
 import com.lab.hosaily.core.organization.entity.Organization;
+import com.lab.hosaily.core.popularize.dao.WechatDao;
+import com.lab.hosaily.core.popularize.entity.Wechat;
 import com.lab.hosaily.core.sell.webservice.SalesRestController;
 import com.rab.babylon.commons.security.exception.ServiceException;
 import com.rab.babylon.core.account.entity.User;
@@ -34,6 +36,9 @@ public class SalesServiceImpl implements SalesService{
     @Autowired
     private OrganizationDao organizationDao;
 
+    @Autowired
+    private WechatDao wechatDao;
+
     /**
      * 微信号验证导师
      */
@@ -42,13 +47,25 @@ public class SalesServiceImpl implements SalesService{
         try{
             Assert.hasText(wechat, "导师微信不能为空");
 
-            List<User> users = userDao.list(null, null, wechat, null, null, null, null, organizationToken);
+//            List<User> users = userDao.list(null, null, wechat, null, null, null, null, organizationToken);
+//
+//            if(users != null && !users.isEmpty()){
+//                Advisor advisor = advisorDao.getById(users.get(0).getAdvisorId());
+//                Organization organization = organizationDao.getById(advisor.getOrganizationId());
+//
+//                return organization.getToken().equalsIgnoreCase(organizationToken) ? advisor : null;
+//            }
+//
+//            return null;
 
-            if(users != null && !users.isEmpty()){
-                Advisor advisor = advisorDao.getById(users.get(0).getAdvisorId());
-                Organization organization = organizationDao.getById(advisor.getOrganizationId());
+            Organization organization = organizationDao.getByToken(organizationToken);
 
-                return organization.getToken().equalsIgnoreCase(organizationToken) ? advisor : null;
+            if(organization != null){
+                Wechat wechatInfo = wechatDao.getByOrganizationIdAndWxno(organization.getId(), wechat);
+
+                if(wechatInfo != null){
+                    return wechatInfo.getAdvisor();
+                }
             }
 
             return null;

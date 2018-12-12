@@ -1,8 +1,7 @@
 package com.lab.hosaily.core.application.webservice;
 
-import com.lab.hosaily.core.application.service.WechatService;
+import com.lab.hosaily.core.application.service.WechatAPIService;
 import com.lab.hosaily.core.application.utils.XMLUtils;
-import com.lab.hosaily.core.application.utils.consts.WechatXMLConsts;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,12 +19,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/1.0/wechat")
-public class WechatRestController{
+public class WechatAPIRestController {
 
-    private static Logger logger = LoggerFactory.getLogger(WechatRestController.class);
+    private static Logger logger = LoggerFactory.getLogger(WechatAPIRestController.class);
 
     @Autowired
-    private WechatService wechatService;
+    private WechatAPIService wechatService;
 
     /**
      * 微信公众号平台接入接口

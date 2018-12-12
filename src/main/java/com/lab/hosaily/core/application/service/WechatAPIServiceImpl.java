@@ -29,9 +29,9 @@ import java.util.Arrays;
 import java.util.Map;
 
 @Service
-public class WechatServiceImpl implements WechatService{
+public class WechatAPIServiceImpl implements WechatAPIService {
 
-    private static Logger logger = LoggerFactory.getLogger(WechatServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(WechatAPIServiceImpl.class);
 
     @Autowired
     private ApplicationDao applicationDao;

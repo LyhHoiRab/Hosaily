@@ -98,6 +98,20 @@ public class OrganizationDao{
         }
     }
 
+    public Organization getByToken(String token){
+        try{
+            Assert.hasText(token, "组织Token不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("token", token));
+
+            return mapper.getByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
     /**
      * 列表
      */
