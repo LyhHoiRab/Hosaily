@@ -45,4 +45,7 @@ public interface MediaService{
      * 上传媒体文件
      */
     Media upload(String path, String url, CommonsMultipartFile file);
+
+
+    Media newUpload(String path, String url, String originalName, Long size, String md5);
 }

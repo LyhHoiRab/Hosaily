@@ -114,4 +114,43 @@ public class XcxPayRestController {
     }
 
 
+
+
+
+
+
+
+
+    /**
+     * 情感测试小程序支付
+     */
+    @RequestMapping(value = "/testVip/prepay", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Map<String, String>> testVipPrepay(String accountId, Double totalFee, String code){
+        try{
+            Map<String, String> params = wechatMerchantPayService.xcxTestVipPrepay(accountId, totalFee, code);
+
+            return new Response<Map<String, String>>("预支付成功", params);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 情感测试小程序支付回调
+     */
+    @RequestMapping(value = "/testVip/callback", method = {RequestMethod.POST, RequestMethod.GET}, produces = MediaType.APPLICATION_XML_VALUE)
+    public String testVipCallback(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("testVipCallbacktestVipCallbacktestVipCallbacktestVipCallback");
+        try{
+            String xml = XMLUtils.read(request.getInputStream());
+
+            return wechatMerchantPayService.xcxTestVipCallback(xml);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+
 }

@@ -102,21 +102,30 @@
     #else
     <div class="row-group">
       <div class="upload-group">
-        <input type="file" nv-file-select uploader="uploader">
-   
-        <div class="progress progress-sm m-b-none m-t-xs">
-          <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-        </div>
+        <!--<input type="file" nv-file-select uploader="uploader">-->
+        <input id="fileupload" type="file" name="file" multiple/><br/>
+        <!--<div class="progress progress-sm m-b-none m-t-xs">-->
+          <!--<div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>-->
+        <!--</div>-->
 
         <div class="button-group">
-          <button type="button" class="btn" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
-            <i class="fa fa-upload"></i>
-            上传
-          </button>
-          <button type="button" class="btn" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
-            <i class="fa fa-trash-o"></i>
-            移除
-          </button>
+          <!--<button type="button" class="btn" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">-->
+          <button id="sendBtn">上传</button>
+          <br/>
+          <br/>
+          <div id="info"></div>
+          <br/>
+          <br/>
+          <div id='progress' style="width:300px;height:16px;border:1px solid #ddd;padding-top:1px;border-radius:2px;display:none">
+            <div id='bar' style="float:left;background-color:#4693EC; width:0%; height:14px; border-radius:2px;"></div>
+            <div id='percent' style="float:left;width:0px;display:inline-block; top:0px;font-size:13px;"></div>
+            <!--<i class="fa fa-upload"></i>-->
+            <!--上传2222-->
+          <!--</button>-->
+          <!--<button type="button" class="btn" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">-->
+            <!--<i class="fa fa-trash-o"></i>-->
+            <!--移除-->
+          <!--</button>-->
         </div><!-- button group -->
       </div>
     </div><!-- item -->

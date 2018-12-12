@@ -37,4 +37,22 @@ public interface WechatMerchantPayService{
     Map<String, String> xcxVipPrepay(String accountId, Double totalFee, String code);
 
     String xcxVipCallback(String xml);
+
+
+
+
+
+    /**
+     * 情感测试小程序客户VIP预支付
+     */
+    Map<String, String> xcxTestVipPrepay(String accountId, Double totalFee, String code);
+
+
+
+    /**
+     * 感测试小程序客户VIP预支付回调
+     */
+    String xcxTestVipCallback(String xml);
+
+
 }

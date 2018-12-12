@@ -25,7 +25,7 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class MediaServiceImpl implements MediaService{
+public class MediaServiceImpl implements MediaService {
 
     private static Logger logger = LoggerFactory.getLogger(MediaServiceImpl.class);
 
@@ -37,13 +37,13 @@ public class MediaServiceImpl implements MediaService{
      */
     @Override
     @Transactional(readOnly = false)
-    public void save(Media media){
-        try{
+    public void save(Media media) {
+        try {
             Assert.notNull(media, "媒体信息不能为空");
             Assert.hasText(media.getMd5(), "媒体MD5不能为空");
 
             mediaDao.saveOrUpdate(media);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -54,13 +54,16 @@ public class MediaServiceImpl implements MediaService{
      */
     @Override
     @Transactional(readOnly = false)
-    public void update(Media media){
-        try{
+    public void update(Media media) {
+        try {
             Assert.notNull(media, "媒体信息不能为空");
-            Assert.hasText(media.getId(), "媒体ID不能为空");
+//            Assert.hasText(media.getId(), "媒体ID不能为空");
+            if (null == media.getId()) {
+                media.setId(UUIDGenerator.by32());
+            }
 
             mediaDao.saveOrUpdate(media);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -70,12 +73,12 @@ public class MediaServiceImpl implements MediaService{
      * 根据ID查询记录
      */
     @Override
-    public Media getById(String id){
-        try{
+    public Media getById(String id) {
+        try {
             Assert.hasText(id, "媒体ID不能为空");
 
             return mediaDao.getById(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -85,12 +88,12 @@ public class MediaServiceImpl implements MediaService{
      * 根据MD5查询记录
      */
     @Override
-    public Media getByMd5(String md5){
-        try{
+    public Media getByMd5(String md5) {
+        try {
             Assert.hasText(md5, "媒体MD5不能为空");
 
             return mediaDao.getByMd5(md5);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -100,12 +103,12 @@ public class MediaServiceImpl implements MediaService{
      * 分页查询
      */
     @Override
-    public Page<Media> page(PageRequest pageRequest, String remark, MediaType type, String suffix, String organizationId, String organizationToken, UsingState state){
-        try{
+    public Page<Media> page(PageRequest pageRequest, String remark, MediaType type, String suffix, String organizationId, String organizationToken, UsingState state) {
+        try {
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             return mediaDao.page(pageRequest, remark, type, suffix, organizationId, organizationToken, state);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -115,10 +118,10 @@ public class MediaServiceImpl implements MediaService{
      * 查询列表
      */
     @Override
-    public List<Media> list(String remark, MediaType type, String suffix, String organizationId, String organizationToken, UsingState state){
-        try{
+    public List<Media> list(String remark, MediaType type, String suffix, String organizationId, String organizationToken, UsingState state) {
+        try {
             return mediaDao.list(remark, type, suffix, organizationId, organizationToken, state);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
@@ -129,8 +132,8 @@ public class MediaServiceImpl implements MediaService{
      */
     @Override
     @Transactional(readOnly = false)
-    public Media upload(String path, String url, CommonsMultipartFile file){
-        try{
+    public Media upload(String path, String url, CommonsMultipartFile file) {
+        try {
 //            Assert.hasText(path, "上传路径不能为空");
             Assert.notNull(file, "上传文件不能为空");
 //            Assert.notNull(url, "资源外链不能为空");
@@ -153,10 +156,10 @@ public class MediaServiceImpl implements MediaService{
             //上传到upyun
             boolean result = UpyunUtils.uploadVideo(uploadPath, file);
 
-            if(result){
+            if (result) {
                 //查询文件是否已上传
                 Media media = mediaDao.getByMd5(md5);
-                if(media == null){
+                if (media == null) {
                     media = new Media();
                     media.setFileName(md5);
                 }
@@ -209,7 +212,47 @@ public class MediaServiceImpl implements MediaService{
 //            file.transferTo(new File(uploadPath + media.getFileName() + media.getSuffix()));
 //            //保存信息
 //            mediaDao.saveOrUpdate(media);
-        }catch(Exception e){
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+
+    /**
+     * 上传媒体文件
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Media newUpload(String path, String url, String originalName, Long size, String md5) {
+        try {
+            //后缀
+            String suffix = FileNameUtils.getSuffix(originalName);
+            //媒体类型
+            SuffixType suffixType = SuffixType.getById(suffix);
+            //上传目录
+            String dir = MediaUtils.getDir(suffixType.getType());
+
+
+
+            //查询文件是否已上传
+            Media media = mediaDao.getByMd5(md5);
+            if (media == null) {
+                media = new Media();
+                media.setFileName(md5);
+            }
+
+            //设置媒体信息
+            media.setSize(size);
+            media.setMd5(md5);
+            media.setSuffix(suffix);
+            media.setType(suffixType.getType());
+            media.setUrl(path);
+            //保存信息
+            mediaDao.saveOrUpdate(media);
+
+            return media;
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }

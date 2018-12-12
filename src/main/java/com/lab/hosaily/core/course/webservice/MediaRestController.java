@@ -138,4 +138,20 @@ public class MediaRestController{
             throw new ApplicationException(e.getMessage(), e);
         }
     }
+
+
+    /**
+     * 上传媒体文件
+     */
+    @RequestMapping(value = "/newUpload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Media> newUpload(String path, String url, String originalName, Long size, String md5){
+        try{
+            System.out.println("originalName: " + originalName);
+            Media media = mediaService.newUpload(path, url, originalName, size, md5);
+            return new Response<Media>("上传成功", media);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 }
