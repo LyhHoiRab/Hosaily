@@ -37,6 +37,11 @@ public interface UserService{
     User getById(String id);
 
     /**
+     * 根据ID查询记录
+     */
+    User getByAccountId(String id);
+
+    /**
      * 根据accountId查询用户缓存信息
      */
     User getCacheByAccountId(String accountId);

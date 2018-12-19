@@ -1310,5 +1310,74 @@ app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$prov
                 ]);
             }]
         }
+
+
+    }).state('profile', {
+        url: '/profile',
+        templateUrl: '/page/backstage/profile',
+        controller: 'profileController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/profile/index.js'
+                ]);
+            }]
+        }
+    }).state('profile.list', {
+        url: '/profile/list/:organizationId',
+        templateUrl: function($stateParams){
+            return '/page/backstage/profile/list/' + $stateParams.organizationId;
+        },
+        controller: 'profileListController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/page/backstage/profile/list.js'
+                ]);
+            }]
+        }
+    }).state('profileAdd', {
+        url: '/profile/add',
+        templateUrl: '/page/backstage/profile/add',
+        controller: 'profileAddController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/profile/add.js'
+                ]);
+            }]
+        }
+    }).state('profileEdit', {
+        url: '/profile/edit/:id',
+        templateUrl: function($stateParams){
+            return '/page/backstage/profile/edit/' + $stateParams.id;
+        },
+        controller: 'profileEditController',
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad){
+                return $ocLazyLoad.load([
+                    basePath + '/commons/js/plugin/ng-grid/ng-grid.min.css',
+                    basePath + '/commons/js/plugin/ng-grid/theme.css',
+                    basePath + '/commons/css/page/backstage/common.css',
+                    basePath + '/commons/js/plugin/ng-uploader/angular-file-upload.min.js',
+                    basePath + '/commons/js/utils.js',
+                    basePath + '/commons/js/plugin/json2/json2.js',
+                    basePath + '/commons/js/page/backstage/profile/edit.js'
+                ]);
+            }]
+        }
+        
+        
     });
 }]);

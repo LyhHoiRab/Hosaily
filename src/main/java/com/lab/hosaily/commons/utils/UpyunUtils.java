@@ -48,6 +48,9 @@ public class UpyunUtils{
     public final static String COURSE_MEDIA_DIR = "/course/media/";
     //访问外链
     public final static String URL = "http://kuliao.b0.upaiyun.com";
+
+    public final static String APP_DIR = "/app/test/";
+
     //视频外链
     public final static String VIDEO_URL = "http://hsl-video.test.upcdn.net";
 //    public final static String VIDEO_URL = "http://media.ishsls.com";

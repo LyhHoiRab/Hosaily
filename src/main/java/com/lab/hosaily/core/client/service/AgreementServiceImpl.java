@@ -3,6 +3,8 @@ package com.lab.hosaily.core.client.service;
 import com.lab.hosaily.commons.utils.FileNameUtils;
 import com.lab.hosaily.commons.utils.UpyunUtils;
 import com.lab.hosaily.core.account.dao.UserDao;
+import com.lab.hosaily.core.app.dao.SellerClientRelationDao;
+import com.lab.hosaily.core.app.entity.SellerClientRelation;
 import com.lab.hosaily.core.client.consts.AgreementState;
 import com.lab.hosaily.core.client.consts.PayState;
 import com.lab.hosaily.core.client.consts.PurchaseState;
@@ -68,6 +70,9 @@ public class AgreementServiceImpl implements AgreementService{
 
     @Autowired
     private ContractDao contractDao;
+
+    @Autowired
+    private SellerClientRelationDao sellerClientRelationDao;
 
     /**
      * 保存
@@ -276,6 +281,24 @@ public class AgreementServiceImpl implements AgreementService{
             agreement.setState(AgreementState.WAIT_FOR_SIGN);
 
             agreementDao.saveOrUpdate(agreement);
+
+
+//            添加销售和和客户关联
+            System.out.println("添加销售和和客户关联");
+
+            SellerClientRelation sellerClientRelation = sellerClientRelationDao.getById(agreement.getServiceId(), accountId);
+            if(null == sellerClientRelation){
+                sellerClientRelation = new SellerClientRelation();
+                sellerClientRelation.setClientId(accountId);
+                sellerClientRelation.setSellerId(agreement.getServiceId());
+                sellerClientRelationDao.save(sellerClientRelation);
+            }else{
+                System.out.println("已是好友关系！");
+            }
+
+
+
+
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

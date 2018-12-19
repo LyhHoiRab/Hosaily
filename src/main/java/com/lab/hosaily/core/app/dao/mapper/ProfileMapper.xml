@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lab.hosaily.core.app.dao.mapper.ProfileMapper">
+    <resultMap id="profile" type="com.lab.hosaily.core.app.entity.Profile">
+        <id column="id" property="id" javaType="java.lang.String"/>
+        <result column="name" property="name" javaType="java.lang.String"/>
+        <result column="account_id" property="accountId" javaType="java.lang.String"/>
+        <result column="sex" property="sex" typeHandler="sexHandler"/>
+        <result column="mobile" property="mobile" javaType="java.lang.String"/>
+        <result column="age" property="age" javaType="java.lang.Integer"/>
+        <result column="comment" property="comment" javaType="java.lang.String"/>
+        <result column="head_img_url" property="headImgUrl" javaType="java.lang.String"/>
+        <result column="job" property="job" javaType="java.lang.String"/>
+        <result column="address" property="address" javaType="java.lang.String"/>
+        <result column="marry_age" property="marryAge" javaType="java.lang.String"/>
+        <result column="requirement" property="requirement" javaType="java.lang.String"/>
+        <result column="problem" property="problem" javaType="java.lang.String"/>
+        <result column="nickname" property="nickname" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+        <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
+
+        <result column="reason" property="reason" javaType="java.lang.String"/>
+        <result column="fixed" property="fixed" javaType="java.lang.String"/>
+        <result column="original_family" property="originalFamily" javaType="java.lang.String"/>
+        <result column="unforgettable" property="unforgettable" javaType="java.lang.String"/>
+        <result column="self_assessment" property="selfAssessment" javaType="java.lang.String"/>
+        <result column="other_assessment" property="otherAssessment" javaType="java.lang.String"/>
+
+        <result column="a_last_agreement_id" property="aLastAgreementId" javaType="java.lang.String"/>
+        <result column="a_last_state" property="aLastState" javaType="java.lang.String"/>
+        <result column="a_last_create_time" property="aLastCreateTime" javaType="java.util.Date"/>
+        <result column="n_count_num" property="nCountNum" javaType="java.lang.String"/>
+        <result column="role" property="role" javaType="java.lang.Integer"/>
+        <result column="service_count" property="serviceCount" javaType="java.lang.Integer"/>
+        <result column="order_status" property="orderStatus" javaType="java.lang.String"/>
+
+
+        <result column="english_name" property="englishName" javaType="java.lang.String"/>
+        <result column="aptitude" property="aptitude" javaType="java.lang.String"/>
+        <result column="goot_at" property="gootAt" javaType="java.lang.String"/>
+        <result column="order_count" property="orderCount" javaType="java.lang.String"/>
+
+
+        <result column="resume" property="resume" javaType="java.lang.String"/>
+
+    </resultMap>
+
+    <sql id="WHERE_COLUMN">
+        <where>
+            <if test="params.andCriterions != null and params.andCriterions.size > 0">
+                <foreach collection="params.andCriterions" item="criterion">
+                    <trim prefix="AND (" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} $criterion.operator} #{criterion.value} AND
+                                #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.andCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="AND">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")"
+                                                         separator=",">
+                                                    #{itemValue}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                            <when test="criterion.orCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="OR">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")"
+                                                         separator=",">
+                                                    #{itemValue}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+
+            <if test="params.orCriterions != null and params.orCriterions.size > 0">
+                <foreach collection="params.orCriterions" item="criterion">
+                    <trim prefix="OR (" suffix=")">
+                        <choose>
+                            <when test="criterion.noValue">
+                                ${criterion.property} ${criterion.operator}
+                            </when>
+                            <when test="criterion.singleValue">
+                                ${criterion.property} ${criterion.operator} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                ${criterion.property} $criterion.operator} #{criterion.value} AND
+                                #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                ${criterion.property} ${criterion.operator}
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <when test="criterion.andCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="AND">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")"
+                                                         separator=",">
+                                                    #{itemValue}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                            <when test="criterion.orCriterionValue">
+                                <foreach collection="criterion.value" item="item" open="(" close=")" separator="OR">
+                                    <trim prefix="(" suffix=")">
+                                        <choose>
+                                            <when test="item.noValue">
+                                                ${item.property} ${item.operator}
+                                            </when>
+                                            <when test="item.singleValue">
+                                                ${item.property} ${item.operator} #{item.value}
+                                            </when>
+                                            <when test="item.betweenValue">
+                                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                                            </when>
+                                            <when test="item.listValue">
+                                                ${item.property} ${item.operator}
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")"
+                                                         separator=",">
+                                                    #{itemValue}
+                                                </foreach>
+                                            </when>
+                                        </choose>
+                                    </trim>
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <insert id="save">
+        INSERT
+          INTO profile (
+              id,
+              name,
+              account_id,
+              sex,
+              mobile,
+              age,
+              comment,
+              head_img_url,
+              job,
+              address,
+              marry_age,
+              requirement,
+              problem,
+              nickname,
+              organization_id,
+              reason,
+              fixed,
+              original_family,
+              unforgettable,
+              self_assessment,
+              other_assessment,
+
+              english_name,
+              aptitude,
+              goot_at,
+              resume,
+
+              create_time
+          ) VALUE (
+              #{id,             jdbcType=VARCHAR},
+              #{name,           jdbcType=VARCHAR},
+              #{accountId,       jdbcType=VARCHAR},
+              #{sex,            typeHandler=sexHandler},
+              #{mobile,       jdbcType=VARCHAR},
+              #{age,            jdbcType=INTEGER},
+              #{comment,     jdbcType=VARCHAR},
+              #{headImgUrl,     jdbcType=VARCHAR},
+              #{job,   jdbcType=VARCHAR},
+              #{address,   jdbcType=VARCHAR},
+              #{marryAge,   jdbcType=VARCHAR},
+              #{requirement,   jdbcType=VARCHAR},
+              #{problem,   jdbcType=VARCHAR},
+              #{nickname,   jdbcType=VARCHAR},
+              #{organizationId, jdbcType=VARCHAR},
+              #{reason, jdbcType=VARCHAR},
+              #{fixed, jdbcType=VARCHAR},
+              #{originalFamily, jdbcType=VARCHAR},
+              #{unforgettable, jdbcType=VARCHAR},
+              #{selfAssessment, jdbcType=VARCHAR},
+              #{otherAssessment, jdbcType=VARCHAR},
+
+              #{englishName, jdbcType=VARCHAR},
+              #{aptitude, jdbcType=VARCHAR},
+              #{gootAt, jdbcType=VARCHAR},
+              #{resume, jdbcType=VARCHAR},
+
+              #{createTime,     jdbcType=TIMESTAMP}
+          )
+    </insert>
+
+    <update id="update">
+        UPDATE profile
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="accountId != null and accountId != ''">
+                account_id = #{accountId, jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex, typeHandler=sexHandler},
+            </if>
+
+            <if test="mobile != null and mobile != ''">
+                mobile = #{mobile, jdbcType=VARCHAR},
+            </if>
+
+            <if test="age != null and age > 0">
+                age = #{age, jdbcType=INTEGER},
+            </if>
+            <if test="comment != null and comment != ''">
+                comment = #{comment, jdbcType=VARCHAR},
+            </if>
+            <if test="headImgUrl != null and headImgUrl != ''">
+                head_img_url = #{headImgUrl, jdbcType=VARCHAR},
+            </if>
+
+            <if test="job != null and job != ''">
+                job = #{job, jdbcType=VARCHAR},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address, jdbcType=VARCHAR},
+            </if>
+            <if test="marryAge != null and marryAge != ''">
+                marry_age = #{marryAge, jdbcType=VARCHAR},
+            </if>
+            <if test="requirement != null and requirement != ''">
+                requirement = #{requirement, jdbcType=VARCHAR},
+            </if>
+            <if test="problem != null and problem != ''">
+                problem = #{problem, jdbcType=VARCHAR},
+            </if>
+            <if test="nickname != null and nickname != ''">
+                nickname = #{nickname, jdbcType=VARCHAR},
+            </if>
+
+            <if test="updateTime != null">
+                update_time = #{updateTime, jdbcType=TIMESTAMP},
+            </if>
+
+            <if test="organizationId != null and organizationId != ''">
+                organization_id = #{organizationId, jdbcType=VARCHAR},
+            </if>
+
+            <if test="reason != null and reason != ''">
+                reason = #{reason, jdbcType=VARCHAR},
+            </if>
+            <if test="fixed != null and fixed != ''">
+                fixed = #{fixed, jdbcType=VARCHAR},
+            </if>
+            <if test="originalFamily != null and originalFamily != ''">
+                original_family = #{originalFamily, jdbcType=VARCHAR},
+            </if>
+            <if test="unforgettable != null and unforgettable != ''">
+                unforgettable = #{unforgettable, jdbcType=VARCHAR},
+            </if>
+            <if test="selfAssessment != null and selfAssessment != ''">
+                self_assessment = #{selfAssessment, jdbcType=VARCHAR},
+            </if>
+            <if test="otherAssessment != null and otherAssessment != ''">
+                other_assessment = #{otherAssessment, jdbcType=VARCHAR},
+            </if>
+
+            <if test="englishName != null and englishName != ''">
+                english_name = #{englishName, jdbcType=VARCHAR},
+            </if>
+            <if test="aptitude != null and aptitude != ''">
+                aptitude = #{aptitude, jdbcType=VARCHAR},
+            </if>
+            <if test="gootAt != null and gootAt != ''">
+                goot_at = #{gootAt, jdbcType=VARCHAR},
+            </if>
+            <if test="resume != null and resume != ''">
+                resume = #{resume, jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                role = #{role, jdbcType=INTEGER},
+            </if>
+
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="getByParams" resultMap="profile">
+        SELECT p.*,
+        (SELECT count(1) from `order` WHERE account_id = p.account_id) AS order_count
+        FROM profile p
+        LEFT JOIN organization o
+        ON o.id = p.organization_id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+
+    <select id="findByParams" resultMap="profile">
+        SELECT p.*,
+        (select count(1) FROM order_profile op LEFT JOIN `order` o ON op.order_id = o.id where profile_id = p.id and
+        o.status = '1') AS service_count
+        FROM profile p
+        LEFT JOIN organization o
+        ON p.organization_id = o.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+
+            <if test="params.sorts != null and params.sorts.size > 0">
+                ORDER BY
+                <foreach collection="params.sorts" item="sort" separator=",">
+                    ${sort.property} ${sort.operator}
+                </foreach>
+            </if>
+
+            <if test="params.limit != null">
+                ${params.limit.operator} ${params.limit.value}, ${params.limit.secondValue}
+            </if>
+        </if>
+    </select>
+
+
+    <select id="findByMixs" resultMap="profile">
+        SELECT p.*,
+        a.id AS a_last_agreement_id,
+        a.state AS a_last_state,
+        a.create_time AS a_last_create_time,
+        n.count_num AS n_count_num,
+        (select status from `order` od where od.agreement_id = a.id) AS order_status
+        FROM profile p
+        LEFT JOIN organization o
+        ON o.id = p.organization_id
+        LEFT JOIN ( SELECT id, aa.account_id, aa.state, aa.create_time FROM agreement aa,(SELECT account_id,
+        MAX(create_time) AS create_time FROM agreement GROUP BY account_id) AS bb
+        WHERE aa.account_id = bb.account_id
+        AND aa.create_time = bb.create_time ) AS a
+        ON p.account_id = a.account_id
+        LEFT JOIN (select count(1) as count_num, profile_id from news GROUP BY profile_id) AS n
+        ON p.id = n.profile_id
+        where 1 = 1
+        <if test="signAgreement == 0">
+            AND (a.state != 3 OR a.state IS NULL)
+        </if>
+        <if test="signAgreement == 1">
+            AND a.state = 3
+        </if>
+        <if test="signProfile == 0">
+            AND p.update_time is NULL
+        </if>
+        <if test="signProfile == 1">
+            AND p.update_time is NOT NULL
+        </if>
+
+        <if test="uploaded == 0">
+            AND n.count_num is NULL
+        </if>
+        <if test="uploaded == 1">
+            AND n.count_num is NOT NULL
+        </if>
+
+        <if test="name != null and name != ''">
+            AND (p.name LIKE ${name} or p.nickname like ${name})
+        </if>
+        <if test="sellerId != null">
+            AND p.id in (SELECT client_id from seller_client_relation where seller_id = #{sellerId})
+        </if>
+
+
+        order by p.create_time desc limit #{beginRow},#{pageSize}
+    </select>
+
+
+    <select id="countByParams" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM profile p
+        LEFT JOIN organization o
+        ON p.organization_id = o.id
+        <if test="params != null">
+            <include refid="WHERE_COLUMN"/>
+        </if>
+    </select>
+
+
+    <select id="countByMixs" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM profile p
+        LEFT JOIN organization o
+        ON o.id = p.organization_id
+        LEFT JOIN (SELECT id, aa.account_id, aa.state, aa.create_time FROM agreement aa,(SELECT account_id,
+        MAX(create_time) AS create_time FROM agreement GROUP BY account_id) AS bb
+        WHERE aa.account_id = bb.account_id
+        AND aa.create_time = bb.create_time) AS a
+        ON p.account_id = a.account_id
+        LEFT JOIN (select count(1) as count_num, profile_id from news GROUP BY profile_id) AS n
+        ON p.id = n.profile_id
+        where 1 = 1
+        <if test="signAgreement == 0">
+            AND (a.state != 3 OR a.state IS NULL)
+        </if>
+        <if test="signAgreement == 1">
+            AND a.state = 3
+        </if>
+        <if test="signProfile == 0">
+            AND p.update_time is NULL
+        </if>
+        <if test="signProfile == 1">
+            AND p.update_time is NOT NULL
+        </if>
+
+        <if test="uploaded == 0">
+            AND n.count_num is NULL
+        </if>
+        <if test="uploaded == 1">
+            AND n.count_num is NOT NULL
+        </if>
+
+        <if test="name != null and name != ''">
+            AND (p.name LIKE ${name} or p.nickname like ${name})
+        </if>
+        <if test="sellerId != null">
+            AND p.id in (SELECT client_id from seller_client_relation where seller_id = #{sellerId})
+        </if>
+
+    </select>
+
+
+    <select id="findByClientsPage" resultMap="profile">
+        SELECT * FROM profile WHERE id
+        IN (SELECT account_id FROM `order` WHERE id
+        IN (SELECT order_id FROM order_profile WHERE
+        profile_id = ${advisorId}))
+        <if test="clientName != null and clientName != ''">
+            AND (name LIKE ${clientName} or nickname like ${clientName})
+        </if>
+    </select>
+
+    <select id="countByClientsPage" resultType="java.lang.Long">
+        SELECT count(1) FROM profile WHERE id
+        IN (SELECT account_id FROM `order` WHERE id
+        IN (SELECT order_id FROM order_profile WHERE
+        profile_id = ${advisorId}))
+        <if test="clientName != null and clientName != ''">
+            AND (name LIKE ${clientName} or nickname like ${clientName})
+        </if>
+    </select>
+</mapper>

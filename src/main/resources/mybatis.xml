@@ -32,5 +32,6 @@
     <typeAlias type="com.lab.hosaily.core.product.utils.ServiceTypeHandler"                 alias="serviceTypeHandler"/>
     <typeAlias type="com.lab.hosaily.core.client.utils.AppointmentStateHandler"             alias="appointmentStateHandler"/>
     <typeAlias type="com.lab.hosaily.core.client.utils.AgreementStateHandler"               alias="agreementStateHandler"/>
+    <typeAlias type="com.lab.hosaily.core.im.utils.handler.IMUserTypeHandler"                       alias="IMUserTypeHandler"/>
   </typeAliases>
 </configuration>

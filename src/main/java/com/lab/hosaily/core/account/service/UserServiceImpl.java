@@ -128,6 +128,21 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
+     * 根据ID查询记录
+     */
+    @Override
+    public User getByAccountId(String accountId){
+        try{
+            Assert.hasText(accountId, "accountId不能为空");
+
+            return userDao.getByAccountId(accountId);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 根据accountId查询用户缓存信息
      */
     @Override

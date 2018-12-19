@@ -66,6 +66,23 @@ public class AccountDao{
     }
 
     /**
+     * 根据ID查询
+     */
+    public Long countByPhone(String phone){
+        try{
+            Assert.hasText(phone, "phone不能为空");
+
+            Criteria criteria = new Criteria();
+            criteria.and(Restrictions.eq("phone", phone));
+
+            return mapper.countByParams(criteria);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 根据openId或者unionId查询
      */
     public Account getByOpenIdOrUnionId(String openId, String unionId){
