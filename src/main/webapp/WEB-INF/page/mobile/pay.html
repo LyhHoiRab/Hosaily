@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -69,6 +68,14 @@
 	<script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/init.js' charset='utf-8'></script>
 	<script src="http://h.ishsls.com/yhqs_h5/purchase/js/js.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
+        $(function(){
+            if(isWeiXin()){
+                wechatPay();
+			}else{
+                alipay();
+			}
+        });
+
 		$('.payLine').click(function(){
 			$(this).find('.lfetText,.rightText').addClass('payChecked').parent().siblings().find('.lfetText,.rightText').removeClass('payChecked');
 		});
@@ -91,7 +98,8 @@
 
 		//微信支付
 		function wechatPay(){
-			var price = $('#price').val();
+			// var price = $('#price').val();
+			var price = 0.01;
 			var purchaseId = getQueryString('purchaseId');
 			var code = getQueryString('code');
 
@@ -233,27 +241,27 @@
 			});
 		};
 
-		$(function(){
-			agreement();
-
-			$('.btnPay').click(function(){
-				var isWeChatPay = $('.lfetText.payChecked').html().indexOf("微信") >= 0;
-
-				if(isWeChatPay){
-					if(!isWeiXin()){
-						openZheTips(1);
-						return;
-					}
-
-					wechatPay();
-				}else{
-					if(isWeiXin()){
-						openZheTips(0);
-						return;
-					}
-					alipay();
-				}
-			});
-		});
+		// $(function(){
+		// 	agreement();
+        //
+		// 	$('.btnPay').click(function(){
+		// 		var isWeChatPay = $('.lfetText.payChecked').html().indexOf("微信") >= 0;
+        //
+		// 		if(isWeChatPay){
+		// 			if(!isWeiXin()){
+		// 				openZheTips(1);
+		// 				return;
+		// 			}
+        //
+		// 			wechatPay();
+		// 		}else{
+		// 			if(isWeiXin()){
+		// 				openZheTips(0);
+		// 				return;
+		// 			}
+		// 			alipay();
+		// 		}
+		// 	});
+		// });
 	</script>
 </html>

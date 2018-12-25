@@ -1,7 +1,6 @@
 package com.lab.hosaily.core.application.controller;
 
 import com.rab.babylon.commons.security.exception.ApplicationException;
-import org.bouncycastle.ocsp.Req;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
