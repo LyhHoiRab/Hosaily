@@ -30,9 +30,11 @@ public interface ProfileService {
     /**
      * 分页查询
      */
-    Page<Profile> page(PageRequest pageRequest, Integer signAgreement, Integer signProfile, Integer uploaded, String name, String sellerId);
+    Page<Profile> page(PageRequest pageRequest, Integer signAgreement, Integer signProfile, Integer uploaded, String name, String sellerId, Integer role);
 
     Page<Profile> findClientsPage(PageRequest pageRequest, String clientName, String advisorId);
+
+    Page<Profile> findAdvisorsPage(PageRequest pageRequest, String advisorName, String clientId);
 
     /**
      * 查询列表

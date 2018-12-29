@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lab.hosaily.core.app.dao.mapper.CustomerMapper">
+<mapper namespace="com.lab.hosaily.core.app.dao.mapper.LoginUserMapper">
 
     <sql id="WHERE_SQL">
         <where>
@@ -154,246 +154,63 @@
         </where>
     </sql>
 
-    <resultMap id="customer" type="com.lab.hosaily.core.app.entity.Customer">
-        <id     column="id"           property="id"         javaType="java.lang.String"/>
+    <resultMap id="login_user" type="com.lab.hosaily.core.app.entity.LoginUser">
+        <id     column="phone"           property="phone"         javaType="java.lang.String"/>
         <result column="name"         property="name"         javaType="java.lang.String"/>
-        <result column="sex"        property="sex"         typeHandler="sexHandler"/>
-        <result column="phone"   property="phone"         javaType="java.lang.String"/>
-        <result column="we_chat"  property="weChat"         javaType="java.lang.String"/>
-        <result column="time"  property="time"         javaType="java.util.Date"/>
-        <result column="link"      property="link"         javaType="java.lang.String"/>
-        <result column="follower"   property="follower"         javaType="java.lang.String"/>
-        <result column="follower_name"   property="followerName"         javaType="java.lang.String"/>
-        <result column="address"      property="address"         javaType="java.lang.String"/>
-        <result column="chat_record"      property="chatRecord"         javaType="java.lang.String"/>
-        <result column="situation"      property="situation"         javaType="java.lang.String"/>
-        <result column="qq"      property="qq"         javaType="java.lang.String"/>
-        <result column="uploader"      property="uploader"         javaType="java.lang.String"/>
-        <result column="process"      property="process"         javaType="java.lang.String"/>
-        <result column="comment"      property="comment"         javaType="java.lang.String"/>
-        <result column="channel"      property="channel"         javaType="java.lang.String"/>
+        <result column="role"         property="role"         javaType="java.lang.String"/>
         <result column="create_time"  property="createTime" javaType="java.util.Date"/>
         <result column="update_time"  property="updateTime" javaType="java.util.Date"/>
     </resultMap>
 
     <insert id="save">
         INSERT
-        INTO customer (
-        id,
-        name,
-        sex,
+        INTO login_user (
         phone,
-        we_chat,
-        time,
-        link,
-        follower,
-        address,
-        chat_record,
-        situation,
-        qq,
-        uploader,
-        process,
-        comment,
-        channel,
+        name,
+        role,
         create_time
         ) VALUE (
-        #{id,         jdbcType=VARCHAR},
+        #{phone,         jdbcType=VARCHAR},
         #{name,  jdbcType=VARCHAR},
-        #{sex,            typeHandler=sexHandler},
         #{phone,   jdbcType=VARCHAR},
-        #{weChat,   jdbcType=VARCHAR},
-        #{time,       jdbcType=TIMESTAMP},
-        #{link,       jdbcType=VARCHAR},
-        #{follower,       jdbcType=VARCHAR},
-        #{address, jdbcType=VARCHAR},
-        #{chatRecord, jdbcType=VARCHAR},
-        #{situation, jdbcType=VARCHAR},
-        #{qq, jdbcType=VARCHAR},
-        #{uploader, jdbcType=VARCHAR},
-        #{process, jdbcType=VARCHAR},
-        #{comment, jdbcType=VARCHAR},
-        #{channel, jdbcType=VARCHAR},
+        #{role,   jdbcType=VARCHAR},
         #{createTime, jdbcType=TIMESTAMP}
         )
     </insert>
 
     <update id="update">
-        UPDATE customer
+        UPDATE login_user
         <set>
             <if test="name != null">
                 name = #{name, jdbcType=VARCHAR},
             </if>
-            <if test="sex != null">
-                sex = #{sex, typeHandler=sexHandler},
-            </if>
             <if test="phone != null">
                 phone = #{phone, jdbcType=VARCHAR},
             </if>
-            <if test="weChat != null">
-                we_chat = #{weChat, jdbcType=VARCHAR},
-            </if>
-            <if test="time != null">
-                time = #{time, jdbcType=TIMESTAMP},
-            </if>
-            <if test="processTime != null">
-                process_time = #{processTime, jdbcType=TIMESTAMP},
-            </if>
-            <if test="link != null">
-                link = #{link, jdbcType=VARCHAR},
-            </if>
-            <if test="follower != null">
-                follower = #{follower, jdbcType=VARCHAR},
-            </if>
-            <if test="address != null">
-                address = #{address, jdbcType=VARCHAR},
-            </if>
-            <if test="chatRecord != null">
-                chat_record = #{chatRecord, jdbcType=VARCHAR},
-            </if>
-            <if test="situation != null">
-                situation = #{situation, jdbcType=VARCHAR},
-            </if>
-            <if test="qq != null">
-                qq = #{qq, jdbcType=VARCHAR},
-            </if>
-            <if test="uploader != null">
-                uploader = #{uploader, jdbcType=VARCHAR},
-            </if>
-            <if test="process != null">
-                process = #{process, jdbcType=VARCHAR},
-            </if>
-            <if test="comment != null">
-                comment = #{comment, jdbcType=VARCHAR},
-            </if>
-            <if test="channel != null">
-                channel = #{channel, jdbcType=VARCHAR},
+            <if test="role != null">
+                role = #{role, jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
                 update_time = #{updateTime, jdbcType=TIMESTAMP},
             </if>
         </set>
-        WHERE id = #{id}
+        WHERE phone = #{phone}
     </update>
 
-    <insert id="saveList">
-        INSERT
-        INTO customer (
-        id,
-        name,
-        sex,
-        phone,
-        we_chat,
-        time,
-        link,
-        follower,
-        address,
-        chat_record,
-        situation,
-        qq,
-        uploader,
-        process,
-        comment,
-        channel,
-        create_time
-        ) VALUES
-        <foreach collection="customers" item="customer" separator=",">
-            (
-            #{customer.id,         jdbcType=VARCHAR},
-            #{customer.name,  jdbcType=VARCHAR},
-            #{customer.sex,            typeHandler=sexHandler},
-            #{customer.phone,   jdbcType=VARCHAR},
-            #{customer.weChat,   jdbcType=VARCHAR},
-            #{customer.time,       jdbcType=TIMESTAMP},
-            #{customer.link,       jdbcType=VARCHAR},
-            #{customer.follower,       jdbcType=VARCHAR},
-            #{customer.address, jdbcType=VARCHAR},
-            #{customer.chatRecord, jdbcType=VARCHAR},
-            #{customer.situation, jdbcType=VARCHAR},
-            #{customer.qq, jdbcType=VARCHAR},
-            #{customer.uploader, jdbcType=VARCHAR},
-            #{customer.process, jdbcType=VARCHAR},
-            #{customer.comment, jdbcType=VARCHAR},
-            #{customer.channel, jdbcType=VARCHAR},
-            #{customer.createTime, jdbcType=TIMESTAMP}
-            )
-        </foreach>
-    </insert>
 
-    <update id="updateList">
-        <foreach collection="customers" item="customer" separator=";">
-            UPDATE customer
-            <set>
-                <if test="customer.name != null">
-                    name = #{customer.name, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.sex != null">
-                    sex = #{customer.sex, typeHandler=sexHandler},
-                </if>
-                <if test="customer.phone != null">
-                    phone = #{customer.phone, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.weChat != null">
-                    we_chat = #{customer.weChat, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.time != null">
-                    time = #{customer.time, jdbcType=TIMESTAMP},
-                </if>
-                <if test="customer.link != null">
-                    link = #{customer.link, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.follower != null">
-                    follower = #{customer.follower, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.address != null">
-                    address = #{customer.address, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.chatRecord != null">
-                    chat_record = #{customer.chatRecord, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.situation != null">
-                    situation = #{customer.situation, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.qq != null">
-                    qq = #{customer.qq, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.uploader != null">
-                    uploader = #{customer.uploader, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.process != null">
-                    process = #{customer.process, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.comment != null">
-                    comment = #{customer.comment, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.channel != null">
-                    channel = #{customer.channel, jdbcType=VARCHAR},
-                </if>
-                <if test="customer.updateTime != null">
-                    update_time = #{customer.updateTime, jdbcType=TIMESTAMP},
-                </if>
-            </set>
-            WHERE id = #{customer.id}
-        </foreach>
-    </update>
-
-    <select id="get" resultMap="customer">
-        SELECT c.*,(select name from profile where id = c.follower) AS follower_name
-        FROM customer c
+    <select id="get" resultMap="login_user">
+        SELECT lu.*
+        FROM login_user lu
         <if test="params != null">
             <include refid="WHERE_SQL"/>
         </if>
     </select>
 
-    <select id="find" resultMap="customer">
-        SELECT c.*,(select name from profile where id = c.follower) AS follower_name
-        FROM customer c
+    <select id="find" resultMap="login_user">
+        SELECT lu.*
+        FROM login_user lu
         <if test="params != null">
             <include refid="WHERE_SQL"/>
-
-        <if test="mixSearch != null  and mixSearch != ''">
-            AND (c.name like '%${mixSearch}%' OR c.phone like '%${mixSearch}%' OR c.we_chat like '%${mixSearch}%')
-        </if>
-
             <if test="params.sorts != null and params.sorts.size > 0">
                 ORDER BY
                 <foreach collection="params.sorts" item="sort" separator=",">
@@ -409,15 +226,9 @@
 
     <select id="count" resultType="java.lang.Long">
         SELECT COUNT(*)
-        FROM customer
+        FROM login_user
         <if test="params != null">
             <include refid="WHERE_SQL"/>
         </if>
     </select>
-
-    <delete id="delete">
-        DELETE
-        FROM customer
-        WHERE id = #{id}
-    </delete>
 </mapper>

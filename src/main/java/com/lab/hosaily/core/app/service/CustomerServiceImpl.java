@@ -1,9 +1,14 @@
 package com.lab.hosaily.core.app.service;
 
 
+import com.lab.hosaily.commons.consts.RedisConsts;
 import com.lab.hosaily.core.app.dao.CustomerDao;
+import com.lab.hosaily.core.app.dao.ProfileDao;
 import com.lab.hosaily.core.app.entity.Customer;
+import com.lab.hosaily.core.app.entity.LoginUser;
+import com.lab.hosaily.core.app.entity.Profile;
 import com.lab.hosaily.core.app.utils.ReadExcel;
+import com.rab.babylon.commons.utils.RedisUtils;
 import com.rab.babylon.core.consts.entity.Sex;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +33,10 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerDao customerDao;
 
     @Autowired
-    private ShardedJedisPool pool;
+    private ProfileDao profileDao;
+
+    @Autowired
+    private ShardedJedisPool shardedJedisPool;
 
     @Value("${system.environment}")
     private String env;
@@ -37,18 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public void save(Customer customer) {
         Assert.notNull(customer, "用户信息不能为空");
-//        Assert.hasText(customer.getPhone(), "用户电话不能为空");
-
-
-//        Customer original = customerDao.getByCompanyIdAndPhone("companyId", customer.getPhone());
-
-//        if (original != null) {
-//            customer.setId(original.getId());
         customerDao.save(customer);
-//        } else {
-//            customerDao.save(customer);
-//        }
-
     }
 
     @Override
@@ -73,26 +70,21 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Page<Customer> page(PageRequest pageRequest, String name,
-                               String situation, String startTime, String endTime) {
+                               String situation, String startTime, String endTime, String process, String follower) {
         Assert.notNull(pageRequest, "分页信息不能为空");
         return customerDao.page(pageRequest, name,
-                situation, startTime, endTime);
+                situation, startTime, endTime, process, follower);
     }
 
     @Override
     public Page<Customer> pageForSeller(PageRequest pageRequest, String name, String channel, String customerService) {
         Assert.notNull(pageRequest, "分页信息不能为空");
-        return customerDao.page(pageRequest, "companyId", name, channel, "account.getUsername()");
+        return null;
     }
-
-//    @Override
-//    public List<Customer> findAllByNameChannelCS(String name, String channel, String customerService) {
-//        return customerDao.findAllByNameChannelCS(name, channel, customerService);
-//    }
 
     @Override
     @Transactional
-    public List<String> importFile(MultipartFile file) throws Exception {
+    public List<String> importFile(MultipartFile file, String uploader) throws Exception {
         Assert.notNull(file, "上传文件不能为空");
 
 
@@ -104,16 +96,40 @@ public class CustomerServiceImpl implements CustomerService {
 
         List<Customer> customers = new ArrayList<Customer>();
         List<String> badList = new ArrayList<String>();
+
+        StringBuilder badName = new StringBuilder();
+        badName.append("第");
+        StringBuilder badPW = new StringBuilder();
+        badPW.append("第");
+
+
+
+//        获取销售列表
+        List<Profile> profileList = profileDao.list(null, 3);
+        for (int i = 0; i < profileList.size(); i++) {
+            Profile profile = profileList.get(i);
+            System.out.println(profile.getName());
+        }
+
         for (int i = 1; i < excelList.size(); i++) {
             List list = (List) excelList.get(i);
             System.out.println("listlistlistlistlist: " + list.size());
             Customer customer = new Customer();
-            customer.setIndex(i);
+            customer.setIndex(i + 1);
             if (null != list.get(0) && list.get(0).toString().startsWith("201")) {                                      //日期
                 customer.setTime(sf.parse(list.get(0).toString()));
             }
-            if (null != list.get(1)) {                                      //跟进人
-                customer.setFollower(list.get(1).toString());
+            if (null != list.get(1)) {                                                             //跟进人
+                for (int j = 0; j < profileList.size(); j++) {
+                    Profile profile = profileList.get(i);
+                    if(list.get(1).toString().trim().equals(profile.getName())){
+                        customer.setFollower(profile.getId());
+                    }
+                }
+
+
+
+//                customer.setFollower(list.get(1).toString());
             }
             if (null != list.get(2)) {                                      //地区
                 customer.setAddress(list.get(2).toString());
@@ -122,6 +138,7 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setName(list.get(3).toString());
             } else {
                 badList.add("第" + i + "行数据导入失败，原因: 客户名称不能为空！");
+                badName.append(i + 1 + ",");
                 continue;
             }
             if (null != list.get(4) && !"".equals(list.get(4).toString())) {                                      //日期
@@ -147,25 +164,32 @@ public class CustomerServiceImpl implements CustomerService {
                 }
             } else {
                 badList.add("第" + i + "行数据导入失败，原因: 电话或微信号必须有一项！");
+                badPW.append(i + 1 + ",");
                 continue;
             }
             if (null != list.get(7)) {                                      //链接
                 customer.setLink(list.get(7).toString());
             }
-            if (null != list.get(8)) {                                      //链接
+            if (null != list.get(8)) {                                      //聊天记录
                 customer.setChatRecord(list.get(8).toString());
+                System.out.println(customer.getChatRecord());
             }
             if (null != list.get(9)) {                                      //跟进情况
-                customer.setFollower(list.get(9).toString());
+                customer.setComment(list.get(9).toString());
+            }
+            if (null != list.get(10)) {                                      //渠道
+                customer.setChannel(list.get(10).toString());
             }
             customers.add(customer);
         }
-
+        badName.append("行数据导入失败，原因: 客户名称不能为空！");
+        badPW.append("行数据导入失败，原因: 电话或微信号必须有一项！");
         List<Customer> saveList = new ArrayList<Customer>();
-        List<Customer> updateList = new ArrayList<Customer>();
-
         List<Customer> originals = customerDao.findAllByMix(null, null, null, null);
-
+        StringBuilder samePhone = new StringBuilder();
+        samePhone.append("第");
+        StringBuilder sameWeChat = new StringBuilder();
+        sameWeChat.append("第");
         continueOut:
         for (int j = 0; j < customers.size(); j++) {
             Customer customer = customers.get(j);
@@ -176,6 +200,7 @@ public class CustomerServiceImpl implements CustomerService {
                         if (original.getPhone().trim().equals(customer.getPhone().trim())) {
                             System.out.println("customer.getPhone(): " + customer.getName());
                             badList.add("第" + customer.getIndex() + "行数据导入失败，原因: 电话号码已录入！");
+                            samePhone.append(customer.getIndex() + ",");
                             continue continueOut;
                         }
                     }
@@ -188,23 +213,30 @@ public class CustomerServiceImpl implements CustomerService {
                         if (original.getWeChat().trim().equals(customer.getWeChat().trim())) {
                             System.out.println("customer.getWeChat(): " + customer.getName());
                             badList.add("第" + customer.getIndex() + "行数据导入失败，原因: 微信号已录入！");
+                            sameWeChat.append(customer.getIndex() + ",");
                             continue continueOut;
                         }
                     }
                 }
             }
+            customer.setUploader(uploader);
             saveList.add(customer);
         }
+        samePhone.append("行数据导入失败，原因: 电话号码已录入！");
+        sameWeChat.append("行数据导入失败，原因: 微信号已录入！");
+        List<String> alertBadList = new ArrayList<String>();
+        alertBadList.add("导入失败：" + badList.size() + "条！ ");
+        alertBadList.add("导入成功：" + saveList.size() + "条！ ");
+        alertBadList.add(badName.toString());
+        alertBadList.add(badPW.toString());
+        alertBadList.add(samePhone.toString());
+        alertBadList.add(sameWeChat.toString());
 
         System.out.println("saveListsaveListsaveList:  " + saveList.size());
         if (saveList != null && !saveList.isEmpty()) {
             customerDao.saveList(saveList);
         }
-//        if (updateList != null && !updateList.isEmpty()) {
-//            customerDao.updateList(updateList);
-//        }
-
-        return badList;
+        return alertBadList;
     }
 
     @Override

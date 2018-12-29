@@ -108,11 +108,11 @@ public class ProfileServiceImpl implements ProfileService{
      * 分页查询
      */
     @Override
-    public Page<Profile> page(PageRequest pageRequest, Integer signAgreement, Integer signProfile, Integer uploaded, String name, String sellerId){
+    public Page<Profile> page(PageRequest pageRequest, Integer signAgreement, Integer signProfile, Integer uploaded, String name, String sellerId, Integer role){
         try{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
-            return profileDao.page(pageRequest, signAgreement, signProfile, uploaded, name, sellerId);
+            return profileDao.page(pageRequest, signAgreement, signProfile, uploaded, name, sellerId, role);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -129,6 +129,22 @@ public class ProfileServiceImpl implements ProfileService{
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             return profileDao.findClientsPage(pageRequest, clientName, advisorId);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+
+    /**
+     * 分页查询
+     */
+    @Override
+    public Page<Profile> findAdvisorsPage(PageRequest pageRequest, String advisorName, String clientId){
+        try{
+            Assert.notNull(pageRequest, "分页信息不能为空");
+
+            return profileDao.findAdvisorsPage(pageRequest, advisorName, clientId);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

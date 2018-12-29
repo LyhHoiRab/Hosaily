@@ -1,7 +1,6 @@
 package com.lab.hosaily.core.app.dao;
 
 
-
 import com.lab.hosaily.core.app.dao.mapper.CustomerMapper;
 import com.lab.hosaily.core.app.entity.Customer;
 import org.apache.commons.lang3.StringUtils;
@@ -33,11 +32,12 @@ public class CustomerDao {
             Assert.notNull(customer, "用户信息不能为空");
 //            Assert.notNull(customer.getCompanyId(), "用户公司ID不能为空");
 //            Assert.hasText(customer.getPhone(), "用户电话不能为空");
-            if(null == customer.getTime()){
+            if (null == customer.getTime()) {
                 customer.setTime(new Date());
             }
             customer.setId(IDGenerator.uuid32());
             customer.setCreateTime(new Date());
+            customer.setSituation("0");
             mapper.save(customer);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -58,17 +58,21 @@ public class CustomerDao {
         }
     }
 
-    public void saveList(List<Customer> list){
-        try{
+    public void saveList(List<Customer> list) {
+        try {
             Assert.notEmpty(list, "用户信息列表不能为空");
 
-            for(Customer customer : list){
+            for (Customer customer : list) {
                 Assert.notNull(customer, "用户信息不能为空");
 //                Assert.notNull(customer.getCompanyId(), "用户公司ID不能为空");
 //                Assert.hasText(customer.getPhone(), "用户电话不能为空");
 //                System.out.println("for(Customer customer : list){");
                 customer.setId(IDGenerator.uuid32());
                 customer.setCreateTime(new Date());
+                customer.setSituation("0");
+                if (null == customer.getTime()) {
+                    customer.setTime(new Date());
+                }
             }
 
 //            for (int i = 0; i < list.size(); i++) {
@@ -79,17 +83,17 @@ public class CustomerDao {
 
 
             mapper.saveList(list);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
     }
 
-    public void updateList(List<Customer> list){
-        try{
+    public void updateList(List<Customer> list) {
+        try {
             Assert.notEmpty(list, "用户信息列表不能为空");
 
-            for(Customer customer : list){
+            for (Customer customer : list) {
                 Assert.notNull(customer, "用户信息不能为空");
                 Assert.hasText(customer.getId(), "用户ID不能为空");
 
@@ -98,7 +102,7 @@ public class CustomerDao {
             }
 
             mapper.updateList(list);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -116,39 +120,52 @@ public class CustomerDao {
         }
     }
 
-    public void delete(String id){
-        try{
+    public void delete(String id) {
+        try {
             Assert.hasText(id, "ID不能为空");
             mapper.delete(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
         }
     }
 
     public Page<Customer> page(PageRequest pageRequest, String name,
-                               String situation, String startTime, String endTime) {
+                               String situation, String startTime, String endTime, String process, String follower) {
         try {
             Assert.notNull(pageRequest, "分页信息不能为空");
 
             Criteria criteria = new Criteria();
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
-            criteria.sort(Restrictions.desc("createTime"));
+//            criteria.sort(Restrictions.desc("createTime"));
 
-            if (StringUtils.isNotBlank(name)) {
-                criteria.and(Restrictions.like("name", name));
-            }
+            criteria.and(Restrictions.isNotNull("id"));
+
+//            if (StringUtils.isNotBlank(name)) {
+//                criteria.and(Restrictions.like("name", name));
+//            }
             if (StringUtils.isNotBlank(situation)) {
                 criteria.and(Restrictions.eq("situation", situation));
+                if ("0".equals(situation)) {
+                    criteria.sort(Restrictions.asc("time"));
+                } else if ("1".equals(situation)) {
+                    criteria.sort(Restrictions.desc("processTime"));
+                }
             }
             if (StringUtils.isNotBlank(startTime)) {
                 criteria.and(Restrictions.gt("create_time", startTime));
             }
-            if(StringUtils.isNotBlank(endTime)){
+            if (StringUtils.isNotBlank(endTime)) {
                 criteria.and(Restrictions.lt("create_time", endTime));
             }
+            if (StringUtils.isNotBlank(process)) {
+                criteria.and(Restrictions.eq("process", process));
+            }
+            if (StringUtils.isNotBlank(follower)) {
+                criteria.and(Restrictions.eq("follower", follower));
+            }
 
-            List<Customer> list = mapper.find(criteria);
+            List<Customer> list = mapper.find(criteria, name);
             Long total = mapper.count(criteria);
             return new Page<Customer>(list, total, pageRequest);
         } catch (Exception e) {
@@ -170,10 +187,10 @@ public class CustomerDao {
             if (StringUtils.isNotBlank(startTime)) {
                 criteria.and(Restrictions.gt("create_time", startTime));
             }
-            if(StringUtils.isNotBlank(endTime)){
+            if (StringUtils.isNotBlank(endTime)) {
                 criteria.and(Restrictions.lt("create_time", endTime));
             }
-            List<Customer> list = mapper.find(criteria);
+            List<Customer> list = mapper.find(criteria, null);
             return list;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

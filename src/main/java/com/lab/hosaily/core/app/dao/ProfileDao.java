@@ -126,7 +126,7 @@ public class ProfileDao {
     /**
      * 分页查询
      */
-    public Page<Profile> page(PageRequest pageRequest, Integer signAgreement, Integer signProfile, Integer uploaded, String name, String sellerId) {
+    public Page<Profile> page(PageRequest pageRequest, Integer signAgreement, Integer signProfile, Integer uploaded, String name, String sellerId, Integer role) {
         try {
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -136,8 +136,8 @@ public class ProfileDao {
             } else {
                 name = null;
             }
-            Long count = mapper.countByMixs(signAgreement, signProfile, uploaded, name, sellerId);
-            List<Profile> list = mapper.findByMixs(signAgreement, signProfile, uploaded, name, sellerId, pageRequest.getOffset(), pageRequest.getPageSize());
+            Long count = mapper.countByMixs(signAgreement, signProfile, uploaded, name, sellerId, role);
+            List<Profile> list = mapper.findByMixs(signAgreement, signProfile, uploaded, name, sellerId, role, pageRequest.getOffset(), pageRequest.getPageSize());
 
             return new Page<Profile>(list, pageRequest, count);
         } catch (Exception e) {
@@ -155,6 +155,24 @@ public class ProfileDao {
 
             Long count = mapper.countByClientsPage(clientName, "'" + advisorId + "'");
             List<Profile> list = mapper.findByClientsPage(clientName, "'" + advisorId + "'", pageRequest.getOffset(), pageRequest.getPageSize());
+
+            return new Page<Profile>(list, pageRequest, count);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+
+    /**
+     * 分页查询
+     */
+    public Page<Profile> findAdvisorsPage(PageRequest pageRequest, String advisorName, String clientId) {
+        try {
+            Assert.notNull(pageRequest, "分页信息不能为空");
+
+            Long count = mapper.countAdvisorsPage(advisorName, "'" + clientId + "'");
+            List<Profile> list = mapper.findAdvisorsPage(advisorName, "'" + clientId + "'", pageRequest.getOffset(), pageRequest.getPageSize());
 
             return new Page<Profile>(list, pageRequest, count);
         } catch (Exception e) {

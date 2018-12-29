@@ -22,7 +22,7 @@ public interface CustomerMapper {
 
     Customer get(@Param("params") Criteria criteria);
 
-    List<Customer> find(@Param("params") Criteria criteria);
+    List<Customer> find(@Param("params") Criteria criteria, @Param("mixSearch")String mixSearch);
 
     Long count(@Param("params") Criteria criteria);
 

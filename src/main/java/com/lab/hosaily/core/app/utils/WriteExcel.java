@@ -10,6 +10,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +66,7 @@ public class WriteExcel {
             /**
              * 往Excel中写新数据
              */
+
             for (int j = 0; j < dataList.size(); j++) {
                 // 创建一行：从第二行开始，跳过属性列
                 Row row = sheet.createRow(j);
@@ -77,6 +80,7 @@ public class WriteExcel {
                 String link = "";
                 String chatRecord = "";
                 String situation = "";
+                String channel = "";
                 // 得到要插入的每一条记录
                 Map dataMap = dataList.get(j);
                 if(null != dataMap.get("time")){
@@ -109,6 +113,9 @@ public class WriteExcel {
                 if(null != dataMap.get("situation")){
                     situation = dataMap.get("situation").toString();
                 }
+                if(null != dataMap.get("channel")){
+                    channel = dataMap.get("channel").toString();
+                }
                 for (int k = 0; k <= columnNumCount; k++) {
                     // 在一行内循环
                     Cell first = row.createCell(0);
@@ -140,6 +147,9 @@ public class WriteExcel {
 
                     Cell ten = row.createCell(9);
                     ten.setCellValue(situation);
+
+                    Cell eleven = row.createCell(10);
+                    eleven.setCellValue(channel);
                 }
             }
             // 创建文件输出流，准备输出电子表格：这个必须有，否则你在sheet上做的任何操作都不会有效
