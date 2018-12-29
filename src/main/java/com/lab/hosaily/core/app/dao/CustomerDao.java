@@ -151,6 +151,8 @@ public class CustomerDao {
                 } else if ("1".equals(situation)) {
                     criteria.sort(Restrictions.desc("processTime"));
                 }
+            }else{
+                criteria.sort(Restrictions.desc("createTime"));
             }
             if (StringUtils.isNotBlank(startTime)) {
                 criteria.and(Restrictions.gt("create_time", startTime));

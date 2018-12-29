@@ -121,7 +121,7 @@ public class CustomerServiceImpl implements CustomerService {
             }
             if (null != list.get(1)) {                                                             //跟进人
                 for (int j = 0; j < profileList.size(); j++) {
-                    Profile profile = profileList.get(i);
+                    Profile profile = profileList.get(j);
                     if(list.get(1).toString().trim().equals(profile.getName())){
                         customer.setFollower(profile.getId());
                     }
