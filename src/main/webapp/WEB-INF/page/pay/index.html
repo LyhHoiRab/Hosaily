@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+	<head lang="zh-CN">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="Pragma" content="no-cache">
+   		<meta name="renderer" content="webkit">
+   		<meta http-equiv="Cache-Control" content="no-siteapp">
+
+		<title>永恒情书扫码支付</title>
+
+		<link rel="stylesheet" href="https://cdn.bootcss.com/twitter-bootstrap/4.2.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<!-- 样式 -->
+		<style type="text/css">
+			* {
+				color: #000;
+				font-size: 13px;
+			}
+			.logo-bar {
+				margin: 20px 0;
+			}
+			.logo {
+				border-radius: 50%;
+				background-color: transparent;
+				box-shadow: 0 0 20px 0 #ccc;
+			}
+			.pay-manufacturer,
+			.title {
+				margin: 10px 0;
+			}
+			.pay-amount .input-group {
+				margin: 0 auto;
+				width: 80%;
+			}
+			.pay-amount .fa-rmb {
+				font-size: 30px;
+			}
+			.pay-amount .form-control[type=number] {
+				border-top: none;
+				border-left: none;
+				border-right: none;
+				outline: none;
+				box-shadow: none;
+			}
+			.button-bar {
+				margin: 10px 0;
+			}
+		</style>
+
+		<!--[if lt IE 9]>
+    	<script src="https://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    	<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    	<![endif]-->
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<div class="logo-bar text-center">
+				<img class="logo" src="http://www.klpua.com/commons/img/logo.png" width="100" height="100">
+
+				<div class="title">
+					永恒情书
+				</div><!-- title -->
+
+				<div class="pay-manufacturer">
+					
+				</div><!-- pay manufacturer -->
+			</div><!-- logo bar -->
+
+			<div class="pay-amount">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-rmb"></i></span>
+					<input type="number" class="form-control" placeholder="请输入金额" id="price">
+				</div><!-- input -->
+			</div><!-- pay amount -->
+
+			<div class="button-bar text-center">
+				<button class="btn btn-info" id="pay">确认支付</button>
+			</div><!-- button bar -->
+		</div><!-- container -->
+
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/twitter-bootstrap/4.2.1/js/bootstrap.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				if(isWeixin()){
+					$(".pay-manufacturer").text("微信支付");
+				}else{
+					$(".pay-manufacturer").text("支付宝支付");
+				}
+
+				$('#pay').click(function(){
+				    if(isWeixin()){
+				        wxPay();
+					}else{
+				        alipay();
+					}
+				});
+			});
+
+            function isWeixin(){
+                var ua = window.navigator.userAgent.toLowerCase();
+
+                if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+                    return true;
+                }else{
+                    return false;
+                }
+
+                // if(typeof window.WeiXinJSBridge == 'undefined' || typeof window.WeiXinJSBridge.invoke == 'undefined'){
+                //     return false;
+                // }
+                //
+                // return true;
+            }
+
+            function getQueryString(name){
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if(r!=null)return  unescape(r[2]); return null;
+            };
+
+            function wxPay(){
+                var price = $('#price').val();
+				var code  = getQueryString('code');
+
+				if(code === '' || code === undefined){
+				    alert('微信支付失败');
+				    return;
+				}
+				if(price < 0 || price === ''  || price === undefined){
+				    alert('请输入金额');
+				    return;
+				}
+
+				//预支付
+				$.ajax({
+                    url: '/api/1.0/pay/wx',
+                    type: 'POST',
+                    data: {'totalFee':price, 'code':code},
+                    dataType: 'json',
+                    success: function(res){
+                        if(res.success){
+                            function onBridgeReady(){
+                                WeixinJSBridge.invoke(
+                                    'getBrandWCPayRequest', {
+                                        "appId"      : res.result['appId'],
+                                        "timeStamp"  : res.result['timeStamp'],
+                                        "nonceStr"   : res.result['nonceStr'],
+                                        "package"    : res.result['package'],
+                                        "signType"   : res.result['signType'],
+                                        "paySign"    : res.result['paySign']
+                                    },
+                                    function(res){
+                                        if(res.err_msg == "get_brand_wcpay_request:ok" ){
+                                            location.href = 'http://www.klpua.com/page/pay/success';
+                                        }else if(res.err_msg == 'get_brand_wcpay_request:cancel'){
+
+                                        }
+                                    }
+                                );
+                            };
+
+                            if(typeof WeixinJSBridge == "undefined"){
+                                if(document.addEventListener){
+                                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                                }else if(document.attachEvent){
+                                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                                }
+                            }else{
+                                onBridgeReady();
+                            }
+						}else{
+                            alert(res.msg);
+                        }
+                    },
+                    error: function(response){
+                        console.error(response);
+                    }
+				});
+			}
+
+			function alipay(){
+                var price = $('#price').val();
+
+                if(price < 0 || price === ''  || price === undefined){
+                    alert('请输入金额');
+                    return;
+                }
+
+                location.href = 'http://www.klpua.com/api/1.0/pay/ali?totalFee=' + price;
+			}
+		</script>
+	</body>
+</html>

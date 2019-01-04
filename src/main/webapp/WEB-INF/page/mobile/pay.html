@@ -158,7 +158,8 @@
 
 		//支付宝支付
 		function alipay(){
-			var price = $('#price').val();
+			// var price = $('#price').val();
+            var price = 0.01;
 			var purchaseId = getQueryString('purchaseId');
 
 			location.href = '/api/1.0/alipay/pay?purchaseId=' + purchaseId + "&totalFee=" + price;

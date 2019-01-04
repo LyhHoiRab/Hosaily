@@ -21,7 +21,7 @@
                 if(isWeiXin()){
                     url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=http://' + 'ell.ishsls.com' + '/page/h5/pay?purchaseId=' + '2be154c384574f3997926b9632e430b6' + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
                 }else{
-                    url = '/page/h5/pay?purchaseId=' + '2be154c384574f3997926b9632e430b6';
+                    url += '/page/h5/pay?purchaseId=' + '2be154c384574f3997926b9632e430b6';
                 }
 
                 var qrcode = new QRCode("qrcode", {
