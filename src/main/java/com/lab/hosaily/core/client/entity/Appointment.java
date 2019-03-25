@@ -24,6 +24,7 @@ public class Appointment implements Create, Update{
     private String url;
     private AppointmentState state;
     private String remark;
+    private String img;
     private Date createTime;
     private Date updateTime;
 }
