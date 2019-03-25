@@ -18,7 +18,7 @@ public class Customer extends Entity implements Createable, Updateable {
     private Date createTime;                  //添加时间
     private Date updateTime;                  //修改时间
 
-    private String id;
+//    private String id;
     private String name;                      //客户名称
     private Sex sex;                      //性别
     private String phone;                      //电话
