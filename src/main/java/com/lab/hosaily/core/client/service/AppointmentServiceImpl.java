@@ -172,6 +172,7 @@ public class AppointmentServiceImpl implements AppointmentService{
             map.put("来源", "url");
             map.put("状态", "state");
             map.put("登记时间", "createTime");
+            map.put("图片", "img");
 
             return ExcelUtils.write(map, list);
         }catch(Exception e){

@@ -43,7 +43,7 @@ public class AppointmentRestController{
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response save(String name, String phone, Sex sex, String organizationId, String description, String url,
-                         String type, String wechat, HttpServletResponse response){
+                         String type, String wechat, String img, HttpServletResponse response){
         try{
             response.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -71,6 +71,7 @@ public class AppointmentRestController{
             appointment.setType(type);
             appointment.setWechat(wechat);
             appointment.setSex(sex);
+            appointment.setImg(img);
 
             appointmentService.save(appointment);
 
