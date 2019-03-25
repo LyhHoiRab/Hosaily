@@ -57,6 +57,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
+    public void updateSort(String id, String sort, String follower) {
+        Assert.hasText(id, "Id不能为空");
+        Assert.hasText(follower, "follower不能为空");
+        Assert.hasText(sort, "sort不能为空");
+        customerDao.updateSort(id, sort, follower);
+    }
+
+    @Override
     public Customer getById(String id) {
         return customerDao.getById(id);
     }
@@ -70,10 +79,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Page<Customer> page(PageRequest pageRequest, String name,
-                               String situation, String startTime, String endTime, String process, String follower) {
+                               String situation, String startTime, String endTime, String process, String follower, String phone) {
         Assert.notNull(pageRequest, "分页信息不能为空");
         return customerDao.page(pageRequest, name,
-                situation, startTime, endTime, process, follower);
+                situation, startTime, endTime, process, follower, phone);
     }
 
     @Override
@@ -185,7 +194,7 @@ public class CustomerServiceImpl implements CustomerService {
         badName.append("行数据导入失败，原因: 客户名称不能为空！");
         badPW.append("行数据导入失败，原因: 电话或微信号必须有一项！");
         List<Customer> saveList = new ArrayList<Customer>();
-        List<Customer> originals = customerDao.findAllByMix(null, null, null, null);
+        List<Customer> originals = customerDao.findAllByMix(null, null, null, null, null);
         StringBuilder samePhone = new StringBuilder();
         samePhone.append("第");
         StringBuilder sameWeChat = new StringBuilder();
@@ -240,7 +249,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> findAllByMix(String name, String situation, String startTime, String endTime) {
-        return customerDao.findAllByMix(name, situation, startTime, endTime);
+    public List<Customer> findAllByMix(String name, String situation, String startTime, String endTime, String phone) {
+        return customerDao.findAllByMix(name, situation, startTime, endTime, phone);
     }
 }

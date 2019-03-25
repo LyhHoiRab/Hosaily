@@ -16,6 +16,8 @@ public interface CustomerMapper {
 
     void update(Customer customer);
 
+    void updateSort(@Param("id")String id, @Param("sort")String sort);
+
     void saveList(@Param("customers") List<Customer> customers);
 
     void updateList(@Param("customers") List<Customer> customers);
@@ -27,4 +29,6 @@ public interface CustomerMapper {
     Long count(@Param("params") Criteria criteria);
 
     void delete(String id);
+
+    Long getMaxSort(@Param("follower") String follower);
 }

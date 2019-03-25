@@ -44,6 +44,7 @@
 
 
         <result column="resume" property="resume" javaType="java.lang.String"/>
+        <result column="qr_code_img_url" property="qrCodeImgUrl" javaType="java.lang.String"/>
 
     </resultMap>
 

@@ -8,7 +8,7 @@ public class SessionConsts{
     //session有效期,4小时(秒)
     public static final Integer EFFECTIVE_SECOND = 4 * 60 * 60;
 
-    //session有效期,4小时(秒)
+    //session有效期,6小时(秒)
     public static final Integer APP_EFFECTIVE_SECOND = 6 * 60 * 60;
 
     //账户ID

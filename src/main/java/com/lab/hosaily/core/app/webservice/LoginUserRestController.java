@@ -70,12 +70,12 @@ public class LoginUserRestController {
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Responsed<String> login(HttpServletRequest request, String phone, String smsCode) throws Exception {
+    public Responsed<LoginUser> login(HttpServletRequest request, String phone, String smsCode) throws Exception {
 
 
 
 //        System.out.println("login sessionId: " + request.getSession().getId());
-        Responsed<String> responsed = new Responsed<String>();
+        Responsed<LoginUser> responsed = new Responsed<LoginUser>();
         LoginUser loginUser = loginUserService.getByPhone(phone);
         if(null == loginUser){
             responsed.setSuccess(false);
@@ -109,7 +109,7 @@ public class LoginUserRestController {
 
         responsed.setSuccess(true);
         responsed.setMsg("登录成功");
-        responsed.setResult(null);
+        responsed.setResult(loginUser);
         return responsed;
     }
 

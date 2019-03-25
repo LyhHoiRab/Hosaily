@@ -136,18 +136,18 @@ public class AgreementRestController {
         try {
             Response response = new Response();
             Agreement agreement = agreementService.getById(id);
-            if (!agreement.getState().equals(AgreementState.WAIT_FOR_FILL) && !agreement.getState().equals(AgreementState.WAIT_FOR_SIGN)) {
+            if (!agreement.getState().equals(AgreementState.WAIT_FOR_FILL) && !agreement.getState().equals(AgreementState.WAIT_FOR_SIGN) && !agreement.getState().equals(AgreementState.CREATED)) {
 //                throw new ServiceException("只有合同状态为等待填写或等待签名的合同才可以提交填写资料！");
                 response.setSuccess(false);
                 response.setResult("只有合同状态为等待填写或等待签名的合同才可以提交填写资料！");
                 return response;
             }
 
-            if (!agreement.getAccountId().equals(accountId)) {
-                response.setSuccess(false);
-                response.setResult("提交失败：当前用户不是合同绑定对象！");
-                return response;
-            }
+//            if (!agreement.getAccountId().equals(accountId)) {
+//                response.setSuccess(false);
+//                response.setResult("提交失败：当前用户不是合同绑定对象！");
+//                return response;
+//            }
             agreementService.fill(id, client, phone, address, idCard, wechat, email, emergencyContact, accountId);
 
             return new Response("填写成功", null);

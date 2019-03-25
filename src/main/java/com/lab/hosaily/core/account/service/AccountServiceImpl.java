@@ -11,7 +11,10 @@ import com.lab.hosaily.core.account.dao.*;
 import com.lab.hosaily.core.account.entity.AppAccount;
 import com.lab.hosaily.core.account.entity.WeChatAccount;
 import com.lab.hosaily.core.account.entity.XcxAccount;
+import com.lab.hosaily.core.app.dao.InviteWeChatAccountDao;
+import com.lab.hosaily.core.app.dao.PosterDao;
 import com.lab.hosaily.core.app.dao.ProfileDao;
+import com.lab.hosaily.core.app.entity.InviteWeChatAccount;
 import com.lab.hosaily.core.app.entity.Profile;
 import com.lab.hosaily.core.application.dao.ApplicationDao;
 import com.lab.hosaily.core.application.entity.Application;
@@ -28,6 +31,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import redis.clients.jedis.ShardedJedisPool;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
@@ -58,6 +64,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private ProfileDao profileDao;
+
+    @Autowired
+    private InviteWeChatAccountDao inviteWeChatAccountDao;
 
     /**
      * 小程序注册
@@ -283,6 +292,77 @@ public class AccountServiceImpl implements AccountService {
             userDao.cache(user);
 
             return user;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+
+
+
+
+
+
+    @Override
+    @Transactional(readOnly = false)
+    public Map<String, String> registerByH5Share(String token, String code, String sellerId) {
+        try {
+            Assert.hasText(code, "code值不能为空");
+            Assert.hasText(token, "网站应用Token不能为空");
+            Assert.hasText(sellerId, "sellerId不能为空");
+//            Assert.hasText(advisorId, "advisorId不能为空");
+
+            //查询网站应用
+            Application application = applicationDao.getByToken(token);
+
+            if (application == null) {
+                throw new IllegalArgumentException("无效的应用Token");
+            }
+
+            //appId
+            String appId = application.getAppId();
+            //secret
+            String secret = application.getSecret();
+
+            //查询accessToken
+            AccessTokenResponse accessToken = WeChatUtils.getAccessToken(code, appId, secret);
+
+            if (StringUtils.isBlank(accessToken.getOpenId()) && StringUtils.isBlank(accessToken.getUnionId())) {
+                throw new ServiceException("获取openId失败");
+            }
+
+            InviteWeChatAccount inviteWeChatAccount = inviteWeChatAccountDao.getByOpenId(accessToken.getOpenId());
+            UserInfoResponse userInfo = WeChatUtils.getUserInfo(accessToken.getAccessToken(), appId);
+            if (inviteWeChatAccount == null) {
+                //未注册
+                inviteWeChatAccount = userInfo.changeToWeChatAccountForInvite();
+                inviteWeChatAccount.setAppId(appId);
+                inviteWeChatAccount.setSellerId(sellerId);
+//                inviteWeChatAccount.setAdvisorId(advisorId);
+                inviteWeChatAccountDao.saveOrUpdate(inviteWeChatAccount);
+            } else {
+                //更新微信信息
+                inviteWeChatAccount.setNickname(userInfo.getNickname());
+                inviteWeChatAccount.setSex(userInfo.getSex());
+                inviteWeChatAccount.setCity(userInfo.getCity());
+                inviteWeChatAccount.setProvince(userInfo.getProvince());
+                inviteWeChatAccount.setCountry(userInfo.getCountry());
+                inviteWeChatAccount.setHeadImgUrl(userInfo.getHeadImgUrl());
+                inviteWeChatAccountDao.saveOrUpdate(inviteWeChatAccount);
+            }
+            //更新unionId
+            if (!StringUtils.isBlank(accessToken.getUnionId()) && !accessToken.getUnionId().equals(inviteWeChatAccount.getUnionId())) {
+                inviteWeChatAccount.setUnionId(accessToken.getUnionId());
+                inviteWeChatAccountDao.saveOrUpdate(inviteWeChatAccount);
+            }
+            Profile profile = profileDao.getById(sellerId);
+
+            Map<String, String> simpleUser = new HashMap<String, String>();
+            simpleUser.put("headImgUrl", profile.getHeadImgUrl());
+            simpleUser.put("nickname", profile.getNickname());
+            simpleUser.put("qrCodeImgUrl",profile.getQrCodeImgUrl());
+            return simpleUser;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

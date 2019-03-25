@@ -4,6 +4,7 @@ import main.java.com.UpYun;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -26,6 +27,8 @@ public class UpyunUtils{
     public final static String USER_HEAD_DIR = "/user/head/";
     //导师头像目录
     public final static String ADVISOR_HEAD_DIR = "/advisor/head/";
+    //二维码目录
+    public final static String QR_Code_DIR = "/app/qrCode/";
     //协议签名目录
     public final static String AGREEMENT_SIGN = "/agreement/sign/";
     //微信头像目录
@@ -107,6 +110,15 @@ public class UpyunUtils{
         }
 
         return getUpyun().writeFile(uploadPath, file.getBytes());
+    }
+
+
+    public static boolean upload(String uploadPath, byte[] fileByte){
+        if(StringUtils.isBlank(uploadPath)){
+            throw new IllegalArgumentException("上传路径不能为空");
+        }
+
+        return getUpyun().writeFile(uploadPath, fileByte);
     }
 
     public static Map<String, String> getFileInfo(String uploadPath){

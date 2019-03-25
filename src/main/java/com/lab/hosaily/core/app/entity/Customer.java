@@ -37,7 +37,7 @@ public class Customer extends Entity implements Createable, Updateable {
     private String comment;                      //备注
     private String channel;                       //渠道
 
-
+    private String sort;                       //渠道
     private int index;                      //临时序号
 
 

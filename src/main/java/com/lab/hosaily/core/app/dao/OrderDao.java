@@ -177,7 +177,7 @@ public class OrderDao {
 
             Criteria criteria = new Criteria();
             criteria.limit(Restrictions.limit(pageRequest.getOffset(), pageRequest.getPageSize()));
-            criteria.sort(Restrictions.desc("a.createTime"));
+            criteria.sort(Restrictions.desc("a.updateTime"));
 //
             if (!StringUtils.isBlank(sellerId)) {
                 criteria.and(Restrictions.eq("a.sellerId", sellerId));

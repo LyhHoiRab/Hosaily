@@ -3,6 +3,7 @@ package com.lab.hosaily.commons.response.wechat;
 import com.google.gson.annotations.SerializedName;
 import com.lab.hosaily.core.account.consts.WeChatSex;
 import com.lab.hosaily.core.account.entity.WeChatAccount;
+import com.lab.hosaily.core.app.entity.InviteWeChatAccount;
 
 import java.util.Date;
 
@@ -108,6 +109,23 @@ public class UserInfoResponse{
 
     public WeChatAccount changeToWeChatAccount(){
         WeChatAccount account = new WeChatAccount();
+        account.setOpenId(this.openId);
+        account.setUnionId(this.unionId);
+        account.setNickname(this.nickname);
+        account.setSex(this.sex);
+        account.setProvince(this.province);
+        account.setCity(this.city);
+        account.setCountry(this.country);
+        account.setSubscribe(true);
+        account.setSubscribeTime(new Date());
+        account.setHeadImgUrl(this.headImgUrl);
+
+        return account;
+    }
+
+
+    public InviteWeChatAccount changeToWeChatAccountForInvite(){
+        InviteWeChatAccount account = new InviteWeChatAccount();
         account.setOpenId(this.openId);
         account.setUnionId(this.unionId);
         account.setNickname(this.nickname);

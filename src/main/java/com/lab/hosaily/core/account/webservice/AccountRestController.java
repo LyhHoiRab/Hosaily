@@ -138,6 +138,31 @@ public class AccountRestController {
     }
 
 
+
+    /**
+     * 网站应用注册
+     */
+    @ApiOperation(value = "客户列表", notes = "客户列表分页")
+    @RequestMapping(value = "/register/h5Share", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Map<String, String>> registerByH5Share(String code, String token, String sellerId) {
+        try {
+            System.out.println("codecodecodecodecode: " + code);
+            System.out.println("tokentokentokentoken: " + token);
+            System.out.println("sellerIdsellerIdsellerId: " + sellerId);
+//            System.out.println("advisorIdadvisorIdadvisorId: " + advisorId);
+            Map<String, String> simpleUser = accountService.registerByH5Share(token, code, sellerId);
+            Response<Map<String, String>> response = new Response<Map<String, String>>();
+            response.setSuccess(true);
+            response.setMsg("授权成功！");
+            response.setResult(simpleUser);
+            return response;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+
     /**
      * 网站应用注册
      */

@@ -63,8 +63,23 @@ public class CustomerRestController {
             return responsed;
         }
         PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-        Page<Customer> page = customerService.page(pageRequest, name,
-                situation, startTime, endTime, process, follower);
+        Page<Customer> page = null;
+        if ("0".equals(loginUser.getRole())) {            //超级管理员
+            page = customerService.page(pageRequest, name,
+                    situation, startTime, endTime, process, follower, null);
+        } else if ("1".equals(loginUser.getRole())) {     //客服
+            page = customerService.page(pageRequest, name,
+                    situation, startTime, endTime, process, follower, phone);
+        } else {                                          //普通用户
+            page = customerService.page(pageRequest, name,
+                    situation, startTime, endTime, process, follower, null);
+            for (int i = 0; i < page.getContent().size(); i++) {
+                page.getContent().get(i).setPhone(hidenStr(page.getContent().get(i).getPhone()));
+                page.getContent().get(i).setWeChat(hidenStr(page.getContent().get(i).getWeChat()));
+            }
+        }
+
+
         responsed.setSuccess(true);
         responsed.setMsg("查询成功");
         responsed.setResult(page);
@@ -72,13 +87,12 @@ public class CustomerRestController {
     }
 
 
-
     @RequestMapping(value = "/appPage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Responsed<Page<Customer>> appPage(HttpServletRequest request, Long pageNum, Long pageSize, String name,
-                                          String situation, String startTime, String endTime, String process, String follower) {
+                                             String situation, String startTime, String endTime, String process, String follower) {
         Responsed<Page<Customer>> responsed = new Responsed<Page<Customer>>();
 
-        if(StringUtils.isBlank(follower)){
+        if (StringUtils.isBlank(follower)) {
             responsed.setSuccess(false);
             responsed.setMsg("follower不能为空");
             return responsed;
@@ -86,7 +100,7 @@ public class CustomerRestController {
 
         PageRequest pageRequest = new PageRequest(pageNum, pageSize);
         Page<Customer> page = customerService.page(pageRequest, name,
-                situation, startTime, endTime, process, follower);
+                situation, startTime, endTime, process, follower, null);
         responsed.setSuccess(true);
         responsed.setMsg("查询成功");
         responsed.setResult(page);
@@ -154,8 +168,6 @@ public class CustomerRestController {
         customer.setUploader(loginUser.getPhone());
 //        customer.setSituation("0");
         customer.setQq(qq);
-
-        customer.setUploader(uploader);
         customer.setProcess(process);
         customer.setComment(comment);
         customer.setChannel(channel);
@@ -169,14 +181,15 @@ public class CustomerRestController {
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Responsed<Customer> update(HttpServletRequest request, String id, String name, String phone, Sex sex,
                                       String weChat, Date time, String link, String follower, String address,
-                                      String chatRecord, String sutuation, String qq, String uploader, String process, String comment, String channel) {
+                                      String chatRecord, String sutuation, String qq, String uploader,
+                                      String process, String comment, String channel, String sort) {
 
 
         Responsed<Customer> responsed = new Responsed<Customer>();
         String checkPhone = request.getHeader("phone");
         System.out.println("request.getHeader(\"phone\"): " + checkPhone);
-        LoginUser loginUser = (LoginUser)RedisUtils.get(shardedJedisPool.getResource(), RedisConsts.USER_INFO + checkPhone, LoginUser.class);
-        if(null == loginUser || !loginUser.getPhone().equals(checkPhone)){
+        LoginUser loginUser = (LoginUser) RedisUtils.get(shardedJedisPool.getResource(), RedisConsts.USER_INFO + checkPhone, LoginUser.class);
+        if (null == loginUser || !loginUser.getPhone().equals(checkPhone)) {
             responsed.setSuccess(false);
             responsed.setMsg("登录状态无效");
             responsed.setCode(ResponseCode.FORBIDDEN);
@@ -203,11 +216,11 @@ public class CustomerRestController {
         customer.setLink(link);
         customer.setFollower(follower);
         customer.setAddress(address);
-        customer.setUploader(loginUser.getPhone());
+//        customer.setSort(sort);
         customer.setChatRecord(chatRecord);
 //        customer.setSituation(sutuation);
         customer.setQq(qq);
-        customer.setUploader(uploader);
+//        customer.setUploader(loginUser.getPhone());
         customer.setProcess(process);
         customer.setComment(comment);
         customer.setChannel(channel);
@@ -218,13 +231,22 @@ public class CustomerRestController {
         return responsed;
     }
 
+    @RequestMapping(value = "/updateSort", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Responsed<String> updateSort(HttpServletRequest request, String id, String sort, String follower) {
+        Responsed<String> responsed = new Responsed<String>();
+        customerService.updateSort(id, sort, follower);
+        responsed.setSuccess(true);
+        responsed.setMsg("置顶成功");
+        return responsed;
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Responsed<Customer> getById(HttpServletRequest request, @PathVariable("id") String id) {
         Responsed<Customer> responsed = new Responsed<Customer>();
         String checkPhone = request.getHeader("phone");
         System.out.println("request.getHeader(\"phone\"): " + checkPhone);
-        LoginUser loginUser = (LoginUser)RedisUtils.get(shardedJedisPool.getResource(), RedisConsts.USER_INFO + checkPhone, LoginUser.class);
-        if(null == loginUser || !loginUser.getPhone().equals(checkPhone)){
+        LoginUser loginUser = (LoginUser) RedisUtils.get(shardedJedisPool.getResource(), RedisConsts.USER_INFO + checkPhone, LoginUser.class);
+        if (null == loginUser || !loginUser.getPhone().equals(checkPhone)) {
             responsed.setSuccess(false);
             responsed.setMsg("登录状态无效");
             responsed.setCode(ResponseCode.FORBIDDEN);
@@ -242,8 +264,8 @@ public class CustomerRestController {
         Responsed<Customer> responsed = new Responsed<Customer>();
         String checkPhone = request.getHeader("phone");
         System.out.println("request.getHeader(\"phone\"): " + checkPhone);
-        LoginUser loginUser = (LoginUser)RedisUtils.get(shardedJedisPool.getResource(), RedisConsts.USER_INFO + checkPhone, LoginUser.class);
-        if(null == loginUser || !loginUser.getPhone().equals(checkPhone)){
+        LoginUser loginUser = (LoginUser) RedisUtils.get(shardedJedisPool.getResource(), RedisConsts.USER_INFO + checkPhone, LoginUser.class);
+        if (null == loginUser || !loginUser.getPhone().equals(checkPhone)) {
             responsed.setSuccess(false);
             responsed.setMsg("登录状态无效");
             responsed.setCode(ResponseCode.FORBIDDEN);
@@ -287,16 +309,27 @@ public class CustomerRestController {
 
     @RequestMapping(value = "/exportFile", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void exportFile(HttpServletRequest request, HttpServletResponse response, String name,
-                           String situation, String startTime, String endTime) {
+                           String situation, String startTime, String endTime, String phone) {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         String modelName = "exportModel.xls".toString(); // 文件的默认保存名
         String fileName = "export_" + sf.format(new Date()) + ".xls"; // 文件的默认保存名
         // 读到流中
 //        http://localhost:8886/api/1.0/customer/exportFile
         System.out.println("namenamename: " + name);
-//        System.out.println("channelchannelchannelchannel: " + channel);
-//        System.out.println("customerService1customerService1: " + cs);
-        List<Customer> list = customerService.findAllByMix(name, situation, startTime, endTime);
+
+
+
+        LoginUser loginUser = (LoginUser) RedisUtils.get(shardedJedisPool.getResource(), RedisConsts.USER_INFO + phone, LoginUser.class);
+
+        List<Customer> list = new ArrayList<Customer>();
+        if ("0".equals(loginUser.getRole())) {            //超级管理员
+            list = customerService.findAllByMix(name, situation, startTime, endTime, null);
+        } else if ("1".equals(loginUser.getRole())) {     //客服
+            list = customerService.findAllByMix(name, situation, startTime, endTime, phone);
+        } else {                                          //普通用户
+
+        }
+
         System.out.println("exportFileexportFileexportFile: " + list.size());
         try {
             List<Map> listMap = new ArrayList<Map>();
@@ -382,5 +415,35 @@ public class CustomerRestController {
         responsed.setMsg("导入成功");
         responsed.setResult(badList);
         return responsed;
+    }
+
+    public static String hidenStr(String str) {
+        String xxxStr = "";
+        if (StringUtils.isNotBlank(str)) {
+            if (str.length() > 3) {
+                System.out.println(str.length() / 2);
+                System.out.println(str.length() / 3);
+                int startR = str.length() / 3;
+                int endR = str.length() * 2 / 3;
+                System.out.println(startR);
+                System.out.println(endR);
+                int rStrL = endR - startR;
+                System.out.println(rStrL);
+                StringBuilder rStr = new StringBuilder();
+                for (int i = 0; i < rStrL; i++) {
+                    rStr.append("*");
+                }
+                xxxStr = str.substring(0, startR) + rStr + str.substring(endR, (str.length()));
+            } else {
+                xxxStr = str;
+            }
+        } else {
+            xxxStr = str;
+        }
+        return xxxStr;
+    }
+
+    public static void main(String[] asd) {
+        System.out.println(hidenStr("lab775123"));
     }
 }

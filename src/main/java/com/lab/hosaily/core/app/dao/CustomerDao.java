@@ -49,9 +49,27 @@ public class CustomerDao {
         try {
             Assert.notNull(customer, "用户信息不能为空");
             Assert.hasText(customer.getId(), "用户ID不能为空");
-
             customer.setUpdateTime(new Date());
             mapper.update(customer);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public void updateSort(String id, String sort, String follower) {
+        try {
+            Long sortNum = mapper.getMaxSort(follower);
+            if (null == sortNum) {
+                sortNum = 1l;
+            } else {
+                sortNum++;
+            }
+            if ("addSort".equals(sort)) {
+                mapper.updateSort(id, sortNum + "");
+            } else if ("removeSort".equals(sort)) {
+                mapper.updateSort(id, null);
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new DataAccessException(e.getMessage(), e);
@@ -131,7 +149,7 @@ public class CustomerDao {
     }
 
     public Page<Customer> page(PageRequest pageRequest, String name,
-                               String situation, String startTime, String endTime, String process, String follower) {
+                               String situation, String startTime, String endTime, String process, String follower, String phone) {
         try {
             Assert.notNull(pageRequest, "分页信息不能为空");
 
@@ -147,24 +165,30 @@ public class CustomerDao {
             if (StringUtils.isNotBlank(situation)) {
                 criteria.and(Restrictions.eq("situation", situation));
                 if ("0".equals(situation)) {
+                    criteria.sort(Restrictions.desc("sort"));
                     criteria.sort(Restrictions.asc("time"));
                 } else if ("1".equals(situation)) {
+                    criteria.sort(Restrictions.desc("sort"));
                     criteria.sort(Restrictions.desc("processTime"));
                 }
-            }else{
+            } else {
                 criteria.sort(Restrictions.desc("createTime"));
             }
             if (StringUtils.isNotBlank(startTime)) {
-                criteria.and(Restrictions.gt("create_time", startTime));
+                criteria.and(Restrictions.gt("createTime", startTime));
             }
             if (StringUtils.isNotBlank(endTime)) {
-                criteria.and(Restrictions.lt("create_time", endTime));
+                criteria.and(Restrictions.lt("createTime", endTime));
             }
             if (StringUtils.isNotBlank(process)) {
                 criteria.and(Restrictions.eq("process", process));
             }
             if (StringUtils.isNotBlank(follower)) {
                 criteria.and(Restrictions.eq("follower", follower));
+            }
+
+            if (StringUtils.isNotBlank(phone)) {
+                criteria.and(Restrictions.eq("uploader", phone));
             }
 
             List<Customer> list = mapper.find(criteria, name);
@@ -176,7 +200,7 @@ public class CustomerDao {
         }
     }
 
-    public List<Customer> findAllByMix(String name, String situation, String startTime, String endTime) {
+    public List<Customer> findAllByMix(String name, String situation, String startTime, String endTime, String phone) {
         try {
             Criteria criteria = new Criteria();
             criteria.sort(Restrictions.desc("createTime"));
@@ -192,6 +216,9 @@ public class CustomerDao {
             if (StringUtils.isNotBlank(endTime)) {
                 criteria.and(Restrictions.lt("create_time", endTime));
             }
+            if (StringUtils.isNotBlank(phone)) {
+                criteria.and(Restrictions.eq("uploader", phone));
+            }
             List<Customer> list = mapper.find(criteria, null);
             return list;
         } catch (Exception e) {
@@ -200,33 +227,4 @@ public class CustomerDao {
         }
     }
 
-//    public List<Customer> findByCompanyId(String companyId){
-//        try{
-//            Assert.hasText(companyId, "用户公司ID不能为空");
-//
-//            Criteria criteria = new Criteria();
-//            criteria.and(Restrictions.eq("companyId", companyId));
-//
-//            return mapper.find(criteria);
-//        }catch(Exception e){
-//            logger.error(e.getMessage(), e);
-//            throw new DataAccessException(e.getMessage(), e);
-//        }
-//    }
-
-//    public Customer getByCompanyIdAndPhone(String companyId, String phone){
-//        try{
-//            Assert.hasText(companyId, "用户公司ID不能为空");
-//            Assert.hasText(phone, "用户电话不能为空");
-//
-//            Criteria criteria = new Criteria();
-//            criteria.and(Restrictions.eq("companyId", companyId));
-//            criteria.and(Restrictions.eq("phone", phone));
-//
-//            return mapper.get(criteria);
-//        }catch(Exception e){
-//            logger.error(e.getMessage(), e);
-//            throw new DataAccessException(e.getMessage(), e);
-//        }
-//    }
 }

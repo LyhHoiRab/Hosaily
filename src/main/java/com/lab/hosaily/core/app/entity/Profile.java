@@ -93,8 +93,19 @@ public class Profile implements Create, Update {
 
     private String orderCount;
 
+
+    private String qrCodeImgUrl;
+
     public Profile() {
 
+    }
+
+    public String getQrCodeImgUrl() {
+        return qrCodeImgUrl;
+    }
+
+    public void setQrCodeImgUrl(String qrCodeImgUrl) {
+        this.qrCodeImgUrl = qrCodeImgUrl;
     }
 
     public String getOrderCount() {

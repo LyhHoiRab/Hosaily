@@ -4,6 +4,8 @@ import com.lab.hosaily.core.account.entity.AppAccount;
 import com.rab.babylon.core.account.entity.Account;
 import com.rab.babylon.core.account.entity.User;
 
+import java.util.Map;
+
 public interface AccountService{
 
     /**
@@ -20,6 +22,8 @@ public interface AccountService{
      * 网站应用注册
      */
     User registerByNewWeb(String token, String code);
+
+    Map<String, String> registerByH5Share(String token, String code, String sellerId);
 
 
     /**

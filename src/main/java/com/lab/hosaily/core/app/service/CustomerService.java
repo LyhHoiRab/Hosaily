@@ -15,12 +15,14 @@ public interface CustomerService {
 
     void update(Customer customer);
 
+    void updateSort(String id, String sort, String follower);
+
     Customer getById(String id);
 
     void delete(String id);
 
     Page<Customer> page(PageRequest pageRequest, String name,
-                        String situation, String startTime, String endTime, String process, String follower);
+                        String situation, String startTime, String endTime, String process, String follower, String phone);
 
     Page<Customer> pageForSeller(PageRequest pageRequest, String name, String channel, String customerService);
 
@@ -28,5 +30,5 @@ public interface CustomerService {
 
     List<String> importFile(MultipartFile file, String uploader) throws Exception;
 
-    List<Customer> findAllByMix(String name, String situation, String startTime, String endTime);
+    List<Customer> findAllByMix(String name, String situation, String startTime, String endTime, String phone);
 }
