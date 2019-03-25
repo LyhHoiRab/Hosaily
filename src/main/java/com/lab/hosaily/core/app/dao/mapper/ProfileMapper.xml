@@ -395,7 +395,8 @@
         a.state AS a_last_state,
         a.create_time AS a_last_create_time,
         n.count_num AS n_count_num,
-        (select status from `order` od where od.agreement_id = a.id) AS order_status
+        (select status from `order` od where od.agreement_id = a.id) AS order_status,
+        (SELECT count(1) from `order` WHERE account_id = p.account_id) AS order_count
         FROM profile p
         LEFT JOIN organization o
         ON o.id = p.organization_id
@@ -433,7 +434,9 @@
         <if test="sellerId != null">
             AND p.id in (SELECT client_id from seller_client_relation where seller_id = #{sellerId})
         </if>
-
+        <if test="role != null">
+            AND p.role = #{role}
+        </if>
 
         order by p.create_time desc limit #{beginRow},#{pageSize}
     </select>
@@ -489,7 +492,9 @@
         <if test="sellerId != null">
             AND p.id in (SELECT client_id from seller_client_relation where seller_id = #{sellerId})
         </if>
-
+        <if test="role != null">
+            AND p.role = #{role}
+        </if>
     </select>
 
 
@@ -510,6 +515,31 @@
         profile_id = ${advisorId}))
         <if test="clientName != null and clientName != ''">
             AND (name LIKE ${clientName} or nickname like ${clientName})
+        </if>
+    </select>
+
+
+
+
+    <select id="findAdvisorsPage" resultMap="profile">
+        SELECT * FROM profile WHERE id IN
+        (
+        SELECT profile_id FROM order_profile WHERE order_id
+        IN (SELECT id FROM `order`  WHERE account_id = ${clientId}
+        ))
+        <if test="advisorName != null and advisorName != ''">
+            AND (name LIKE ${advisorName} or nickname like ${advisorName})
+        </if>
+    </select>
+
+    <select id="countAdvisorsPage" resultType="java.lang.Long">
+        SELECT count(1) FROM profile WHERE id IN
+        (
+        SELECT profile_id FROM order_profile WHERE order_id
+        IN (SELECT id FROM `order`  WHERE account_id = ${clientId}
+        ))
+        <if test="advisorName != null and advisorName != ''">
+            AND (name LIKE ${advisorName} or nickname like ${advisorName})
         </if>
     </select>
 </mapper>

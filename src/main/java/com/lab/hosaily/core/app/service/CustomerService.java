@@ -20,13 +20,13 @@ public interface CustomerService {
     void delete(String id);
 
     Page<Customer> page(PageRequest pageRequest, String name,
-                        String situation, String startTime, String endTime);
+                        String situation, String startTime, String endTime, String process, String follower);
 
     Page<Customer> pageForSeller(PageRequest pageRequest, String name, String channel, String customerService);
 
 //    List<Customer> findAllByNameChannelCS(String name, String channel, String customerService);
 
-    List<String> importFile(MultipartFile file) throws Exception;
+    List<String> importFile(MultipartFile file, String uploader) throws Exception;
 
     List<Customer> findAllByMix(String name, String situation, String startTime, String endTime);
 }

@@ -32,7 +32,7 @@ public interface ProfileMapper {
     List<Profile> findByParams(@Param("params") Criteria criteria);
 
 
-    List<Profile> findByMixs(@Param("signAgreement") Integer signAgreement, @Param("signProfile") Integer signProfile, @Param("uploaded") Integer uploaded, @Param("name") String name, @Param("sellerId") String sellerId, @Param("beginRow") Long beginRow, @Param("pageSize") Long pageSize);
+    List<Profile> findByMixs(@Param("signAgreement") Integer signAgreement, @Param("signProfile") Integer signProfile, @Param("uploaded") Integer uploaded, @Param("name") String name, @Param("sellerId") String sellerId, @Param("role") Integer role, @Param("beginRow") Long beginRow, @Param("pageSize") Long pageSize);
 
 
 
@@ -50,6 +50,13 @@ public interface ProfileMapper {
     Long countByParams(@Param("params") Criteria criteria);
 
 
-    Long countByMixs(@Param("signAgreement") Integer signAgreement, @Param("signProfile") Integer signProfile, @Param("uploaded") Integer uploaded, @Param("name") String name, @Param("sellerId") String sellerId);
+    Long countByMixs(@Param("signAgreement") Integer signAgreement, @Param("signProfile") Integer signProfile, @Param("uploaded") Integer uploaded, @Param("name") String name, @Param("sellerId") String sellerId, @Param("role") Integer role);
+
+
+
+
+
+    Long countAdvisorsPage(@Param("advisorName") String advisorName, @Param("clientId") String clientId);
+    List<Profile> findAdvisorsPage(@Param("advisorName") String advisorName, @Param("clientId") String clientId, @Param("beginRow") Long beginRow, @Param("pageSize") Long pageSize);
 
 }

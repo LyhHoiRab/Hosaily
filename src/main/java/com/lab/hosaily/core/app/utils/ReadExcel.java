@@ -51,6 +51,10 @@ public class ReadExcel {
 //                        if (cellinfo.isEmpty()) {
 //                            continue;
 //                        }
+                        if(null != cellinfo && "".equals(cellinfo.trim())){
+                            cellinfo = null;
+                        }
+
                         innerList.add(cellinfo);
 //                        System.out.print(cellinfo);
                     }

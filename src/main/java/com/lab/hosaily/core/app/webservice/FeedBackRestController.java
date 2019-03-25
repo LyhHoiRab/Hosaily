@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.Date;
+
 /**
  * Created by Administrator on 2017/9/13.
  */
@@ -155,6 +157,8 @@ public class FeedBackRestController {
 //            上传过反馈的客户将自动更新成已处理客户
             Customer customer = customerService.getById(customerId);
             customer.setSituation("1");
+            customer.setProcessTime(new Date());
+            customer.setProcess(status);
             customerService.update(customer);
             
             response.setSuccess(true);

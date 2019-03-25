@@ -163,6 +163,7 @@
         <result column="time"  property="time"         javaType="java.util.Date"/>
         <result column="link"      property="link"         javaType="java.lang.String"/>
         <result column="follower"   property="follower"         javaType="java.lang.String"/>
+        <result column="follower_name"   property="followerName"         javaType="java.lang.String"/>
         <result column="address"      property="address"         javaType="java.lang.String"/>
         <result column="chat_record"      property="chatRecord"         javaType="java.lang.String"/>
         <result column="situation"      property="situation"         javaType="java.lang.String"/>
@@ -170,6 +171,7 @@
         <result column="uploader"      property="uploader"         javaType="java.lang.String"/>
         <result column="process"      property="process"         javaType="java.lang.String"/>
         <result column="comment"      property="comment"         javaType="java.lang.String"/>
+        <result column="channel"      property="channel"         javaType="java.lang.String"/>
         <result column="create_time"  property="createTime" javaType="java.util.Date"/>
         <result column="update_time"  property="updateTime" javaType="java.util.Date"/>
     </resultMap>
@@ -192,6 +194,7 @@
         uploader,
         process,
         comment,
+        channel,
         create_time
         ) VALUE (
         #{id,         jdbcType=VARCHAR},
@@ -209,6 +212,7 @@
         #{uploader, jdbcType=VARCHAR},
         #{process, jdbcType=VARCHAR},
         #{comment, jdbcType=VARCHAR},
+        #{channel, jdbcType=VARCHAR},
         #{createTime, jdbcType=TIMESTAMP}
         )
     </insert>
@@ -230,6 +234,9 @@
             </if>
             <if test="time != null">
                 time = #{time, jdbcType=TIMESTAMP},
+            </if>
+            <if test="processTime != null">
+                process_time = #{processTime, jdbcType=TIMESTAMP},
             </if>
             <if test="link != null">
                 link = #{link, jdbcType=VARCHAR},
@@ -258,6 +265,9 @@
             <if test="comment != null">
                 comment = #{comment, jdbcType=VARCHAR},
             </if>
+            <if test="channel != null">
+                channel = #{channel, jdbcType=VARCHAR},
+            </if>
             <if test="updateTime != null">
                 update_time = #{updateTime, jdbcType=TIMESTAMP},
             </if>
@@ -283,6 +293,7 @@
         uploader,
         process,
         comment,
+        channel,
         create_time
         ) VALUES
         <foreach collection="customers" item="customer" separator=",">
@@ -302,6 +313,7 @@
             #{customer.uploader, jdbcType=VARCHAR},
             #{customer.process, jdbcType=VARCHAR},
             #{customer.comment, jdbcType=VARCHAR},
+            #{customer.channel, jdbcType=VARCHAR},
             #{customer.createTime, jdbcType=TIMESTAMP}
             )
         </foreach>
@@ -353,6 +365,9 @@
                 <if test="customer.comment != null">
                     comment = #{customer.comment, jdbcType=VARCHAR},
                 </if>
+                <if test="customer.channel != null">
+                    channel = #{customer.channel, jdbcType=VARCHAR},
+                </if>
                 <if test="customer.updateTime != null">
                     update_time = #{customer.updateTime, jdbcType=TIMESTAMP},
                 </if>
@@ -362,18 +377,22 @@
     </update>
 
     <select id="get" resultMap="customer">
-        SELECT *
-        FROM customer
+        SELECT c.*,(select name from profile where id = c.follower) AS follower_name
+        FROM customer c
         <if test="params != null">
             <include refid="WHERE_SQL"/>
         </if>
     </select>
 
     <select id="find" resultMap="customer">
-        SELECT *
-        FROM customer
+        SELECT c.*,(select name from profile where id = c.follower) AS follower_name
+        FROM customer c
         <if test="params != null">
             <include refid="WHERE_SQL"/>
+
+        <if test="mixSearch != null  and mixSearch != ''">
+            AND (c.name like '%${mixSearch}%' OR c.phone like '%${mixSearch}%' OR c.we_chat like '%${mixSearch}%')
+        </if>
 
             <if test="params.sorts != null and params.sorts.size > 0">
                 ORDER BY

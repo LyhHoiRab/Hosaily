@@ -1,11 +1,18 @@
 package com.lab.hosaily.core.app.webservice;
 
+import com.lab.hosaily.commons.consts.RedisConsts;
+import com.lab.hosaily.commons.utils.RandomStringUtils;
+import com.lab.hosaily.commons.utils.YunpianUtils;
+import com.lab.hosaily.core.app.entity.LoginUser;
 import com.lab.hosaily.core.app.entity.Profile;
 import com.lab.hosaily.core.app.service.ProfileService;
+import com.lab.hosaily.core.client.consts.SMSConfig;
+import com.lab.hosaily.core.client.consts.SMSTemplate;
 import com.rab.babylon.commons.security.exception.ApplicationException;
 import com.rab.babylon.commons.security.response.Page;
 import com.rab.babylon.commons.security.response.PageRequest;
 import com.rab.babylon.commons.security.response.Response;
+import com.rab.babylon.commons.utils.RedisUtils;
 import com.rab.babylon.core.consts.entity.Sex;
 import com.rab.babylon.core.consts.entity.UsingState;
 import io.swagger.annotations.Api;
@@ -18,8 +25,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.wah.doraemon.security.response.Responsed;
+import redis.clients.jedis.ShardedJedisPool;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +45,9 @@ public class ProfileRestController {
 
     @Autowired
     private ProfileService profileService;
+
+    @Autowired
+    private ShardedJedisPool shardedJedisPool;
 
     //    http://localhost:8080/swagger-ui.html
     private static final Logger logger = LoggerFactory.getLogger(ProfileRestController.class);
@@ -68,7 +83,7 @@ public class ProfileRestController {
     @ApiOperation(value = "更新爱情档案", notes = "更新爱情档案")
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Profile> update(String id, String name, Sex sex, String mobile, Integer age, String comment, String headImgUrl, String job, String address, String marryAge, String requirement,
-                                    String problem, String nickname, String reason, String fixed, String originalFamily, String unforgettable, String selfAssessment, String otherAssessment, String sellerId) {
+                                    String problem, String nickname, String reason, String fixed, String originalFamily, String unforgettable, String selfAssessment, String otherAssessment, String sellerId, Integer role) {
         try {
             Profile profile = new Profile();
             profile.setId(id);
@@ -91,7 +106,7 @@ public class ProfileRestController {
             profile.setSelfAssessment(selfAssessment);
             profile.setOtherAssessment(otherAssessment);
             profile.setSellerId(sellerId);
-
+            profile.setRole(role);
             profileService.update(profile);
             return new Response<Profile>("修改成功", profile);
         } catch (Exception e) {
@@ -138,10 +153,10 @@ public class ProfileRestController {
             @ApiImplicitParam(name = "pageSize", value = "页大小", paramType = "query", required = true, dataType = "Long")
     })
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Page<Profile>> page(Long pageNum, Long pageSize, Integer hasSignAgreement, Integer hasSignProfile, Integer hasUploaded, String name, String sellerId) {
+    public Response<Page<Profile>> page(Long pageNum, Long pageSize, Integer hasSignAgreement, Integer hasSignProfile, Integer hasUploaded, String name, String sellerId, Integer role) {
         try {
             PageRequest pageRequest = new PageRequest(pageNum, pageSize);
-            Page<Profile> page = profileService.page(pageRequest, hasSignAgreement, hasSignProfile, hasUploaded, name, sellerId);
+            Page<Profile> page = profileService.page(pageRequest, hasSignAgreement, hasSignProfile, hasUploaded, name, sellerId, role);
 
             return new Response<Page<Profile>>("查询成功", page);
         } catch (Exception e) {
@@ -196,6 +211,87 @@ public class ProfileRestController {
             Page<Profile> page = profileService.findClientsPage(pageRequest, clientName, advisorId);
             response.setResult(page);
             return response;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+
+
+
+
+
+    @ApiOperation(value = "资讯端获取客户列表", notes = "资讯端获取客户列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "clientName", value = "客户名称", paramType = "query", required = false, dataType = "String"),
+            @ApiImplicitParam(name = "pageNum", value = "页码", paramType = "query", required = true, dataType = "Long"),
+            @ApiImplicitParam(name = "pageSize", value = "页大小", paramType = "query", required = true, dataType = "Long")
+    })
+    @RequestMapping(value = "/findAdvisorsPage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Page<Profile>> findAdvisorsPage(String advisorName, String clientId, Long pageNum, Long pageSize) {
+        try {
+            Response<Page<Profile>>  response = new Response<Page<Profile>>();
+//            if(StringUtils.isBlank(clientName)){
+//                response.setSuccess(false);
+//                response.setMsg("clientName不能为空");
+//                return response;
+//            }
+            if(StringUtils.isBlank(clientId)){
+                response.setSuccess(false);
+                response.setMsg("advisorId");
+                return response;
+            }
+            PageRequest pageRequest = new PageRequest(pageNum, pageSize);
+            Page<Profile> page = profileService.findAdvisorsPage(pageRequest, advisorName, clientId);
+            response.setResult(page);
+            return response;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
+
+
+
+    @RequestMapping(value = "/sendSms", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Responsed<String> sendSms(HttpServletRequest request, HttpServletResponse response, String mobile) throws Exception {
+        Responsed<String> responsed = new Responsed<String>();
+        SMSConfig config = SMSConfig.YHQS;
+        String captcha = RandomStringUtils.nextNumber(4);
+        String template = MessageFormat.format(SMSTemplate.CAPTCHA, config.getCompany(), captcha);
+        //发送
+        YunpianUtils.sendSms(config.getApiKey(), template, mobile);
+        //缓存
+        RedisUtils.save(shardedJedisPool.getResource(), RedisConsts.CAPTCHA_PHONE + mobile, captcha, RedisConsts.CAPTCHA_EFFECTIVE_SECOND);
+        responsed.setSuccess(true);
+        responsed.setMsg("发送成功");
+        responsed.setResult(null);
+        return responsed;
+    }
+
+
+    //    @ApiIgnore
+    @ApiOperation(value = "更新爱情档案", notes = "更新爱情档案")
+    @RequestMapping(value = "/updateProfilePhone", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Responsed<String> updateProfilePhone(String id, String mobile, String smsCode) {
+        try {
+            Responsed<String> responsed = new Responsed<String>();
+            String sessionSmsCode = RedisUtils.get(shardedJedisPool.getResource(), RedisConsts.CAPTCHA_PHONE + mobile, String.class);
+            System.out.println("sessionSmsCode: " + sessionSmsCode);
+            System.out.println("smsCode: " + smsCode);
+            if(!smsCode.equals(sessionSmsCode)){
+                responsed.setSuccess(false);
+                responsed.setMsg("验证码错误！");
+                responsed.setResult(null);
+                return responsed;
+            }
+            Profile profile = new Profile();
+            profile.setId(id);
+            profile.setMobile(mobile);
+            profileService.update(profile);
+            responsed.setMsg("修改成功！");
+            return responsed;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), e);

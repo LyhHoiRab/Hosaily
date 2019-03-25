@@ -24,15 +24,19 @@ public class Customer extends Entity implements Createable, Updateable {
     private String phone;                      //电话
     private String weChat;                      //微信
     private Date time;                      //日期时间
+    private Date processTime;               //处理时间
     private String link;                      //链接
     private String follower;                      //跟进人
+    private String followerName;                  //跟进人名字（仅做显示）
     private String address;                      //地区
     private String chatRecord;                      //聊天记录
-    private String situation;                      //跟进情况
+    private String situation;                      //跟进情况(0:未处理/1:处理中)
     private String qq;                      //qq
     private String uploader;                      //录入人
     private String process;                      //过程
     private String comment;                      //备注
+    private String channel;                       //渠道
+
 
     private int index;                      //临时序号
 

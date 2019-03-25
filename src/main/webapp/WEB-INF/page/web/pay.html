@@ -69,6 +69,14 @@
 <script type='text/javascript' src='http://h.ishsls.com/yhqs_h5/purchase/js/init.js' charset='utf-8'></script>
 <script src="http://h.ishsls.com/yhqs_h5/purchase/js/js.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
+    $(function(){
+        if(isWeiXin()){
+            wechatPay();
+        }else{
+            alipay();
+        }
+    });
+
     $('.payLine').click(function(){
         $(this).find('.lfetText,.rightText').addClass('payChecked').parent().siblings().find('.lfetText,.rightText').removeClass('payChecked');
     });
@@ -103,7 +111,7 @@
             $.ajax({
                 url: '/api/1.0/wechatMerchantPay/prepay',
                 type: 'POST',
-                data: {'purchaseId':purchaseId, 'totalFee':price, 'code':code},
+                data: {'purchaseId':purchaseId, 'totalFee':0.01, 'code':code},
                 dataType: 'json',
                 success: function(res){
                     if(res.success){
@@ -148,10 +156,11 @@
 
     //支付宝支付
     function alipay(){
-        var price = $('#price').val();
+        var price = 0.01;
+        // var price = $('#price').val();
         var purchaseId = getQueryString('purchaseId');
 
-        location.href = '/api/1.0/alipay/pay?purchaseId=' + purchaseId + "&totalFee=" + price;
+        location.href = 'http://www.klpua.com/api/1.0/alipay/pay?purchaseId=' + purchaseId + "&totalFee=" + price;
     };
 
     //已付金额
@@ -231,27 +240,27 @@
         });
     };
 
-    $(function(){
-        agreement();
-
-        $('.btnPay').click(function(){
-            var isWeChatPay = $('.lfetText.payChecked').html().indexOf("微信") >= 0;
-
-            if(isWeChatPay){
-                if(!isWeiXin()){
-                    openZheTips(1);
-                    return;
-                }
-
-                wechatPay();
-            }else{
-                if(isWeiXin()){
-                    openZheTips(0);
-                    return;
-                }
-                alipay();
-            }
-        });
-    });
+    // $(function(){
+    //     agreement();
+    //
+    //     $('.btnPay').click(function(){
+    //         var isWeChatPay = $('.lfetText.payChecked').html().indexOf("微信") >= 0;
+    //
+    //         if(isWeChatPay){
+    //             if(!isWeiXin()){
+    //                 openZheTips(1);
+    //                 return;
+    //             }
+    //
+    //             wechatPay();
+    //         }else{
+    //             if(isWeiXin()){
+    //                 openZheTips(0);
+    //                 return;
+    //             }
+    //             alipay();
+    //         }
+    //     });
+    // });
 </script>
 </html>

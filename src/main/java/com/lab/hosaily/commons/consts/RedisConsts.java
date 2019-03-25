@@ -5,6 +5,9 @@ public class RedisConsts{
     //用户信息缓存时间
     public static final Integer USER_EFFECTIVE_SECOND = SessionConsts.EFFECTIVE_SECOND;
 
+    //用户信息缓存时间
+    public static final Integer APP_USER_EFFECTIVE_SECOND = SessionConsts.APP_EFFECTIVE_SECOND;
+
     //验证码缓存时间
     public static final Integer CAPTCHA_EFFECTIVE_SECOND = 300;
 

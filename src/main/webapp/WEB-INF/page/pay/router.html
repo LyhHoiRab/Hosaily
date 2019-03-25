@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head lang="zh-CN">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp">
+
+        <title>永恒情书扫码支付</title>
+    </head>
+
+    <body>
+        <div id="ua"></div>
+
+        <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                if(isWeixin()){
+                    location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0d7797805ed0d9b3&redirect_uri=http://ell.ishsls.com/page/pay/index&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+                }else{
+                    location.href = 'http://www.klpua.com/page/pay/index';
+                }
+            });
+
+            function isWeixin(){
+                var ua = window.navigator.userAgent.toLowerCase();
+
+                if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+                    return true;
+                }else{
+                    return false;
+                }
+
+                // if(typeof window.WeiXinJSBridge == 'undefined' || typeof window.WeiXinJSBridge.invoke == 'undefined'){
+                //     return false;
+                // }
+                //
+                // return true;
+            }
+        </script>
+    </body>
+</html>

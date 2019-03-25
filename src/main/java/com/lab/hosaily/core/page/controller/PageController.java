@@ -408,4 +408,14 @@ public class PageController{
             throw new ApplicationException(e.getMessage(), e);
         }
     }
+
+    @RequestMapping(value = "/pay/test", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView payTest(ModelMap content){
+        try{
+            return new ModelAndView("payTest", content);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 }

@@ -1,26 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lab.hosaily.core.client.dao.mapper.AppointmentMapper">
-    <resultMap id="appointment" type="com.lab.hosaily.core.client.entity.Appointment">
-        <id     column="id"              property="id"             javaType="java.lang.String"/>
-        <result column="organization_id" property="organizationId" javaType="java.lang.String"/>
-        <result column="name"            property="name"           javaType="java.lang.String"/>
-        <result column="wechat"          property="wechat"         javaType="java.lang.String"/>
-        <result column="sex"             property="sex"            typeHandler="sexHandler"/>
-        <result column="phone"           property="phone"          javaType="java.lang.String"/>
-        <result column="type"            property="type"           javaType="java.lang.String"/>
-        <result column="description"     property="description"    javaType="java.lang.String"/>
-        <result column="url"             property="url"            javaType="java.lang.String"/>
-        <result column="state"           property="state"          typeHandler="appointmentStateHandler"/>
-        <result column="remark"          property="remark"         javaType="java.lang.String"/>
-        <result column="img"             property="img"            javaType="java.lang.String"/>
-        <result column="create_time"     property="createTime"     javaType="java.util.Date"/>
-        <result column="update_time"     property="updateTime"     javaType="java.util.Date"/>
-    </resultMap>
+<mapper namespace="com.lab.hosaily.core.app.dao.mapper.LoginUserMapper">
 
-    <sql id="WHERE_COLUMN">
+    <sql id="WHERE_SQL">
         <where>
             <if test="params.andCriterions != null and params.andCriterions.size > 0">
                 <foreach collection="params.andCriterions" item="criterion">
@@ -33,7 +17,8 @@
                                 ${criterion.property} ${criterion.operator} #{criterion.value}
                             </when>
                             <when test="criterion.betweenValue">
-                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND
+                                #{criterion.secondValue}
                             </when>
                             <when test="criterion.listValue">
                                 ${criterion.property} ${criterion.operator}
@@ -56,7 +41,8 @@
                                             </when>
                                             <when test="item.listValue">
                                                 ${item.property} ${item.operator}
-                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")"
+                                                         separator=",">
                                                     #{itemValue}
                                                 </foreach>
                                             </when>
@@ -79,7 +65,8 @@
                                             </when>
                                             <when test="item.listValue">
                                                 ${item.property} ${item.operator}
-                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")"
+                                                         separator=",">
                                                     #{itemValue}
                                                 </foreach>
                                             </when>
@@ -103,7 +90,8 @@
                                 ${criterion.property} ${criterion.operator} #{criterion.value}
                             </when>
                             <when test="criterion.betweenValue">
-                                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+                                ${criterion.property} ${criterion.operator} #{criterion.value} AND
+                                #{criterion.secondValue}
                             </when>
                             <when test="criterion.listValue">
                                 ${criterion.property} ${criterion.operator}
@@ -126,7 +114,8 @@
                                             </when>
                                             <when test="item.listValue">
                                                 ${item.property} ${item.operator}
-                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")"
+                                                         separator=",">
                                                     #{itemValue}
                                                 </foreach>
                                             </when>
@@ -149,7 +138,8 @@
                                             </when>
                                             <when test="item.listValue">
                                                 ${item.property} ${item.operator}
-                                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                                <foreach collection="item.value" item="itemValue" open="(" close=")"
+                                                         separator=",">
                                                     #{itemValue}
                                                 </foreach>
                                             </when>
@@ -164,96 +154,63 @@
         </where>
     </sql>
 
+    <resultMap id="login_user" type="com.lab.hosaily.core.app.entity.LoginUser">
+        <id     column="phone"           property="phone"         javaType="java.lang.String"/>
+        <result column="name"         property="name"         javaType="java.lang.String"/>
+        <result column="role"         property="role"         javaType="java.lang.String"/>
+        <result column="create_time"  property="createTime" javaType="java.util.Date"/>
+        <result column="update_time"  property="updateTime" javaType="java.util.Date"/>
+    </resultMap>
+
     <insert id="save">
         INSERT
-          INTO appointment (
-               id,
-               organization_id,
-               name,
-               wechat,
-               sex,
-               phone,
-               type,
-               description,
-               url,
-               state,
-               remark,
-               img,
-               create_time
-          ) VALUE (
-               #{id,              jdbcType=VARCHAR},
-               #{organizationId,  jdbcType=VARCHAR},
-               #{name,            jdbcType=VARCHAR},
-               #{wechat,          jdbcType=VARCHAR},
-               #{sex,             typeHandler=sexHandler},
-               #{phone,           jdbcType=VARCHAR},
-               #{type,            jdbcType=VARCHAR},
-               #{description,     jdbcType=VARCHAR},
-               #{url,             jdbcType=VARCHAR},
-               #{state,           typeHandler=appointmentStateHandler},
-               #{remark,          jdbcType=VARCHAR},
-               #{img,             jdbcType=VARCHAR},
-               #{createTime,      jdbcType=TIMESTAMP}
-          )
+        INTO login_user (
+        phone,
+        name,
+        role,
+        create_time
+        ) VALUE (
+        #{phone,         jdbcType=VARCHAR},
+        #{name,  jdbcType=VARCHAR},
+        #{phone,   jdbcType=VARCHAR},
+        #{role,   jdbcType=VARCHAR},
+        #{createTime, jdbcType=TIMESTAMP}
+        )
     </insert>
 
     <update id="update">
-        UPDATE appointment
-         <set>
-             <if test="organizationId != null and organizationId != ''">
-                 organization_id = #{organizationId, jdbcType=VARCHAR},
-             </if>
-             <if test="name != null and name != ''">
-                 name = #{name, jdbcType=VARCHAR},
-             </if>
-             <if test="wechat != null and wechat != ''">
-                 wechat = #{wechat, jdbcType=VARCHAR},
-             </if>
-             <if test="sex != null">
-                 sex = #{sex, typeHandler=sexHandler},
-             </if>
-             <if test="phone != null and phone != ''">
-                 phone = #{phone, jdbcType=VARCHAR},
-             </if>
-             <if test="type != null and type != ''">
-                 type = #{type, jdbcType=VARCHAR},
-             </if>
-             <if test="description != null and description != ''">
-                 description = #{description, jdbcType=VARCHAR},
-             </if>
-             <if test="url != null and url != ''">
-                 url = #{url, jdbcType=VARCHAR},
-             </if>
-             <if test="state != null">
-                 state = #{state, typeHandler=appointmentStateHandler},
-             </if>
-             <if test="remark != null and remark != ''">
-                 remark = #{remark, jdbcType=VARCHAR},
-             </if>
-             <if test="img != null">
-                 img = #{img, jdbcType=VARCHAR},
-             </if>
-             <if test="updateTime != null">
-                 update_time = #{updateTime, jdbcType=TIMESTAMP},
-             </if>
-         </set>
-          WHERE id = #{id}
+        UPDATE login_user
+        <set>
+            <if test="name != null">
+                name = #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone, jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                role = #{role, jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE phone = #{phone}
     </update>
 
-    <select id="getByParams" resultMap="appointment">
-        SELECT *
-          FROM appointment
+
+    <select id="get" resultMap="login_user">
+        SELECT lu.*
+        FROM login_user lu
         <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
+            <include refid="WHERE_SQL"/>
         </if>
     </select>
 
-    <select id="findByParams" resultMap="appointment">
-        SELECT *
-          FROM appointment
+    <select id="find" resultMap="login_user">
+        SELECT lu.*
+        FROM login_user lu
         <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
-
+            <include refid="WHERE_SQL"/>
             <if test="params.sorts != null and params.sorts.size > 0">
                 ORDER BY
                 <foreach collection="params.sorts" item="sort" separator=",">
@@ -267,11 +224,11 @@
         </if>
     </select>
 
-    <select id="countByParams" resultType="java.lang.Long">
+    <select id="count" resultType="java.lang.Long">
         SELECT COUNT(*)
-          FROM appointment
+        FROM login_user
         <if test="params != null">
-            <include refid="WHERE_COLUMN"/>
+            <include refid="WHERE_SQL"/>
         </if>
     </select>
 </mapper>
