@@ -94,7 +94,7 @@ app.controller('mediaAddController', function($scope, $state, $http, FileUploade
                 $("#progress").hide();
                 if(xhr.status==200){
                     alert("上传成功");
-                    var media_url = 'http://hsl-video.test.upcdn.net'+save_as;
+                    var media_url = 'http://media.ishsls.com'+save_as;
                     console.log(media_url);
                     path = media_url;
                     // $scope.media.url = media_url;
