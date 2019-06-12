@@ -226,7 +226,7 @@ public class AgreementRestController {
 
     @RequestMapping(value = "/version", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<String> getVersion() {
-        String v = "<image class='bg' src='http://kuliao.b0.upaiyun.com/ellxy/ell_ht/%E5%90%88%E5%90%8C-%E5%90%AF%E5%8A%A8%E9%A1%B5.jpg'></image><button class='open' bindgetuserinfo=\"{{opentype?'login':''}}\" bindtap=\"{{opentype?'':'login'}}\" open-type='{{opentype}}'>立 即 开 启 </button>";
+        String v = "<image class='bg' src='http://upyun.elletter.com/ellxy/ell_ht/%E5%90%88%E5%90%8C-%E5%90%AF%E5%8A%A8%E9%A1%B5.jpg'></image><button class='open' bindgetuserinfo=\"{{opentype?'login':''}}\" bindtap=\"{{opentype?'':'login'}}\" open-type='{{opentype}}'>立 即 开 启 </button>";
 
         return new Response<String>("查询成功", v);
     }

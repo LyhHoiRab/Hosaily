@@ -117,7 +117,7 @@ public class UploadServlet extends HttpServlet {
                         boolean result = UpyunUtils.writerFile(filePath, item.getInputStream(), true, null);
                         System.out.println("AAAAAAAAAAAAAAA: " + result);
                         String[] paramArr = filename.split("_");
-                        String outFilePath = "http://kuliao.b0.upaiyun.com" + filePath;
+                        String outFilePath = "http://upyun.elletter.com" + filePath;
                         System.out.println("AAAAAAAAAAAAAAA: " + outFilePath);
                         Record record = new Record();
                         record.setCreateTime(new Date());
@@ -134,7 +134,7 @@ public class UploadServlet extends HttpServlet {
                         boolean result = UpyunUtils.writerFile(filePath, item.getInputStream(), true, null);
                         System.out.println("AAAAAAAAAAAAAAA: " + result);
                         String[] paramArr = filename.split("_");
-                        String outFilePath = "http://kuliao.b0.upaiyun.com" + filePath;
+                        String outFilePath = "http://upyun.elletter.com" + filePath;
                         System.out.println("AAAAAAAAAAAAAAA: " + outFilePath);
                         Record record = new Record();
                         record.setSim(paramArr[1]);

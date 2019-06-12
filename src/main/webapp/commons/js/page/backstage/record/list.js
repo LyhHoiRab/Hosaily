@@ -166,7 +166,7 @@ app.controller('recordListController', function($scope, $http, $stateParams){
             // field: 'path',
             displayName: '通话记录',
             // cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="/api/1.0/record/testHttpMessageDown/{{row.getProperty(\'id\')}}">下载</a></span></div>'
-            // cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><audio ng-src="http://kuliao.b0.upaiyun.com/meiRongAsk/luyin/dhly_89860040191604470827_10086_42350_1512702362638.mp3" controls="controls">Your browser does not support the audio tag. </audio></div>'
+            // cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><audio ng-src="http://upyun.elletter.com/meiRongAsk/luyin/dhly_89860040191604470827_10086_42350_1512702362638.mp3" controls="controls">Your browser does not support the audio tag. </audio></div>'
             cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><a href="javascript:;" ng-click="play(row.getProperty(\'path\'), row.getProperty(\'fileType\'))">[播放/下载]</a></span></div>'
             // },{
             //     field: 'createTime',

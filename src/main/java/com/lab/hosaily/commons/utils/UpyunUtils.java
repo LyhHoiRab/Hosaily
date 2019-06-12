@@ -50,7 +50,7 @@ public class UpyunUtils{
     //课程视频目录
     public final static String COURSE_MEDIA_DIR = "/course/media/";
     //访问外链
-    public final static String URL = "http://kuliao.b0.upaiyun.com";
+    public final static String URL = "http://upyun.elletter.com";
 
     public final static String APP_DIR = "/app/test/";
 

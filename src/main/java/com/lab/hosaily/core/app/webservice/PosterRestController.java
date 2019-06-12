@@ -207,7 +207,7 @@ public class PosterRestController {
                 BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);
                 File file = new File(CreateQRCode.class.getResource("/").getPath() + "tem/" + sellerId + ".png");
                 MatrixToImageWriter.writeToFile(bitMatrix, format, file);
-                TwoComposePic.composePicUrl("http://kuliao.b0.upaiyun.com/advisor/head/4d84b9274ab3c86d125d640dd7f3ab37.jpg", CreateQRCode.class.getResource("/").getPath() + "tem/" + sellerId + ".png",
+                TwoComposePic.composePicUrl("http://upyun.elletter.com/advisor/head/4d84b9274ab3c86d125d640dd7f3ab37.jpg", CreateQRCode.class.getResource("/").getPath() + "tem/" + sellerId + ".png",
                         CreateQRCode.class.getResource("/").getPath() + "tem/" + "compound_" + sellerId + ".png");
 
                 byte[] fileByte = CreateQRCode.File2byte(CreateQRCode.class.getResource("/").getPath() + "tem/" + "compound_" + sellerId + ".png");

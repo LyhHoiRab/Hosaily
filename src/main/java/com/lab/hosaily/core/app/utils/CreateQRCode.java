@@ -43,7 +43,7 @@ public class CreateQRCode {
             MatrixToImageWriter.writeToFile(bitMatrix, format, file);
 
 
-            TwoComposePic.composePicUrl("http://kuliao.b0.upaiyun.com/advisor/head/4d84b9274ab3c86d125d640dd7f3ab37.jpg", CreateQRCode.class.getResource("/").getPath() + "tem/" + "new.jpg",
+            TwoComposePic.composePicUrl("http://upyun.elletter.com/advisor/head/4d84b9274ab3c86d125d640dd7f3ab37.jpg", CreateQRCode.class.getResource("/").getPath() + "tem/" + "new.jpg",
                     CreateQRCode.class.getResource("/").getPath() + "tem/" + "c6_new.jpg");
 
 
